@@ -1,6 +1,6 @@
 <template>
   <div>
-    this is task
+    this is dashBoard
   </div>
 </template>
 

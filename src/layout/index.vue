@@ -7,7 +7,9 @@
         <div class="bread-container">
           <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
         </div>
-        <app-main />
+        <div class="app-main-container">
+          <app-main />
+        </div>
       </div>
     </div>
   </div>
@@ -42,6 +44,12 @@ export default {
   background: #fff;
   margin-bottom: 14px;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.app-main-container {
+  box-shadow: 0 2px 6px 0 rgb(0 0 0);
+  background: #fff;
   border-radius: 4px;
 }
 </style>
