@@ -66,11 +66,12 @@ div:focus {
 }
 
 .filter-container {
-  padding-bottom: 10px;
+  padding-bottom: 32px;
 
   .filter-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
+    line-height: 32px;
+  }
+  .el-input__inner {
+    height: 32px;
   }
 }

@@ -1,8 +1,11 @@
 #app {
-  .main-container {
-    display: flex;
+  .right-container {
+    padding: 24px;
+    background: #f4f4f4;
     min-height: 100%;
     transition: margin-left 0.28s;
+    margin-left: $sideBarWidth;
+    margin-top: 60px;
     position: relative;
   }
 
@@ -11,13 +14,13 @@
     width: $sideBarWidth !important;
     background-color: $menuBg;
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%);
-    // height: 100%;
-    // position: fixed;
-    // top: 0;
-    // bottom: 0;
-    // left: 0;
-    display: inline-block;
     font-size: 0px;
+    height: 100%;
+    position: fixed;
+    font-size: 0px;
+    top: 60px;
+    bottom: 0;
+    left: 0;
     z-index: 1001;
     overflow: hidden;
 

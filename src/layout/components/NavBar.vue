@@ -1,8 +1,9 @@
 <template>
   <div class="common-header">
     <div class="left-content">
-      <!-- <img src="@/assets/images/logo.png" alt="LOGO" width="100" /> -->
-      <span class="logo">LOGO</span>
+      <img src="@/assets/logo.png" alt="LOGO" width="100" />
+      <el-divider direction="vertical"></el-divider>
+      <!-- <span class="logo">LOGO</span> -->
       <div v-if="productName || companyName" class="page-title">
         <span v-if="productName">{{ productName }}</span>
         <span v-if="productName && companyName"> - </span>
@@ -43,8 +44,10 @@ export default {
   align-items: center;
   box-sizing: border-box;
   font-size: 14px;
-  background-color: #0780ed;
-  color: #fff;
+  font-weight: 400;
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 }
 .left-content {
   display: flex;

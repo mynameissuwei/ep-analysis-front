@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <nav-bar productName="suwei" companyName="suwei" />
-    <div class="main-container">
+  <div class="app-wrapper">
+    <div class="fixed-header">
+      <nav-bar productName="效能分析决策管理平台" />
+    </div>
+    <div>
       <sidebar class="sidebar-container" />
       <div class="right-container">
         <div class="bread-container">
@@ -31,24 +33,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.right-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  background: #f4f5f9;
+@import "~@/styles/mixin.scss";
+
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  transition: width 0.28s;
+  width: 100%;
 }
 
 .bread-container {
-  box-sizing: border-box;
-  background: #fff;
   margin-bottom: 14px;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
 }
 
 .app-main-container {
-  box-shadow: 0 2px 6px 0 rgb(0 0 0);
   background: #fff;
   border-radius: 4px;
 }

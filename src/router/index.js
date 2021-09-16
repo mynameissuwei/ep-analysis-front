@@ -52,32 +52,57 @@ export const constantRoutes = [
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
         name: "Dashboard",
-        meta: { title: "Dashboard", icon: "dashboard", affix: true }
+        meta: { title: "效能词典", icon: "dict" }
       }
     ]
   },
+  // {
+  //   path: "/info",
+  //   component: Layout,
+  //   redirect: "/info/task",
+  //   meta: { title: "统计分析", icon: "dashboard" },
+  //   children: [
+  //     {
+  //       path: "task",
+  //       name: "Task",
+  //       component: () => import("@/views/info/task"),
+  //       meta: { title: "任务类别维度统计", icon: "dashboard" }
+  //     },
+  //     {
+  //       path: "repair",
+  //       name: "Repair",
+  //       component: () => import("@/views/info/repair"),
+  //       meta: { title: "工单类别维度统计", icon: "dashboard" }
+  //     }
+  //   ]
+  // },
+  // demandRouter,
   {
-    path: "/info",
+    path: "/acount",
     component: Layout,
-    redirect: "/info/task",
-    meta: { title: "统计分析", icon: "dashboard" },
+    redirect: "/acount/user",
+    meta: { title: "账户管理", icon: "acount" },
     children: [
       {
-        path: "task",
-        name: "Task",
-        component: () => import("@/views/info/task"),
-        meta: { title: "任务类别维度统计", icon: "dashboard" }
+        path: "user",
+        name: "User",
+        component: () => import("@/views/acount/user"),
+        meta: { title: "用户管理" }
       },
       {
-        path: "repair",
-        name: "Repair",
-        component: () => import("@/views/info/repair"),
-        meta: { title: "工单类别维度统计", icon: "dashboard" }
+        path: "role",
+        name: "Role",
+        component: () => import("@/views/acount/role"),
+        meta: { title: "角色管理" }
+      },
+      {
+        path: "permission",
+        name: "Permission",
+        component: () => import("@/views/acount/permission"),
+        meta: { title: "权限管理" }
       }
     ]
   },
-  demandRouter,
-
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true }
 ];
