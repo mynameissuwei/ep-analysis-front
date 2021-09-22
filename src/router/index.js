@@ -98,8 +98,15 @@ export const constantRoutes = [
       {
         path: "permission",
         name: "Permission",
-        component: () => import("@/views/acount/permission"),
+        component: () => import("@/views/acount/permission/index"),
         meta: { title: "权限管理" }
+      },
+      {
+        path: "permission/create",
+        name: "editPermission",
+        component: () => import("@/views/acount/permission/create"),
+        hidden: true,
+        meta: { title: "添加权限", noCache: true }
       }
     ]
   },

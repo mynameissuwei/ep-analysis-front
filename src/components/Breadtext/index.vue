@@ -2,13 +2,16 @@
   <div>
     <div class="rectangle"></div>
     <div class="rect-text">
-      {{ text }}
+      {{ name ? name : text }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    name: String
+  },
   data() {
     return {
       text: ""

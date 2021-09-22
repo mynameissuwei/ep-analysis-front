@@ -3,15 +3,13 @@
     <div class="fixed-header">
       <nav-bar productName="效能分析决策管理平台" />
     </div>
-    <div>
+    <div class="app-main-container">
       <sidebar class="sidebar-container" />
       <div class="right-container">
         <div class="bread-container">
           <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
         </div>
-        <div class="app-main-container">
-          <app-main />
-        </div>
+        <app-main />
       </div>
     </div>
   </div>
@@ -34,6 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
+@import "~@/styles/variables.scss";
 
 .app-wrapper {
   @include clearfix;
@@ -51,12 +50,22 @@ export default {
   width: 100%;
 }
 
+.app-main-container {
+  @include clearfix;
+  position: relative;
+  min-height: calc(100vh - 60px);
+  width: 100%;
+}
+.right-container {
+  padding: 24px;
+  background: #f4f4f4;
+  min-height: 100%;
+  transition: margin-left 0.28s;
+  margin-left: $sideBarWidth;
+  position: relative;
+  top: 59px;
+}
 .bread-container {
   margin-bottom: 14px;
-}
-
-.app-main-container {
-  background: #fff;
-  border-radius: 4px;
 }
 </style>
