@@ -106,8 +106,15 @@ export const constantRoutes = [
       {
         path: "user",
         name: "User",
-        component: () => import("@/views/acount/user"),
+        component: () => import("@/views/acount/user/index"),
         meta: { title: "用户管理" }
+      },
+      {
+        path: "user/create",
+        name: "createUser",
+        component: () => import("@/views/acount/user/create"),
+        hidden: true,
+        meta: { title: "添加用户", noCache: true }
       },
       {
         path: "role",
@@ -123,7 +130,7 @@ export const constantRoutes = [
       },
       {
         path: "permission/create",
-        name: "editPermission",
+        name: "createPermission",
         component: () => import("@/views/acount/permission/create"),
         hidden: true,
         meta: { title: "添加权限", noCache: true }

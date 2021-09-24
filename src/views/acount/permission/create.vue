@@ -122,13 +122,7 @@ export default {
   padding-right: 40px;
   border-right: 1px solid #eeeeee;
 }
-.footerContainer {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px -2px 12px 0px rgba(0, 0, 0, 0.08);
-}
+
 .el-container {
   min-height: calc(100vh - 240px);
 }

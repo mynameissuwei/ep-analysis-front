@@ -59,7 +59,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
-      @click="handleFilter"
+      @click="handleCreate"
     >
       添加
     </el-button>
@@ -257,6 +257,9 @@ export default {
           this.listLoading = false;
         }, 1.5 * 1000);
       });
+    },
+    handleCreate() {
+      this.$router.push("/acount/user/create");
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj

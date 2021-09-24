@@ -75,3 +75,11 @@ div:focus {
     height: 32px;
   }
 }
+
+.footerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px -2px 12px 0px rgba(0, 0, 0, 0.08);
+}
