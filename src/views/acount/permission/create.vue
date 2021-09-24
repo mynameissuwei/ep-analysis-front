@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-container>
     <el-container class="app-container">
       <el-aside width="400px" class="aside-container">
         <bread-text></bread-text>
@@ -36,7 +36,7 @@
         <el-button type="primary" @click="onSubmit">保存</el-button>
       </div>
     </el-footer>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -128,7 +128,8 @@ export default {
   justify-content: center;
   align-items: center;
   box-shadow: 0px -2px 12px 0px rgba(0, 0, 0, 0.08);
-  position: absolute;
-  bottom: 0px;
+}
+.el-container {
+  min-height: calc(100vh - 240px);
 }
 </style>
