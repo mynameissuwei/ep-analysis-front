@@ -63,6 +63,7 @@ div:focus {
 // main-container global css
 .app-container {
   padding: 24px;
+  background: #fff;
 }
 
 .filter-container {
@@ -88,4 +89,11 @@ div:focus {
   color: #0f55fa;
   margin-right: 20px;
   cursor: pointer;
+}
+
+.card-container {
+  margin-top: 20px;
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }

@@ -60,19 +60,37 @@ export const constantRoutes = [
     path: "/process",
     component: Layout,
     redirect: "/process/efficiency",
-    meta: { title: "流程效能", icon: "dict" },
+    meta: { title: "效能分析", icon: "dict" },
     children: [
       {
         path: "efficiency",
         component: () => import("@/views/process/efficiency"),
         name: "Efficiency",
-        meta: { title: "流程效能", icon: "dict" }
+        meta: { title: "流程效能" }
       },
       {
         path: "category",
         component: () => import("@/views/process/category"),
         name: "Category",
-        meta: { title: "按类别分析", icon: "dict" }
+        meta: { title: "按类别分析" }
+      },
+      {
+        path: "people",
+        component: () => import("@/views/process/people"),
+        name: "People",
+        meta: { title: "按人效分析" }
+      },
+      {
+        path: "flow",
+        component: () => import("@/views/process/flow"),
+        name: "Flow",
+        meta: { title: "按流程分析" }
+      },
+      {
+        path: "design",
+        component: () => import("@/views/process/design"),
+        name: "design",
+        meta: { title: "按设计分析" }
       }
     ]
   },

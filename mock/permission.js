@@ -26,5 +26,15 @@ module.exports = [
         total: items.length
       };
     }
+  },
+  {
+    url: "/vue-admin-template/permission",
+    type: "delete",
+    response: {
+      code: 20000,
+      data: {
+        status: "success"
+      }
+    }
   }
 ];

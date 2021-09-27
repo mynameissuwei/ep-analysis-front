@@ -9,7 +9,7 @@
             <filter-item>
               <template v-slot:left> <span>名称</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-input v-model="listQuery.name" placeholder="搜索名称" />
               </template>
             </filter-item>
           </el-col>
@@ -18,7 +18,7 @@
               <template v-slot:left> <span>状态</span> </template>
               <template v-slot:right>
                 <el-select
-                  v-model="listQuery.title"
+                  v-model="listQuery.status"
                   placeholder="搜索状态"
                   clearable
                   filterable
@@ -45,7 +45,7 @@
           <el-button
             size="small"
             style="margin-left: 10px;"
-            @click="handleCreate"
+            @click="handleReset"
           >
             重置
           </el-button>
@@ -64,7 +64,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
-      @click="handleFilter"
+      @click="handleCheckBoxDelete"
     >
       删除
     </el-button>
@@ -75,7 +75,10 @@
       element-loading-text="Loading"
       fit
       highlight-current-row
+      @selection-change="handleSelectionChange"
     >
+      >
+      <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="权限名称">
         <template slot-scope="scope">
           {{ scope.row.authName }}
@@ -133,19 +136,20 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      multipleSelection: [],
       selectOptions: [
         {
           value: "1",
-          name: "正常"
+          label: "正常"
         },
         {
           value: "0",
-          name: "关闭"
+          label: "关闭"
         }
       ],
       listQuery: {
-        page: 1,
-        limit: 20
+        name: "",
+        status: ""
       }
     };
   },
@@ -156,7 +160,6 @@ export default {
     getList() {
       this.listLoading = true;
       fetchList(this.listQuery).then(response => {
-        console.log(response, "response");
         this.list = response.data;
         this.total = response.total;
 
@@ -169,26 +172,56 @@ export default {
     handleCreate() {
       this.$router.push("/acount/permission/create");
     },
+    handleFilter() {
+      this.getList();
+    },
+    handleReset() {
+      this.listQuery = {
+        name: "",
+        status: ""
+      };
+      this.getList();
+    },
+    handleSelectionChange(val) {
+      console.log(val, "valval");
+      this.multipleSelection = val;
+    },
     handleDelete(row, index) {
+      console.log("delete");
       this.$confirm("此操作将永久删除该权限, 是否继续?", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-          await deleteList([row.autId, row.appId]);
-          this.list1.splice(index, 1);
-
+          await deleteList({ authIds: [row.authId, row.appId] });
+          this.list.splice(index, 1);
           this.$message({
             type: "success",
             message: "删除成功!"
           });
         })
         .catch(() => {
+          console.error(err);
+        });
+    },
+    handleCheckBoxDelete() {
+      this.$confirm("此操作将永久删除该权限, 是否继续?", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          const array = this.multipleSelection.map(item => item.appId);
+          await deleteList({ authIds: array });
+          this.list.splice(index, 1);
           this.$message({
-            type: "info",
-            message: "已取消删除"
+            type: "success",
+            message: "删除成功!"
           });
+        })
+        .catch(() => {
+          console.error(err);
         });
     }
   }

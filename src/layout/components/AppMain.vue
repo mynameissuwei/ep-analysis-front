@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .app-main {
-  background: #fff;
+  /* background: #fff; */
   border-radius: 4px;
   min-height: calc(100vh - 180px);
   width: 100%;

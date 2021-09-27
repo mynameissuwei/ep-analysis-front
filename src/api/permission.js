@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function deleteList(params) {
   return request({
-    url: `/vue-admin-template/permission/list`,
+    url: `/vue-admin-template/permission`,
     method: "delete",
     params
   });

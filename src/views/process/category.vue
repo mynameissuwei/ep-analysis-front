@@ -39,7 +39,7 @@
 <script>
 import DisplayCard from "@/components/DisplayCard";
 import PieChart from "./components/PieChart";
-import CategoryTable from "./category-table";
+import CategoryTable from "./components/category-table";
 
 export default {
   name: "Category",
