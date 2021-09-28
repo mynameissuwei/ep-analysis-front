@@ -48,43 +48,24 @@ export default {
       this.chart = echarts.init(document.getElementById(this.id));
 
       this.chart.setOption({
-        tooltip: {
-          trigger: "item"
-        },
-        legend: {
-          top: "5%",
-          left: "center"
-        },
         series: [
           {
-            name: "Access From",
+            name: "Nightingale Chart",
             type: "pie",
-            radius: ["40%", "70%"],
-            avoidLabelOverlap: false,
+            center: ["50%", "50%"],
+            roseType: "area",
             itemStyle: {
-              borderRadius: 10,
-              borderColor: "#fff",
-              borderWidth: 2
-            },
-            label: {
-              show: false,
-              position: "center"
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "40",
-                fontWeight: "bold"
-              }
-            },
-            labelLine: {
-              show: false
+              borderRadius: 8
             },
             data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" }
+              { value: 40, name: "rose 1" },
+              { value: 38, name: "rose 2" },
+              { value: 32, name: "rose 3" },
+              { value: 30, name: "rose 4" },
+              { value: 28, name: "rose 5" },
+              { value: 26, name: "rose 6" },
+              { value: 22, name: "rose 7" },
+              { value: 18, name: "rose 8" }
             ]
           }
         ]

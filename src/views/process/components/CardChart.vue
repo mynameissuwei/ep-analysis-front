@@ -19,7 +19,7 @@ export default {
     },
     width: {
       type: String,
-      default: "396px"
+      default: "100%"
     },
     height: {
       type: String,
@@ -44,7 +44,6 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id));
-
       this.chart.setOption({
         series: [
           {
@@ -54,6 +53,8 @@ export default {
             min: 0,
             max: 1,
             splitNumber: 8,
+            radius: "100%",
+            center: ["50%", "80%"],
             axisLine: {
               lineStyle: {
                 width: 6,

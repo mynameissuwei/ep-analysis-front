@@ -1,33 +1,67 @@
 <template>
-  <div class="app-container">
+  <div>
+    <card-container>
+      <el-row :gutter="20">
+        <el-col :span="4">
+          <display-card
+            cardTitle="258"
+            cardText="模板总数"
+            svgText="template"
+          />
+          <display-card
+            cardTitle="250"
+            cardText="模板总数"
+            svgText="timeConsume"
+          />
+        </el-col>
+        <el-col :span="4">
+          <display-card
+            cardTitle="258"
+            cardText="模板总数"
+            svgText="complete"
+          />
+          <display-card
+            cardTitle="258"
+            cardText="模板总数"
+            svgText="timeConsume"
+          />
+        </el-col>
+        <el-col :span="8" class="chart-container">
+          <card-chart />
+        </el-col>
+        <el-col :span="4">
+          <display-card
+            cardTitle="258"
+            cardText="模板总数"
+            svgText="overtime"
+          />
+          <display-card
+            cardTitle="258"
+            cardText="模板总数"
+            svgText="overtime"
+          />
+        </el-col>
+        <el-col :span="4">
+          <display-card cardTitle="258" cardText="模板总数" svgText="people" />
+          <display-card
+            cardTitle="258"
+            cardText="模板总数"
+            svgText="timeConsume"
+          />
+        </el-col>
+      </el-row>
+    </card-container>
     <el-row :gutter="20">
-      <el-col :span="4">
-        <display-card cardTitle="258" cardText="模板总数" />
-        <display-card cardTitle="258" cardText="模板总数" />
-      </el-col>
-      <el-col :span="4">
-        <display-card cardTitle="258" cardText="模板总数" />
-        <display-card cardTitle="258" cardText="模板总数" />
-      </el-col>
       <el-col :span="8">
-        <card-chart />
-      </el-col>
-      <el-col :span="4">
-        <display-card cardTitle="258" cardText="模板总数" />
-        <display-card cardTitle="258" cardText="模板总数" />
-      </el-col>
-      <el-col :span="4">
-        <display-card cardTitle="258" cardText="模板总数" />
-        <display-card cardTitle="258" cardText="模板总数" />
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <number-card />
-        <event-card />
+        <card-container height="478px">
+          <number-card />
+          <event-card />
+        </card-container>
       </el-col>
       <el-col :span="16">
-        <line-chart :chart-data="lineChartData" />
+        <card-container height="478px" style="padding-top:24px">
+          <line-chart :chart-data="lineChartData" />
+        </card-container>
       </el-col>
     </el-row>
   </div>
@@ -35,6 +69,7 @@
 
 <script>
 import DisplayCard from "@/components/DisplayCard";
+import CardContainer from "@/components/CardContainer";
 import CardChart from "./components/CardChart";
 import LineChart from "./components/LineChart";
 import NumberCard from "./components/NumberCard";
@@ -66,7 +101,8 @@ export default {
     CardChart,
     LineChart,
     NumberCard,
-    EventCard
+    EventCard,
+    CardContainer
   },
   data() {
     return {
@@ -81,4 +117,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chart-container {
+  border-left: 1px solid #eeeeee;
+  border-right: 1px solid #eeeeee;
+}
+</style>

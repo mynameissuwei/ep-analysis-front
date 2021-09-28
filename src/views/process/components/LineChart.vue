@@ -20,7 +20,7 @@ export default {
     },
     height: {
       type: String,
-      default: "475px"
+      default: "440px"
     },
     autoResize: {
       type: Boolean,
@@ -63,6 +63,14 @@ export default {
     },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
+        title: {
+          text: "分时图",
+          textStyle: {
+            color: "black",
+            fontSize: "18px",
+            fontWeight: 500
+          }
+        },
         xAxis: {
           data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
           boundaryGap: false,
@@ -71,10 +79,10 @@ export default {
           }
         },
         grid: {
-          left: 10,
+          left: 20,
           right: 10,
           bottom: 20,
-          top: 30,
+          top: 50,
           containLabel: true
         },
         tooltip: {

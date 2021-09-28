@@ -1,6 +1,9 @@
 <template>
   <div class="displayCard">
-    <div>
+    <div class="left">
+      <svg-icon :icon-class="svgText" />
+    </div>
+    <div class="right">
       <div class="cardTitle">{{ cardTitle }}</div>
       <div class="cardText">{{ cardText }}</div>
     </div>
@@ -10,10 +13,7 @@
 <script>
 export default {
   name: "DisplayCard",
-  props: {
-    cardTitle: String,
-    cardText: String
-  }
+  props: ["cardTitle", "cardText", "svgText"]
 };
 </script>
 
@@ -21,7 +21,7 @@ export default {
 .displayCard {
   width: 100%;
   height: 126px;
-  background: #f8f9fa;
+  // background: #f8f9fa;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,5 +38,15 @@ export default {
   font-size: 14px;
   font-weight: 400;
   color: #343a40;
+}
+.left {
+  height: 70px;
+  margin-right: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.right {
+  display: inline-block;
 }
 </style>

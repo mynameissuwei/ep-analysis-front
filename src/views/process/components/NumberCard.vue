@@ -1,15 +1,34 @@
 <template>
   <div class="numberCard">
-    <div class="title">流程总数实时统计</div>
+    <div class="title">
+      <span class="title-text"> 流程总数实时统计</span>
+      <svg-icon icon-class="statistics" />
+    </div>
     <el-row :gutter="10">
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
-      <el-col :span="3"><div class="numberText">2</div></el-col>
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
+      <el-col :span="3"
+        ><div class="numberText"><div class="content">2</div></div></el-col
+      >
     </el-row>
   </div>
 </template>
@@ -20,19 +39,31 @@ export default {};
 
 <style lang="scss" scoped>
 .numberCard {
-  background: #f8f9fa;
-  height: 126px;
   padding: 16px;
   .title {
-    text-align: center;
+    margin-top: 10px;
     margin-bottom: 10px;
+    display: inline-block;
+    .title-text {
+      margin-right: 10px;
+    }
   }
   .numberText {
-    height: 53px;
     background: #e6f3fe;
-    border: 1px solid #b8d8fd;
-    text-align: center;
-    line-height: 53px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .numberText:after {
+    content: "";
+    display: block;
+    margin-top: 100%;
+  }
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>

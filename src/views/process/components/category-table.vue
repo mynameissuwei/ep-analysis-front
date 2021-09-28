@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户管理" name="first">
-        <el-row class="filter-container">
+      <el-tab-pane label="按部门" name="first">
+        <el-row class="filter-container" style="margin-top:10px">
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
@@ -54,8 +54,8 @@
           <el-table-column prop="address" label="地址"> </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="配置管理" name="second">
-        <el-row class="filter-container">
+      <el-tab-pane label="按类别" name="second">
+        <el-row class="filter-container" style="margin-top:10px">
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
