@@ -1,24 +1,74 @@
 <template>
-  <el-row :gutter="20">
-    <el-col :span="12">
-      <el-card class="box-card">
-        <bar-chart id="leftChart" text="模板节点快部门分布总览" />
-      </el-card>
-    </el-col>
-    <el-col :span="12">
-      <el-card class="box-card">
-        <bar-chart id="rightChart" text="模板节点长度分布总览" />
-      </el-card>
-    </el-col>
-  </el-row>
+  <div class="people">
+    <el-row :gutter="20" style="height:276px">
+      <el-col :span="6">
+        <card-container height="276px">
+          <div class="card-header">
+            效率榜
+          </div>
+          <div class="card-body">
+            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          </div>
+        </card-container>
+      </el-col>
+      <el-col :span="6">
+        <card-container height="276px">
+          <div class="card-header">
+            劳模榜
+          </div>
+          <div class="card-body">
+            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          </div>
+        </card-container>
+      </el-col>
+      <el-col :span="6">
+        <card-container height="276px">
+          <div class="card-header">
+            催办榜
+          </div>
+          <div class="card-body">
+            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          </div>
+        </card-container>
+      </el-col>
+      <el-col :span="6">
+        <card-container height="276px">
+          <div class="card-header">
+            耗时榜
+          </div>
+          <div class="card-body">
+            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          </div>
+        </card-container>
+      </el-col>
+    </el-row>
+    <people-table />
+  </div>
 </template>
 
 <script>
 import BarChart from "./components/BarChart";
+import CardContainer from "@/components/CardContainer";
+import PeopleTable from "./components/PeopleTable.vue";
 
 export default {
-  components: { BarChart }
+  components: { BarChart, CardContainer, PeopleTable }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.people {
+  .card-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid #ebeef5;
+    box-sizing: border-box;
+  }
+  .card-body {
+    height: 100%;
+    display: flex;
+    height: calc(100% - 55px);
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>

@@ -75,6 +75,12 @@ export const constantRoutes = [
         meta: { title: "按类别分析" }
       },
       {
+        path: "module",
+        component: () => import("@/views/process/module"),
+        name: "Module",
+        meta: { title: "按模块分析" }
+      },
+      {
         path: "people",
         component: () => import("@/views/process/people"),
         name: "People",
