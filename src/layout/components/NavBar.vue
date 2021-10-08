@@ -17,7 +17,7 @@
       <div class="logout-pop" style="cursor: pointer">退出</div>
       <div class="right-content" slot="reference">
         <div class="user-name">名字名字名字名字</div>
-        <img :src="arrow_down" class="arrow-down" />
+        <!-- <img :src="arrow_down" class="arrow-down" /> -->
       </div>
     </el-popover>
   </div>

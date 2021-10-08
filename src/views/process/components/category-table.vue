@@ -1,5 +1,6 @@
 <template>
   <div>
+    <bread-text name="类别分析明细" />
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="按部门" name="first">
         <el-row class="filter-container" style="margin-top:10px">
@@ -113,9 +114,10 @@
 
 <script>
 import FilterItem from "@/components/FilterItem";
+import BreadText from "@/components/Breadtext";
 
 export default {
-  components: { FilterItem },
+  components: { FilterItem, BreadText },
   data() {
     return {
       activeName: "first",

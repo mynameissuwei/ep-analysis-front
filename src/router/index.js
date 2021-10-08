@@ -38,11 +38,11 @@ export const constantRoutes = [
     hidden: true
   },
 
-  {
-    path: "/404",
-    component: () => import("@/views/404"),
-    hidden: true
-  },
+  // {
+  //   path: "/404",
+  //   component: () => import("@/views/404"),
+  //   hidden: true
+  // },
   {
     path: "/",
     component: Layout,
@@ -52,7 +52,7 @@ export const constantRoutes = [
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
         name: "Dashboard",
-        meta: { title: "效能词典", icon: "dict" }
+        meta: { title: "效能词典" }
       }
     ]
   },
