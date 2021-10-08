@@ -50,9 +50,30 @@
 import BarChart from "./components/BarChart";
 import CardContainer from "@/components/CardContainer";
 import PeopleTable from "./components/PeopleTable.vue";
+import { fetchList } from "@/api/people";
 
 export default {
-  components: { BarChart, CardContainer, PeopleTable }
+  components: { BarChart, CardContainer, PeopleTable },
+  data() {
+    return {
+      list: null,
+      listLoading: true,
+      listQuery: {
+        pageNum: 1,
+        pageSize: 10
+      }
+    };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    async getList() {
+      this.listLoading = true;
+      const { data } = await fetchList(this.listQuery);
+      console.log(data, "data");
+    }
+  }
 };
 </script>
 

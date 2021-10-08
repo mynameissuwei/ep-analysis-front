@@ -14,7 +14,7 @@
       <slot name="centerContent"></slot>
     </div>
     <el-popover placement="bottom">
-      <div class="logout-pop" style="cursor: pointer">退出</div>
+      <div class="logout-pop" style="cursor: pointer" @click="logout">退出</div>
       <div class="right-content" slot="reference">
         <div class="user-name">名字名字名字名字</div>
         <!-- <img :src="arrow_down" class="arrow-down" /> -->
@@ -30,7 +30,12 @@ export default {
     productName: String,
     companyName: String
   },
-  components: {}
+  components: {},
+  methods: {
+    logout() {
+      this.authSdk.logout();
+    }
+  }
 };
 </script>
 
