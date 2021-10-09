@@ -13,27 +13,6 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="6">
-            <filter-item>
-              <template v-slot:left> <span>状态</span> </template>
-              <template v-slot:right>
-                <el-select
-                  v-model="listQuery.status"
-                  placeholder="搜索状态"
-                  clearable
-                  filterable
-                >
-                  <el-option
-                    v-for="item in selectOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </template>
-            </filter-item>
-          </el-col>
         </el-row>
       </el-col>
       <!-- right button -->
@@ -96,7 +75,7 @@
       </el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          {{ scope.row.audit === "0" ? "关闭" : "正常" }}
+          {{ scope.row.audit === "0" ? "下线" : "发布" }}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="230">
@@ -134,22 +113,10 @@ export default {
   data() {
     return {
       list: null,
-      total: 0,
       listLoading: true,
       multipleSelection: [],
-      selectOptions: [
-        {
-          value: "1",
-          label: "正常"
-        },
-        {
-          value: "0",
-          label: "关闭"
-        }
-      ],
       listQuery: {
-        name: "",
-        status: ""
+        name: ""
       }
     };
   },
@@ -159,11 +126,8 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data;
-        this.total = response.total;
-
-        // Just to simulate the time of the request
+      fetchList(this.listQuery).then(res => {
+        this.list = res.data;
         setTimeout(() => {
           this.listLoading = false;
         }, 1.5 * 1000);
@@ -186,16 +150,15 @@ export default {
       console.log(val, "valval");
       this.multipleSelection = val;
     },
-    handleDelete(row, index) {
-      console.log("delete");
+    handleDelete(row) {
       this.$confirm("此操作将永久删除该权限, 是否继续?", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-          await deleteList({ authIds: [row.authId, row.appId] });
-          this.list.splice(index, 1);
+          const res = await deleteList([row.authId, row.appId]);
+          console.log(res, "res");
           this.$message({
             type: "success",
             message: "删除成功!"

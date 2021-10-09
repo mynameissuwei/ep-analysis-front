@@ -3,27 +3,28 @@
     <el-container class="app-container">
       <el-aside width="400px" class="aside-container">
         <bread-text></bread-text>
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="活动名称">
-            <el-input v-model="form.name"></el-input>
+        <el-form ref="dataForm" :model="form" :rules="rules" label-width="80px">
+          <el-form-item label="权限名称" prop="authName">
+            <el-input v-model="form.authName"></el-input>
           </el-form-item>
-          <el-form-item label="活动名称">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="权限编码" prop="authId">
+            <el-input v-model="form.authId"></el-input>
           </el-form-item>
-          <el-form-item label="即时配送">
-            <el-switch v-model="form.delivery"></el-switch>
+          <el-form-item label="权限描述">
+            <el-input type="textarea" v-model="form.authDesc"></el-input>
           </el-form-item>
-          <el-form-item label="活动形式">
-            <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-form-item label="状态">
+            <el-switch v-model="form.audit"></el-switch>
           </el-form-item>
         </el-form>
       </el-aside>
       <el-main>
         <bread-text name="资源配置"> </bread-text>
         <el-tree
+          ref="tree"
+          node-key="resId"
           :props="props"
-          :load="loadNode"
-          lazy
+          :data="sourceList"
           show-checkbox
           @check-change="handleCheckChange"
         >
@@ -33,7 +34,7 @@
     <el-footer class="footerContainer">
       <div>
         <el-button @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
+        <el-button type="primary" @click="createData">保存</el-button>
       </div>
     </el-footer>
   </el-container>
@@ -41,34 +42,52 @@
 
 <script>
 import BreadText from "@/components/Breadtext";
+import { addList, fetchSourceList } from "@/api/permission";
 
 export default {
   components: { BreadText },
   data() {
     return {
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        authName: "",
+        authId: "",
+        authDesc: "",
+        audit: false
+      },
+      rules: {
+        authName: [
+          { required: true, message: "请输入权限名称", trigger: "blur" }
+        ],
+        authId: [{ required: true, message: "请输入权限编码", trigger: "blur" }]
       },
       props: {
-        label: "name",
-        children: "zones"
+        label: "resName",
+        children: "children"
       },
-      count: 1
+      count: 1,
+      sourceList: []
     };
   },
+  created() {
+    this.getSourceList();
+  },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    createData() {
+      console.log(this.$refs.tree.getCheckedNodes(), "nodes");
+      console.log(this.$refs.tree.getCheckedKeys(), "keys");
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          console.log(this.form, "form");
+        }
+      });
     },
     onCancel() {
       this.$router.push("/acount/permission");
+    },
+    async getSourceList() {
+      const res = await fetchSourceList();
+      this.sourceList = res.data;
+      console.log(res, "resss");
     },
     handleCheckChange(data, checked, indeterminate) {
       console.log(data, checked, indeterminate);

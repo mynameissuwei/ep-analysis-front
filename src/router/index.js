@@ -8,11 +8,11 @@ import Layout from "@/layout";
 import demandRouter from "./modules/demand.js";
 
 export const constantRoutes = [
-  {
-    path: "/login",
-    component: () => import("@/views/login/index"),
-    hidden: true
-  },
+  // {
+  //   path: "/login",
+  //   component: () => import("@/views/login/index"),
+  //   hidden: true
+  // },
   {
     path: "/",
     component: Layout,
@@ -67,6 +67,12 @@ export const constantRoutes = [
         component: () => import("@/views/process/design"),
         name: "design",
         meta: { title: "按设计分析" }
+      },
+      {
+        path: "rule",
+        component: () => import("@/views/process/rule"),
+        name: "rule",
+        meta: { title: "规则配置" }
       }
     ]
   },
