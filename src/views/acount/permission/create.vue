@@ -26,7 +26,6 @@
           :props="props"
           :data="sourceList"
           show-checkbox
-          @check-change="handleCheckChange"
         >
         </el-tree>
       </el-main>
@@ -42,9 +41,10 @@
 
 <script>
 import BreadText from "@/components/Breadtext";
-import { addList, fetchSourceList } from "@/api/permission";
+import { createList, fetchSourceList, fetchUpdateForm } from "@/api/permission";
 
 export default {
+  props: ["id"],
   components: { BreadText },
   data() {
     return {
@@ -54,6 +54,7 @@ export default {
         authDesc: "",
         audit: false
       },
+      sourceList: [],
       rules: {
         authName: [
           { required: true, message: "请输入权限名称", trigger: "blur" }
@@ -63,70 +64,57 @@ export default {
       props: {
         label: "resName",
         children: "children"
-      },
-      count: 1,
-      sourceList: []
+      }
     };
   },
   created() {
+    console.log(this.id, "iddd");
+    if (this.id) {
+      this.getFormWhenUpdate();
+    }
     this.getSourceList();
   },
   methods: {
     createData() {
-      console.log(this.$refs.tree.getCheckedNodes(), "nodes");
-      console.log(this.$refs.tree.getCheckedKeys(), "keys");
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          console.log(this.form, "form");
+          const data = {
+            ...this.form,
+            audit: this.form.audit ? "1" : "0",
+            resIdList: this.$refs.tree.getCheckedKeys()
+          };
+          createList(data).then(() => {
+            this.$router.push("/acount/permission");
+            this.$route.params.getList();
+            this.$notify({
+              title: "Success",
+              message: "Created Successfully",
+              type: "success",
+              duration: 2000
+            });
+          });
         }
       });
     },
     onCancel() {
       this.$router.push("/acount/permission");
     },
+    getFormWhenUpdate() {
+      const id = this.$route.params.id;
+      fetchUpdateForm(id).then(res => {
+        const { authName, authId, authDesc, audit, resIdList } = res.data;
+        this.$refs.tree.setCheckedKeys(resIdList);
+        this.form = {
+          authName,
+          authId,
+          authDesc,
+          audit
+        };
+      });
+    },
     async getSourceList() {
       const res = await fetchSourceList();
       this.sourceList = res.data;
-      console.log(res, "resss");
-    },
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data, checked, indeterminate);
-    },
-    handleNodeClick(data) {
-      console.log(data);
-    },
-    loadNode(node, resolve) {
-      if (node.level === 0) {
-        return resolve([{ name: "region1" }, { name: "region2" }]);
-      }
-      if (node.level > 3) return resolve([]);
-
-      var hasChild;
-      if (node.data.name === "region1") {
-        hasChild = true;
-      } else if (node.data.name === "region2") {
-        hasChild = false;
-      } else {
-        hasChild = Math.random() > 0.5;
-      }
-
-      setTimeout(() => {
-        var data;
-        if (hasChild) {
-          data = [
-            {
-              name: "zone" + this.count++
-            },
-            {
-              name: "zone" + this.count++
-            }
-          ];
-        } else {
-          data = [];
-        }
-
-        resolve(data);
-      }, 500);
     }
   }
 };

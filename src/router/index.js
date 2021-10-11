@@ -129,10 +129,11 @@ export const constantRoutes = [
         meta: { title: "权限管理" }
       },
       {
-        path: "permission/create",
+        path: "permission/create/:id?",
         name: "createPermission",
         component: () => import("@/views/acount/permission/create"),
         hidden: true,
+        props: true,
         meta: {
           title: "添加权限",
           noCache: true,

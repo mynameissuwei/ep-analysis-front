@@ -1,5 +1,4 @@
 import request from "@/utils/request2";
-import qs from "qs";
 
 export function fetchList(params) {
   return request({
@@ -9,25 +8,32 @@ export function fetchList(params) {
   });
 }
 
-export function deleteList(body) {
+export function deleteList(data) {
   return request({
     url: "/auth",
     method: "delete",
-    data: qs.stringify(body, { indices: false })
+    data
   });
 }
 
-export function addList(params) {
+export function createList(data) {
   return request({
     url: "/auth",
     method: "post",
-    params
+    data
   });
 }
 
 export function fetchSourceList() {
   return request({
     url: "/auth/resource/tree",
+    method: "get"
+  });
+}
+
+export function fetchUpdateForm(id) {
+  return request({
+    url: `/auth/${id}`,
     method: "get"
   });
 }

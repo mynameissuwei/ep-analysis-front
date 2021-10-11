@@ -18,7 +18,7 @@
       <!-- right button -->
       <el-col :span="6">
         <div style="float: right">
-          <el-button size="small" type="primary" @click="handleFilter">
+          <el-button size="small" type="primary" @click="handleSearch">
             查询
           </el-button>
           <el-button
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { fetchList, deleteList } from "@/api/permission";
+import { fetchList, deleteList, fetchUpdateForm } from "@/api/permission";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import FilterItem from "@/components/FilterItem"; // secondary package based on el-pagination
 import BreadText from "@/components/Breadtext";
@@ -134,58 +134,57 @@ export default {
       });
     },
     handleCreate() {
-      this.$router.push("/acount/permission/create");
+      this.$router.push({
+        name: "createPermission",
+        params: { id: undefined, fetchList: this.fetchList }
+      });
     },
-    handleFilter() {
+    handleUpdate(row) {
+      this.$router.push({
+        name: "createPermission",
+        params: { id: row.authId, fetchList: this.fetchList }
+      });
+    },
+    handleSearch() {
       this.getList();
     },
     handleReset() {
       this.listQuery = {
-        name: "",
-        status: ""
+        name: ""
       };
+      this.multipleSelection = [];
       this.getList();
     },
     handleSelectionChange(val) {
-      console.log(val, "valval");
       this.multipleSelection = val;
     },
     handleDelete(row) {
-      this.$confirm("此操作将永久删除该权限, 是否继续?", {
+      this.$confirm("你确定要删除该权限？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(async () => {
-          const res = await deleteList([row.authId, row.appId]);
-          console.log(res, "res");
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          console.error(err);
+      }).then(async () => {
+        const res = await deleteList([row.authId]);
+
+        this.$message({
+          type: "success",
+          message: "删除成功!"
         });
+      });
     },
     handleCheckBoxDelete() {
-      this.$confirm("此操作将永久删除该权限, 是否继续?", {
+      this.$confirm("你确定要删除该权限？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(async () => {
-          const array = this.multipleSelection.map(item => item.appId);
-          await deleteList({ authIds: array });
-          this.list.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          console.error(err);
+      }).then(async () => {
+        const auIdarray = this.multipleSelection.map(item => item.authId);
+        await deleteList(auIdarray);
+        this.$message({
+          type: "success",
+          message: "删除成功!"
         });
+      });
     }
   }
 };

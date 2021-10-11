@@ -15,17 +15,16 @@
           </el-col>
           <el-col :span="6">
             <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
+              <template v-slot:left> <span>创建时间</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
-              </template>
-            </filter-item>
-          </el-col>
-          <el-col :span="6">
-            <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
-              <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-date-picker
+                  v-model="listQuery.title"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                >
+                </el-date-picker>
               </template>
             </filter-item>
           </el-col>
@@ -120,7 +119,7 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/task";
+import { fetchList } from "@/api/role";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import FilterItem from "@/components/FilterItem"; // secondary package based on el-pagination
 import BreadText from "@/components/Breadtext";
@@ -155,8 +154,8 @@ export default {
     getList() {
       this.listLoading = true;
       fetchList(this.listQuery).then(response => {
-        this.list = response.data.items;
-        this.total = response.data.total;
+        this.list = response.data;
+        this.total = response.data;
 
         // Just to simulate the time of the request
         setTimeout(() => {
