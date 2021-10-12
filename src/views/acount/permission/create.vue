@@ -41,11 +41,17 @@
 
 <script>
 import BreadText from "@/components/Breadtext";
-import { createList, fetchSourceList, fetchUpdateForm } from "@/api/permission";
+import { createList, fetchSourceList, fetchEditData } from "@/api/permission";
 
 export default {
   props: ["id"],
   components: { BreadText },
+  created() {
+    if (this.id) {
+      this.getEditData();
+    }
+    this.getSourceList();
+  },
   data() {
     return {
       form: {
@@ -66,13 +72,6 @@ export default {
         children: "children"
       }
     };
-  },
-  created() {
-    console.log(this.id, "iddd");
-    if (this.id) {
-      this.getFormWhenUpdate();
-    }
-    this.getSourceList();
   },
   methods: {
     createData() {
@@ -99,9 +98,9 @@ export default {
     onCancel() {
       this.$router.push("/acount/permission");
     },
-    getFormWhenUpdate() {
-      const id = this.$route.params.id;
-      fetchUpdateForm(id).then(res => {
+    getEditData() {
+      const id = this.id;
+      fetchEditData(id).then(res => {
         const { authName, authId, authDesc, audit, resIdList } = res.data;
         this.$refs.tree.setCheckedKeys(resIdList);
         this.form = {

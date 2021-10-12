@@ -70,14 +70,14 @@ div:focus {
   padding-bottom: 32px;
 
   .filter-item {
-    line-height: 32px;
+    line-height: 40px;
   }
   .el-select {
     width: 100%;
   }
-  .el-input__inner {
-    height: 32px;
-  }
+  // .el-input__inner {
+  //   height: 32px;
+  // }
 }
 
 .footerContainer {
@@ -85,6 +85,7 @@ div:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #ffffff;
   box-shadow: 0px -2px 12px 0px rgba(0, 0, 0, 0.08);
 }
 
@@ -99,4 +100,23 @@ div:focus {
   padding: 24px;
   background: #fff;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+}
+
+.diag-container {
+  padding: 0px 30px 0px 30px;
+}
+
+.pagination-container {
+  // .btn-prev {
+  //   float: right;
+  // }
+  // .el-pager {
+  //   float: right;
+  // }
+  // .btn-next {
+  //   float: right;
+  // }
+  // .btn-prev {
+  //   float: right;
+  // }
 }

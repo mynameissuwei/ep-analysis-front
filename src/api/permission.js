@@ -31,7 +31,7 @@ export function fetchSourceList() {
   });
 }
 
-export function fetchUpdateForm(id) {
+export function fetchEditData(id) {
   return request({
     url: `/auth/${id}`,
     method: "get"

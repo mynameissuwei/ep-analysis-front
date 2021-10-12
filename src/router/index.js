@@ -119,8 +119,20 @@ export const constantRoutes = [
       {
         path: "role",
         name: "Role",
-        component: () => import("@/views/acount/role"),
+        component: () => import("@/views/acount/role/index"),
         meta: { title: "角色管理" }
+      },
+      {
+        path: "role/create/:id?",
+        name: "createRole",
+        component: () => import("@/views/acount/role/create"),
+        hidden: true,
+        props: true,
+        meta: {
+          title: "添加角色",
+          noCache: true,
+          activeMenu: "/acount/role"
+        }
       },
       {
         path: "permission",

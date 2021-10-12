@@ -136,13 +136,13 @@ export default {
     handleCreate() {
       this.$router.push({
         name: "createPermission",
-        params: { id: undefined, fetchList: this.fetchList }
+        params: { id: undefined, getList: this.getList }
       });
     },
     handleUpdate(row) {
       this.$router.push({
         name: "createPermission",
-        params: { id: row.authId, fetchList: this.fetchList }
+        params: { id: row.authId, getList: this.getList }
       });
     },
     handleSearch() {
