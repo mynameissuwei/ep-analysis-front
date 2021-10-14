@@ -44,7 +44,6 @@ service2.interceptors.response.use(
    */
   response => {
     const res = response.data;
-    debugger;
     // if the custom code is not 0, it is judged as an error.
     if (res.code != 0) {
       Message({

@@ -170,11 +170,9 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      console.log(this.listQuery, "listQuery");
       const { data } = await fetchList(this.listQuery);
       this.total = "";
       this.list = "";
-      console.log(data, "data");
       this.listLoading = false;
     },
     async getSelectDepartment() {

@@ -18,8 +18,8 @@ import "@/icons"; // icon
 !(async function() {
   try {
     let authSdk = await EnnAuthSdk({
-      appid: process.env.VUE_APP_APP_ID, // 项目APPID
       baseUrl: process.env.VUE_APP_LOGIN_API, //项目后端接口地址
+      appid: process.env.VUE_APP_APP_ID, // 项目APPID
       accessKey: process.env.VUE_APP_ACCESS_KEY, // 网关key
       authUrl: process.env.VUE_APP_AUTH_API,
       env: process.env.NODE_ENV, // 当前运行环境 develop or production

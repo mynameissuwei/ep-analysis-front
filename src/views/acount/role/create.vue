@@ -80,16 +80,17 @@
 <script>
 import BreadText from "@/components/Breadtext";
 import { fetchList } from "@/api/permission";
-import { fetchEditData } from "@/api/role";
+import { fetchEditData, fetchTenantRole } from "@/api/role";
 
 export default {
   props: ["id"],
   components: { BreadText },
   created() {
-    // if (this.id) {
-    //   this.getEditData();
-    // }
-    // this.getPermissionList();
+    if (this.id) {
+      this.getEditData();
+    }
+    this.getTenant();
+    this.getPermissionList();
   },
   data() {
     return {
@@ -141,6 +142,12 @@ export default {
           roleDesc,
           status
         };
+      });
+    },
+    getTenant() {
+      const id = this.id;
+      fetchTenantRole({ roleId: id }).then(res => {
+        console.log(res, "resss");
       });
     }
   }
