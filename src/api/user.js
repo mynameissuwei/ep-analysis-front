@@ -1,4 +1,28 @@
-import request from "@/utils/request";
+import request from "@/utils/request2";
+
+export function fetchList(params) {
+  return request({
+    url: "/users/tenant",
+    method: "get",
+    params
+  });
+}
+
+export function fetchCenterList(params) {
+  return request({
+    url: "/users",
+    method: "get",
+    params
+  });
+}
+
+export function createList(params) {
+  return request({
+    url: "/tenant/user/bind",
+    method: "post",
+    params
+  });
+}
 
 export function login(data) {
   return request({

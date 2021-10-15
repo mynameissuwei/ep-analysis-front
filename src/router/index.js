@@ -120,7 +120,11 @@ export const constantRoutes = [
         name: "createUser",
         component: () => import("@/views/acount/user/create"),
         hidden: true,
-        meta: { title: "添加用户", noCache: true }
+        meta: {
+          title: "添加用户",
+          noCache: true,
+          activeMenu: "/acount/user"
+        }
       },
       {
         path: "role",

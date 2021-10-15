@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    title="配置角色"
-    :visible.sync="dialogVisible"
-    width="60%"
-    :before-close="handleClose"
-  >
+  <el-dialog title="配置角色" :visible.sync="dialogVisible" width="60%">
     <div class="diag-container">
       <div>
         <span class="text-container">
@@ -81,15 +76,7 @@ export default {
       ]
     };
   },
-  methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    }
-  }
+  methods: {}
 };
 </script>
 

@@ -113,6 +113,7 @@ export default {
         createTimeEnd: ""
       },
       dialogVisible: false,
+      dialogStatus: "create",
       dateValue: ""
     };
   },
