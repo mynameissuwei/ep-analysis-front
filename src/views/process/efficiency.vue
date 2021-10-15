@@ -10,19 +10,15 @@
           />
           <display-card
             cardTitle="250"
-            cardText="模板总数"
+            cardText="模板总耗时"
             svgText="timeConsume"
           />
         </el-col>
         <el-col :span="4">
+          <display-card cardTitle="258" cardText="完成率" svgText="complete" />
           <display-card
             cardTitle="258"
-            cardText="模板总数"
-            svgText="complete"
-          />
-          <display-card
-            cardTitle="258"
-            cardText="模板总数"
+            cardText="平均耗时"
             svgText="timeConsume"
           />
         </el-col>
@@ -32,20 +28,24 @@
         <el-col :span="4">
           <display-card
             cardTitle="258"
-            cardText="模板总数"
+            cardText="模板总超时"
             svgText="overtime"
           />
           <display-card
             cardTitle="258"
-            cardText="模板总数"
+            cardText="平均超时"
             svgText="overtime"
           />
         </el-col>
         <el-col :span="4">
-          <display-card cardTitle="258" cardText="模板总数" svgText="people" />
           <display-card
             cardTitle="258"
-            cardText="模板总数"
+            cardText="参与审批总人数"
+            svgText="people"
+          />
+          <display-card
+            cardTitle="258"
+            cardText="人均耗时"
             svgText="timeConsume"
           />
         </el-col>

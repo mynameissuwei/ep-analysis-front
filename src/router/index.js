@@ -22,7 +22,7 @@ export const constantRoutes = [
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
         name: "Dashboard",
-        meta: { title: "效能词典", icon: "dict" }
+        meta: { title: "效能词典", icon: "tree" }
       }
     ]
   },
@@ -36,43 +36,37 @@ export const constantRoutes = [
         path: "efficiency",
         component: () => import("@/views/process/efficiency"),
         name: "Efficiency",
-        meta: { title: "流程效能" }
+        meta: { title: "效能大盘" }
       },
       {
         path: "category",
         component: () => import("@/views/process/category"),
         name: "Category",
-        meta: { title: "按类别分析" }
+        meta: { title: "类别分析" }
       },
       {
         path: "module",
         component: () => import("@/views/process/module"),
         name: "Module",
-        meta: { title: "按模块分析" }
-      },
-      {
-        path: "people",
-        component: () => import("@/views/process/people"),
-        name: "People",
-        meta: { title: "按人效分析" }
+        meta: { title: "模板分析" }
       },
       {
         path: "flow",
         component: () => import("@/views/process/flow"),
         name: "Flow",
-        meta: { title: "按流程分析" }
+        meta: { title: "流程分析" }
+      },
+      {
+        path: "people",
+        component: () => import("@/views/process/people"),
+        name: "People",
+        meta: { title: "人效分析" }
       },
       {
         path: "design",
         component: () => import("@/views/process/design"),
         name: "design",
-        meta: { title: "按设计分析" }
-      },
-      {
-        path: "rule",
-        component: () => import("@/views/process/rule"),
-        name: "rule",
-        meta: { title: "规则配置" }
+        meta: { title: "设计分析" }
       }
     ]
   },
@@ -97,6 +91,18 @@ export const constantRoutes = [
   //   ]
   // },
   demandRouter,
+  {
+    path: "/rule",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/process/rule"),
+        name: "rule",
+        meta: { title: "规则配置", icon: "el-icon-s-help" }
+      }
+    ]
+  },
   {
     path: "/acount",
     component: Layout,
