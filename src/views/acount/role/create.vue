@@ -13,10 +13,10 @@
             <el-form-item label="权限名称" prop="roleName">
               <el-input v-model="form.roleName"></el-input>
             </el-form-item>
-            <el-form-item label="权限编码" prop="roleType">
-              <el-input v-model="form.roleType"></el-input>
+            <el-form-item label="权限编码" prop="roleId">
+              <el-input v-model="form.roleId"></el-input>
             </el-form-item>
-            <el-form-item label="权限描述">
+            <el-form-item label="权限描述" prop="roleDesc">
               <el-input type="textarea" v-model="form.roleDesc"></el-input>
             </el-form-item>
             <el-form-item label="状态">
@@ -27,6 +27,7 @@
         <el-col :span="9" class="role-border">
           <bread-text name="配置角色权限"></bread-text>
           <el-table
+            ref="multipleTable"
             v-loading="permissionListLoading"
             :data="permissionList"
             element-loading-text="Loading"
@@ -50,20 +51,48 @@
         </el-col>
         <el-col :span="10">
           <bread-text name="配置角色用户"></bread-text>
-          <el-input
+          <el-autocomplete
+            v-model="inputRoleUserValue"
+            :fetch-suggestions="querySearchAsync"
             placeholder="请输入内容"
-            v-model="content"
-            style="margin-bottom: 10px;"
+            @select="handleSelect"
           >
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          </el-input>
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
+            <i class="el-icon-edit el-input__icon" slot="suffix"> </i>
+            <template slot-scope="{ item }">
+              <div class="name">
+                <span class="accountText">用户ID: {{ item.accountId }}</span>
+                <span>用户名称: {{ item.nickname }}</span>
+              </div>
+            </template>
+          </el-autocomplete>
+          <el-table :data="userList" style="width: 100%">
+            <el-table-column label="用户ID">
+              <template slot-scope="scope">
+                <span>{{ scope.row.accountId }}</span>
+              </template>
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
+            <el-table-column label="用户名称">
+              <template slot-scope="scope">
+                <span>{{ scope.row.nickname }}</span>
+              </template>
             </el-table-column>
-            <el-table-column prop="address" label="地址"> </el-table-column>
+            <el-table-column label="用户电话">
+              <template slot-scope="scope">
+                {{ scope.row.mobile }}
+              </template>
+            </el-table-column>
+            <el-table-column label="用户登陆名称">
+              <template slot-scope="scope">
+                {{ scope.row.loginName }}
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="{ row, $index }">
+                <span class="actionStyle" @click="handleDelete(row, $index)">
+                  删除
+                </span>
+              </template>
+            </el-table-column>
           </el-table>
         </el-col>
       </el-row>
@@ -71,7 +100,9 @@
     <el-footer class="footerContainer">
       <div>
         <el-button @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="createData">保存</el-button>
+        <el-button type="primary" @click="onSubmit" :loading="submitLoading"
+          >保存</el-button
+        >
       </div>
     </el-footer>
   </el-container>
@@ -80,87 +111,234 @@
 <script>
 import BreadText from "@/components/Breadtext";
 import { fetchList } from "@/api/permission";
-import { fetchEditData, fetchTenantRole } from "@/api/role";
+import * as userApi from "@/api/user";
+import {
+  fetchRoleAuth,
+  fetchRoleUser,
+  createList,
+  updateList,
+  createUserole,
+  createAuthRole
+} from "@/api/role";
+import qs from "qs";
 
 export default {
   props: ["id"],
   components: { BreadText },
-  created() {
-    if (this.id) {
-      this.getEditData();
-    }
-    this.getTenant();
-    this.getPermissionList();
-  },
   data() {
     return {
       form: {
         roleName: "",
-        roleType: "",
+        roleId: "",
         roleDesc: "",
         status: false
       },
-      content: "",
       permissionList: [],
       permissionListLoading: false,
+      submitLoading: false,
       multipleSelection: [],
+      inputRoleUserValue: "",
+      roleUserData: [],
+      roleEditUserData: [],
+      userList: [],
       rules: {
-        authName: [
-          { required: true, message: "请输入权限名称", trigger: "blur" }
+        roleName: [
+          { required: true, message: "请输入权限名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur"
+          }
+          // {
+          //   pattern: /^[\u4e00-\u9fa5]+$/,
+          //   message: "只能输入中文字符",
+          //   trigger: "blur"
+          // }
         ],
-        roleType: [
-          { required: true, message: "请输入权限编码", trigger: "blur" }
+        roleId: [
+          { required: true, message: "请输入权限编码", trigger: "blur" },
+          {
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[A-Za-z_]+$/,
+            message: "只能输入英文字符和下划线",
+            trigger: "blur"
+          }
+        ],
+        roleDesc: [
+          { required: true, message: "请输入权限描述", trigger: "blur" },
+          {
+            min: 1,
+            max: 100,
+            message: "最大长度100字符",
+            trigger: "blur"
+          }
         ]
-      },
-      tableData: []
+      }
     };
+  },
+  created() {
+    this.init();
+    if (this.id) {
+      const { roleName, roleId, roleDesc, status } = this.$route.params.row;
+      this.form = {
+        roleName,
+        roleId,
+        roleDesc,
+        status: status ? true : false
+      };
+      this.getEditRoleUser();
+    }
+  },
+  mounted() {
+    this.getRoleUser();
   },
   methods: {
     onCancel() {
       this.$router.push("/acount/role");
     },
-    getPermissionList() {
+    onSubmit() {
+      this.$refs["dataForm"].validate(async valid => {
+        if (valid) {
+          const data = {
+            ...this.form,
+            roleType: "1001",
+            status: this.form.status ? 1 : 0
+          };
+          // this.submitLoading = true;
+          const userResult = this.userList.map(item => ({
+            accountId: item.accountId,
+            roleId: this.form.roleId
+          }));
+          const authResult = {
+            roleId: this.form.roleId,
+            authIds: this.multipleSelection.map(item => item.authId).join(",")
+          };
+
+          this.submitLoading = false;
+          this.id ? await updateList(data) : await createList(data);
+
+          await Promise.all([
+            createUserole(userResult),
+            createAuthRole(authResult)
+          ]).then(result => {
+            console.log(result, "result");
+            this.$router.push("/acount/role");
+            this.submitLoading = false;
+            this.$notify({
+              title: "成功",
+              message: "创建成功",
+              type: "success",
+              duration: 2000
+            });
+          });
+
+          // this.submitLoading = false;
+        }
+      });
+    },
+    async init() {
+      await this.getPermissionList();
+    },
+    async getPermissionList() {
       this.permissionListLoading = true;
-      fetchList().then(res => {
-        this.permissionList = res.data;
-        setTimeout(() => {
-          this.permissionListLoading = false;
-        }, 1.5 * 1000);
+      const res = await fetchList();
+      this.permissionList = res.data;
+      this.permissionListLoading = false;
+      this.$nextTick(() => {
+        if (this.id) {
+          this.getRoleAuth();
+        }
+      });
+    },
+    async getRoleAuth() {
+      const id = this.id;
+      const { data } = await fetchRoleAuth(id);
+      const rows = data;
+      this.toggleSelection(rows, this.permissionList, "multipleTable");
+    },
+    toggleSelection(selectRows, totalRows, tablename) {
+      this.$refs[tablename].clearSelection();
+      if (selectRows.length > 0) {
+        this.$nextTick(() => {
+          totalRows.forEach(row => {
+            selectRows.forEach(item => {
+              //判断条件
+              if (item.authId == row.authId) {
+                this.$refs[tablename].toggleRowSelection(row);
+              }
+            });
+          });
+        });
+      }
+    },
+    async getRoleUser() {
+      const response = await userApi.fetchList({ page: 1, size: 10 });
+      const total = response.data.total;
+      const res = await userApi.fetchList({
+        page: 1,
+        size: total
+      });
+      this.roleUserData = res.data.records;
+    },
+    getEditRoleUser() {
+      const id = this.id;
+      fetchRoleUser({ roleId: id }).then(res => {
+        this.userList = res.data;
       });
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    getEditData() {
-      const id = this.id;
-      fetchEditData(id).then(res => {
-        const { roleName, roleType, roleDesc, status, authIds } = res.data;
-        this.multipleSelection = authIds;
-        this.form = {
-          roleName,
-          roleType,
-          roleDesc,
-          status
-        };
-      });
+    querySearchAsync(queryString, cb) {
+      var roleUserData = this.roleUserData;
+      var results = queryString
+        ? roleUserData.filter(this.createStateFilter(queryString))
+        : roleUserData;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 3000 * Math.random());
     },
-    getTenant() {
-      const id = this.id;
-      fetchTenantRole({ roleId: id }).then(res => {
-        console.log(res, "resss");
-      });
+    createStateFilter(queryString) {
+      return state => {
+        return (
+          state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+    handleSelect(item) {
+      let array = this.userList;
+      array.push(item);
+      this.userList = array;
+    },
+    handleDelete(row, index) {
+      let array = this.userList;
+      array.splice(index, 1);
+      this.userList = array;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.createRole-container {
-  min-height: calc(100vh - 240px);
-}
-.role-border {
-  border-right: 1px solid #eeeeee;
-  border-left: 1px solid #eeeeee;
-  min-height: calc(100vh - 440px);
+.app-container {
+  .createRole-container {
+    min-height: calc(100vh - 240px);
+  }
+  .role-border {
+    border-right: 1px solid #eeeeee;
+    border-left: 1px solid #eeeeee;
+    min-height: calc(100vh - 440px);
+  }
+  .el-autocomplete {
+    width: 100%;
+  }
 }
 </style>

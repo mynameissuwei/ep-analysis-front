@@ -151,7 +151,7 @@ export default {
     }
   },
   mounted() {
-    this.restaurants = this.loadAll();
+    this.loadAll();
   }
 };
 </script>

@@ -25,7 +25,7 @@
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
+        :limit.sync="listQuery.size"
         @pagination="getList"
       />
     </div>
@@ -35,7 +35,7 @@
 <script>
 import Pagination from "@/components/Pagination";
 import DashTemplate from "./components/DashTemplate";
-import { fetchList } from "@/api/task";
+import { fetchList, createList, deleteList } from "@/api/dashboard";
 
 export default {
   components: { Pagination, DashTemplate },
@@ -46,7 +46,7 @@ export default {
       inputValue: "",
       listQuery: {
         page: 1,
-        limit: 20
+        size: 10
       }
     };
   },
@@ -57,7 +57,8 @@ export default {
     getList() {
       this.listLoading = true;
       fetchList(this.listQuery).then(response => {
-        this.list = response.data.items;
+        this.list = response.data.records;
+        console.log(this.list, "list");
         this.total = response.data.total;
         setTimeout(() => {
           this.listLoading = false;

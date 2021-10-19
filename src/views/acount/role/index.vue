@@ -12,21 +12,6 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="10">
-            <filter-item>
-              <template v-slot:left> <span>创建时间</span> </template>
-              <template v-slot:right>
-                <el-date-picker
-                  v-model="dateValue"
-                  type="daterange"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                >
-                </el-date-picker>
-              </template>
-            </filter-item>
-          </el-col>
         </el-row>
       </el-col>
       <el-col :span="6">
@@ -60,18 +45,19 @@
           {{ scope.row.audit === "0" ? "关闭" : "正常" }}
         </template>
       </el-table-column>
+      <el-table-column prop="roleId" label="角色编码"> </el-table-column>
       <el-table-column prop="createdTime" label="创建时间"> </el-table-column>
       <el-table-column label="操作" width="230">
         <template slot-scope="{ row, $index }">
           <span class="actionStyle" @click="handleUpdate(row)">
-            修改
+            编辑
           </span>
           <span class="actionStyle" @click="handleDelete(row, $index)">
             删除
           </span>
-          <span class="actionStyle" @click="handleDeploy(row, $index)">
+          <!-- <span class="actionStyle" @click="handleDeploy(row, $index)">
             权限配置
-          </span>
+          </span> -->
         </template>
       </el-table-column>
     </el-table>
@@ -80,11 +66,11 @@
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
+      :limit.sync="listQuery.size"
       @pagination="getList"
     />
 
-    <dialog-form :dialogVisible="dialogVisible" />
+    <!-- <dialog-form :dialogVisible="dialogVisible" :temp="temp" /> -->
   </div>
 </template>
 
@@ -102,19 +88,16 @@ export default {
   },
   data() {
     return {
-      list: null,
+      list: [{ id: 1 }],
       total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
         size: 10,
-        name: "",
-        createTimeStart: "",
-        createTimeEnd: ""
+        name: ""
       },
       dialogVisible: false,
-      dialogStatus: "create",
-      dateValue: ""
+      temp: {}
     };
   },
   methods: {
@@ -132,13 +115,12 @@ export default {
       });
     },
     handleSearch() {
-      this.listQuery.createTimeStart = this.dateValue[0];
-      this.listQuery.createTimeEnd = this.dateValue[1];
       this.getList();
     },
     handleDeploy() {
-      this.dialogStatus = "update";
       this.dialogVisible = true;
+      this.temp = Object.assign({}, row);
+
       // this.$nextTick(() => {
       //   this.$refs["dataForm"].clearValidate();
       // });
@@ -146,7 +128,7 @@ export default {
     handleCreate() {
       this.$router.push({
         name: "createRole",
-        params: { id: undefined, getList: this.getList }
+        params: { id: undefined, getList: this.getList, dialogStatus: "create" }
       });
     },
     handleDelete(row) {
@@ -165,7 +147,12 @@ export default {
     handleUpdate(row) {
       this.$router.push({
         name: "createRole",
-        params: { id: row.roleId, getList: this.getList }
+        params: {
+          id: row.roleId,
+          getList: this.getList,
+          row,
+          dialogStatus: "edit"
+        }
       });
     },
     handleReset() {
@@ -174,7 +161,6 @@ export default {
         size: 10,
         name: ""
       };
-      this.dateValue = "";
       this.getList();
     }
   }

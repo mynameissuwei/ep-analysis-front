@@ -16,11 +16,27 @@ export function fetchCenterList(params) {
   });
 }
 
-export function createList(params) {
+export function fetchTenantList(params) {
+  return request({
+    url: "/useroles/tenant",
+    method: "get",
+    params
+  });
+}
+
+export function deployRole(data) {
+  return request({
+    url: "/userole",
+    method: "post",
+    data
+  });
+}
+
+export function createList(data) {
   return request({
     url: "/tenant/user/bind",
     method: "post",
-    params
+    data
   });
 }
 

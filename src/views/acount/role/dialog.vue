@@ -3,9 +3,6 @@
     <div class="diag-container">
       <div>
         <span class="text-container">
-          <span>用户信息:</span> <span>123</span></span
-        >
-        <span class="text-container">
           <span>用户姓名:</span> <span>123</span></span
         >
         <span class="text-container">
@@ -16,10 +13,25 @@
       <el-row :gutter="40" style="margin-top: 38px">
         <el-col :span="12" style="border-right: 1px solid #EEEEEE">
           <div>配置角色权限</div>
-          <el-table :data="tableData" style="width: 100%; margin-top: 24px">
-            <el-table-column prop="date" label="日期" width="180">
+          <el-table
+            v-loading="permissionListLoading"
+            :data="permissionList"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            @selection-change="handleSelectionChange"
+          >
+            >
+            <el-table-column type="selection" width="55"> </el-table-column>
+            <el-table-column label="权限名称">
+              <template slot-scope="scope">
+                {{ scope.row.authName }}
+              </template>
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
+            <el-table-column label="权限编码" align="center">
+              <template slot-scope="scope">
+                <span>{{ scope.row.authType }}</span>
+              </template>
             </el-table-column>
           </el-table>
         </el-col>
@@ -51,11 +63,15 @@
 </template>
 
 <script>
+import { fetchList } from "@/api/permission";
+
 export default {
-  props: ["dialogVisible"],
+  props: ["dialogVisible", "temp"],
   data() {
     return {
       dialogVisible: false,
+      permissionListLoading: false,
+      permissionList: [],
       tableData: [
         {
           date: "2016-05-02",
@@ -76,7 +92,24 @@ export default {
       ]
     };
   },
-  methods: {}
+  created() {
+    if (this.id) {
+      // this.getEditData();
+      // this.getEditRoleUser();
+    }
+    this.getPermissionList();
+  },
+  methods: {
+    getPermissionList() {
+      this.permissionListLoading = true;
+      fetchList().then(res => {
+        this.permissionList = res.data;
+        setTimeout(() => {
+          this.permissionListLoading = false;
+        }, 1.5 * 1000);
+      });
+    }
+  }
 };
 </script>
 

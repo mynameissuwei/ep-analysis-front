@@ -79,23 +79,60 @@
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
+      :limit.sync="listQuery.size"
       @pagination="getList"
     />
 
-    <dialog-form :dialogVisible="dialogVisible" :temp="temp" />
+    <el-dialog title="配置角色" :visible.sync="dialogVisible" width="670px">
+      <div class="diag-container">
+        <div>
+          <span>用户姓名:</span>
+          <span class="text-right">{{ temp.nickname }}</span>
+        </div>
+        <div class="user-text">
+          <span>用户账号:</span>
+          <span class="text-right">{{ temp.accountId }}</span>
+        </div>
+        <div>
+          <span>itcode:</span>
+          <span class="text-right">{{ temp.loginName }}</span>
+        </div>
+        <div class="checkGroup">
+          <div class="checkbox-left">选择角色:</div>
+          <div class="checkbox-right">
+            <el-checkbox-group v-model="checkedList">
+              <el-checkbox
+                v-for="item in tenantList"
+                :label="item.roleId"
+                :key="item.roleId"
+                >{{ item.roleName }}</el-checkbox
+              >
+            </el-checkbox-group>
+          </div>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="onSubmit">
+            确认
+          </el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchList } from "@/api/user";
+import { fetchList, fetchTenantList, deployRole } from "@/api/user";
+import * as roleApi from "@/api/role";
+
 import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
-import DialogForm from "./dialog";
 
 export default {
-  components: { Pagination, FilterItem, BreadText, DialogForm },
+  components: { Pagination, FilterItem, BreadText },
   data() {
     return {
       list: null,
@@ -107,12 +144,13 @@ export default {
         keyword: ""
       },
       dialogVisible: false,
-      dialogStatus: "create",
+      checkedList: [],
+      tenantList: [],
       temp: {}
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
     getList() {
@@ -128,14 +166,24 @@ export default {
         }, 1.5 * 1000);
       });
     },
+    getCheckedTenantList(accountId) {
+      fetchTenantList({ accountId }).then(response => {
+        this.checkedList = response.data.map(item => item.roleId);
+      });
+    },
+    getTenantList() {
+      roleApi.fetchList({ page: 1, size: 10 }).then(response => {
+        console.log(response, "response");
+        roleApi.fetchList({ page: 1, size: response.data.total }).then(res => {
+          this.tenantList = res.data.records;
+        });
+      });
+    },
     handleDeploy(row) {
-      console.log("deploy");
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = "update";
+      this.temp = Object.assign({}, row);
       this.dialogVisible = true;
-      // this.$nextTick(() => {
-      //   this.$refs["dataForm"].clearValidate();
-      // });
+      this.getTenantList();
+      this.getCheckedTenantList(this.temp.accountId);
     },
     handleSearch() {
       this.getList();
@@ -148,6 +196,23 @@ export default {
       };
       this.getList();
     },
+    onSubmit() {
+      const data = this.checkedList.map(item => ({
+        roleId: item,
+        accountId: this.temp.accountId
+      }));
+
+      deployRole(data).then(() => {
+        this.getList();
+        this.dialogVisible = false;
+        this.$notify({
+          title: "成功",
+          message: "配置成功",
+          type: "success",
+          duration: 2000
+        });
+      });
+    },
     handleCreate() {
       this.$router.push({
         name: "createUser",
@@ -157,3 +222,39 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.user-text {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.el-checkbox {
+  display: block;
+}
+.text-right {
+  margin-left: 16px;
+}
+.checkGroup {
+  margin-top: 41px;
+  margin-bottom: 41px;
+  display: inline-flex;
+  width: 100%;
+  .checkbox-right {
+    margin-left: 15px;
+    width: 491px;
+    height: 196px;
+    border-radius: 2px;
+    border: 1px solid #e0e3e5;
+    padding: 10px;
+    overflow: auto;
+  }
+}
+.el-checkbox-group {
+  display: inline-block;
+  margin-left: 16px;
+}
+.dialog-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+</style>

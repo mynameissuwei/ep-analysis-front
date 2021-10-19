@@ -1,14 +1,5 @@
 import request from "@/utils/request2";
 
-export function fetchList(params, data) {
-  return request({
-    url: "/vue-admin-template/article/list",
-    method: "post",
-    params,
-    data
-  });
-}
-
 export function fetchAlertList(params, data) {
   return request({
     url: "/api/ptsw/alerts",
