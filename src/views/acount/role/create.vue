@@ -329,9 +329,6 @@ export default {
 
 <style lang="scss" scoped>
 .app-container {
-  .createRole-container {
-    min-height: calc(100vh - 240px);
-  }
   .role-border {
     border-right: 1px solid #eeeeee;
     border-left: 1px solid #eeeeee;
@@ -340,5 +337,8 @@ export default {
   .el-autocomplete {
     width: 100%;
   }
+}
+.createRole-container {
+  min-height: calc(100vh - 240px);
 }
 </style>

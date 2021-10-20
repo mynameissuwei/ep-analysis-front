@@ -141,7 +141,6 @@ export default {
     handleSelect(item) {
       let array = this.list;
       array.push(item);
-      console.log(array, "arrayar");
       this.list = array;
     },
     handleDelete(row, index) {
@@ -162,5 +161,8 @@ export default {
 }
 .accountText {
   margin-right: 20px;
+}
+.el-container {
+  min-height: calc(100vh - 240px);
 }
 </style>

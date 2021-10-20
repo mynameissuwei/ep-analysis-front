@@ -97,9 +97,21 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        component: () => import("@/views/process/rule"),
+        component: () => import("@/views/rule"),
         name: "rule",
         meta: { title: "规则配置", icon: "el-icon-s-help" }
+      },
+      {
+        path: "index/create/:id?",
+        name: "createRule",
+        component: () => import("@/views/rule/create"),
+        hidden: true,
+        props: true,
+        meta: {
+          title: "添加规则",
+          noCache: true,
+          activeMenu: "/rule/index"
+        }
       }
     ]
   },

@@ -59,13 +59,13 @@
       <!-- right button -->
       <el-col :span="6">
         <div style="float: right">
-          <el-button size="small" type="primary">
+          <el-button size="small" type="primary" @click="handleSearch">
             查询
           </el-button>
           <el-button
             size="small"
             style="margin-left: 10px;"
-            @click="handleCreate"
+            @click="handleReset"
           >
             重置
           </el-button>
@@ -77,7 +77,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
-      @click="handleCreate"
+      @click="batchDeploy"
     >
       批量配置
     </el-button>
@@ -89,26 +89,25 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="Author">
+      <el-table-column label="模板名称">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.appName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews">
+      <el-table-column label="模板代码">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.orgCode }}
         </template>
       </el-table-column>
-      <el-table-column prop="created_at" label="Display_time">
+      <el-table-column label="归属部门">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+          {{ scope.row.orgName }}
         </template>
       </el-table-column>
       <el-table-column prop="created_at" label="操作">
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row)" type="text" size="small"
-            >配置角色</el-button
+          <el-button @click="overTimeDeploy(scope.row)" type="text" size="small"
+            >超时配置</el-button
           >
         </template>
       </el-table-column>
@@ -117,10 +116,51 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.pageNum"
-      :limit.sync="listQuery.pageSize"
+      :page.sync="listQuery.current"
+      :limit.sync="listQuery.size"
       @pagination="getList"
     />
+
+    <el-dialog title="批量配置" :visible.sync="dialogVisible" width="670px">
+      <div class="diag-container">
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox label="以模板平台内部配置规则计算"></el-checkbox>
+          <el-checkbox label="不配置超时规则"></el-checkbox>
+          <el-checkbox label="自定义超时规则"></el-checkbox>
+        </el-checkbox-group>
+        <div class="content">
+          <span class="content-text">模板超时: </span>
+          <span v-if="!isSelected">{{ value }}</span>
+          <el-select v-else v-model="value" placeholder="请选择" size="mini">
+            <el-option
+              v-for="item in this.rangeNumber"
+              :key="item"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+          <span
+            v-if="!isSelected"
+            class="actionStyle deployText"
+            @click="isSelected = true"
+            >配置</span
+          >
+          <span v-else>
+            <span @click="isSelected = false" class="actionStyle ">保存</span>
+            <span @click="isSelected = false" class="actionStyle ">取消</span>
+          </span>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="onSubmit">
+            确认
+          </el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -133,6 +173,7 @@ import {
 import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
+import rangeNumber from "@/utils/numberRange";
 
 export default {
   components: { Pagination, FilterItem, BreadText },
@@ -151,15 +192,20 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      dialogVisible: false,
+      checkList: [],
       listQuery: {
-        pageNum: 1,
-        pageSize: 20,
+        current: 1,
+        size: 10,
         orgCode: undefined,
         appKey: undefined,
         procDefName: undefined
       },
+      value: 0,
       selectDepartmentData: [],
-      selectTemplateData: []
+      selectTemplateData: [],
+      rangeNumber: rangeNumber(),
+      isSelected: false
     };
   },
   created() {
@@ -170,9 +216,11 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      const { data } = await fetchList(this.listQuery);
-      this.total = "";
-      this.list = "";
+      const { data, totalCount } = await fetchList({
+        condition: this.listQuery
+      });
+      this.total = totalCount;
+      this.list = data;
       this.listLoading = false;
     },
     async getSelectDepartment() {
@@ -183,8 +231,24 @@ export default {
       const { data } = await fetchSelectTemplate();
       this.selectTemplateData = data;
     },
-    handleCreate() {
-      this.$router.push("/acount/user/create");
+    handleSearch() {
+      this.getList();
+    },
+    handleReset() {
+      this.listQuery = {
+        current: 1,
+        size: 10,
+        orgCode: undefined,
+        appKey: undefined,
+        procDefName: undefined
+      };
+      this.getList();
+    },
+    handleCreate(row) {
+      this.$router.push({
+        name: "createUser",
+        params: { getList: this.getList }
+      });
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -194,7 +258,38 @@ export default {
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
       });
+    },
+    overTimeDeploy(row) {
+      this.$router.push({
+        name: "createRule",
+        params: { id: row.procDefKey }
+      });
+    },
+    batchDeploy() {
+      this.dialogVisible = true;
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.el-checkbox {
+  display: block;
+  margin-bottom: 22px;
+}
+.content {
+  margin: 20px 0px;
+}
+.content-text {
+  margin-right: 20px;
+}
+.content {
+  .el-select {
+    width: 100px;
+    margin-right: 10px;
+  }
+}
+.deployText {
+  margin-left: 10px;
+}
+</style>

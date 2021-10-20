@@ -2,23 +2,27 @@
   <div class="DashTemplate">
     <div class="title">
       <svg-icon icon-class="timeConsumeBlue" />
-      <span class="title-text">模板流程</span>
+      <span class="title-text">{{ data.name }}</span>
     </div>
     <div class="content">
       <div>
         <div style="margin-bottom:10px">
-          定义：即发起模板的数据，一个模板可以被多个复用
+          <span class="text-title">定义:</span>
+          <span> {{ data.definition }} </span>
         </div>
         <div>
-          公式: 模板耗时-结束时间-发起时间
+          <span class="text-title">公式:</span>
+          <span>{{ data.formula }}</span>
         </div>
       </div>
       <div>
         <div style="margin-bottom:10px">
-          维护时间：2021-09-14
+          <span class="text-title">维护时间：</span>
+          <span>{{ data.updateTime }}</span>
         </div>
         <div>
-          维护人：张鼎新
+          <span class="text-title">维护人：</span>
+          <span>{{ data.mainTainer }}</span>
         </div>
       </div>
     </div>
@@ -26,7 +30,16 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -34,6 +47,11 @@ export default {};
   border-bottom: 1px solid #eeeeee;
   margin-left: 74px;
   margin-right: 74px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  .text-title {
+    margin-right: 10px;
+  }
   .title {
     color: #0f55fa;
   }

@@ -32,15 +32,17 @@ module.exports = {
   devServer: {
     port: port,
     open: true,
-    // https: true,
+    https: true,
     overlay: {
       warnings: false,
       errors: true
     },
     proxy: {
       [process.env.VUE_APP_BASE2_API]: {
-        // target: "https://efficiency-analysis-backend.dev.ennew.com",
-        target: "http://10.20.49.40:8080",
+        // 吴路路开发接口
+        target: "https://efficiency-analysis-backend.dev.ennew.com",
+        // 本地开发接口
+        // target: "http://10.20.49.40:8080",
         // target: "https://biz-efficiency-plan-service.dev.ennew.com/",
         // secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true,

@@ -21,3 +21,10 @@ export function fetchSelectTemplate() {
     method: "get"
   });
 }
+
+export function fetchTimeConfig(id) {
+  return request({
+    url: `/api/rule/config/${id}`,
+    method: "get"
+  });
+}
