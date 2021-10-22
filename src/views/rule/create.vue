@@ -8,9 +8,29 @@
         <el-checkbox label="自定义超时规则"></el-checkbox>
       </el-checkbox-group>
       <div class="content">
-        <span>模板名称: 请假模板</span>
-        <span class="content-text ">模板超时: 72h</span>
-        <span class="actionStyle deployText">配置</span>
+        <span class="template-class">模板名称:</span>
+        <span>请假模板</span>
+        <span class="content-text">模板超时:</span>
+        <span v-if="!isSelected">{{ value }}</span>
+        <el-select v-else v-model="value" placeholder="请选择" size="mini">
+          <el-option
+            v-for="item in rangeNumber"
+            :key="item"
+            :label="item"
+            :value="item"
+          >
+          </el-option>
+        </el-select>
+        <span
+          v-if="!isSelected"
+          class="actionStyle deployText"
+          @click="isSelected = true"
+          >配置</span
+        >
+        <span v-else>
+          <span @click="isSelected = false" class="actionStyle ">保存</span>
+          <span @click="isSelected = false" class="actionStyle ">取消</span>
+        </span>
         <div class="title">模板节点</div>
       </div>
       <el-table :data="tableData" style="width: 100%">
@@ -19,11 +39,51 @@
         <el-table-column prop="name" label="姓名" width="180">
         </el-table-column>
         <el-table-column prop="address" label="地址"> </el-table-column>
+        <el-table-column width="350px" label="Title">
+          <template slot-scope="{ row }">
+            <template v-if="row.edit">
+              <el-select v-model="row.title" placeholder="请选择" size="small">
+                <el-option
+                  v-for="item in rangeNumber"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                >
+                </el-option>
+              </el-select>
+              <el-button
+                class="cancel-btn"
+                size="small"
+                icon="el-icon-refresh"
+                type="warning"
+                @click="cancelEdit(row)"
+              >
+                取消
+              </el-button>
+            </template>
+            <span v-else>{{ row.title }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="230">
           <template slot-scope="{ row, $index }">
-            <span class="actionStyle" @click="handleUpdate(row)">
+            <el-button
+              v-if="row.edit"
+              type="success"
+              size="small"
+              icon="el-icon-circle-check-outline"
+              @click="confirmEdit(row)"
+            >
+              确定
+            </el-button>
+            <el-button
+              v-else
+              type="primary"
+              size="small"
+              icon="el-icon-edit"
+              @click="row.edit = !row.edit"
+            >
               编辑
-            </span>
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -40,6 +100,7 @@
 <script>
 import BreadText from "@/components/Breadtext";
 import { fetchTimeConfig } from "@/api/rule";
+import rangeNumber from "@/utils/numberRange";
 
 export default {
   props: ["id"],
@@ -48,28 +109,10 @@ export default {
     return {
       data: {},
       checkList: [],
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
+      isSelected: false,
+      value: 0,
+      rangeNumber: rangeNumber(),
+      tableData: []
     };
   },
   created() {
@@ -82,11 +125,49 @@ export default {
       const id = this.id;
       fetchTimeConfig(id).then(res => {
         this.data = res.data;
-        console.log(res, "resss");
+        let tableData = [
+          {
+            date: "2016-05-02",
+            name: "王小虎",
+            address: "上海市普陀区金沙江路 1518 弄",
+            title: "123"
+          },
+          {
+            date: "2016-05-04",
+            name: "王小虎",
+            address: "上海市普陀区金沙江路 1517 弄",
+            title: "123"
+          },
+          {
+            date: "2016-05-01",
+            name: "王小虎",
+            address: "上海市普陀区金沙江路 1519 弄",
+            title: "123"
+          },
+          {
+            date: "2016-05-03",
+            name: "王小虎",
+            address: "上海市普陀区金沙江路 1516 弄",
+            title: "123"
+          }
+        ];
+        this.tableData = tableData.map(v => {
+          this.$set(v, "edit", false);
+          v.originalTitle = v.title;
+          return v;
+        });
       });
     },
     onCancel() {
       this.$router.push("/rule/index");
+    },
+    confirmEdit(row) {
+      row.edit = false;
+      row.originalTitle = row.title;
+    },
+    cancelEdit(row) {
+      row.title = row.originalTitle;
+      row.edit = false;
     },
     createData() {
       // this.$refs["dataForm"].validate(valid => {
@@ -116,7 +197,14 @@ export default {
 <style lang="scss" scoped>
 .createRule {
   min-height: calc(100vh - 240px);
-
+  .cancel-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+  }
+  .template-class {
+    margin-right: 20px;
+  }
   .el-checkbox {
     display: block;
     margin-bottom: 22px;
@@ -128,8 +216,13 @@ export default {
     font-weight: 500;
     color: #343a40;
     line-height: 22px;
+    .el-select {
+      width: 100px;
+      margin-right: 10px;
+    }
     .content-text {
       margin-left: 76px;
+      margin-right: 20px;
     }
   }
   .title {

@@ -8,9 +8,33 @@ export function fetchList(params) {
   });
 }
 
+export function fetchEffTopList(params) {
+  return request({
+    url: "/api/ck/execSqlToList",
+    method: "get",
+    params
+  });
+}
+
+export function fetchWorkerTopList(params) {
+  return request({
+    url: "/api/ck/execSqlToList",
+    method: "get",
+    params
+  });
+}
+
+export function fetchOverTimeList(params) {
+  return request({
+    url: "/api/ck/execSqlToList",
+    method: "get",
+    params
+  });
+}
+
 export function deleteList(params) {
   return request({
-    url: `/api/ck/execSqlToPage`,
+    url: "/api/ck/execSqlToPage",
     method: "delete",
     params
   });

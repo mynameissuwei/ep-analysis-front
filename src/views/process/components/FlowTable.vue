@@ -5,19 +5,52 @@
       <!-- left search -->
       <el-col :span="18">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
+              <template v-slot:left> <span>归属部门</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-select
+                  v-model="listQuery.createOrgCode"
+                  clearable
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in selectDepartmentData"
+                    :key="item.orgCode"
+                    :label="item.orgName"
+                    :value="item.orgCode"
+                  />
+                </el-select>
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
+              <template v-slot:left> <span>模板类别</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-select
+                  v-model="listQuery.appKey"
+                  clearable
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in selectTemplateData"
+                    :key="item.appKey"
+                    :label="item.appName"
+                    :value="item.appKey"
+                  />
+                </el-select>
+              </template>
+            </filter-item>
+          </el-col>
+          <el-col :span="8">
+            <filter-item>
+              <template v-slot:left> <span>发起人</span> </template>
+              <template v-slot:right>
+                <el-input
+                  v-model="listQuery.startUserName"
+                  placeholder="请输入"
+                />
               </template>
             </filter-item>
           </el-col>
@@ -32,67 +65,124 @@
           <el-button
             size="small"
             style="margin-left: 10px;"
-            @click="handleCreate"
+            @click="handleReset"
           >
             重置
           </el-button>
         </div>
       </el-col>
     </el-row>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"> </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="address" label="地址"> </el-table-column>
+
+    <el-table :data="list" style="width: 100%">
+      <el-table-column prop="app_name" label="模板名称"> </el-table-column>
+      <el-table-column prop="start_user_name" label="发起人"> </el-table-column>
+      <el-table-column prop="proc_pass_time" label="耗时总长" sortable>
+      </el-table-column>
+      <el-table-column
+        prop="task_part_num"
+        label="审批参与人数"
+        sortable
+        width="150px"
+      >
+      </el-table-column>
+      <el-table-column prop="proc_over_time" label="超时总长" sortable>
+      </el-table-column>
+      <el-table-column prop="start_time" label="发起时间" sortable>
+      </el-table-column>
+      <el-table-column label="当前状态">
+        <template slot-scope="scope">
+          <span>{{ scope.row.proc_over === 0 ? "未结束" : "结束" }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="proc_cost_time" label="最长耗时" sortable>
+      </el-table-column>
+      <el-table-column prop="proc_approve_user" label="最长耗时审批人">
+      </el-table-column>
+      <el-table-column prop="ratio" label="人均耗时" sortable>
+      </el-table-column>
     </el-table>
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.pageNo"
+      :limit.sync="listQuery.pageSize"
+      @pagination="getList"
+    />
   </div>
 </template>
 
 <script>
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
+import { fetchList } from "@/api/flow";
+import { fetchSelectDepartment, fetchSelectTemplate } from "@/api/rule";
+import Pagination from "@/components/Pagination";
 
 export default {
-  components: { FilterItem, BreadText },
+  components: { Pagination, FilterItem, BreadText },
   data() {
     return {
-      activeName: "first",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      total: 0,
+      list: null,
+      listLoading: false,
+      selectDepartmentData: [],
+      selectTemplateData: [],
       listQuery: {
-        title: "",
-        limit: 20
+        pageNo: 1,
+        pageSize: 10,
+        createOrgCode: undefined,
+        appKey: undefined,
+        startUserName: undefined
       }
     };
   },
+  created() {
+    this.getList();
+    this.getSelectDepartment();
+    this.getSelectTemplate();
+  },
   methods: {
+    async getList() {
+      this.listLoading = true;
+      const { data, totalCount } = await fetchList({
+        condition: {
+          extParam: {
+            createOrgCode: this.listQuery.createOrgCode,
+            appKey: this.listQuery.appKey,
+            startUserName: this.listQuery.startUserName
+          },
+          pageNo: this.listQuery.pageNo,
+          pageSize: this.listQuery.pageSize,
+          sqlKey: "procAnalyPage"
+        }
+      });
+      this.total = totalCount;
+      this.list = data;
+      this.listLoading = false;
+    },
+    async getSelectDepartment() {
+      const { data } = await fetchSelectDepartment();
+      this.selectDepartmentData = data;
+    },
+    async getSelectTemplate() {
+      const { data } = await fetchSelectTemplate();
+      this.selectTemplateData = data;
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
     handleSearch() {
-      console.log("search");
+      this.getList();
     },
-    handleCreate() {
-      console.log("create");
+    handleReset() {
+      this.listQuery = {
+        pageNo: 1,
+        pageSize: 10,
+        createOrgCode: "",
+        appKey: "",
+        startUserName: ""
+      };
+      this.getList();
     }
   }
 };

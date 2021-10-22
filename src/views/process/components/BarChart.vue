@@ -27,6 +27,12 @@ export default {
     },
     text: {
       type: String
+    },
+    xAxis: {
+      type: Array
+    },
+    yAxis: {
+      type: Array
     }
   },
   data() {
@@ -54,14 +60,14 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          data: this.xAxis
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.yAxis,
             type: "bar",
             barWidth: "40%",
             color: "#558CFF"

@@ -133,7 +133,7 @@
           <span v-if="!isSelected">{{ value }}</span>
           <el-select v-else v-model="value" placeholder="请选择" size="mini">
             <el-option
-              v-for="item in this.rangeNumber"
+              v-for="item in rangeNumber"
               :key="item"
               :label="item"
               :value="item"
@@ -267,6 +267,9 @@ export default {
     },
     batchDeploy() {
       this.dialogVisible = true;
+    },
+    onSubmit() {
+      console.log("onSubmit");
     }
   }
 };

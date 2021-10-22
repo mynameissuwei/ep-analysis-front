@@ -6,8 +6,42 @@
           <div class="card-header">
             效率榜
           </div>
-          <div class="card-body">
-            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          <div
+            v-loading="effLoading"
+            :class="effData.length ? 'card-body' : 'card-body noData-body'"
+          >
+            <div v-if="effData.length" style="height:100%">
+              <el-row class="card-row">
+                <el-col
+                  class="col-flex"
+                  :span="8"
+                  v-for="item in effData.slice(0, 3)"
+                >
+                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <div style="margin-top:10px">
+                    {{ item.user_name ? item.user_name : "无" }}
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row class="card-row">
+                <el-col
+                  class="col-flex"
+                  :span="8"
+                  v-for="item in effData.slice(3, 6)"
+                >
+                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <div style="margin-top:10px">
+                    {{ item.user_name ? item.user_name : "无" }}
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <img
+              v-else
+              src="@/assets/notRank.svg"
+              alt="LOGO"
+              class="img-people"
+            />
           </div>
         </card-container>
       </el-col>
@@ -16,8 +50,42 @@
           <div class="card-header">
             劳模榜
           </div>
-          <div class="card-body">
-            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          <div
+            v-loading="workerLoading"
+            :class="workerData.length ? 'card-body' : 'card-body noData-body'"
+          >
+            <div v-if="workerData.length" style="height:100%">
+              <el-row class="card-row">
+                <el-col
+                  class="col-flex"
+                  :span="8"
+                  v-for="item in workerData.slice(0, 3)"
+                >
+                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <div style="margin-top:10px">
+                    {{ item.user_name ? item.user_name : "无" }}
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row class="card-row">
+                <el-col
+                  class="col-flex"
+                  :span="8"
+                  v-for="item in workerData.slice(3, 6)"
+                >
+                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <div style="margin-top:10px">
+                    {{ item.user_name ? item.user_name : "无" }}
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <img
+              v-else
+              src="@/assets/notRank.svg"
+              alt="LOGO"
+              class="img-people"
+            />
           </div>
         </card-container>
       </el-col>
@@ -26,7 +94,7 @@
           <div class="card-header">
             催办榜
           </div>
-          <div class="card-body">
+          <div class="card-body noData-body">
             <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
           </div>
         </card-container>
@@ -36,13 +104,61 @@
           <div class="card-header">
             耗时榜
           </div>
-          <div class="card-body">
-            <img src="@/assets/notRank.svg" alt="LOGO" class="img-people" />
+          <div
+            v-loading="overTimeLoading"
+            :class="overTimeData.length ? 'card-body' : 'card-body noData-body'"
+          >
+            <div v-if="overTimeData.length" style="height:100%">
+              <el-row class="card-row">
+                <el-col
+                  class="col-flex"
+                  :span="8"
+                  v-for="item in overTimeData.slice(0, 3)"
+                >
+                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <div style="margin-top:10px">
+                    {{ item.user_name ? item.user_name : "无" }}
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row class="card-row">
+                <el-col
+                  class="col-flex"
+                  :span="8"
+                  v-for="item in overTimeData.slice(3, 6)"
+                >
+                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <div style="margin-top:10px">
+                    {{ item.user_name ? item.user_name : "无" }}
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <img
+              v-else
+              src="@/assets/notRank.svg"
+              alt="LOGO"
+              class="img-people"
+            />
           </div>
         </card-container>
       </el-col>
     </el-row>
-    <people-table />
+    <people-table
+      :tableData="list"
+      :listLoading="listLoading"
+      :handleSearch="handleSearch"
+      :username="username"
+      @onEmitUsername="onEmitUsername"
+      @onResetUsername="onResetUsername"
+    />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.pageNo"
+      :limit.sync="listQuery.pageSize"
+      @pagination="getList"
+    />
   </div>
 </template>
 
@@ -50,28 +166,98 @@
 import BarChart from "./components/BarChart";
 import CardContainer from "@/components/CardContainer";
 import PeopleTable from "./components/PeopleTable.vue";
-import { fetchList } from "@/api/people";
+import Pagination from "@/components/Pagination";
+import {
+  fetchList,
+  fetchEffTopList,
+  fetchWorkerTopList,
+  fetchOverTimeList
+} from "@/api/people";
 
 export default {
-  components: { BarChart, CardContainer, PeopleTable },
+  components: { Pagination, BarChart, CardContainer, PeopleTable },
   data() {
     return {
       list: null,
-      listLoading: true,
+      effData: [],
+      effLoading: false,
+      workerData: [],
+      workerLoading: false,
+      overTimeData: [],
+      overTimeLoading: false,
+      listLoading: false,
+      total: 0,
+      username: "",
       listQuery: {
-        pageNum: 1,
-        pageSize: 10
+        pageNo: 1,
+        pageSize: 10,
+        sqlKey: "personPage"
       }
     };
   },
   created() {
-    this.getList();
+    this.init();
   },
   methods: {
+    init() {
+      this.getList();
+      this.getEffTopList();
+      this.getWorkerTopList();
+      this.getOverTimeList();
+    },
     async getList() {
       this.listLoading = true;
-      const { data } = await fetchList(this.listQuery);
-      console.log(data, "data");
+      const { data, totalCount } = await fetchList({
+        condition: { ...this.listQuery, username: this.username }
+      });
+      this.total = totalCount;
+      this.list = data;
+      this.listLoading = false;
+    },
+    async getEffTopList() {
+      this.effLoading = true;
+      const { data } = await fetchEffTopList({
+        condition: {
+          sqlKey: "effTopList"
+        }
+      });
+      this.effData = data;
+      this.effLoading = false;
+    },
+    async getWorkerTopList() {
+      this.workerLoading = true;
+      const { data } = await fetchWorkerTopList({
+        condition: {
+          sqlKey: "workerTopList"
+        }
+      });
+      this.workerData = data;
+      this.workerLoading = false;
+    },
+    async getOverTimeList() {
+      this.overTimeLoading = true;
+      const { data } = await fetchOverTimeList({
+        condition: {
+          sqlKey: "overTimeList"
+        }
+      });
+      this.overTimeData = data;
+      this.overTimeLoading = false;
+    },
+    handleSearch() {
+      this.getList();
+    },
+    onEmitUsername(username) {
+      this.username = username;
+    },
+    onResetUsername() {
+      this.username = "";
+      this.listQuery = {
+        pageNo: 1,
+        pageSize: 10,
+        sqlKey: "personPage"
+      };
+      this.getList();
     }
   }
 };
@@ -84,10 +270,23 @@ export default {
     border-bottom: 1px solid #ebeef5;
     box-sizing: border-box;
   }
-  .card-body {
-    height: 100%;
+  .col-flex {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .card-row {
+    height: 50%;
+    display: flex;
+    align-items: center;
+  }
+  .card-body {
     height: calc(100% - 55px);
+    position: relative;
+  }
+  .noData-body {
+    display: flex;
     align-items: center;
     justify-content: center;
   }

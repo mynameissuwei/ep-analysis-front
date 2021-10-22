@@ -9,15 +9,13 @@
             <filter-item>
               <template v-slot:left> <span>名称</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
-              </template>
-            </filter-item>
-          </el-col>
-          <el-col :span="6">
-            <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
-              <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-input
+                  v-model="tableUserName"
+                  placeholder="搜索名称"
+                  size="normal"
+                  clearable
+                  @change="handleInput"
+                ></el-input>
               </template>
             </filter-item>
           </el-col>
@@ -32,17 +30,30 @@
           <el-button
             size="small"
             style="margin-left: 10px;"
-            @click="handleCreate"
+            @click="handleReset"
           >
             重置
           </el-button>
         </div>
       </el-col>
     </el-row>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"> </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="address" label="地址"> </el-table-column>
+    <el-table :data="tableData" style="width: 100%" v-loading="listLoading">
+      <el-table-column prop="userName" label="姓名"> </el-table-column>
+      <el-table-column prop="userId" label="用户id"> </el-table-column>
+      <el-table-column prop="procDefNum" sortable label="审批模版数">
+      </el-table-column>
+      <el-table-column prop="overTime" sortable label="超时总长">
+      </el-table-column>
+      <el-table-column prop="passTime" sortable label="耗时总长">
+      </el-table-column>
+      <el-table-column prop="overRatio" sortable label="超时率">
+      </el-table-column>
+      <el-table-column prop="overNum" sortable label="超时次数">
+      </el-table-column>
+      <el-table-column prop="taskNum" sortable label="审批任务数">
+      </el-table-column>
+      <el-table-column prop="finishRatio" sortable label="任务积压率">
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -52,47 +63,26 @@ import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
 
 export default {
+  props: ["tableData", "listLoading", "handleSearch", "username"],
   components: { FilterItem, BreadText },
   data() {
     return {
       activeName: "first",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
       listQuery: {
         title: "",
         limit: 20
-      }
+      },
+      tableUserName: this.username
     };
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    handleInput(value) {
+      this.tableUserName = value;
+      this.$emit("onEmitUsername", value);
     },
-    handleSearch() {
-      console.log("search");
-    },
-    handleCreate() {
-      console.log("create");
+    handleReset() {
+      this.tableUserName = "";
+      this.$emit("onResetUsername", "");
     }
   }
 };
