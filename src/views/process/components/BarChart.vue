@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" :class="className" :style="{ height: height, width: width }" />
+  <div id="chart" />
 </template>
 
 <script>
@@ -9,30 +9,11 @@ import resize from "../mixins/resize.js";
 export default {
   mixins: [resize],
   props: {
-    className: {
-      type: String,
-      default: "chart"
-    },
-    id: {
-      type: String,
-      default: "chart"
-    },
-    width: {
-      type: String,
-      default: "100%"
-    },
-    height: {
-      type: String,
-      default: "316px"
-    },
     text: {
       type: String
     },
-    xAxis: {
-      type: Array
-    },
-    yAxis: {
-      type: Array
+    execSqlToList: {
+      type: Object
     }
   },
   data() {
@@ -50,30 +31,50 @@ export default {
     this.chart.dispose();
     this.chart = null;
   },
+  watch: {
+    execSqlToList: {
+      handler(newVal, oldVal) {
+        if (this.chart) {
+          if (newVal) {
+            this.chart.setOption(this.getOption());
+          } else {
+            this.chart.setOption(this.getOption());
+          }
+        } else {
+          this.initChart();
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     initChart() {
-      this.chart = echarts.init(document.getElementById(this.id));
+      this.chart = echarts.init(document.getElementById("chart"));
+      this.chart.setOption(this.getOption());
+    },
+    getOption() {
+      const { xAxis, yAxis } = this.execSqlToList;
 
-      this.chart.setOption({
+      return {
         title: {
           text: this.text
         },
         xAxis: {
           type: "category",
-          data: this.xAxis
+          data: xAxis
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            data: this.yAxis,
+            data: yAxis,
             type: "bar",
             barWidth: "40%",
             color: "#558CFF"
           }
         ]
-      });
+      };
     }
   }
 };

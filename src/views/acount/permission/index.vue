@@ -63,9 +63,9 @@
           {{ scope.row.authName }}
         </template>
       </el-table-column>
-      <el-table-column label="权限编码" align="center">
+      <el-table-column label="权限编码">
         <template slot-scope="scope">
-          <span>{{ scope.row.authType }}</span>
+          <span>{{ scope.row.authId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="权限描述">

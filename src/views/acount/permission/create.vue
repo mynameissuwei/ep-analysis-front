@@ -8,7 +8,10 @@
             <el-input v-model="form.authName"></el-input>
           </el-form-item>
           <el-form-item label="权限编码" prop="authId">
-            <el-input v-model="form.authId"></el-input>
+            <el-input
+              v-model="form.authId"
+              :disabled="id ? true : false"
+            ></el-input>
           </el-form-item>
           <el-form-item label="权限描述">
             <el-input type="textarea" v-model="form.authDesc"></el-input>
@@ -112,7 +115,8 @@ export default {
           const data = {
             ...this.form,
             audit: this.form.audit ? "1" : "0",
-            resIdList: this.$refs.tree.getCheckedKeys()
+            resIdList: this.$refs.tree.getCheckedKeys(),
+            authType: "1002"
           };
           createList(data).then(() => {
             this.$router.push("/acount/permission");

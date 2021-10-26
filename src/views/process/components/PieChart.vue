@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" :class="className" :style="{ height: height, width: width }" />
+  <div :id="id" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -9,10 +9,6 @@ import resize from "../mixins/resize";
 export default {
   mixins: [resize],
   props: {
-    className: {
-      type: String,
-      default: "chart"
-    },
     id: {
       type: String,
       default: "chart"
@@ -24,6 +20,15 @@ export default {
     height: {
       type: String,
       default: "300px"
+    },
+    data: {
+      type: Array
+    },
+    getCasCadePie: {
+      type: Function
+    },
+    type: {
+      type: String
     }
   },
   data() {
@@ -32,9 +37,7 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart();
-    });
+    this.initChart();
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -43,11 +46,42 @@ export default {
     this.chart.dispose();
     this.chart = null;
   },
+  watch: {
+    data: {
+      handler(newVal, oldVal) {
+        if (this.chart) {
+          if (newVal) {
+            this.chart.setOption(this.getOption());
+          } else {
+            this.chart.setOption(this.getOption());
+          }
+        } else {
+          this.initChart();
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id));
-
-      this.chart.setOption({
+      this.chart.setOption(this.getOption());
+      this.chart.on("click", param => {
+        console.log(param, "param");
+        this.getCasCadePie(
+          this.type === "category"
+            ? { appKey: param.data.appKey }
+            : { createOrgCode: param.data.orgCode }
+        );
+      });
+    },
+    getOption() {
+      console.log(this.data, "datadata");
+      return {
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
         series: [
           {
             name: "Nightingale Chart",
@@ -57,19 +91,10 @@ export default {
             itemStyle: {
               borderRadius: 8
             },
-            data: [
-              { value: 40, name: "rose 1" },
-              { value: 38, name: "rose 2" },
-              { value: 32, name: "rose 3" },
-              { value: 30, name: "rose 4" },
-              { value: 28, name: "rose 5" },
-              { value: 26, name: "rose 6" },
-              { value: 22, name: "rose 7" },
-              { value: 18, name: "rose 8" }
-            ]
+            data: this.data
           }
         ]
-      });
+      };
     }
   }
 };

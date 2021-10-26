@@ -3,12 +3,18 @@
     <el-row :gutter="20">
       <el-col :span="12">
         <el-card class="box-card" style="height:314px">
-          <bar-chart
-            id="leftChart"
-            text="模板节点快部门分布总览"
-            :xAxis="xAxis"
-            :yAxis="yAxis"
-          />
+          <div class="bar-container">
+            <el-tabs v-model="paneValue" @tab-click="tabChange">
+              <el-tab-pane
+                v-for="item in panes"
+                :key="item.key"
+                :label="item.label"
+                :name="item.key"
+              >
+              </el-tab-pane>
+            </el-tabs>
+            <bar-chart text="模板流程增长趋势" :execSqlToList="execSqlToList" />
+          </div>
         </el-card>
       </el-col>
       <el-col :span="12">
@@ -56,9 +62,13 @@ export default {
   data() {
     return {
       execSqlToMap: {},
-      execSqlToList: [],
-      xAxis: [],
-      yAxis: []
+      execSqlToList: {},
+      panes: [
+        { label: "本天", key: "day" },
+        { label: "本月", key: "month" },
+        { label: "本年", key: "year" }
+      ],
+      paneValue: "day"
     };
   },
   created() {
@@ -66,31 +76,34 @@ export default {
   },
   methods: {
     init() {
-      this.getExecSqlToList();
+      this.getExecSqlToList(this.paneValue);
       this.getExecSqlToMap();
     },
-    async getExecSqlToList() {
+    async getExecSqlToList(panValue) {
       const { data } = await fetchExecSqlToList({
         condition: {
           extParam: {
-            target: "month"
+            target: panValue
           },
           sqlKey: "procIncrList"
         }
       });
-      console.log(data, "data");
       let xAxis = data.map(item => item.dayTime);
-      let yAxis = data.map(item => item.yAxis);
-      this.execSqlToList = data;
-      this.xAxis = xAxis;
-      this.yAxis = yAxis;
+      let yAxis = data.map(item => item.num);
+
+      this.execSqlToList = {
+        xAxis,
+        yAxis
+      };
     },
     async getExecSqlToMap() {
       const { data } = await fetchExecSqlToMap({
         condition: { sqlKey: "procOtherMap" }
       });
-      console.log(data, "datadata");
       this.execSqlToMap = data;
+    },
+    tabChange(value) {
+      this.getExecSqlToList(value.name);
     }
   }
 };
@@ -107,6 +120,21 @@ export default {
   .el-col {
     display: flex;
     justify-content: center;
+  }
+}
+.bar-container {
+  position: relative;
+  #chart {
+    width: 100%;
+    height: 316px;
+  }
+  .el-tabs {
+    width: 180px;
+    position: absolute;
+    right: 0px;
+  }
+  ::v-deep .el-tabs__nav-wrap::after {
+    background-color: #fff !important;
   }
 }
 </style>

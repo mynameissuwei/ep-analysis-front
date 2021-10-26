@@ -2,30 +2,43 @@
   <div>
     <bread-text name="类别分析明细" />
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="按部门" name="first">
+      <el-tab-pane label="按部门" name="section">
         <el-row class="filter-container" style="margin-top:10px">
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <filter-item>
-                  <template v-slot:left> <span>名称</span> </template>
+                  <template v-slot:left> <span>归属部门</span> </template>
                   <template v-slot:right>
-                    <el-input
-                      v-model="listQuery.title"
-                      placeholder="搜索名称"
-                    />
+                    <el-select
+                      v-model="listQuery.orgCode"
+                      clearable
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in selectDepartmentData"
+                        :key="item.orgCode"
+                        :label="item.orgName"
+                        :value="item.orgCode"
+                      />
+                    </el-select>
                   </template>
                 </filter-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <filter-item>
-                  <template v-slot:left> <span>名称</span> </template>
+                  <template v-slot:left> <span>查询时间</span> </template>
                   <template v-slot:right>
-                    <el-input
-                      v-model="listQuery.title"
-                      placeholder="搜索名称"
-                    />
+                    <el-date-picker
+                      v-model="dateValue"
+                      type="daterange"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      @change="datePick"
+                    >
+                    </el-date-picker>
                   </template>
                 </filter-item>
               </el-col>
@@ -40,45 +53,107 @@
               <el-button
                 size="small"
                 style="margin-left: 10px;"
-                @click="handleCreate"
+                @click="handleReset"
               >
                 重置
               </el-button>
             </div>
           </el-col>
         </el-row>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="日期" width="180">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          element-loading-text="Loading"
+          fit
+          highlight-current-row
+          loading
+        >
+          <el-table-column prop="orgName" label="名称" width="180" />
+          <el-table-column prop="overRatio" label="平均超时率" width="180" />
+          <el-table-column prop="partNum" label="审批总人数" />
+          <el-table-column prop="personPassTime" label="人均耗时">
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.personPassTime) }}
+            </template>
           </el-table-column>
-          <el-table-column prop="name" label="姓名" width="180">
+          <el-table-column prop="procDefNum" label="模版总数" />
+          <el-table-column label="平均超时">
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.processOverTime) }}
+            </template>
           </el-table-column>
-          <el-table-column prop="address" label="地址"> </el-table-column>
+          <el-table-column prop="totalProcessCnt" label="流程总数" />
+          <el-table-column prop="totalOverTime" label="超时总长" />
+          <el-table-column prop="totalPassTime" label="耗时总长">
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.totalPassTime) }}
+            </template>
+          </el-table-column>
         </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          :page.sync="listQuery.pageNo"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getList"
+        />
       </el-tab-pane>
-      <el-tab-pane label="按类别" name="second">
+      <el-tab-pane label="按类别" name="category">
         <el-row class="filter-container" style="margin-top:10px">
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <filter-item>
-                  <template v-slot:left> <span>名称</span> </template>
+                  <template v-slot:left> <span>归属部门</span> </template>
                   <template v-slot:right>
-                    <el-input
-                      v-model="listQuery.title"
-                      placeholder="搜索名称"
-                    />
+                    <el-select
+                      v-model="listQuery.orgCode"
+                      clearable
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in selectDepartmentData"
+                        :key="item.orgCode"
+                        :label="item.orgName"
+                        :value="item.orgCode"
+                      />
+                    </el-select>
                   </template>
                 </filter-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <filter-item>
-                  <template v-slot:left> <span>名称</span> </template>
+                  <template v-slot:left> <span>模板类别</span> </template>
                   <template v-slot:right>
-                    <el-input
-                      v-model="listQuery.title"
-                      placeholder="搜索名称"
-                    />
+                    <el-select
+                      v-model="listQuery.appKey"
+                      clearable
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in selectTemplateData"
+                        :key="item.appKey"
+                        :label="item.appName"
+                        :value="item.appKey"
+                      />
+                    </el-select>
+                  </template>
+                </filter-item>
+              </el-col>
+              <el-col :span="8">
+                <filter-item>
+                  <template v-slot:left> <span>查询时间</span> </template>
+                  <template v-slot:right>
+                    <el-date-picker
+                      v-model="dateValue"
+                      type="daterange"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      @change="datePick"
+                    >
+                    </el-date-picker>
                   </template>
                 </filter-item>
               </el-col>
@@ -93,71 +168,162 @@
               <el-button
                 size="small"
                 style="margin-left: 10px;"
-                @click="handleCreate"
+                @click="handleReset"
               >
                 重置
               </el-button>
             </div>
           </el-col>
         </el-row>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="日期" width="180">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          element-loading-text="Loading"
+          fit
+          highlight-current-row
+          loading
+        >
+          <el-table-column prop="orgName" label="名称" width="180">
           </el-table-column>
-          <el-table-column prop="name" label="姓名" width="180">
+          <el-table-column prop="overRatio" label="平均超时率" width="180">
           </el-table-column>
-          <el-table-column prop="address" label="地址"> </el-table-column>
+          <el-table-column prop="partNum" label="审批总人数"> </el-table-column>
+          <el-table-column prop="personPassTime" label="人均耗时">
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.personPassTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="procDefNum" label="模版总数" />
+          <el-table-column label="平均超时">
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.processOverTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="totalProcessCnt" label="流程总数" />
+          <el-table-column prop="totalOverTime" label="超时总长" />
+          <el-table-column prop="totalPassTime" label="耗时总长">
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.totalPassTime) }}
+            </template>
+          </el-table-column>
         </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          :page.sync="listQuery.pageNo"
+          :limit.sync="listQuery.pageSize"
+          @pagination="getList"
+        />
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+import { fetchSelectTemplate, fetchSelectDepartment } from "@/api/rule";
+import { fetchList } from "@/api/category";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
+import Pagination from "@/components/Pagination";
+import moment from "moment";
+import getDuration from "@/utils/getDuration";
 
 export default {
-  components: { FilterItem, BreadText },
+  components: { Pagination, FilterItem, BreadText },
   data() {
     return {
-      activeName: "first",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      listLoading: false,
+      activeName: "section",
+      list: [],
+      selectDepartmentData: [],
+      selectTemplateData: [],
+      tableData: [],
+      dateValue: [],
+      total: 0,
+      getDuration,
       listQuery: {
-        title: "",
-        limit: 20
+        pageNo: 1,
+        pageSize: 10,
+        orgCode: undefined,
+        appKey: undefined,
+        startTime: null,
+        endTime: null
       }
     };
   },
+  created() {
+    this.getList("procOrgPage");
+    this.getSelectDepartment();
+    this.getSelectTemplate();
+  },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    handleClick() {
+      this.getList();
+    },
+    async getList() {
+      this.listLoading = true;
+      const { data, totalCount } = await fetchList({
+        condition: {
+          pageNo: this.listQuery.pageNo,
+          pageSize: this.listQuery.pageSize,
+          sqlKey:
+            this.activeName === "section" ? "procOrgPage" : "procTypePage",
+          extParam: {
+            createOrgCode: this.listQuery.orgCode,
+            appKey: this.listQuery.appKey,
+            startTime: this.listQuery.startTime
+              ? moment(parseInt(this.listQuery.startTime)).format(
+                  "YYYY-MM-DD hh:mm:ss"
+                )
+              : this.listQuery.startTime,
+            endTime: this.listQuery.endTime
+              ? moment(parseInt(this.listQuery.endTime)).format(
+                  "YYYY-MM-DD HH:mm:ss"
+                )
+              : this.listQuery.endTime
+          }
+        }
+      });
+      this.total = totalCount;
+      this.list = data;
+      this.listLoading = false;
+    },
+    async getSelectDepartment() {
+      const { data } = await fetchSelectDepartment();
+      this.selectDepartmentData = data;
+    },
+    async getSelectTemplate() {
+      const { data } = await fetchSelectTemplate();
+      this.selectTemplateData = data;
+    },
+    datePick(value) {
+      if (value == null) {
+        this.listQuery.startTime = null;
+        this.listQuery.endTime = null;
+      } else {
+        this.listQuery.startTime = new Date(value[0]).getTime();
+        this.listQuery.endTime = new Date(value[1]).getTime();
+        console.log(
+          this.listQuery.startTime,
+          this.listQuery.endTime,
+          "endTime"
+        );
+      }
     },
     handleSearch() {
-      console.log("search");
+      this.getList();
     },
-    handleCreate() {
-      console.log("create");
+    handleReset() {
+      this.listQuery = {
+        pageNo: 1,
+        pageSize: 10,
+        orgCode: undefined,
+        appKey: undefined,
+        startTime: null,
+        endTime: null
+      };
+      this.dateValue = [];
+      this.getList();
     }
   }
 };

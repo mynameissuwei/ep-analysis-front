@@ -14,7 +14,10 @@
               <el-input v-model="form.roleName"></el-input>
             </el-form-item>
             <el-form-item label="权限编码" prop="roleId">
-              <el-input v-model="form.roleId"></el-input>
+              <el-input
+                v-model="form.roleId"
+                :disabled="this.id ? true : false"
+              ></el-input>
             </el-form-item>
             <el-form-item label="权限描述" prop="roleDesc">
               <el-input type="textarea" v-model="form.roleDesc"></el-input>
@@ -141,6 +144,7 @@ export default {
       roleUserData: [],
       roleEditUserData: [],
       userList: [],
+      contrastUserLit: [],
       rules: {
         roleName: [
           { required: true, message: "请输入权限名称", trigger: "blur" },
@@ -290,6 +294,7 @@ export default {
       const id = this.id;
       fetchRoleUser({ roleId: id }).then(res => {
         this.userList = res.data;
+        this.contrastUserLit = res.data;
       });
     },
     handleSelectionChange(val) {

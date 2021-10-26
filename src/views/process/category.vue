@@ -5,10 +5,20 @@
         <card-container>
           <el-row :gutter="20">
             <el-col :span="12">
-              <pie-chart id="leftChart" />
+              <pie-chart
+                id="leftChart"
+                :data="leftChartData"
+                :getCasCadePie="getCasCadePie"
+                type="category"
+              />
             </el-col>
             <el-col :span="12">
-              <pie-chart id="rightChart" />
+              <pie-chart
+                id="rightChart"
+                :data="rightChartData"
+                :getCasCadePie="getCasCadePie"
+                type="section"
+              />
             </el-col>
           </el-row>
         </card-container>
@@ -18,60 +28,60 @@
           <el-row type="flex" justify="space-around">
             <el-col :span="4">
               <display-card
-                cardTitle="258"
+                :cardTitle="pieMap.procDefNum"
                 cardText="模板总数"
                 svgText="template"
               />
               <display-card
-                cardTitle="258"
+                :cardTitle="getDuration(pieMap.totalPassTime)"
                 cardText="耗时总长"
                 svgText="overtime"
               />
             </el-col>
             <el-col :span="4">
               <display-card
-                cardTitle="258"
+                :cardTitle="pieMap.totalProcessCnt"
                 cardText="流程总数"
                 svgText="flow"
               />
               <display-card
-                cardTitle="258"
+                :cardTitle="getDuration(pieMap.processPassTime)"
                 cardText="平均耗时"
                 svgText="timeConsume"
               />
             </el-col>
             <el-col :span="4">
               <display-card
-                cardTitle="258"
+                :cardTitle="pieMap.finishRatio"
                 cardText="完成率"
                 svgText="complete"
               />
               <display-card
-                cardTitle="258"
+                :cardTitle="pieMap.totalOverTime"
                 cardText="超时总长"
                 svgText="overtime"
               />
             </el-col>
             <el-col :span="4">
               <display-card
-                cardTitle="258"
+                :cardTitle="pieMap.partNum"
                 cardText="审批总人数"
                 svgText="people"
               />
               <display-card
-                cardTitle="258"
+                :cardTitle="pieMap.processOverTime"
                 cardText="平均超时"
                 svgText="overtime"
               />
             </el-col>
             <el-col :span="4">
               <display-card
-                cardTitle="258"
+                :cardTitle="getDuration(pieMap.personPassTime)"
                 cardText="人均耗时"
                 svgText="timeConsume"
               />
               <display-card
-                cardTitle="258"
+                :cardTitle="toPercent(pieMap.overRatio)"
                 cardText="平均超时率"
                 svgText="overtime"
               />
@@ -87,18 +97,71 @@
 </template>
 
 <script>
+import { fetchExecSqlToPie, fetchCasCadePie } from "@/api/category";
 import DisplayCard from "@/components/DisplayCard";
 import CardContainer from "@/components/CardContainer";
 import PieChart from "./components/PieChart";
 import CategoryTable from "./components/category-table";
+import toPercent from "@/utils/toPercent";
+import getDuration from "@/utils/getDuration";
 
 export default {
   name: "Category",
+  data() {
+    return {
+      leftChartData: [],
+      rightChartData: [],
+      pieMap: {},
+      toPercent,
+      getDuration
+    };
+  },
   components: {
     DisplayCard,
     PieChart,
     CategoryTable,
     CardContainer
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.getExecSqlToPie("appNamePie");
+      this.getExecSqlToPie("orgPieList");
+      this.getCasCadePie();
+    },
+    async getExecSqlToPie(pieType) {
+      const { data } = await fetchExecSqlToPie({
+        condition: {
+          sqlKey: pieType
+        }
+      });
+      if (pieType === "appNamePie") {
+        let leftChartData = data.map(item => ({
+          name: item.appName,
+          value: item.procDefNum,
+          appKey: item.appKey
+        }));
+        this.leftChartData = leftChartData;
+      } else {
+        let rightChartData = data.map(item => ({
+          name: item.orgName,
+          value: item.procDefNum,
+          orgCode: item.orgCode
+        }));
+        this.rightChartData = rightChartData;
+      }
+    },
+    async getCasCadePie(params) {
+      const { data } = await fetchCasCadePie({
+        condition: {
+          sqlKey: "pieCasCadeMap",
+          extParam: params
+        }
+      });
+      this.pieMap = data;
+    }
   }
 };
 </script>
