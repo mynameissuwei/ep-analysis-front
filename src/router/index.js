@@ -56,7 +56,7 @@ export const constantRoutes = [
         component: () => import("@/views/process/moduleMore"),
         hidden: true,
         meta: {
-          title: "查看更多模板",
+          title: "查看模板",
           noCache: true,
           activeMenu: "/process/module"
         }

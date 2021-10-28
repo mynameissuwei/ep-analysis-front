@@ -9,7 +9,7 @@
       <el-col :span="12" :offset="0">
         <card-container>
           <div>
-            this is ok
+            <module-card :itemDetail="itemDetail" />
           </div>
         </card-container>
       </el-col>
@@ -19,33 +19,52 @@
 
 <script>
 import G6 from "@antv/g6";
-import { fetchFlow } from "@/api/module";
+import { fetchFlow, fetchItemDetail } from "@/api/module";
 import CardContainer from "@/components/CardContainer";
+import ModuleCard from "./components/ModuleCard";
 
 export default {
   props: ["id"],
+  data() {
+    return {
+      itemDetail: {}
+    };
+  },
   components: {
-    CardContainer
+    CardContainer,
+    ModuleCard
   },
   created() {
-    this.getFlow();
+    // this.getFlow();
+    this.getItemDetail();
   },
   mounted() {
     this.init();
   },
   methods: {
-    getFlow() {
-      this.listLoading = true;
-      fetchFlow({
-        entID: 0,
-        processDeploymentId: this.id
+    // getFlow() {
+    //   this.listLoading = true;
+    //   fetchFlow({
+    //     entID: 0,
+    //     processDeploymentId: this.id
+    //   }).then(response => {
+    //     const { data, totalCount } = response;
+    //     this.list = data;
+    //     this.total = totalCount;
+    //     setTimeout(() => {
+    //       this.listLoading = false;
+    //     }, 1.5 * 1000);
+    //   });
+    // },
+    getItemDetail() {
+      fetchItemDetail({
+        condition: {
+          sqlKey: "procAnalyItemMap",
+          extParam: { procDefKey: this.id }
+        }
       }).then(response => {
-        const { data, totalCount } = response;
-        this.list = data;
-        this.total = totalCount;
-        setTimeout(() => {
-          this.listLoading = false;
-        }, 1.5 * 1000);
+        const { data } = response;
+        this.itemDetail = data;
       });
     },
     init() {

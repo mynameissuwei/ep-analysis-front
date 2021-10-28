@@ -16,6 +16,14 @@ export function fetchListMore(params) {
   });
 }
 
+export function fetchItemDetail(params) {
+  return request({
+    url: "api/ck/execSqlToMap",
+    method: "get",
+    params
+  });
+}
+
 export function fetchFlow(params) {
   return request({
     url: "/bpmnmodel/selectFnEntBpmnModelBpmnByProcessDeploymentId",
