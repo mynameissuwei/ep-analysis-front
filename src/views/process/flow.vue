@@ -13,7 +13,11 @@
               >
               </el-tab-pane>
             </el-tabs>
-            <bar-chart text="模板流程增长趋势" :execSqlToList="execSqlToList" />
+            <bar-chart
+              id="flowChart"
+              text="模板流程增长趋势"
+              :execSqlToList="execSqlToList"
+            />
           </div>
         </el-card>
       </el-col>
@@ -124,10 +128,6 @@ export default {
 }
 .bar-container {
   position: relative;
-  #chart {
-    width: 100%;
-    height: 316px;
-  }
   .el-tabs {
     width: 180px;
     position: absolute;

@@ -1,7 +1,35 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :span="24">
+        <card-container>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <pie-chart
+                id="leftChart"
+                :data="leftChartData"
+                :getCasCadePie="getCasCadePie"
+                title="类别饼图"
+                type="category"
+                height="500px"
+              />
+            </el-col>
+            <el-col :span="12">
+              <pie-chart
+                id="rightChart"
+                :data="rightChartData"
+                :getCasCadePie="getCasCadePie"
+                title="部门饼图"
+                type="section"
+                height="500px"
+              />
+            </el-col>
+          </el-row>
+        </card-container>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <!-- <el-col :span="12">
         <card-container>
           <el-row :gutter="20">
             <el-col :span="12">
@@ -22,8 +50,8 @@
             </el-col>
           </el-row>
         </card-container>
-      </el-col>
-      <el-col :span="12">
+      </el-col> -->
+      <el-col :span="24">
         <card-container>
           <el-row type="flex" justify="space-around">
             <el-col :span="4">
@@ -166,4 +194,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#leftChart {
+  padding-top: 40px;
+}
+#rightChart {
+  padding-top: 40px;
+}
+</style>

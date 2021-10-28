@@ -5,7 +5,7 @@
       <!-- left search -->
       <el-col :span="18">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
               <template v-slot:left> <span>归属部门</span> </template>
               <template v-slot:right>
@@ -24,7 +24,7 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
               <template v-slot:left> <span>模板类别</span> </template>
               <template v-slot:right>
@@ -43,7 +43,7 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
               <template v-slot:left> <span>模板名称</span> </template>
               <template v-slot:right>

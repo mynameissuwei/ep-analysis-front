@@ -1,5 +1,5 @@
 <template>
-  <div id="chart" />
+  <div :id="id" style=" width:100%; height: 316px;" />
 </template>
 
 <script>
@@ -14,6 +14,10 @@ export default {
     },
     execSqlToList: {
       type: Object
+    },
+    id: {
+      type: String,
+      default: "chart"
     }
   },
   data() {
@@ -49,7 +53,7 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(document.getElementById("chart"));
+      this.chart = echarts.init(document.getElementById(this.id));
       this.chart.setOption(this.getOption());
     },
     getOption() {

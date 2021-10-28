@@ -29,6 +29,10 @@ export default {
     },
     type: {
       type: String
+    },
+    title: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -67,7 +71,6 @@ export default {
       this.chart = echarts.init(document.getElementById(this.id));
       this.chart.setOption(this.getOption());
       this.chart.on("click", param => {
-        console.log(param, "param");
         this.getCasCadePie(
           this.type === "category"
             ? { appKey: param.data.appKey }
@@ -78,6 +81,10 @@ export default {
     getOption() {
       console.log(this.data, "datadata");
       return {
+        title: {
+          text: this.title,
+          left: "center"
+        },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -87,7 +94,7 @@ export default {
             name: "Nightingale Chart",
             type: "pie",
             center: ["50%", "50%"],
-            roseType: "area",
+            // roseType: "area",
             itemStyle: {
               borderRadius: 8
             },

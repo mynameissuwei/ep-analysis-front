@@ -39,6 +39,8 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE2_API]: {
+        // 泛能网
+        // target: "http://fanneng-cloud-app-provider.com",
         // 吴路路开发接口
         target: "https://efficiency-analysis-backend.dev.ennew.com",
         // 本地开发接口

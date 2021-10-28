@@ -5,19 +5,52 @@
       <!-- left search -->
       <el-col :span="18">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
+              <template v-slot:left> <span>归属部门</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-select
+                  v-model="listQuery.orgCode"
+                  clearable
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in selectDepartmentData"
+                    :key="item.orgCode"
+                    :label="item.orgName"
+                    :value="item.orgCode"
+                  />
+                </el-select>
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
+              <template v-slot:left> <span>模板类别</span> </template>
               <template v-slot:right>
-                <el-input v-model="listQuery.title" placeholder="搜索名称" />
+                <el-select
+                  v-model="listQuery.appKey"
+                  clearable
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in selectTemplateData"
+                    :key="item.appKey"
+                    :label="item.appName"
+                    :value="item.appKey"
+                  />
+                </el-select>
+              </template>
+            </filter-item>
+          </el-col>
+          <el-col :span="8">
+            <filter-item>
+              <template v-slot:left> <span>模板名称</span> </template>
+              <template v-slot:right>
+                <el-input
+                  v-model="listQuery.procDefName"
+                  placeholder="请输入"
+                />
               </template>
             </filter-item>
           </el-col>
@@ -32,70 +65,178 @@
           <el-button
             size="small"
             style="margin-left: 10px;"
-            @click="handleCreate"
+            @click="handleReset"
           >
             重置
           </el-button>
         </div>
       </el-col>
     </el-row>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"> </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="address" label="地址"> </el-table-column>
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      fit
+      highlight-current-row
+    >
+      <el-table-column label="模版类别">
+        <template slot-scope="scope">
+          <span @click="textClick('process_890537162274856960:1:2964916')">{{
+            scope.row.appName
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="平均超时">
+        <template slot-scope="scope">
+          {{ scope.row.processOverTime }}
+        </template>
+      </el-table-column>
+      <el-table-column label="平均耗时">
+        <template slot-scope="scope">
+          {{ scope.row.personPassTime }}
+        </template>
+      </el-table-column>
+      <el-table-column label="平均超时率">
+        <template slot-scope="scope">
+          {{ scope.row.finishRatio }}
+        </template>
+      </el-table-column>
     </el-table>
+
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.current"
+      :limit.sync="listQuery.size"
+      @pagination="getList"
+    />
   </div>
 </template>
 
 <script>
+import { fetchSelectDepartment, fetchSelectTemplate } from "@/api/rule";
+import { fetchList } from "@/api/module";
+import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
+import rangeNumber from "@/utils/numberRange";
 
 export default {
-  components: { FilterItem, BreadText },
+  components: { Pagination, FilterItem, BreadText },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: "success",
+        draft: "gray",
+        deleted: "danger"
+      };
+      return statusMap[status];
+    }
+  },
   data() {
     return {
-      activeName: "first",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      list: null,
+      total: 0,
+      listLoading: true,
+      checkList: [],
       listQuery: {
-        title: "",
-        limit: 20
-      }
+        pageNo: 1,
+        pageSize: 10,
+        orgCode: undefined,
+        appKey: undefined,
+        procDefName: undefined
+      },
+      value: 0,
+      selectDepartmentData: [],
+      selectTemplateData: [],
+      rangeNumber: rangeNumber(),
+      isSelected: false
     };
   },
+  created() {
+    this.getList();
+    this.getSelectDepartment();
+    this.getSelectTemplate();
+  },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    async getList() {
+      this.listLoading = true;
+      const { data, totalCount } = await fetchList({
+        condition: {
+          extParam: {
+            createOrgCode: this.listQuery.orgCode,
+            appKey: this.listQuery.appKey,
+            procDefName: this.listQuery.procDefName
+          },
+          pageNo: this.listQuery.pageNo,
+          pageSize: this.listQuery.pageSize,
+          sqlKey: "procDefDetailPage"
+        }
+      });
+      this.total = totalCount;
+      console.log(data, "datadata");
+      this.list = data;
+      this.listLoading = false;
+    },
+    async getSelectDepartment() {
+      const { data } = await fetchSelectDepartment();
+      this.selectDepartmentData = data;
+    },
+    async getSelectTemplate() {
+      const { data } = await fetchSelectTemplate();
+      this.selectTemplateData = data;
     },
     handleSearch() {
-      console.log("search");
+      this.getList();
     },
-    handleCreate() {
-      console.log("create");
+    handleReset() {
+      this.listQuery = {
+        current: 1,
+        size: 10,
+        orgCode: undefined,
+        appKey: undefined,
+        procDefName: undefined
+      };
+      this.getList();
+    },
+
+    overTimeDeploy(row) {
+      this.$router.push({
+        name: "createRule",
+        params: { id: row.procDefKey }
+      });
+    },
+    textClick(id) {
+      this.$router.push({
+        name: "moduleFlow",
+        params: {
+          id
+        }
+      });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-checkbox {
+  display: block;
+  margin-bottom: 22px;
+}
+.content {
+  margin: 20px 0px;
+}
+.content-text {
+  margin-right: 20px;
+}
+.content {
+  .el-select {
+    width: 100px;
+    margin-right: 10px;
+  }
+}
+.deployText {
+  margin-left: 10px;
+}
+</style>

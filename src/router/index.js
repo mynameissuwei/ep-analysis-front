@@ -51,6 +51,29 @@ export const constantRoutes = [
         meta: { title: "模板分析" }
       },
       {
+        path: "module/more",
+        name: "moduleMore",
+        component: () => import("@/views/process/moduleMore"),
+        hidden: true,
+        meta: {
+          title: "查看更多模板",
+          noCache: true,
+          activeMenu: "/process/module"
+        }
+      },
+      {
+        path: "module/flow:id?",
+        name: "moduleFlow",
+        component: () => import("@/views/process/moduleFlow"),
+        hidden: true,
+        props: true,
+        meta: {
+          title: "查看流程",
+          noCache: true,
+          activeMenu: "/process/module"
+        }
+      },
+      {
         path: "flow",
         component: () => import("@/views/process/flow"),
         name: "Flow",
@@ -112,6 +135,18 @@ export const constantRoutes = [
           noCache: true,
           activeMenu: "/rule/index"
         }
+      }
+    ]
+  },
+  {
+    path: "/ops",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/ops"),
+        name: "ops",
+        meta: { title: "统一运维", icon: "el-icon-s-help" }
       }
     ]
   },
