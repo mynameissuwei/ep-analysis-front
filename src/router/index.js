@@ -125,11 +125,10 @@ export const constantRoutes = [
         meta: { title: "规则配置", icon: "el-icon-s-help" }
       },
       {
-        path: "index/create/:id?",
+        path: "index/create",
         name: "createRule",
         component: () => import("@/views/rule/create"),
         hidden: true,
-        props: true,
         meta: {
           title: "添加规则",
           noCache: true,

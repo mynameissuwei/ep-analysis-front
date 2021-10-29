@@ -2,14 +2,15 @@
   <el-container>
     <div class="createRule app-container">
       <bread-text name="模板超时配置"></bread-text>
-      <el-checkbox-group v-model="checkList">
-        <el-checkbox label="以模板平台内部配置规则计算"></el-checkbox>
-        <el-checkbox label="不配置超时规则"></el-checkbox>
-        <el-checkbox label="自定义超时规则"></el-checkbox>
-      </el-checkbox-group>
+      <el-radio-group v-model="radio">
+        <el-radio :label="0">以模板平台内部配置规则计算</el-radio>
+        <el-radio :label="1">自定义超时规则</el-radio>
+        <el-radio :label="2">不配置超时规则</el-radio>
+      </el-radio-group>
+
       <div class="content">
         <span class="template-class">模板名称:</span>
-        <span>请假模板</span>
+        <span>{{ data.procDefName }}</span>
         <span class="content-text">模板超时:</span>
         <span v-if="!isSelected">{{ value }}</span>
         <el-select v-else v-model="value" placeholder="请选择" size="mini">
@@ -34,15 +35,18 @@
         <div class="title">模板节点</div>
       </div>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="日期" width="180">
+        <el-table-column prop="taskDefKey" label="节点编号" width="180">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
+        <el-table-column prop="taskDefName" label="节点名称" width="180">
         </el-table-column>
-        <el-table-column prop="address" label="地址"> </el-table-column>
-        <el-table-column width="350px" label="Title">
+        <el-table-column width="350px" label="节点超时">
           <template slot-scope="{ row }">
             <template v-if="row.edit">
-              <el-select v-model="row.title" placeholder="请选择" size="small">
+              <el-select
+                v-model="row.overTime"
+                placeholder="请选择"
+                size="small"
+              >
                 <el-option
                   v-for="item in rangeNumber"
                   :key="item"
@@ -61,7 +65,7 @@
                 取消
               </el-button>
             </template>
-            <span v-else>{{ row.title }}</span>
+            <span v-else>{{ row.overTime }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="230">
@@ -99,16 +103,15 @@
 
 <script>
 import BreadText from "@/components/Breadtext";
-import { fetchTimeConfig } from "@/api/rule";
+import { fetchTimeConfig, postTimeConfig } from "@/api/rule";
 import rangeNumber from "@/utils/numberRange";
 
 export default {
-  props: ["id"],
   components: { BreadText },
   data() {
     return {
       data: {},
-      checkList: [],
+      radio: 0,
       isSelected: false,
       value: 0,
       rangeNumber: rangeNumber(),
@@ -116,44 +119,25 @@ export default {
     };
   },
   created() {
-    if (this.id) {
-      this.getEditData();
-    }
+    this.getEditData();
   },
   methods: {
     getEditData() {
-      const id = this.id;
-      fetchTimeConfig(id).then(res => {
+      const query = this.$route.query;
+      fetchTimeConfig({
+        condition: {
+          appKey: "multiTenant",
+          procDefKey: "process_890183536603914240:1:2964640"
+        }
+      }).then(res => {
         this.data = res.data;
-        let tableData = [
-          {
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-            title: "123"
-          },
-          {
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1517 弄",
-            title: "123"
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1519 弄",
-            title: "123"
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1516 弄",
-            title: "123"
-          }
-        ];
+        this.value = res.data.procOverTime;
+        this.radio = Number(res.data.configType);
+
+        let tableData = JSON.parse(res.data.taskOverConfig);
         this.tableData = tableData.map(v => {
           this.$set(v, "edit", false);
-          v.originalTitle = v.title;
+          v.originalTitle = v.overTime;
           return v;
         });
       });
@@ -163,32 +147,29 @@ export default {
     },
     confirmEdit(row) {
       row.edit = false;
-      row.originalTitle = row.title;
+      row.originalTitle = row.overTime;
     },
     cancelEdit(row) {
-      row.title = row.originalTitle;
+      row.overTime = row.originalTitle;
       row.edit = false;
     },
     createData() {
-      // this.$refs["dataForm"].validate(valid => {
-      //   if (valid) {
-      //     const data = {
-      //       ...this.form,
-      //       audit: this.form.audit ? "1" : "0",
-      //       resIdList: this.$refs.tree.getCheckedKeys()
-      //     };
-      //     createList(data).then(() => {
-      //       this.$router.push("/acount/permission");
-      //       this.$route.params.getList();
-      //       this.$notify({
-      //         title: "Success",
-      //         message: "Created Successfully",
-      //         type: "success",
-      //         duration: 2000
-      //       });
-      //     });
-      //   }
-      // });
+      const data = {
+        ...this.data,
+        ...this.$route.query,
+        configType: this.radio,
+        procOverTime: this.value,
+        taskOverConfig: JSON.stringify(this.tableData)
+      };
+      postTimeConfig(data).then(() => {
+        this.$router.push("/rule/index");
+        this.$notify({
+          title: "Success",
+          message: "Created Successfully",
+          type: "success",
+          duration: 2000
+        });
+      });
     }
   }
 };

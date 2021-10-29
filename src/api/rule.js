@@ -22,9 +22,26 @@ export function fetchSelectTemplate() {
   });
 }
 
-export function fetchTimeConfig(id) {
+export function fetchTimeConfig(params) {
   return request({
-    url: `/api/rule/config/${id}`,
-    method: "get"
+    url: `/api/rule/config`,
+    method: "get",
+    params
+  });
+}
+
+export function postTimeConfig(data) {
+  return request({
+    url: `/api/rule/config/save`,
+    method: "post",
+    data
+  });
+}
+
+export function batchSave(data) {
+  return request({
+    url: `/api/rule/config/batchSave`,
+    method: "post",
+    data
   });
 }

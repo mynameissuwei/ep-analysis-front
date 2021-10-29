@@ -2,7 +2,7 @@
   <div>
     <card-container>
       <el-row :gutter="20" style="padding: 16px 16px">
-        <el-col :span="4" v-for="item in rightMap">
+        <el-col :span="4" v-for="(item, index) in rightMap" :key="index">
           <div class="ops-card" :class="item.className">
             <div class="ops-card-left">
               <div class="ops-card-num">{{ item.num }}</div>

@@ -88,7 +88,10 @@
       element-loading-text="Loading"
       fit
       highlight-current-row
+      @selection-change="handleSelectionChange"
     >
+      >
+      <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="模板名称">
         <template slot-scope="scope">
           <span>{{ scope.row.appName }}</span>
@@ -123,11 +126,11 @@
 
     <el-dialog title="批量配置" :visible.sync="dialogVisible" width="670px">
       <div class="diag-container">
-        <el-checkbox-group v-model="checkList">
-          <el-checkbox label="以模板平台内部配置规则计算"></el-checkbox>
-          <el-checkbox label="不配置超时规则"></el-checkbox>
-          <el-checkbox label="自定义超时规则"></el-checkbox>
-        </el-checkbox-group>
+        <el-radio-group v-model="radio">
+          <el-radio :label="0">以模板平台内部配置规则计算</el-radio>
+          <el-radio :label="1">自定义超时规则</el-radio>
+          <el-radio :label="2">不配置超时规则</el-radio>
+        </el-radio-group>
         <div class="content">
           <span class="content-text">模板超时: </span>
           <span v-if="!isSelected">{{ value }}</span>
@@ -147,7 +150,7 @@
             >配置</span
           >
           <span v-else>
-            <span @click="isSelected = false" class="actionStyle ">保存</span>
+            <span @click="isSelected = false" class="actionStyle">保存</span>
             <span @click="isSelected = false" class="actionStyle ">取消</span>
           </span>
         </div>
@@ -168,7 +171,8 @@
 import {
   fetchList,
   fetchSelectDepartment,
-  fetchSelectTemplate
+  fetchSelectTemplate,
+  batchSave
 } from "@/api/rule";
 import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
@@ -202,10 +206,12 @@ export default {
         procDefName: undefined
       },
       value: 0,
+      radio: 0,
       selectDepartmentData: [],
       selectTemplateData: [],
       rangeNumber: rangeNumber(),
-      isSelected: false
+      isSelected: false,
+      multipleSelection: []
     };
   },
   created() {
@@ -230,6 +236,9 @@ export default {
     async getSelectTemplate() {
       const { data } = await fetchSelectTemplate();
       this.selectTemplateData = data;
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     handleSearch() {
       this.getList();
@@ -262,14 +271,29 @@ export default {
     overTimeDeploy(row) {
       this.$router.push({
         name: "createRule",
-        params: { id: row.procDefKey }
+        query: { procDefKey: row.procDefKey, appKey: row.appKey }
       });
     },
     batchDeploy() {
+      this.radio = 0;
+      this.value = 0;
       this.dialogVisible = true;
     },
     onSubmit() {
-      console.log("onSubmit");
+      let array = this.multipleSelection.map(item => ({
+        ...item,
+        configType: this.radio,
+        procOverTime: this.value
+      }));
+      batchSave(array).then(() => {
+        this.getList();
+        this.$notify({
+          title: "Success",
+          message: "Created Successfully",
+          type: "success",
+          duration: 2000
+        });
+      });
     }
   }
 };

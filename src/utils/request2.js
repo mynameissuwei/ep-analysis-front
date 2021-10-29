@@ -1,7 +1,7 @@
 import axios from "axios";
 import { MessageBox, Message } from "element-ui";
 import store from "@/store";
-import { getToken } from "@/utils/auth";
+import { getTokenId } from "@/utils/auth";
 
 // create an axios instance
 const service2 = axios.create({
@@ -13,19 +13,24 @@ const service2 = axios.create({
 // request interceptor
 service2.interceptors.request.use(
   config => {
-    // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers["X-Token"] = getToken();
+    if (config.method === "post" || config.method === "put") {
+      getTokenId().then(res => {
+        console.log(res, "ressss");
+        config.headers["X-Token"] = res.data;
+      });
+      // config.headers["X-Token"] = getTokenId();
     }
+    // if (store.getters.token) {
+    //   // let each request carry token
+    //   // ['X-Token'] is a custom headers key
+    //   // please modify it according to the actual situation
+    //   config.headers["X-Token"] = getToken();
+    // }
     return config;
   },
   error => {
     // do something with request error
-    console.log(error); // for debug
+    // for debug
     return Promise.reject(error);
   }
 );
@@ -75,7 +80,7 @@ service2.interceptors.response.use(
     }
   },
   error => {
-    console.log("err" + error); // for debug
+    // for debug
     Message({
       message: error.message,
       type: "error",

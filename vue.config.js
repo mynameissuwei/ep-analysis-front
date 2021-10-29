@@ -43,6 +43,7 @@ module.exports = {
         // target: "http://fanneng-cloud-app-provider.com",
         // 吴路路开发接口
         target: "https://efficiency-analysis-backend.dev.ennew.com",
+        // target: "http://10.19.180.253:8080",
         // 本地开发接口
         // target: "http://10.20.49.40:8080",
         // target: "https://biz-efficiency-plan-service.dev.ennew.com/",

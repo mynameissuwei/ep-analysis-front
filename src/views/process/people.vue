@@ -15,7 +15,8 @@
                 <el-col
                   class="col-flex"
                   :span="8"
-                  v-for="item in effData.slice(0, 3)"
+                  v-for="(item, index) in effData.slice(0, 3)"
+                  :key="index"
                 >
                   <el-avatar :src="item.user_head_image"></el-avatar>
                   <div style="margin-top:10px">
@@ -27,7 +28,8 @@
                 <el-col
                   class="col-flex"
                   :span="8"
-                  v-for="item in effData.slice(3, 6)"
+                  v-for="(item, index) in effData.slice(3, 6)"
+                  :key="index"
                 >
                   <el-avatar :src="item.user_head_image"></el-avatar>
                   <div style="margin-top:10px">
@@ -59,7 +61,8 @@
                 <el-col
                   class="col-flex"
                   :span="8"
-                  v-for="item in workerData.slice(0, 3)"
+                  v-for="(item, index) in workerData.slice(0, 3)"
+                  :key="index"
                 >
                   <el-avatar :src="item.user_head_image"></el-avatar>
                   <div style="margin-top:10px">
@@ -71,7 +74,8 @@
                 <el-col
                   class="col-flex"
                   :span="8"
-                  v-for="item in workerData.slice(3, 6)"
+                  v-for="(item, index) in workerData.slice(3, 6)"
+                  :key="index"
                 >
                   <el-avatar :src="item.user_head_image"></el-avatar>
                   <div style="margin-top:10px">
@@ -113,7 +117,8 @@
                 <el-col
                   class="col-flex"
                   :span="8"
-                  v-for="item in overTimeData.slice(0, 3)"
+                  v-for="(item, index) in overTimeData.slice(0, 3)"
+                  :key="index"
                 >
                   <el-avatar :src="item.user_head_image"></el-avatar>
                   <div style="margin-top:10px">
@@ -125,7 +130,8 @@
                 <el-col
                   class="col-flex"
                   :span="8"
-                  v-for="item in overTimeData.slice(3, 6)"
+                  v-for="(item, index) in overTimeData.slice(3, 6)"
+                  :key="index"
                 >
                   <el-avatar :src="item.user_head_image"></el-avatar>
                   <div style="margin-top:10px">

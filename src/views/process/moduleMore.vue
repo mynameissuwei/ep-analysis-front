@@ -8,12 +8,12 @@
     <div>
       <card-container>
         <div style="padding-left: 350px; padding-top: 40px">
-          <div style="padding: 30px 30px" v-for="item in listArray">
+          <div style="padding: 30px 30px" v-for="(item, index) in list">
             <div style="padding-bottom: 20px; color: #E2292C; cursor: pointer;">
-              1、活动预算审批模板
+              {{ index }} . {{ item.defName }}
             </div>
             <div style="padding-left: 25px">
-              月度累计超360次申请,期中超时率100%
+              {{ item.totalPassTime }}
             </div>
           </div>
           <pagination
@@ -42,8 +42,7 @@ export default {
       listQuery: {
         page: 1,
         size: 10
-      },
-      listArray: [1, 2, 3, 4, 5]
+      }
     };
   },
   created() {
@@ -57,6 +56,7 @@ export default {
         condition: { sqlKey: "procAnalyMoreList" }
       }).then(response => {
         const { data, totalCount } = response;
+
         this.list = data;
         this.total = totalCount;
         setTimeout(() => {

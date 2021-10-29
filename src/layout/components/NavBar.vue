@@ -16,8 +16,13 @@
     <el-popover placement="bottom">
       <div class="logout-pop" style="cursor: pointer" @click="logout">退出</div>
       <div class="right-content" slot="reference">
-        <div class="user-name">名字名字名字名字</div>
-        <!-- <img :src="arrow_down" class="arrow-down" /> -->
+        <img
+          src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+          class="user-avatar"
+        />
+
+        <!-- <div class="user-name">名字名字名字名字</div> -->
+        <i class="el-icon-caret-bottom" />
       </div>
     </el-popover>
   </div>
@@ -75,5 +80,11 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.user-avatar {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
 }
 </style>
