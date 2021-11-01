@@ -150,6 +150,30 @@ export const constantRoutes = [
     ]
   },
   {
+    path: "/workbench",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/workbench"),
+        name: "workbench",
+        meta: { title: "工作台", icon: "el-icon-s-help" }
+      }
+    ]
+  },
+  {
+    path: "/operate",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/operate"),
+        name: "operate",
+        meta: { title: "运营大盘", icon: "el-icon-s-help" }
+      }
+    ]
+  },
+  {
     path: "/acount",
     component: Layout,
     redirect: "/acount/user",
