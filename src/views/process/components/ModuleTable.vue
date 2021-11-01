@@ -124,16 +124,6 @@ import rangeNumber from "@/utils/numberRange";
 
 export default {
   components: { Pagination, FilterItem, BreadText },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
-    }
-  },
   data() {
     return {
       list: null,
@@ -175,7 +165,7 @@ export default {
         }
       });
       this.total = totalCount;
-      console.log(data, "datadata");
+
       this.list = data;
       this.listLoading = false;
     },

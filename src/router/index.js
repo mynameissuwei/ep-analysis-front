@@ -145,7 +145,7 @@ export const constantRoutes = [
         path: "index",
         component: () => import("@/views/ops"),
         name: "ops",
-        meta: { title: "统一运维", icon: "el-icon-s-help" }
+        meta: { title: "统一运维", icon: "link" }
       }
     ]
   },
@@ -157,7 +157,29 @@ export const constantRoutes = [
         path: "index",
         component: () => import("@/views/workbench"),
         name: "workbench",
-        meta: { title: "工作台", icon: "el-icon-s-help" }
+        meta: { title: "工作台", icon: "form" }
+      },
+      {
+        path: "templateTable",
+        component: () => import("@/views/workbench/templateTable"),
+        hidden: true,
+        name: "templateTable",
+        meta: {
+          title: "工作台",
+          icon: "el-icon-s-help",
+          activeMenu: "/workbench/index"
+        }
+      },
+      {
+        path: "processTable",
+        component: () => import("@/views/workbench/processTable"),
+        hidden: true,
+        name: "processTable",
+        meta: {
+          title: "工作台",
+          icon: "el-icon-s-help",
+          activeMenu: "/workbench/index"
+        }
       }
     ]
   },
@@ -169,7 +191,7 @@ export const constantRoutes = [
         path: "index",
         component: () => import("@/views/operate"),
         name: "operate",
-        meta: { title: "运营大盘", icon: "el-icon-s-help" }
+        meta: { title: "运营大盘", icon: "eye" }
       }
     ]
   },
@@ -233,8 +255,8 @@ export const constantRoutes = [
         }
       }
     ]
-  }
-  // { path: "*", redirect: "/404", hidden: true }
+  },
+  { path: "*", redirect: "/404", hidden: true }
 ];
 
 const createRouter = () =>
