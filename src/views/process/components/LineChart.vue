@@ -27,7 +27,15 @@ export default {
       default: true
     },
     chartData: {
-      type: Object,
+      type: Array,
+      required: true
+    },
+    xAxisData: {
+      type: Array,
+      required: true
+    },
+    legendData: {
+      type: Array,
       required: true
     }
   },
@@ -61,7 +69,17 @@ export default {
       this.chart = echarts.init(this.$el, "macarons");
       this.setOptions(this.chartData);
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions(chartData) {
+      const series = chartData.map((e,index) => {
+        return {
+          name: this.legendData[index],
+          smooth: true,
+          type: "line",
+          data: e,
+          animationDuration: 2800,
+          animationEasing: "cubicInOut"
+        }
+      })
       this.chart.setOption({
         title: {
           text: "分时图",
@@ -72,7 +90,7 @@ export default {
           }
         },
         xAxis: {
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: this.xAxisData,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -98,47 +116,9 @@ export default {
           }
         },
         legend: {
-          data: ["expected", "actual"]
+          data: this.legendData
         },
-        series: [
-          {
-            name: "expected",
-            itemStyle: {
-              normal: {
-                color: "#FF005A",
-                lineStyle: {
-                  color: "#FF005A",
-                  width: 2
-                }
-              }
-            },
-            smooth: true,
-            type: "line",
-            data: expectedData,
-            animationDuration: 2800,
-            animationEasing: "cubicInOut"
-          },
-          {
-            name: "actual",
-            smooth: true,
-            type: "line",
-            itemStyle: {
-              normal: {
-                color: "#3888fa",
-                lineStyle: {
-                  color: "#3888fa",
-                  width: 2
-                },
-                areaStyle: {
-                  color: "#f3f8ff"
-                }
-              }
-            },
-            data: actualData,
-            animationDuration: 2800,
-            animationEasing: "quadraticOut"
-          }
-        ]
+        series: series
       });
     }
   }

@@ -4,47 +4,47 @@
       <el-row :gutter="20">
         <el-col :span="4">
           <display-card
-            cardTitle="258"
+            :cardTitle="displayCardData.templateTotalAmount"
             cardText="模板总数"
             svgText="template"
           />
           <display-card
-            cardTitle="250"
+            :cardTitle="displayCardData.templateTimeConsuming"
             cardText="模板总耗时"
             svgText="timeConsume"
           />
         </el-col>
         <el-col :span="4">
-          <display-card cardTitle="258" cardText="完成率" svgText="complete" />
+          <display-card :cardTitle="displayCardData.completeRate" cardText="完成率" svgText="complete" />
           <display-card
-            cardTitle="258"
+            :cardTitle="displayCardData.averageTimeConsuming"
             cardText="平均耗时"
             svgText="timeConsume"
           />
         </el-col>
         <el-col :span="8" class="chart-container">
-          <card-chart />
+          <card-chart title="效能评分" :score="efficiencyScore"/>
         </el-col>
         <el-col :span="4">
           <display-card
-            cardTitle="258"
+            :cardTitle="displayCardData.templateTotalExpiredTime"
             cardText="模板总超时"
             svgText="overtime"
           />
           <display-card
-            cardTitle="258"
+            :cardTitle="displayCardData.averageTimeExpired"
             cardText="平均超时"
             svgText="overtime"
           />
         </el-col>
         <el-col :span="4">
           <display-card
-            cardTitle="258"
+            :cardTitle="displayCardData.approveTotalAmount"
             cardText="参与审批总人数"
             svgText="people"
           />
           <display-card
-            cardTitle="258"
+            :cardTitle="displayCardData.humanPerTimeConsuming"
             cardText="人均耗时"
             svgText="timeConsume"
           />
@@ -54,13 +54,15 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <card-container height="478px">
-          <number-card />
-          <event-card />
+          <number-card title="流程总数实时统计" :num="processTotalAmountData"/>
+          <event-card :events="eventsData" />
         </card-container>
       </el-col>
       <el-col :span="16">
         <card-container height="478px" style="padding-top:24px">
-          <line-chart :chart-data="lineChartData" />
+          <line-chart :chart-data="lineChartData.charData"
+                      :legend-data="lineChartData.legendData"
+                      :x-axis-data="lineChartData.xAxisData"/>
         </card-container>
       </el-col>
     </el-row>
@@ -74,25 +76,7 @@ import CardChart from "./components/CardChart";
 import LineChart from "./components/LineChart";
 import NumberCard from "./components/NumberCard";
 import EventCard from "./components/EventCard";
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-};
+import {getEfficiencyData} from "@/api/efficiencyDashboard"
 
 export default {
   name: "Efficiency",
@@ -106,13 +90,119 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: {
+        charData: [
+          [100, 150, 271, 400, 201, 248, 124],
+          [200, 300, 400, 800, 400, 500, 300],
+          [300, 450, 610, 1200, 600, 600, 300],
+          [400, 600, 800, 1600, 800, 900, 400]
+        ],
+        legendData: [ '每小时完成流程数', '每小时超时流程数量','每小时流程超时数', '每小时流程数'],
+        xAxisData: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      displayCardData: {
+        templateTotalAmount: 250,
+        templateTimeConsuming: 250,
+        completeRate: "98%",
+        averageTimeConsuming: 123,
+        templateTotalExpiredTime: 2131,
+        averageTimeExpired: 123,
+        approveTotalAmount: 897,
+        humanPerTimeConsuming: 348,
+      },
+      efficiencyScore: 0.89,
+      eventsData: [
+        {
+          operateName: "吴雷",
+          noticeType: "发起",
+          processName: "流程名称",
+          operateTime: "2021-10-29"
+        },
+        {
+          operateName: "吴雷",
+          noticeType: "发起",
+          processName: "流程名称",
+          operateTime: "2021-10-29"
+        },
+        {
+          operateName: "吴雷",
+          noticeType: "发起",
+          processName: "流程名称",
+          operateTime: "2021-10-29"
+        },
+        {
+          operateName: "吴雷",
+          noticeType: "发起",
+          processName: "流程名称",
+          operateTime: "2021-10-29"
+        }
+      ],
+      processTotalAmountData: 1897,
+      queryParam: {
+        tenantId: "ep-analysis-flink",
+        senderId: "ep-analysis-flink",
+        pageNum: 1,
+        pageSize: 1
+      }
     };
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type];
+    // 轮询方法
+    polling () {
+      this.getEfficiencyDashboardData().then(res => {
+        console.log("getEfficiencyDashboardData start")
+        this.pollingST = setTimeout(() => {
+          clearTimeout(this.pollingST)
+          this.polling()
+        }, 10000)
+      })
+    },
+    async getEfficiencyDashboardData(){
+      getEfficiencyData(this.queryParam)
+        .then(response => {
+          let extra = response.data[0].extra;
+          if(extra) extra = JSON.parse(extra);
+          // 获取分时图数据
+          console.log("/interMsg/list extra:", extra)
+          let timeQuantumStatistics = JSON.parse(extra.timeQuantumStatistics);
+          console.log("/interMsg/list timeQuantumStatistics:", timeQuantumStatistics);
+
+          this.lineChartData.xAxisData = this.convertToXAxisData(timeQuantumStatistics);
+          // this.lineChartData.legendData = this.convertToLegendData(timeQuantumStatistics);
+          this.lineChartData.charData = this.convertToChartData(timeQuantumStatistics);
+
+          // 获取卡片数据
+          this.displayCardData = {...extra}
+          this.displayCardData.completeRate = parseFloat(this.displayCardData.completeRate)*100+"%"
+
+          // 获取效能评分
+          this.efficiencyScore = extra.efficiencyScore/100;
+
+          // 获取流程总数
+          this.processTotalAmountData = parseInt(extra.processTotalAmount);
+
+          // 获取实时事件
+          this.eventsData = JSON.parse(extra.cacheEvent);
+        })
+    },
+    convertToXAxisData(timeQuantumStatistics){
+      return Object.values(timeQuantumStatistics).map(timeQuantumStatistic => timeQuantumStatistic.timeQuantum)
+    },
+    convertToLegendData(timeQuantumStatistics){
+      console.log("convertToLegendData timeQuantumStatistics:", timeQuantumStatistics)
+      // return Object.values(timeQuantumStatistics).map(timeQuantumStatistic => )
+    },
+    convertToChartData(timeQuantumStatistics){
+      return [
+        Object.values(timeQuantumStatistics).map(timeQuantumStatistic => timeQuantumStatistic.hourPerCompleteAmount), //每小时完成流程数
+        Object.values(timeQuantumStatistics).map(timeQuantumStatistic => timeQuantumStatistic.hourPerExpiredProcessAmount), //每小时超时流程数量
+        Object.values(timeQuantumStatistics).map(timeQuantumStatistic => timeQuantumStatistic.hourPerExpiredTime), // 每小时流程超时数
+        Object.values(timeQuantumStatistics).map(timeQuantumStatistic => timeQuantumStatistic.hourPerProcessAmount), // 每小时流程数
+      ]
     }
+  },
+  created() {
+    this.polling();
   }
 };
 </script>

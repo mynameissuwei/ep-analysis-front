@@ -1,40 +1,30 @@
 <template>
   <div class="numberCard">
     <div class="title">
-      <span class="title-text"> 流程总数实时统计</span>
+      <span class="title-text"> {{title}}</span>
       <svg-icon icon-class="statistics" />
     </div>
     <el-row :gutter="10">
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
-      >
-      <el-col :span="3"
-        ><div class="numberText"><div class="content">2</div></div></el-col
+      <el-col :span="3" v-for="i in 8"
+        ><div class="numberText"><div class="content">{{parseInt(num/(Math.pow(10, 8-i)) % 10)}}</div></div></el-col
       >
     </el-row>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    num: {
+      type: Number,
+      required: true
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>
