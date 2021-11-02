@@ -83,7 +83,7 @@
 
 <script>
 import Pagination from "@/components/Pagination";
-import {fetchList} from "@/api/operate";
+import {fetchList, getList} from "@/api/operate";
 import TenantTable from "@/views/process/components/TenantTable";
 import CardContainer from "@/components/CardContainer";
 import Histogram from "@/views/process/components/Histogram";
@@ -112,7 +112,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      const data = await fetchList({
+      const data = await getList({
         currentPage: this.listQuery.pageNo,
         pageSize: this.listQuery.pageSize
       });
