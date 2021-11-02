@@ -1,8 +1,8 @@
 <template>
   <div :id="id" style=" width:100%; height: 100%;"/>
 </template>
-<script>
 
+<script>
 import resize from "../mixins/resize.js";
 
 export default {
@@ -21,19 +21,19 @@ export default {
   },
   data() {
     return {
-      myChart: {},
+      chart: {},
       option: {},
     };
   },
   mounted() {
     let dom = document.getElementById(this.id)
-    this.myChart = this.$echarts.init(dom);
+    this.chart = this.$echarts.init(dom);
     this.initEcharts(this.chartData);
   },
   watch: {
     chartData: {
       handler(newVal, oldVal) {
-        if (this.myChart && newVal) {
+        if (this.chart && newVal) {
           this.initEcharts(this.chartData);
         }
       },
@@ -58,7 +58,7 @@ export default {
         },
         grid: {
           top: "40px",
-          bottom: "20px"
+          bottom: "20px",
         },
         series: [
           {
@@ -77,15 +77,15 @@ export default {
           }
         }
       };
-      this.myChart.setOption(this.option);
+      this.chart.setOption(this.option);
     }
   },
   beforeDestroy() {
-    if (!this.myChart) {
+    if (!this.chart) {
       return;
     }
-    this.myChart.dispose();
-    this.myChart = null;
+    this.chart.dispose();
+    this.chart = null;
   },
 };
 </script>
