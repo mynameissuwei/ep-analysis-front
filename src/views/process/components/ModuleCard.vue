@@ -4,20 +4,24 @@
       <el-col :span="24">
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.overtime"
+            :cardTitle="itemDetail.procDefNum"
             cardText="模板总数"
             svgText="overtime"
           />
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="1234"
+            :cardTitle="itemDetail.totalPassTime"
             cardText="耗时总长"
             svgText="template"
           />
         </div>
         <div class="card-template">
-          <display-card :cardTitle="1234" cardText="流程总数" svgText="flow" />
+          <display-card
+            :cardTitle="itemDetail.totalCnt"
+            cardText="流程总数"
+            svgText="flow"
+          />
         </div>
       </el-col>
     </el-row>
@@ -25,7 +29,7 @@
       <el-col :span="24">
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.timeConsume"
+            :cardTitle="itemDetail.processPassTime"
             cardText="平均耗时"
             svgText="timeConsume"
           />
@@ -39,7 +43,7 @@
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="1234"
+            :cardTitle="itemDetail.totalOverTime"
             cardText="超时总长"
             svgText="overtime"
           />
@@ -50,14 +54,14 @@
       <el-col :span="24">
         <div class="card-template">
           <display-card
-            :cardTitle="1234"
+            :cardTitle="itemDetail.partNum"
             cardText="审批总人数"
             svgText="people"
           />
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="1234"
+            :cardTitle="itemDetail.processOverTime"
             cardText="平均超时"
             svgText="overtime"
           />

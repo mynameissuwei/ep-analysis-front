@@ -26,7 +26,7 @@ export function fetchItemDetail(params) {
 
 export function fetchFlow(params) {
   return request({
-    url: "/bpmnmodel/selectFnEntBpmnModelBpmnByProcessDeploymentId",
+    url: "api/procAnalysis/graph",
     method: "get",
     params
   });

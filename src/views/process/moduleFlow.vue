@@ -27,7 +27,8 @@ export default {
   props: ["id"],
   data() {
     return {
-      itemDetail: {}
+      itemDetail: {},
+      flowChartData: {}
     };
   },
   components: {
@@ -35,27 +36,33 @@ export default {
     ModuleCard
   },
   created() {
-    // this.getFlow();
+    this.getFlow();
     this.getItemDetail();
   },
   mounted() {
     this.init();
   },
+  watch: {
+    flowChartData: {
+      handler(newVal, oldVal) {
+        if (newVal) {
+          this.init();
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
-    // getFlow() {
-    //   this.listLoading = true;
-    //   fetchFlow({
-    //     entID: 0,
-    //     processDeploymentId: this.id
-    //   }).then(response => {
-    //     const { data, totalCount } = response;
-    //     this.list = data;
-    //     this.total = totalCount;
-    //     setTimeout(() => {
-    //       this.listLoading = false;
-    //     }, 1.5 * 1000);
-    //   });
-    // },
+    getFlow() {
+      fetchFlow({
+        source: this.$route.query.source,
+        procDefKey: this.$route.query.procDefKey
+      }).then(response => {
+        console.log(response, "responseresponse");
+        const { data } = response;
+        this.flowChartData = data;
+      });
+    },
     getItemDetail() {
       fetchItemDetail({
         condition: {
@@ -69,194 +76,14 @@ export default {
     },
     init() {
       const data = {
-        nodes: [
-          {
-            id: "1",
-            dataType: "alps",
-            name: "alps_file1",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "2",
-            dataType: "alps",
-            name: "alps_file2",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "3",
-            dataType: "alps",
-            name: "alps_file3",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "4",
-            dataType: "sql",
-            name: "sql_file1",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "5",
-            dataType: "sql",
-            name: "sql_file2",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "6",
-            dataType: "feature_etl",
-            name: "feature_etl_1",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "7",
-            dataType: "feature_etl",
-            name: "feature_etl_1",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          },
-          {
-            id: "8",
-            dataType: "feature_extractor",
-            name: "feature_extractor",
-            conf: [
-              {
-                label: "conf",
-                value: "pai_graph.conf"
-              },
-              {
-                label: "dot",
-                value: "pai_graph.dot"
-              },
-              {
-                label: "init",
-                value: "init.rc"
-              }
-            ]
-          }
-        ],
-        edges: [
-          {
-            source: "1",
-            target: "2"
-          },
-          {
-            source: "1",
-            target: "3"
-          },
-          {
-            source: "2",
-            target: "4"
-          },
-          {
-            source: "3",
-            target: "4"
-          },
-          {
-            source: "4",
-            target: "5"
-          },
-          {
-            source: "5",
-            target: "6"
-          },
-          {
-            source: "6",
-            target: "7"
-          },
-          {
-            source: "6",
-            target: "8"
-          }
-        ]
+        nodes: this.flowChartData.nodes.map(item => ({
+          id: item.id,
+          name: item.name
+        })),
+        edges: this.flowChartData.edges.map(item => ({
+          source: item.source,
+          target: item.target
+        }))
       };
 
       G6.registerNode(

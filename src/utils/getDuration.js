@@ -19,6 +19,8 @@ const getDuration = my_time => {
   // );
   var time = hoursRound;
   return time;
+
+  // return my_time ? time : "";
 };
 
 export default getDuration;

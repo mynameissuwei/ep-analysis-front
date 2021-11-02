@@ -82,9 +82,16 @@
     >
       <el-table-column label="模版类别">
         <template slot-scope="scope">
-          <span @click="textClick('process_890537162274856960:1:2964916')">{{
-            scope.row.appName
-          }}</span>
+          <span
+            style="color: #0F55FA; cursor: pointer"
+            @click="
+              textClick({
+                source: scope.row.source,
+                procDefKey: scope.row.procDefKey
+              })
+            "
+            >{{ scope.row.appName }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column label="平均超时">
@@ -197,12 +204,10 @@ export default {
         params: { id: row.procDefKey }
       });
     },
-    textClick(id) {
+    textClick(query) {
       this.$router.push({
         name: "moduleFlow",
-        params: {
-          id
-        }
+        query
       });
     }
   }
