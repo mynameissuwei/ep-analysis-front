@@ -52,6 +52,12 @@ export const constantRoutes = [
         meta: { title: "效能大盘" }
       },
       {
+        path: "operate",
+        component: () => import("@/views/process/OperateBoard"),
+        name: "Operate",
+        meta: { title: "运营大盘" }
+      },
+      {
         path: "category",
         component: () => import("@/views/process/category"),
         name: "Category",

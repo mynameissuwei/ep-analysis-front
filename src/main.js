@@ -14,7 +14,8 @@ import router from "./router";
 
 import "@/icons"; // icon
 // import "@/permission"; // permission control
-
+import * as Echarts from 'echarts'
+Vue.prototype.$echarts = Echarts
 !(async function() {
   try {
     let authSdk = await EnnAuthSdk({
