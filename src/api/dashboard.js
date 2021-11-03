@@ -8,18 +8,18 @@ export function fetchList(params) {
   });
 }
 
-export function createList(params) {
+export function createList(data) {
   return request({
     url: "/dict/efficiency",
     method: "post",
-    params
+    data
   });
 }
 
-export function deleteList(params) {
+export function deleteList(data) {
   return request({
     url: "/dict/efficiency",
     method: "delete",
-    params
+    data
   });
 }

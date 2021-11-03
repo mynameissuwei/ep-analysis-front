@@ -27,6 +27,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: "/platdict",
+    component: Layout,
+    redirect: "/platdict",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/platdict/index"),
+        name: "Dashboard",
+        meta: { title: "平台效能词典", icon: "tree" }
+      }
+    ]
+  },
+  {
     path: "/process",
     component: Layout,
     redirect: "/process/efficiency",

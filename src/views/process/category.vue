@@ -118,6 +118,7 @@
         </card-container>
       </el-col>
     </el-row>
+
     <card-container style="padding:24px">
       <category-table />
     </card-container>

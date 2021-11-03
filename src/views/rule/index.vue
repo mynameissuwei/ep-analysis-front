@@ -181,16 +181,6 @@ import rangeNumber from "@/utils/numberRange";
 
 export default {
   components: { Pagination, FilterItem, BreadText },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
-    }
-  },
   data() {
     return {
       list: null,

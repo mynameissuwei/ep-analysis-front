@@ -14,10 +14,3 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey);
 }
-
-export function getTokenId() {
-  return request({
-    url: "/token/generate",
-    method: "get"
-  });
-}

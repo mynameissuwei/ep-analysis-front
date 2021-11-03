@@ -256,6 +256,7 @@ export default {
     this.getSelectDepartment();
     this.getSelectTemplate();
   },
+
   methods: {
     handleClick() {
       this.getList();
@@ -303,11 +304,6 @@ export default {
       } else {
         this.listQuery.startTime = new Date(value[0]).getTime();
         this.listQuery.endTime = new Date(value[1]).getTime();
-        console.log(
-          this.listQuery.startTime,
-          this.listQuery.endTime,
-          "endTime"
-        );
       }
     },
     handleSearch() {
