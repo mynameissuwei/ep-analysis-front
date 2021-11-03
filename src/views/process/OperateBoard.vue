@@ -9,11 +9,11 @@
           <div class="card-body">
             <histogram
               id="tenantMonthGrowth"
-              :chartData="tenantDailyGrowth"
-              :title="dataRes.totalTenantNum"/>
+              :chartData="tenantMonthGrowth"
+              :title="data.totalTenantNum"/>
           </div>
           <div class="card-bottom">
-            本月添加 {{ dataRes.tenantCurrentMonthGrowth }}
+            本月添加 {{ data.tenantCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -24,12 +24,12 @@
           </div>
           <div class="card-body">
             <histogram
-              id="accountDailyGrowth"
-              :chartData="accountDailyGrowth"
-              :title="dataRes.totalAccountNum"/>
+              id="accountMonthGrowth"
+              :chartData="accountMonthGrowth"
+              :title="data.totalAccountNum"/>
           </div>
           <div class="card-bottom">
-            本月添加 {{ dataRes.accountCurrentMonthGrowth }}
+            本月添加 {{ data.accountCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -41,11 +41,11 @@
           <div class="card-body">
             <histogram
               id="templateMonthGrowth"
-              :chartData="templateDailyGrowth"
-              :title="dataRes.totalTemplateNum"/>
+              :chartData="templateMonthGrowth"
+              :title="data.totalTemplateNum"/>
           </div>
           <div class="card-bottom">
-            本月添加 {{ dataRes.templateCurrentMonthGrowth }}
+            本月添加 {{ data.templateCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -56,12 +56,12 @@
           </div>
           <div class="card-body">
             <histogram
-              id="processDailyGrowth"
-              :chartData="processDailyGrowth"
-              :title="dataRes.totalProcessNum"/>
+              id="processMonthGrowth"
+              :chartData="processMonthGrowth"
+              :title="data.totalProcessNum"/>
           </div>
           <div class="card-bottom">
-            本月添加 {{ dataRes.processCurrentMonthGrowth }}
+            本月添加 {{ data.processCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -69,8 +69,7 @@
 
     <tenant-table
       :tableData="list"
-      :listLoading="listLoading"
-      :handleSearch="handleSearch"/>
+      :listLoading="listLoading"/>
     <pagination
       v-show="total > 0"
       :total="total"
@@ -83,7 +82,7 @@
 
 <script>
 import Pagination from "@/components/Pagination";
-import {fetchList, getList} from "@/api/operate";
+import {getBoard, getList} from "@/api/operate";
 import TenantTable from "@/views/process/components/TenantTable";
 import CardContainer from "@/components/CardContainer";
 import Histogram from "@/views/process/components/Histogram";
@@ -92,11 +91,11 @@ export default {
   components: {Histogram, TenantTable, Pagination, CardContainer},
   data() {
     return {
-      tenantDailyGrowth: {},
-      templateDailyGrowth: {},
-      processDailyGrowth: {},
-      accountDailyGrowth: {},
-      dataRes: {},
+      tenantMonthGrowth: {},
+      templateMonthGrowth: {},
+      processMonthGrowth: {},
+      accountMonthGrowth: {},
+      data: {},
       list: null,
       listLoading: false,
       total: 0,
@@ -108,32 +107,33 @@ export default {
   },
   async created() {
     await this.getList();
+    await this.getBoard();
   },
   methods: {
     async getList() {
       this.listLoading = true;
-      const data = await getList({
+      const result = await getList({
         currentPage: this.listQuery.pageNo,
         pageSize: this.listQuery.pageSize
       });
-      this.list = data.data.tenantStatisticsList;
-      this.total = data.data.totalTenantNum;
-      this.dataRes = data.data;
+      this.list = result.data.list;
+      this.total = result.data.total;
       this.listLoading = false;
-      this.tenantDailyGrowth = this.getGrowth(this.dataRes.tenantDailyGrowth)
-      this.templateDailyGrowth = this.getGrowth(this.dataRes.templateDailyGrowth)
-      this.processDailyGrowth = this.getGrowth(this.dataRes.processDailyGrowth)
-      this.accountDailyGrowth = this.getGrowth(this.dataRes.accountDailyGrowth)
+    },
+    async getBoard() {
+      const result = await getBoard();
+      this.data = result.data;
+      this.tenantMonthGrowth = this.getGrowth(this.data.tenantMonthGrowth)
+      this.templateMonthGrowth = this.getGrowth(this.data.templateMonthGrowth)
+      this.processMonthGrowth = this.getGrowth(this.data.processMonthGrowth)
+      this.accountMonthGrowth = this.getGrowth(this.data.accountMonthGrowth)
     },
     getGrowth(list) {
       return {
-        xAxis: list.map(item => item.day),
+        xAxis: list.map(item => item.month),
         yAxis: list.map(item => item.growth)
       }
-    },
-    handleSearch() {
-      this.getList();
-    },
+    }
   }
 }
 </script>

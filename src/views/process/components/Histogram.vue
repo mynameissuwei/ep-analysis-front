@@ -47,7 +47,11 @@ export default {
         title: {
           text: this.title,
           left: '20px',
-          top: '5px'
+          top: '10px',
+          textStyle: {
+            fontWeight: 'bold',
+            fontSize: 20
+          }
         },
         xAxis: {
           type: 'category',
@@ -57,13 +61,13 @@ export default {
           type: 'value'
         },
         grid: {
-          top: "40px",
+          top: "50px",
           bottom: "20px",
         },
         series: [
           {
             data: yAxis,
-            type: 'bar'
+            type: 'bar',
           }
         ],
         tooltip: {
