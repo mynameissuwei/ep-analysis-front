@@ -5,11 +5,12 @@ import { getToken } from "@/utils/auth";
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE3_API, // url = base url + request url
+  // baseURL: process.env.VUE_APP_BASE3_API, // url = base url + request url
+  // baseURL: process.env.VUE_APP_BASE3_API, // url = base url + request url
+  baseURL: "https://foundation.dev.ennew.com",
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 });
-
 // request interceptor
 service.interceptors.request.use(
   config => {
