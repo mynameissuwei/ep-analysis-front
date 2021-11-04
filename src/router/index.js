@@ -51,12 +51,12 @@ export const constantRoutes = [
         name: "Efficiency",
         meta: { title: "效能大盘" }
       },
-      {
-        path: "operate",
-        component: () => import("@/views/process/OperateBoard"),
-        name: "Operate",
-        meta: { title: "运营大盘" }
-      },
+      // {
+      //   path: "operate",
+      //   component: () => import("@/views/process/OperateBoard"),
+      //   name: "Operate",
+      //   meta: { title: "运营大盘" }
+      // },
       {
         path: "category",
         component: () => import("@/views/process/category"),
@@ -208,7 +208,8 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        component: () => import("@/views/operate"),
+        // component: () => import("@/views/operate"),
+        component: () => import("@/views/process/OperateBoard"),
         name: "operate",
         meta: { title: "运营大盘", icon: "eye" }
       }

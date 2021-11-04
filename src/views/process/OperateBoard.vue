@@ -10,7 +10,8 @@
             <histogram
               id="tenantMonthGrowth"
               :chartData="tenantMonthGrowth"
-              :title="data.totalTenantNum"/>
+              :title="data.totalTenantNum"
+            />
           </div>
           <div class="card-bottom">
             本月添加 {{ data.tenantCurrentMonthGrowth }}
@@ -26,7 +27,8 @@
             <histogram
               id="accountMonthGrowth"
               :chartData="accountMonthGrowth"
-              :title="data.totalAccountNum"/>
+              :title="data.totalAccountNum"
+            />
           </div>
           <div class="card-bottom">
             本月添加 {{ data.accountCurrentMonthGrowth }}
@@ -42,7 +44,8 @@
             <histogram
               id="templateMonthGrowth"
               :chartData="templateMonthGrowth"
-              :title="data.totalTemplateNum"/>
+              :title="data.totalTemplateNum"
+            />
           </div>
           <div class="card-bottom">
             本月添加 {{ data.templateCurrentMonthGrowth }}
@@ -58,7 +61,8 @@
             <histogram
               id="processMonthGrowth"
               :chartData="processMonthGrowth"
-              :title="data.totalProcessNum"/>
+              :title="data.totalProcessNum"
+            />
           </div>
           <div class="card-bottom">
             本月添加 {{ data.processCurrentMonthGrowth }}
@@ -67,9 +71,7 @@
       </el-col>
     </el-row>
 
-    <tenant-table
-      :tableData="list"
-      :listLoading="listLoading"/>
+    <tenant-table :tableData="list" :listLoading="listLoading" />
     <pagination
       v-show="total > 0"
       :total="total"
@@ -82,13 +84,13 @@
 
 <script>
 import Pagination from "@/components/Pagination";
-import {getBoard, getList} from "@/api/operate";
+import { getBoard, getList } from "@/api/operate";
 import TenantTable from "@/views/process/components/TenantTable";
 import CardContainer from "@/components/CardContainer";
 import Histogram from "@/views/process/components/Histogram";
 
 export default {
-  components: {Histogram, TenantTable, Pagination, CardContainer},
+  components: { Histogram, TenantTable, Pagination, CardContainer },
   data() {
     return {
       tenantMonthGrowth: {},
@@ -101,13 +103,13 @@ export default {
       total: 0,
       listQuery: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 10
       }
     };
   },
-  async created() {
-    await this.getList();
-    await this.getBoard();
+  created() {
+    this.getList();
+    this.getBoard();
   },
   methods: {
     async getList() {
@@ -123,19 +125,19 @@ export default {
     async getBoard() {
       const result = await getBoard();
       this.data = result.data;
-      this.tenantMonthGrowth = this.getGrowth(this.data.tenantMonthGrowth)
-      this.templateMonthGrowth = this.getGrowth(this.data.templateMonthGrowth)
-      this.processMonthGrowth = this.getGrowth(this.data.processMonthGrowth)
-      this.accountMonthGrowth = this.getGrowth(this.data.accountMonthGrowth)
+      this.tenantMonthGrowth = this.getGrowth(this.data.tenantMonthGrowth);
+      this.templateMonthGrowth = this.getGrowth(this.data.templateMonthGrowth);
+      this.processMonthGrowth = this.getGrowth(this.data.processMonthGrowth);
+      this.accountMonthGrowth = this.getGrowth(this.data.accountMonthGrowth);
     },
     getGrowth(list) {
       return {
         xAxis: list.map(item => item.month),
         yAxis: list.map(item => item.growth)
-      }
+      };
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

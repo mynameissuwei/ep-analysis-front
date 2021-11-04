@@ -1,4 +1,4 @@
-import request from "@/utils/request2";
+import request from "@/utils/request";
 
 export function fetchBar(params) {
   return request({

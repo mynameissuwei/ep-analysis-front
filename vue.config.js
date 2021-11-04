@@ -8,22 +8,9 @@ function resolve(dir) {
 
 const name = defaultSettings.title || "业务效能"; // page title
 
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
-// You can change the port by the following methods:
-// port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528; // dev port
 
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-  /**
-   * You will need to set publicPath if you plan to deploy your site under a sub path,
-   * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-   * then publicPath should be set to "/bar/".
-   * In most cases please use '/' !!!
-   * Detail: https://cli.vuejs.org/config/#publicpath
-   */
   publicPath: "/",
   outputDir: "dist",
   assetsDir: "static",
@@ -38,31 +25,15 @@ module.exports = {
       errors: true
     },
     proxy: {
-      [process.env.VUE_APP_BASE2_API]: {
-        // 泛能网
-        // target: "http://fanneng-cloud-app-provider.com",
-        // 吴路路开发接口
+      [process.env.VUE_APP_BASE_API]: {
         target: "https://efficiency-analysis-backend.dev.ennew.com",
-        // target: "http://10.19.180.253:8080",
-        // 本地开发接口
-        // target: "http://10.20.39.102:8080",
-        // target: "https://biz-efficiency-plan-service.dev.ennew.com/",
-        // secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true,
         pathRewrite: {
-          ["^" + process.env.VUE_APP_BASE2_API]: ""
+          ["^" + process.env.VUE_APP_BASE_API]: ""
         }
       },
       [process.env.VUE_APP_BASE3_API]: {
-        // 泛能网
-        // target: "http://fanneng-cloud-app-provider.com",
-        // 吴路路开发接口
         target: "https://foundation.dev.ennew.com",
-        // target: "http://10.19.180.253:8080",
-        // 本地开发接口
-        // target: "http://10.20.49.40:8080",
-        // target: "https://biz-efficiency-plan-service.dev.ennew.com/",
-        // secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE3_API]: ""
@@ -72,8 +43,6 @@ module.exports = {
     // before: require("./mock/mock-server.js")
   },
   configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
     name: name,
     resolve: {
       alias: {
@@ -82,10 +51,6 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    // it can improve the speed of the first screen, it is recommended to turn on preload
-    // config.plugins.delete('preload')
-
-    // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete("prefetch");
 
     // set svg-sprite-loader

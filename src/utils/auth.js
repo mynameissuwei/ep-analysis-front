@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import request from "@/utils/request2";
 
 const TokenKey = "vue_admin_template_token";
 
