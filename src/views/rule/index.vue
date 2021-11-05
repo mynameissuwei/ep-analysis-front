@@ -34,8 +34,8 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectTemplateData"
-                    :key="item.appKey"
+                    v-for="(item, index) in selectTemplateData"
+                    :key="index"
                     :label="item.appName"
                     :value="item.appKey"
                   />
@@ -94,15 +94,15 @@
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="模板名称">
         <template slot-scope="scope">
-          <span>{{ scope.row.appName }}</span>
+          <span>{{ scope.row.procDefName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="模板代码">
+      <el-table-column label="模板类别">
         <template slot-scope="scope">
-          {{ scope.row.orgCode }}
+          {{ scope.row.appName }}
         </template>
       </el-table-column>
-      <el-table-column label="归属部门">
+      <el-table-column label="指定部门">
         <template slot-scope="scope">
           {{ scope.row.orgName }}
         </template>

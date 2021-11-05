@@ -15,10 +15,10 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectDepartmentData"
-                    :key="item.orgCode"
+                    v-for="(item, index) in selectDepartmentData"
+                    :key="index"
                     :label="item.orgName"
-                    :value="item.orgCode"
+                    :value="item.procDefKey"
                   />
                 </el-select>
               </template>
@@ -34,8 +34,8 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectTemplateData"
-                    :key="item.appKey"
+                    v-for="(item, index) in selectTemplateData"
+                    :key="index"
                     :label="item.appName"
                     :value="item.appKey"
                   />
@@ -114,8 +114,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.current"
-      :limit.sync="listQuery.size"
+      :page.sync="listQuery.pageNo"
+      :limit.sync="listQuery.pageSize"
       @pagination="getList"
     />
   </div>
@@ -172,7 +172,7 @@ export default {
         }
       });
       this.total = totalCount;
-
+      console.log(data, "listData");
       this.list = data;
       this.listLoading = false;
     },

@@ -138,6 +138,7 @@ export default {
         type: "warning"
       }).then(async () => {
         await deleteList([row.roleId]);
+        await this.getList();
         this.$message({
           type: "success",
           message: "删除成功!"

@@ -43,7 +43,7 @@
             <yellow-svg
               start-color="#8FB4FF"
               end-color="#6D78FD"
-              :count="execSqlToMap.finishRatio"
+              :count="`${execSqlToMap.finishRatio}%`"
               text="总体完成率"
             />
           </el-col>
