@@ -9,7 +9,7 @@
             svgText="template"
           />
           <display-card
-            :cardTitle="displayCardData.templateTimeConsuming"
+            :cardTitle="convertTimeFormat(displayCardData.templateTimeConsuming)"
             cardText="模板总耗时"
             svgText="timeConsume"
           />
@@ -21,7 +21,7 @@
             svgText="complete"
           />
           <display-card
-            :cardTitle="displayCardData.averageTimeConsuming"
+            :cardTitle="convertTimeFormat(displayCardData.averageTimeConsuming)"
             cardText="平均耗时"
             svgText="timeConsume"
           />
@@ -31,12 +31,12 @@
         </el-col>
         <el-col :span="4">
           <display-card
-            :cardTitle="displayCardData.templateTotalExpiredTime"
+            :cardTitle="convertTimeFormat(displayCardData.templateTotalExpiredTime)"
             cardText="模板总超时"
             svgText="overtime"
           />
           <display-card
-            :cardTitle="displayCardData.averageTimeExpired"
+            :cardTitle="convertTimeFormat(displayCardData.averageTimeExpired)"
             cardText="平均超时"
             svgText="overtime"
           />
@@ -48,7 +48,7 @@
             svgText="people"
           />
           <display-card
-            :cardTitle="displayCardData.humanPerTimeConsuming"
+            :cardTitle="convertTimeFormat(displayCardData.humanPerTimeConsuming)"
             cardText="人均耗时"
             svgText="timeConsume"
           />
@@ -83,6 +83,8 @@ import LineChart from "./components/LineChart";
 import NumberCard from "./components/NumberCard";
 import EventCard from "./components/EventCard";
 import { getEfficiencyData } from "@/api/efficiencyDashboard";
+import { convertToHoursFormat } from '@/utils/getDuration'
+
 
 export default {
   name: "Efficiency",
@@ -159,6 +161,9 @@ export default {
     };
   },
   methods: {
+    convertTimeFormat(secondTime){
+      return convertToHoursFormat(secondTime);
+    },
     // 轮询方法
     polling() {
       this.getEfficiencyDashboardData().then(res => {
@@ -184,6 +189,7 @@ export default {
         this.lineChartData.xAxisData = this.convertToXAxisData(
           timeQuantumStatistics
         );
+        console.log("this.lineChartData.xAxisData ", this.lineChartData.xAxisData);
         // this.lineChartData.legendData = this.convertToLegendData(timeQuantumStatistics);
         this.lineChartData.charData = this.convertToChartData(
           timeQuantumStatistics
@@ -205,9 +211,12 @@ export default {
       });
     },
     convertToXAxisData(timeQuantumStatistics) {
-      return Object.values(timeQuantumStatistics).map(
-        timeQuantumStatistic => timeQuantumStatistic.timeQuantum
-      );
+
+      return Object.values(timeQuantumStatistics)
+        .sort((a,b) => {
+          return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+        })
+        .map( timeQuantumStatistic => timeQuantumStatistic.timeQuantum);
     },
     convertToLegendData(timeQuantumStatistics) {
       console.log(
@@ -218,17 +227,33 @@ export default {
     },
     convertToChartData(timeQuantumStatistics) {
       return [
-        Object.values(timeQuantumStatistics).map(
+        Object.values(timeQuantumStatistics)
+          .sort((a,b) => {
+            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          })
+          .map(
           timeQuantumStatistic => timeQuantumStatistic.hourPerCompleteAmount
         ), //每小时完成流程数
-        Object.values(timeQuantumStatistics).map(
+        Object.values(timeQuantumStatistics)
+          .sort((a,b) => {
+            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          })
+          .map(
           timeQuantumStatistic =>
             timeQuantumStatistic.hourPerExpiredProcessAmount
         ), //每小时超时流程数量
-        Object.values(timeQuantumStatistics).map(
+        Object.values(timeQuantumStatistics)
+          .sort((a,b) => {
+            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          })
+          .map(
           timeQuantumStatistic => timeQuantumStatistic.hourPerExpiredTime
         ), // 每小时流程超时数
-        Object.values(timeQuantumStatistics).map(
+        Object.values(timeQuantumStatistics)
+          .sort((a,b) => {
+            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          })
+          .map(
           timeQuantumStatistic => timeQuantumStatistic.hourPerProcessAmount
         ) // 每小时流程数
       ];
