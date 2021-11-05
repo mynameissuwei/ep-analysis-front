@@ -148,6 +148,7 @@ export default {
           operateTime: "2021-10-29"
         }
       ],
+      pollingST: null,
       processTotalAmountData: 1897,
       queryParam: {
         tenantId: "ep-analysis-flink",
@@ -165,7 +166,7 @@ export default {
         this.pollingST = setTimeout(() => {
           clearTimeout(this.pollingST);
           this.polling();
-        }, 10000);
+        }, 100000);
       });
     },
     async getEfficiencyDashboardData() {
@@ -235,6 +236,10 @@ export default {
   },
   created() {
     this.polling();
+  },
+  beforeDestroy() {
+    clearInterval(this.pollingST); // 清除定时器
+    this.pollingST = null;
   }
 };
 </script>
