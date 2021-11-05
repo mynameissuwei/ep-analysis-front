@@ -20,7 +20,6 @@
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
           class="user-avatar"
         />
-
         <!-- <div class="user-name">名字名字名字名字</div> -->
         <i class="el-icon-caret-bottom" />
       </div>
@@ -38,6 +37,7 @@ export default {
   components: {},
   methods: {
     logout() {
+      console.log("logout");
       this.authSdk.logout();
     }
   }
