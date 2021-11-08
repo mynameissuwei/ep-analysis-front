@@ -7,7 +7,6 @@
         <el-radio :label="1">自定义超时规则</el-radio>
         <el-radio :label="2">不配置超时规则</el-radio>
       </el-radio-group>
-
       <div class="content">
         <span class="template-class">模板名称:</span>
         <span>{{ data.procDefName ? data.procDefName : "无" }}</span>
@@ -24,7 +23,11 @@
         </el-select>
         <span
           v-if="!isSelected"
-          class="actionStyle deployText"
+          :class="
+            radio == 1
+              ? 'actionStyle deployText '
+              : 'actionStyle deployText canNotClick'
+          "
           @click="isSelected = true"
           >配置</span
         >
@@ -85,6 +88,7 @@
               size="small"
               icon="el-icon-edit"
               @click="row.edit = !row.edit"
+              :disabled="radio != 1 ? true : false"
             >
               编辑
             </el-button>

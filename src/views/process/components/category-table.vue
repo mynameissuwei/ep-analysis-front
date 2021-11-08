@@ -192,8 +192,8 @@
           highlight-current-row
           loading
         >
-          <el-table-column prop="orgName" label="名称" width="180" />
           <el-table-column prop="appName" label="类别" width="180" />
+          <el-table-column prop="orgName" label="名称" width="180" />
           <el-table-column
             prop="overRatio"
             label="平均超时率"

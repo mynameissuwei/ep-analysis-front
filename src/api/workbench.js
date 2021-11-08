@@ -15,3 +15,18 @@ export function fetchTemplate(params) {
     params
   });
 }
+
+export function deleteView(params) {
+  return request({
+    url: "quickView/delete/"+params,
+    method: "delete"
+  });
+}
+
+export function addQuickView(data) {
+  return request({
+    url: "/quickView/add",
+    method: "put",
+    data
+  });
+}
