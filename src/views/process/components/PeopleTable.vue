@@ -39,20 +39,31 @@
     </el-row>
     <el-table :data="tableData" style="width: 100%" v-loading="listLoading">
       <el-table-column prop="userName" label="姓名"> </el-table-column>
-      <el-table-column prop="userId" label="用户id"> </el-table-column>
       <el-table-column prop="procDefNum" sortable label="审批模版数">
       </el-table-column>
       <el-table-column prop="overTime" sortable label="超时总长">
+        <template slot-scope="scope">
+          {{ getDuration(scope.row.overTime) }}
+        </template>
       </el-table-column>
       <el-table-column prop="passTime" sortable label="耗时总长">
+        <template slot-scope="scope">
+          {{ getDuration(scope.row.passTime) }}
+        </template>
       </el-table-column>
       <el-table-column prop="overRatio" sortable label="超时率">
+        <template slot-scope="scope">
+          {{ toPercent(scope.row.overRatio) }}
+        </template>
       </el-table-column>
       <el-table-column prop="overNum" sortable label="超时次数">
       </el-table-column>
       <el-table-column prop="taskNum" sortable label="审批任务数">
       </el-table-column>
       <el-table-column prop="finishRatio" sortable label="任务积压率">
+        <template slot-scope="scope">
+          {{ toPercent(scope.row.finishRatio) }}
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -61,6 +72,8 @@
 <script>
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
+import getDuration from "@/utils/getDuration";
+import toPercent from "@/utils/toPercent";
 
 export default {
   props: ["tableData", "listLoading", "handleSearch", "username"],
@@ -72,7 +85,9 @@ export default {
         title: "",
         limit: 20
       },
-      tableUserName: this.username
+      tableUserName: this.username,
+      getDuration,
+      toPercent
     };
   },
   methods: {

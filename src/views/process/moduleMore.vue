@@ -14,16 +14,18 @@
             :key="index"
           >
             <div style="padding-bottom: 20px; color: #E2292C; cursor: pointer;">
-              {{ index }} . {{ item.defName }}
+              {{ index + 1 }} . {{ item.defName }}
             </div>
             <div style="padding-left: 25px">
-              {{ item.totalPassTime }}
+              月度累计超 {{ item.totalCnt }} 次申请，其中超时率
+              {{ toPercent(item.overRatio) }}，累计超时
+              {{ getDuration(item.totalPassTime) }}，建议对该模板调整优化
             </div>
           </div>
           <pagination
             :total="total"
-            :page.sync="listQuery.page"
-            :limit.sync="listQuery.size"
+            :page.sync="listQuery.pageNo"
+            :limit.sync="listQuery.pageSize"
             @pagination="getList"
           />
         </div>
@@ -37,17 +39,21 @@
 import Pagination from "@/components/Pagination";
 import { fetchListMore } from "@/api/module";
 import CardContainer from "@/components/CardContainer";
+import toPercent from "@/utils/toPercent";
+import getDuration from "@/utils/getDuration";
 
 export default {
   data() {
     return {
       listLoading: false,
-      list: null,
+      list: [],
       total: 0,
       listQuery: {
-        page: 1,
-        size: 10
-      }
+        pageNo: 1,
+        pageSize: 10
+      },
+      getDuration,
+      toPercent
     };
   },
   created() {
@@ -58,7 +64,11 @@ export default {
     getList() {
       this.listLoading = true;
       fetchListMore({
-        condition: { sqlKey: "procAnalyMoreList" }
+        condition: {
+          sqlKey: "procAnalyMorePage",
+          pageSize: this.listQuery.pageSize,
+          pageNo: this.listQuery.pageNo
+        }
       }).then(response => {
         const { data, totalCount } = response;
         console.log(data, "datadata");

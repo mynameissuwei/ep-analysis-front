@@ -57,6 +57,8 @@ import finishTimePng from "@/assets/finishTime.png";
 import responseTime from "@/assets/responseTime.png";
 import orderCnt from "@/assets/orderCnt.png";
 import totalPassTime from "@/assets/totalPassTime.png";
+import getDuration from "@/utils/getDuration";
+import toPercent from "@/utils/toPercent";
 
 export default {
   components: { BarChart, PieChart, CardContainer, OpsTable },
@@ -75,7 +77,9 @@ export default {
       finishTimePng,
       responseTime,
       orderCnt,
-      totalPassTime
+      totalPassTime,
+      getDuration,
+      toPercent
     };
   },
   created() {
@@ -94,11 +98,11 @@ export default {
         ...rightData,
         ...leftData
       };
-      console.log(data, "datadata");
+
       let changeData = Object.keys(data).map(item =>
         this.changeRightMap(item, data)
       );
-      console.log(Object.keys(data), changeData, "changeData");
+
       this.rightMap = changeData;
     },
     async getEchartData(sqlKey) {
@@ -147,14 +151,14 @@ export default {
           };
         case "finishTime":
           return {
-            num: data[value],
+            num: this.getDuration(data[value]),
             imgName: this.finishTimePng,
             text: "平均完成时间",
             className: "finishTime"
           };
         case "responseTime":
           return {
-            num: data[value],
+            num: this.getDuration(data[value]),
             imgName: this.responseTime,
             text: "平均响应时间",
             className: "responseTime"
@@ -168,17 +172,17 @@ export default {
           };
         case "totalPassTime":
           return {
-            num: data[value],
+            num: this.getDuration(data[value]),
             imgName: this.totalPassTime,
             text: "处理总耗时",
             className: "cnt"
           };
         case "sum(fault_time)":
           return {
-            num: `${data[value]}%`,
-            imgName: this.totalPassTime,
+            num: this.toPercent(data[value]),
+            imgName: this.finishTimePng,
             text: "工单完结率",
-            className: "cnt"
+            className: "finishTime"
           };
         default:
           return {};

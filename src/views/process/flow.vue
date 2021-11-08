@@ -68,7 +68,7 @@ export default {
       execSqlToMap: {},
       execSqlToList: {},
       panes: [
-        { label: "本天", key: "day" },
+        { label: "本周", key: "day" },
         { label: "本月", key: "month" },
         { label: "本年", key: "year" }
       ],

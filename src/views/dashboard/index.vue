@@ -1,16 +1,19 @@
 <template>
   <div class="dashBoard">
     <div class="img-container">
-      <span class="img-title">效能词典</span>
-      <el-input
-        class="img-input"
-        placeholder="请输入内容"
-        prefix-icon="el-icon-search"
-        v-model="listQuery.name"
-        width="220px"
-      >
-      </el-input>
-      <img src="@/assets/energy.svg" alt="LOGO" style="height: 308px" />
+      <div class="module-img" style="height: 309px">
+        <span class="img-title">效能词典</span>
+        <el-input
+          class="img-input"
+          placeholder="请输入内容"
+          prefix-icon="el-icon-search"
+          v-model="listQuery.name"
+          width="220px"
+        >
+        </el-input>
+      </div>
+
+      <!-- <img src="@/assets/energy.svg" alt="LOGO" style="height: 308px" /> -->
     </div>
     <div class="dict-container">
       <el-tabs v-model="activeName" tab-position="left" style="height: 416px;">
@@ -103,6 +106,11 @@ export default {
 
 <style lang="scss" scoped>
 .dashBoard {
+  .module-img {
+    border: 1px solid black;
+    background-image: url("~@/assets/energy.svg");
+    background-size: cover;
+  }
   background: #ffffff;
   .img-container {
     position: relative;

@@ -69,22 +69,31 @@
           loading
         >
           <el-table-column prop="orgName" label="名称" width="180" />
-          <el-table-column prop="overRatio" label="平均超时率" width="180" />
-          <el-table-column prop="partNum" label="审批总人数" />
-          <el-table-column prop="personPassTime" label="人均耗时">
+          <el-table-column
+            prop="overRatio"
+            label="平均超时率"
+            width="180"
+            sortable
+          >
+            <template slot-scope="scope">
+              {{ toPercent(scope.row.overRatio) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="partNum" label="审批总人数" sortable />
+          <el-table-column prop="personPassTime" label="人均耗时" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.personPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="procDefNum" label="模版总数" />
-          <el-table-column label="平均超时">
+          <el-table-column prop="procDefNum" label="模版总数" sortable />
+          <el-table-column label="平均超时" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.processOverTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="totalProcessCnt" label="流程总数" />
-          <el-table-column prop="totalOverTime" label="超时总长" />
-          <el-table-column prop="totalPassTime" label="耗时总长">
+          <el-table-column prop="totalCnt" label="流程总数" sortable />
+          <el-table-column prop="totalOverTime" label="超时总长" sortable />
+          <el-table-column prop="totalPassTime" label="耗时总长" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}
             </template>
@@ -185,22 +194,32 @@
         >
           <el-table-column prop="orgName" label="名称" width="180" />
           <el-table-column prop="appName" label="类别" width="180" />
-          <el-table-column prop="overRatio" label="平均超时率" width="180" />
-          <el-table-column prop="partNum" label="审批总人数"> </el-table-column>
-          <el-table-column prop="personPassTime" label="人均耗时">
+          <el-table-column
+            prop="overRatio"
+            label="平均超时率"
+            width="180"
+            sortable
+          >
+            <template slot-scope="scope">
+              {{ toPercent(scope.row.overRatio) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="partNum" label="审批总人数" sortable>
+          </el-table-column>
+          <el-table-column prop="personPassTime" label="人均耗时" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.personPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="procDefNum" label="模版总数" />
-          <el-table-column label="平均超时">
+          <el-table-column prop="procDefNum" label="模版总数" sortable />
+          <el-table-column label="平均超时" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.processOverTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="totalProcessCnt" label="流程总数" />
-          <el-table-column prop="totalOverTime" label="超时总长" />
-          <el-table-column prop="totalPassTime" label="耗时总长">
+          <el-table-column prop="totalCnt" label="流程总数" sortable />
+          <el-table-column prop="totalOverTime" label="超时总长" sortable />
+          <el-table-column prop="totalPassTime" label="耗时总长" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}
             </template>
@@ -225,6 +244,7 @@ import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
 import Pagination from "@/components/Pagination";
 import moment from "moment";
+import toPercent from "@/utils/toPercent";
 import getDuration from "@/utils/getDuration";
 
 export default {
@@ -240,6 +260,7 @@ export default {
       dateValue: [],
       total: 0,
       getDuration,
+      toPercent,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
