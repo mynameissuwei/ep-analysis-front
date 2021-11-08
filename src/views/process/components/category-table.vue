@@ -17,8 +17,8 @@
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in selectDepartmentData"
-                        :key="item.orgCode"
+                        v-for="(item, index) in selectDepartmentData"
+                        :key="index"
                         :label="item.orgName"
                         :value="item.orgCode"
                       />
@@ -113,8 +113,8 @@
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in selectDepartmentData"
-                        :key="item.orgCode"
+                        v-for="(item, index) in selectDepartmentData"
+                        :key="index"
                         :label="item.orgName"
                         :value="item.orgCode"
                       />
@@ -132,8 +132,8 @@
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in selectTemplateData"
-                        :key="item.appKey"
+                        v-for="(item, index) in selectTemplateData"
+                        :key="index"
                         :label="item.appName"
                         :value="item.appKey"
                       />
@@ -183,10 +183,9 @@
           highlight-current-row
           loading
         >
-          <el-table-column prop="orgName" label="名称" width="180">
-          </el-table-column>
-          <el-table-column prop="overRatio" label="平均超时率" width="180">
-          </el-table-column>
+          <el-table-column prop="orgName" label="名称" width="180" />
+          <el-table-column prop="appName" label="类别" width="180" />
+          <el-table-column prop="overRatio" label="平均超时率" width="180" />
           <el-table-column prop="partNum" label="审批总人数"> </el-table-column>
           <el-table-column prop="personPassTime" label="人均耗时">
             <template slot-scope="scope">

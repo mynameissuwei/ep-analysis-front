@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       itemDetail: {},
-      flowChartData: {}
+      flowChartData: null
     };
   },
   components: {
@@ -58,7 +58,6 @@ export default {
         source: this.$route.query.source,
         procDefKey: this.$route.query.procDefKey
       }).then(response => {
-        console.log(response, "responseresponse");
         const { data } = response;
         this.flowChartData = data;
       });

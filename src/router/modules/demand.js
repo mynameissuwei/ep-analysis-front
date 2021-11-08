@@ -54,6 +54,25 @@ const demandRouter = {
           }
         }
       ]
+    },
+    {
+      path: "ops",
+      component: () => import("@/views/demand/ops/index"), // Parent router-view
+      name: "ops",
+      meta: {
+        title: "泛能网"
+      },
+      // redirect: "/demand/water/alarm",
+      children: [
+        {
+          path: "devops",
+          component: () => import("@/views/demand/ops/devops"),
+          name: "devops",
+          meta: {
+            title: "统一运维"
+          }
+        }
+      ]
     }
   ]
 };

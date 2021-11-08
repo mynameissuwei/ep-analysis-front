@@ -49,13 +49,17 @@
             <!-- right button -->
             <el-col :span="6">
               <div style="float: right">
-                <el-button size="small" type="primary" @click="handleSearch">
+                <el-button
+                  size="small"
+                  type="primary"
+                  @click="handleSearch('message')"
+                >
                   查询
                 </el-button>
                 <el-button
                   size="small"
                   style="margin-left: 10px;"
-                  @click="handleReset"
+                  @click="handleReset('message')"
                 >
                   重置
                 </el-button>
@@ -131,13 +135,17 @@
             <!-- right button -->
             <el-col :span="6">
               <div style="float: right">
-                <el-button size="small" type="primary" @click="handleSearch">
+                <el-button
+                  size="small"
+                  type="primary"
+                  @click="handleSearch('matter')"
+                >
                   查询
                 </el-button>
                 <el-button
                   size="small"
                   style="margin-left: 10px;"
-                  @click="handleReset"
+                  @click="handleReset('matter')"
                 >
                   重置
                 </el-button>
@@ -337,18 +345,42 @@ export default {
         });
       }
     },
-    handleSearch() {
-      this.getList();
+    handleSearch(type) {
+      if (type === "message") {
+        this.getMessageList({
+          noticeType: 1,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      } else {
+        this.getMatterList({
+          noticeType: 2,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      }
     },
-    handleReset() {
-      this.listQuery = {
-        pageNo: 1,
-        pageSize: 10,
-        createOrgCode: "",
-        appKey: "",
-        startUserName: ""
-      };
-      this.getList();
+    handleReset(type) {
+      if (type === "message") {
+        this.messageListQuery = {
+          pageNum: 1,
+          pageSize: 5,
+          viewed: undefined,
+          title: undefined
+        };
+        this.getMessageList({
+          noticeType: 1,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      } else {
+        this.matterListQuery = {
+          pageNum: 1,
+          pageSize: 5,
+          viewed: undefined
+        };
+        this.getMatterList({
+          noticeType: 2,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      }
     },
     handleEdit() {
       console.log("edit");

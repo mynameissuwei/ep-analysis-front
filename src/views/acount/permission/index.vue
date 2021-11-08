@@ -136,13 +136,14 @@ export default {
     handleCreate() {
       this.$router.push({
         name: "createPermission",
-        params: { id: undefined, getList: this.getList }
+        params: { id: undefined }
       });
     },
     handleUpdate(row) {
+      console.log(row.authId, "authId");
       this.$router.push({
         name: "createPermission",
-        params: { id: row.authId, getList: this.getList }
+        params: { id: row.authId }
       });
     },
     handleSearch() {
@@ -164,7 +165,8 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        const res = await deleteList([row.authId]);
+        await deleteList([row.authId]);
+        await this.getList();
 
         this.$message({
           type: "success",
@@ -180,6 +182,7 @@ export default {
       }).then(async () => {
         const auIdarray = this.multipleSelection.map(item => item.authId);
         await deleteList(auIdarray);
+        await this.getList();
         this.$message({
           type: "success",
           message: "删除成功!"

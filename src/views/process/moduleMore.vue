@@ -7,8 +7,12 @@
     </div>
     <div>
       <card-container>
-        <div style="padding-left: 350px; padding-top: 40px">
-          <div style="padding: 30px 30px" v-for="(item, index) in list">
+        <div style="padding-left: 350px; padding-top: 40px" v-if="list.length">
+          <div
+            style="padding: 30px 30px"
+            v-for="(item, index) in list"
+            :key="index"
+          >
             <div style="padding-bottom: 20px; color: #E2292C; cursor: pointer;">
               {{ index }} . {{ item.defName }}
             </div>
@@ -23,6 +27,7 @@
             @pagination="getList"
           />
         </div>
+        <el-empty :image-size="200" v-else></el-empty>
       </card-container>
     </div>
   </div>
@@ -56,7 +61,7 @@ export default {
         condition: { sqlKey: "procAnalyMoreList" }
       }).then(response => {
         const { data, totalCount } = response;
-
+        console.log(data, "datadata");
         this.list = data;
         this.total = totalCount;
         setTimeout(() => {

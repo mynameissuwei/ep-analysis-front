@@ -214,7 +214,12 @@ export default {
     async getList() {
       this.listLoading = true;
       const { data, totalCount } = await fetchList({
-        condition: { ...this.listQuery, username: this.username }
+        condition: {
+          ...this.listQuery,
+          extParam: {
+            userName: this.username
+          }
+        }
       });
       this.total = totalCount;
       this.list = data;
