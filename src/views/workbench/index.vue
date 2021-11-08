@@ -74,19 +74,9 @@
             fit
             highlight-current-row
           >
-            <el-table-column prop="id" label="ID"> </el-table-column>
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="noticeContent" label="通知内容">
-            </el-table-column>
-            <el-table-column prop="systemType" label="系统类型">
-            </el-table-column>
-            <el-table-column prop="noticeType" label="通知类型">
-            </el-table-column>
-            <el-table-column prop="tenantId" label="租户ID"> </el-table-column>
             <el-table-column prop="createTime" label="创建时间">
-            </el-table-column>
-            <el-table-column prop="updateTime" label="更新时间">
             </el-table-column>
           </el-table>
           <pagination
@@ -160,19 +150,9 @@
             fit
             highlight-current-row
           >
-            <el-table-column prop="id" label="ID"> </el-table-column>
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="noticeContent" label="通知内容">
-            </el-table-column>
-            <el-table-column prop="systemType" label="系统类型">
-            </el-table-column>
-            <el-table-column prop="noticeType" label="通知类型">
-            </el-table-column>
-            <el-table-column prop="tenantId" label="租户ID"> </el-table-column>
             <el-table-column prop="createTime" label="创建时间">
-            </el-table-column>
-            <el-table-column prop="updateTime" label="更新时间">
             </el-table-column>
           </el-table>
           <pagination

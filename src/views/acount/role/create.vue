@@ -167,12 +167,12 @@ export default {
             max: 20,
             message: "长度在 1 到 20 个字符",
             trigger: "blur"
-          },
-          {
-            pattern: /^[A-Za-z_]+$/,
-            message: "只能输入英文字符和下划线",
-            trigger: "blur"
           }
+          // {
+          //   pattern: /^[A-Za-z_]+$/,
+          //   message: "只能输入英文字符和下划线",
+          //   trigger: "blur"
+          // }
         ],
         roleDesc: [
           { required: true, message: "请输入权限描述", trigger: "blur" },

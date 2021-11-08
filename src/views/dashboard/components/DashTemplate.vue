@@ -8,21 +8,21 @@
       <div>
         <div style="margin-bottom:10px">
           <span class="text-title">定义:</span>
-          <span> {{ data.definition }} </span>
+          <span> {{ data.definition ? data.definition : "无" }} </span>
         </div>
         <div>
           <span class="text-title">公式:</span>
-          <span>{{ data.formula }}</span>
+          <span>{{ data.formula ? data.formula : "无" }}</span>
         </div>
       </div>
       <div>
         <div style="margin-bottom:10px">
           <span class="text-title">维护时间：</span>
-          <span>{{ data.updateTime }}</span>
+          <span>{{ data.updateTime ? data.updateTime : "无" }}</span>
         </div>
         <div>
           <span class="text-title">维护人：</span>
-          <span>{{ data.mainTainer }}</span>
+          <span>{{ data.mainTainer ? data.mainTainer : "无" }}</span>
         </div>
       </div>
     </div>

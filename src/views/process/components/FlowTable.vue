@@ -36,7 +36,7 @@
                   <el-option
                     v-for="item in selectTemplateData"
                     :key="item.appKey"
-                    :label="item.appName"
+                    :label="`${item.appName} (${item.appKey})`"
                     :value="item.appKey"
                   />
                 </el-select>

@@ -36,7 +36,7 @@
                   <el-option
                     v-for="(item, index) in selectTemplateData"
                     :key="index"
-                    :label="item.appName"
+                    :label="`${item.appName} (${item.appKey})`"
                     :value="item.appKey"
                   />
                 </el-select>
@@ -77,6 +77,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
+      :disabled="multipleSelection.length ? false : true"
       @click="batchDeploy"
     >
       批量配置
@@ -249,15 +250,6 @@ export default {
         params: { getList: this.getList }
       });
     },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
-      this.dialogStatus = "update";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
-    },
     overTimeDeploy(row) {
       this.$router.push({
         name: "createRule",
@@ -277,9 +269,10 @@ export default {
       }));
       batchSave(array).then(() => {
         this.getList();
+        this.dialogVisible = false;
         this.$notify({
-          title: "Success",
-          message: "Created Successfully",
+          title: "成功",
+          message: "配置成功",
           type: "success",
           duration: 2000
         });

@@ -18,9 +18,15 @@
                   v-for="(item, index) in effData.slice(0, 3)"
                   :key="index"
                 >
-                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <el-avatar
+                    :src="
+                      item.user_head_image
+                        ? item.user_head_image
+                        : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                    "
+                  ></el-avatar>
                   <div style="margin-top:10px">
-                    {{ item.user_name ? item.user_name : "无" }}
+                    {{ item.user_name ? item.user_name : "新奥新智用户" }}
                   </div>
                 </el-col>
               </el-row>
@@ -31,9 +37,15 @@
                   v-for="(item, index) in effData.slice(3, 6)"
                   :key="index"
                 >
-                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <el-avatar
+                    :src="
+                      item.user_head_image
+                        ? item.user_head_image
+                        : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                    "
+                  ></el-avatar>
                   <div style="margin-top:10px">
-                    {{ item.user_name ? item.user_name : "无" }}
+                    {{ item.user_name ? item.user_name : "新奥新智用户" }}
                   </div>
                 </el-col>
               </el-row>
@@ -64,9 +76,15 @@
                   v-for="(item, index) in workerData.slice(0, 3)"
                   :key="index"
                 >
-                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <el-avatar
+                    :src="
+                      item.user_head_image
+                        ? item.user_head_image
+                        : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                    "
+                  ></el-avatar>
                   <div style="margin-top:10px">
-                    {{ item.user_name ? item.user_name : "无" }}
+                    {{ item.user_name ? item.user_name : "新奥新智用户" }}
                   </div>
                 </el-col>
               </el-row>
@@ -77,9 +95,15 @@
                   v-for="(item, index) in workerData.slice(3, 6)"
                   :key="index"
                 >
-                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <el-avatar
+                    :src="
+                      item.user_head_image
+                        ? item.user_head_image
+                        : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                    "
+                  ></el-avatar>
                   <div style="margin-top:10px">
-                    {{ item.user_name ? item.user_name : "无" }}
+                    {{ item.user_name ? item.user_name : "新奥新智用户" }}
                   </div>
                 </el-col>
               </el-row>
@@ -120,9 +144,15 @@
                   v-for="(item, index) in overTimeData.slice(0, 3)"
                   :key="index"
                 >
-                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <el-avatar
+                    :src="
+                      item.user_head_image
+                        ? item.user_head_image
+                        : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                    "
+                  ></el-avatar>
                   <div style="margin-top:10px">
-                    {{ item.user_name ? item.user_name : "无" }}
+                    {{ item.user_name ? item.user_name : "新奥新智用户" }}
                   </div>
                 </el-col>
               </el-row>
@@ -133,9 +163,15 @@
                   v-for="(item, index) in overTimeData.slice(3, 6)"
                   :key="index"
                 >
-                  <el-avatar :src="item.user_head_image"></el-avatar>
+                  <el-avatar
+                    :src="
+                      item.user_head_image
+                        ? item.user_head_image
+                        : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                    "
+                  ></el-avatar>
                   <div style="margin-top:10px">
-                    {{ item.user_name ? item.user_name : "无" }}
+                    {{ item.user_name ? item.user_name : "新奥新智用户" }}
                   </div>
                 </el-col>
               </el-row>
