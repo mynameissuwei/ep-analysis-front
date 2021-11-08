@@ -69,6 +69,7 @@ export default {
     };
   },
   created() {
+    this.getParams();
     this.getList();
   },
   methods: {
@@ -89,6 +90,17 @@ export default {
       this.total = totalCount;
       this.list = data;
       this.listLoading = false;
+    },
+    getParams() {
+      let params = this.$route.params.definitionList;
+      if(!params){
+        return;
+      }
+      let p = {};
+      params.map(o => {
+        p[o.paramName] = o.paramValue
+      })
+      this.listQuery = {...this.listQuery, ...p}
     }
   }
 };

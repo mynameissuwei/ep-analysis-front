@@ -12,7 +12,7 @@
               <el-row :gutter="20">
                 <el-col :span="10">
                   <filter-item>
-                    <template v-slot:left> <span>搜索</span> </template>
+                    <template v-slot:left><span>搜索</span></template>
                     <template v-slot:right>
                       <el-input
                         v-model="messageListQuery.title"
@@ -23,7 +23,7 @@
                 </el-col>
                 <el-col :span="10">
                   <filter-item>
-                    <template v-slot:left> <span>状态</span> </template>
+                    <template v-slot:left><span>状态</span></template>
                     <template v-slot:right>
                       <el-select
                         v-model="messageListQuery.viewed"
@@ -70,7 +70,7 @@
             fit
             highlight-current-row
           >
-            <el-table-column prop="id" label="ID"> </el-table-column>
+            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
             <el-table-column prop="noticeContent" label="通知内容">
@@ -79,7 +79,7 @@
             </el-table-column>
             <el-table-column prop="noticeType" label="通知类型">
             </el-table-column>
-            <el-table-column prop="tenantId" label="租户ID"> </el-table-column>
+            <el-table-column prop="tenantId" label="租户ID"></el-table-column>
             <el-table-column prop="createTime" label="创建时间">
             </el-table-column>
             <el-table-column prop="updateTime" label="更新时间">
@@ -105,7 +105,7 @@
               <el-row>
                 <el-col :span="10">
                   <filter-item>
-                    <template v-slot:left> <span>状态</span> </template>
+                    <template v-slot:left><span>状态</span></template>
                     <template v-slot:right>
                       <el-select
                         v-model="matterListQuery.viewed"
@@ -152,7 +152,7 @@
             fit
             highlight-current-row
           >
-            <el-table-column prop="id" label="ID"> </el-table-column>
+            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
             <el-table-column prop="noticeContent" label="通知内容">
@@ -161,7 +161,7 @@
             </el-table-column>
             <el-table-column prop="noticeType" label="通知类型">
             </el-table-column>
-            <el-table-column prop="tenantId" label="租户ID"> </el-table-column>
+            <el-table-column prop="tenantId" label="租户ID"></el-table-column>
             <el-table-column prop="createTime" label="创建时间">
             </el-table-column>
             <el-table-column prop="updateTime" label="更新时间">
@@ -185,11 +185,11 @@
             <span>快捷入口</span>
           </div>
           <div class="text-container">
-            <svg-icon icon-class="password" fill="#0F55FA" />
+            <svg-icon icon-class="password" fill="#0F55FA"/>
             <div>报表设计</div>
           </div>
           <div class="text-container">
-            <svg-icon icon-class="password" fill="#0F55FA" />
+            <svg-icon icon-class="password" fill="#0F55FA"/>
             <div>添加用户</div>
           </div>
         </el-card>
@@ -201,20 +201,23 @@
           </div>
           <el-row :gutter="20">
             <el-col :span="12">
-              <div class="template-container">
+              <div class="process-container">
                 模板视图
               </div>
               <el-table
-                :data="processTemplate"
+                :data="temTemplate"
                 style="width: 100%; margin-top:20px"
                 :show-header="false"
               >
                 <el-table-column prop="viewName" label="viewName">
-                </el-table-column>
-                <el-table-column label="操作">
                   <template slot-scope="{ row, $index }">
-                    <span class="actionStyle" @click="handleSkip('template')">
-                      编辑
+                    <a style="color: blue" @click="handleSkip('template',row)">{{ row.viewName }}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" align="right">
+                  <template slot-scope="{ row, $index }">
+                    <span class="actionStyle" @click="deleteView(row,'template')">
+                      删除
                     </span>
                   </template>
                 </el-table-column>
@@ -230,11 +233,14 @@
                 :show-header="false"
               >
                 <el-table-column prop="viewName" label="viewName">
-                </el-table-column>
-                <el-table-column label="操作">
                   <template slot-scope="{ row, $index }">
-                    <span class="actionStyle" @click="handleSkip('process')">
-                      编辑
+                    <a style="color: blue" @click="handleSkip('process',row)">{{ row.viewName }}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" align="right">
+                  <template slot-scope="{ row, $index }">
+                    <span class="actionStyle" @click="deleteView(row,'process')">
+                      删除
                     </span>
                   </template>
                 </el-table-column>
@@ -250,10 +256,10 @@
 <script>
 import FilterItem from "@/components/FilterItem";
 import Pagination from "@/components/Pagination";
-import { fetchList, fetchTemplate } from "@/api/workbench";
+import {deleteView, fetchList, fetchTemplate} from "@/api/workbench";
 
 export default {
-  components: { Pagination, FilterItem },
+  components: {Pagination, FilterItem},
   data() {
     return {
       isAdmin: true,
@@ -287,13 +293,13 @@ export default {
       noticeType: 2,
       systemType: this.isAdmin ? 2 : 1
     });
-    this.getTemplate("PROCESS");
-    this.getTemplate("TEMPLATE");
+    this.getTemplate("process");
+    this.getTemplate("template");
   },
   methods: {
     async getMessageList(params) {
       this.messageListLoading = true;
-      const { data, totalCount } = await fetchList({
+      const {data, totalCount} = await fetchList({
         ...this.messageListQuery,
         ...params
       });
@@ -303,7 +309,7 @@ export default {
     },
     async getMatterList(params) {
       this.matterListLoading = true;
-      const { data, totalCount } = await fetchList({
+      const {data, totalCount} = await fetchList({
         ...this.matterListQuery,
         ...params
       });
@@ -312,30 +318,33 @@ export default {
       this.matterListLoading = false;
     },
     async getTemplate(type) {
-      const { data } = await fetchTemplate({
+      let data = await fetchTemplate({
         viewType: type,
         limit: 5
       });
-      if (type === "PROCESS") {
-        console.log("process");
-        this.processTemplate = [];
-      } else {
-        console.log("debugger");
-        this.temTemplate = [];
+      if (type === "process") {
+        this.processTemplate = data.data;
+      } else if (type === "template") {
+        this.temTemplate = data.data;
       }
     },
-    handleSkip(type) {
+    handleSkip(type, row) {
       if (type === "template") {
         this.$router.push({
           name: "templateTable",
-          params: {}
+          params: row
         });
       } else {
         this.$router.push({
           name: "processTable",
-          params: {}
+          params: row
         });
       }
+    },
+    async deleteView(row,type) {
+      console.log(row.id)
+      await deleteView(row.id)
+      await this.getTemplate(type)
     },
     handleSearch() {
       this.getList();
@@ -351,7 +360,6 @@ export default {
       this.getList();
     },
     handleEdit() {
-      console.log("edit");
     }
   }
 };
@@ -366,18 +374,21 @@ export default {
   text-align: center;
   line-height: 46px;
 }
+
 .process-container {
   width: 100%;
   height: 46px;
-  background: linear-gradient(360deg, #ebffe8 0%, #fcfffb 100%);
+  background: linear-gradient(360deg, #dbf4ff 0%, #f1fbff 100%);
   border-radius: 2px;
   text-align: center;
   line-height: 46px;
 }
+
 .text-container {
   margin-right: 40px;
   display: inline-block;
   text-align: center;
+
   div {
     margin-top: 10px;
   }

@@ -1,13 +1,13 @@
 <template>
   <div class="card-container">
-    <bread-text name="流程分析明细" />
+    <bread-text name="流程分析明细"/>
     <el-row class="filter-container">
       <!-- left search -->
       <el-col :span="18">
         <el-row :gutter="20">
           <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>归属部门</span> </template>
+              <template v-slot:left><span>归属部门</span></template>
               <template v-slot:right>
                 <el-select
                   v-model="listQuery.createOrgCode"
@@ -26,7 +26,7 @@
           </el-col>
           <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>模板类别</span> </template>
+              <template v-slot:left><span>模板类别</span></template>
               <template v-slot:right>
                 <el-select
                   v-model="listQuery.appKey"
@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>发起人</span> </template>
+              <template v-slot:left><span>发起人</span></template>
               <template v-slot:right>
                 <el-input
                   v-model="listQuery.startUserName"
@@ -69,13 +69,15 @@
           >
             重置
           </el-button>
+          <el-button size="small" icon="el-icon-circle-plus" style="margin-left: 10px;" @click="open()">
+            保存为快捷视图
+          </el-button>
         </div>
       </el-col>
     </el-row>
-
     <el-table :data="list" style="width: 100%">
-      <el-table-column prop="app_name" label="模板名称"> </el-table-column>
-      <el-table-column prop="start_user_name" label="发起人"> </el-table-column>
+      <el-table-column prop="app_name" label="模板名称"></el-table-column>
+      <el-table-column prop="start_user_name" label="发起人"></el-table-column>
       <el-table-column prop="proc_pass_time" label="耗时总长" sortable>
       </el-table-column>
       <el-table-column
@@ -108,20 +110,44 @@
       :limit.sync="listQuery.pageSize"
       @pagination="getList"
     />
+    <el-dialog title="添加视图" :visible.sync="dialogVisible">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="form"
+        label-position="left"
+        label-width="150px"
+        style="width: 400px; margin-left:50px;">
+        <el-form-item label="视图名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入名称"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="confirm()">
+          确认
+        </el-button>
+        <el-button @click="close()">
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
-import { fetchList } from "@/api/flow";
-import { fetchSelectDepartment, fetchSelectTemplate } from "@/api/rule";
+import {fetchList} from "@/api/flow";
+import {fetchSelectDepartment, fetchSelectTemplate} from "@/api/rule";
 import Pagination from "@/components/Pagination";
 
+import {addQuickView} from "@/api/workbench";
+
 export default {
-  components: { Pagination, FilterItem, BreadText },
+  components: {Pagination, FilterItem, BreadText},
   data() {
     return {
+      dialogVisible: false,
       total: 0,
       list: null,
       listLoading: false,
@@ -133,7 +159,13 @@ export default {
         createOrgCode: undefined,
         appKey: undefined,
         startUserName: undefined
-      }
+      },
+      rules: {
+        name: [{required: true, message: "请输入名称", trigger: "blur"}]
+      },
+      form: {
+        name: ""
+      },
     };
   },
   created() {
@@ -144,7 +176,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true;
-      const { data, totalCount } = await fetchList({
+      const {data, totalCount} = await fetchList({
         condition: {
           extParam: {
             createOrgCode: this.listQuery.createOrgCode,
@@ -161,11 +193,11 @@ export default {
       this.listLoading = false;
     },
     async getSelectDepartment() {
-      const { data } = await fetchSelectDepartment();
+      const {data} = await fetchSelectDepartment();
       this.selectDepartmentData = data;
     },
     async getSelectTemplate() {
-      const { data } = await fetchSelectTemplate();
+      const {data} = await fetchSelectTemplate();
       this.selectTemplateData = data;
     },
     handleClick(tab, event) {
@@ -183,6 +215,45 @@ export default {
         startUserName: ""
       };
       this.getList();
+    },
+    close() {
+      this.dialogVisible = false;
+
+    },
+    open() {
+      this.dialogVisible = true;
+    },
+    confirm() {
+      this.validateAndSubmit();
+    },
+    async addView() {
+      let param = {
+        viewName: this.form.name,
+        viewType: 'process',
+        definitionList:[{
+          paramName: 'createOrgCode',
+          paramValue: this.listQuery.createOrgCode
+        }, {
+          paramName: 'appKey',
+          paramValue: this.listQuery.appKey
+        }, {
+          paramName: 'startUserName',
+          paramValue: this.listQuery.startUserName
+        }]
+      }
+      await addQuickView(param)
+      this.$message({
+        type: "success",
+        message: "创建成功!"
+      });
+    },
+    validateAndSubmit() {
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          this.close();
+          this.addView();
+        }
+      });
     }
   }
 };

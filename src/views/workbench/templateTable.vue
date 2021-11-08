@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <bread-text name="模块分析明细" />
+    <bread-text name="模块分析明细"/>
 
     <el-table
       v-loading="listLoading"
@@ -12,8 +12,8 @@
       <el-table-column label="模版类别">
         <template slot-scope="scope">
           <span @click="textClick('process_890537162274856960:1:2964916')">{{
-            scope.row.appName
-          }}</span>
+              scope.row.appName
+            }}</span>
         </template>
       </el-table-column>
       <el-table-column label="平均超时">
@@ -44,12 +44,12 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/module";
+import {fetchList} from "@/api/module";
 import Pagination from "@/components/Pagination";
 import BreadText from "@/components/Breadtext";
 
 export default {
-  components: { Pagination, BreadText },
+  components: {Pagination, BreadText},
   data() {
     return {
       list: null,
@@ -65,12 +65,13 @@ export default {
     };
   },
   created() {
+    this.getParams();
     this.getList();
   },
   methods: {
     async getList() {
       this.listLoading = true;
-      const { data, totalCount } = await fetchList({
+      const {data, totalCount} = await fetchList({
         condition: {
           extParam: {
             createOrgCode: this.listQuery.orgCode,
@@ -86,6 +87,17 @@ export default {
 
       this.list = data;
       this.listLoading = false;
+    },
+    getParams() {
+      let params = this.$route.params.definitionList;
+      if(!params){
+        return;
+      }
+      let p = {};
+      params.map(o => {
+        p[o.paramName] = o.paramValue
+      })
+      this.listQuery = {...this.listQuery, ...p}
     }
   }
 };

@@ -69,6 +69,9 @@
           >
             重置
           </el-button>
+          <el-button size="small" icon="el-icon-circle-plus" style="margin-left: 10px;" @click="open()">
+            保存为快捷视图
+          </el-button>
         </div>
       </el-col>
     </el-row>
@@ -118,6 +121,27 @@
       :limit.sync="listQuery.size"
       @pagination="getList"
     />
+    <el-dialog title="添加视图" :visible.sync="dialogVisible">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="form"
+        label-position="left"
+        label-width="150px"
+        style="width: 400px; margin-left:50px;">
+        <el-form-item label="视图名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入名称"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="confirm()">
+          确认
+        </el-button>
+        <el-button @click="close()">
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -128,11 +152,13 @@ import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
 import rangeNumber from "@/utils/numberRange";
+import {addQuickView} from "@/api/workbench";
 
 export default {
   components: { Pagination, FilterItem, BreadText },
   data() {
     return {
+      dialogVisible: false,
       list: null,
       total: 0,
       listLoading: true,
@@ -148,7 +174,13 @@ export default {
       selectDepartmentData: [],
       selectTemplateData: [],
       rangeNumber: rangeNumber(),
-      isSelected: false
+      isSelected: false,
+      rules: {
+        name: [{required: true, message: "请输入名称", trigger: "blur"}]
+      },
+      form: {
+        name: ""
+      }
     };
   },
   created() {
@@ -208,6 +240,44 @@ export default {
       this.$router.push({
         name: "moduleFlow",
         query
+      });
+    },
+    close() {
+      this.dialogVisible = false;
+    },
+    open() {
+      this.dialogVisible = true;
+    },
+    confirm() {
+      this.validateAndSubmit();
+    },
+    async addView() {
+      let param = {
+        viewName: this.form.name,
+        viewType: 'template',
+        definitionList:[{
+          paramName: 'orgCode',
+          paramValue: this.listQuery.orgCode
+        }, {
+          paramName: 'appKey',
+          paramValue: this.listQuery.appKey
+        }, {
+          paramName: 'procDefName',
+          paramValue: this.listQuery.procDefName
+        }]
+      }
+      await addQuickView(param)
+      this.$message({
+        type: "success",
+        message: "创建成功!"
+      });
+    },
+    validateAndSubmit() {
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          this.close();
+          this.addView();
+        }
       });
     }
   }
