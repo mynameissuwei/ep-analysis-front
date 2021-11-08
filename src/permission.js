@@ -11,6 +11,7 @@ router.beforeEach(async (to, from, next) => {
   //   console.log("=============== router.beforeEach")
   //   next();
   // }
+  next();
   // const hasPreventId =
   //   store.getters.preventId && store.getters.preventId.length > 0;
 
