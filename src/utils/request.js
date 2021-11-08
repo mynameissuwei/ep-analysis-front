@@ -29,7 +29,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data;
     // if the custom code is not 0, it is judged as an error.
-    if (res.code != 0) {
+    if (res.code != 0 || res.code != "0") {
       Message({
         message: res.message || "系统繁忙，请稍后再试",
         type: "error",
