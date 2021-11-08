@@ -26,8 +26,7 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        // target: "https://efficiency-analysis-backend.dev.ennew.com",
-        target: "http://localhost:8080/",
+        target: "https://efficiency-analysis-backend.dev.ennew.com",
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: ""

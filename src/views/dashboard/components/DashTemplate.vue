@@ -22,7 +22,7 @@
         </div>
         <div>
           <span class="text-title">维护人：</span>
-          <span>{{ data.mainTainer ? data.mainTainer : "无" }}</span>
+          <span>{{ data.maintainer ? data.maintainer : "无" }}</span>
         </div>
       </div>
     </div>
