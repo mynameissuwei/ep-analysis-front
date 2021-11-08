@@ -81,7 +81,6 @@ const actions = {
           }
 
           const { userId, username, nickName, hasTenant, tenantId } = data;
-          console.log("vuex store getUserInfo data:", data)
           commit("SET_USERID", userId);
           commit("SET_USERNAME", username);
           commit("SET_NICKNAME", nickName);

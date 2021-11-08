@@ -20,7 +20,6 @@
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
           class="user-avatar"
         />
-<!--         <div class="user-name">{{this.$store.state.user.nickName}}</div>-->
          <div class="user-name">{{this.$store.state.user.nickName}}</div>
         <i class="el-icon-caret-bottom" />
       </div>
@@ -29,10 +28,7 @@
 </template>
 
 <script>
-import { getInfo } from '@/api/user'
-
 export default {
-
   name: "CommonHeader",
   props: {
     productName: String,
@@ -44,14 +40,6 @@ export default {
       console.log("logout ");
       this.authSdk.logout();
     },
-    getUserInfo(){
-      getInfo().then(res => {
-        console.log(">>>>>>>userInfo<<<<<<<< ", res)
-      })
-    }
-  },
-  mounted() {
-    this.getUserInfo();
   }
 };
 </script>
