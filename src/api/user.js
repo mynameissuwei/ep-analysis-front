@@ -51,7 +51,7 @@ export function login(data) {
 
 export function getInfo() {
   return request({
-    url: "/user/resource/page",
+    url: "/user/info",
     method: "get"
   });
 }

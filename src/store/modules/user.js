@@ -7,7 +7,12 @@ const getDefaultState = () => {
     token: getToken(),
     name: "",
     avatar: "",
-    preventId: ""
+    preventId: "",
+    userId: "",
+    username: "",
+    nickName: "",
+    hasTenant: true,
+    tenantId: ""
   };
 };
 
@@ -28,6 +33,21 @@ const mutations = {
   },
   SET_PREVENT: (state, preventId) => {
     state.preventId = preventId;
+  },
+  SET_USERID: (state, userId) => {
+    state.userId = userId;
+  },
+  SET_USERNAME: (state, username) => {
+    state.username = username;
+  },
+  SET_NICKNAME: (state, nickName) => {
+    state.nickName = nickName;
+  },
+  SET_HASTENANT: (state, hasTenant) => {
+    state.hasTenant = hasTenant;
+  },
+  SET_TENANTID: (state, tenantId) => {
+    state.tenantId = tenantId;
   }
 };
 
@@ -60,10 +80,12 @@ const actions = {
             reject("Verification failed, please Login again.");
           }
 
-          const { name, avatar } = data;
-
-          commit("SET_NAME", name);
-          commit("SET_AVATAR", avatar);
+          const { userId, username, nickName, hasTenant, tenantId } = data;
+          commit("SET_USERID", userId);
+          commit("SET_USERNAME", username);
+          commit("SET_NICKNAME", nickName);
+          commit("SET_HASTENANT", hasTenant);
+          commit("SET_TENANTID", tenantId);
           resolve(data);
         })
         .catch(error => {
