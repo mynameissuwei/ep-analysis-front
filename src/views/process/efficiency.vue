@@ -155,7 +155,7 @@ export default {
       processTotalAmountData: 1897,
       queryParam: {
         tenantId: "ep-analysis-flink",
-        senderId: localStorage.getItem("originTenantId"),
+        senderId: this.$store.state.user.tenantId,
         pageNum: 1,
         pageSize: 1
       }

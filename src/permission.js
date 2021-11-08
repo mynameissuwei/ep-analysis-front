@@ -4,6 +4,8 @@ import store from "./store";
 
 router.beforeEach(async (to, from, next) => {
   document.title = getPageTitle(to.meta.title);
+  await store.dispatch("user/getInfo");
+  next();
   // const hasPreventId =
   //   store.getters.preventId && store.getters.preventId.length > 0;
 
