@@ -34,9 +34,9 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectTemplateData"
-                    :key="item.appKey"
-                    :label="item.appName"
+                    v-for="(item, key) in selectTemplateData"
+                    :key="item.key"
+                    :label="`${item.appName} (${item.appKey})`"
                     :value="item.appKey"
                   />
                 </el-select>
@@ -79,6 +79,9 @@
       <el-table-column prop="app_name" label="模板名称"></el-table-column>
       <el-table-column prop="start_user_name" label="发起人"></el-table-column>
       <el-table-column prop="proc_pass_time" label="耗时总长" sortable>
+        <template slot-scope="scope">
+          <span>{{ getDuration(scope.row.proc_pass_time) }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="task_part_num"
@@ -97,10 +100,16 @@
         </template>
       </el-table-column>
       <el-table-column prop="proc_cost_time" label="最长耗时" sortable>
+        <template slot-scope="scope">
+          <span>{{ getDuration(scope.row.proc_cost_time) }}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="proc_approve_user" label="最长耗时审批人">
       </el-table-column>
       <el-table-column prop="ratio" label="人均耗时" sortable>
+        <template slot-scope="scope">
+          <span>{{ getDuration(scope.row.ratio) }}</span>
+        </template>
       </el-table-column>
     </el-table>
     <pagination
@@ -140,6 +149,7 @@ import BreadText from "@/components/Breadtext";
 import {fetchList} from "@/api/flow";
 import {fetchSelectDepartment, fetchSelectTemplate} from "@/api/rule";
 import Pagination from "@/components/Pagination";
+import getDuration from "@/utils/getDuration";
 
 import {addQuickView} from "@/api/workbench";
 
@@ -166,6 +176,7 @@ export default {
       form: {
         name: ""
       },
+      getDuration
     };
   },
   created() {

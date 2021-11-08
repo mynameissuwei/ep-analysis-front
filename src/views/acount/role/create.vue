@@ -10,16 +10,16 @@
             :rules="rules"
             label-width="80px"
           >
-            <el-form-item label="权限名称" prop="roleName">
+            <el-form-item label="角色名称" prop="roleName">
               <el-input v-model="form.roleName"></el-input>
             </el-form-item>
-            <el-form-item label="权限编码" prop="roleId">
+            <el-form-item label="角色编码" prop="roleId">
               <el-input
                 v-model="form.roleId"
                 :disabled="this.id ? true : false"
               ></el-input>
             </el-form-item>
-            <el-form-item label="权限描述" prop="roleDesc">
+            <el-form-item label="角色描述" prop="roleDesc">
               <el-input type="textarea" v-model="form.roleDesc"></el-input>
             </el-form-item>
             <el-form-item label="状态">
@@ -40,14 +40,14 @@
           >
             >
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column label="权限名称">
+            <el-table-column label="角色名称">
               <template slot-scope="scope">
                 {{ scope.row.authName }}
               </template>
             </el-table-column>
-            <el-table-column label="权限编码" align="center">
+            <el-table-column label="角色编码" align="center">
               <template slot-scope="scope">
-                <span>{{ scope.row.authType }}</span>
+                <span>{{ scope.row.authId }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -167,12 +167,12 @@ export default {
             max: 20,
             message: "长度在 1 到 20 个字符",
             trigger: "blur"
-          },
-          {
-            pattern: /^[A-Za-z_]+$/,
-            message: "只能输入英文字符和下划线",
-            trigger: "blur"
           }
+          // {
+          //   pattern: /^[A-Za-z_]+$/,
+          //   message: "只能输入英文字符和下划线",
+          //   trigger: "blur"
+          // }
         ],
         roleDesc: [
           { required: true, message: "请输入权限描述", trigger: "blur" },

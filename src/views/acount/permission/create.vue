@@ -2,7 +2,7 @@
   <el-container>
     <el-container class="app-container">
       <el-aside width="400px" class="aside-container">
-        <bread-text></bread-text>
+        <bread-text :name="id ? '编辑权限' : '添加权限'"></bread-text>
         <el-form ref="dataForm" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="权限名称" prop="authName">
             <el-input v-model="form.authName"></el-input>
@@ -44,7 +44,12 @@
 
 <script>
 import BreadText from "@/components/Breadtext";
-import { createList, fetchSourceList, fetchEditData } from "@/api/permission";
+import {
+  createList,
+  editList,
+  fetchSourceList,
+  fetchEditData
+} from "@/api/permission";
 
 export default {
   props: ["id"],
@@ -86,12 +91,12 @@ export default {
             max: 20,
             message: "长度在 1 到 20 个字符",
             trigger: "blur"
-          },
-          {
-            pattern: /^[A-Za-z_]+$/,
-            message: "只能输入英文字符和下划线",
-            trigger: "blur"
           }
+          // {
+          //   pattern: /^[A-Za-z_]+$/,
+          //   message: "只能输入英文字符和下划线",
+          //   trigger: "blur"
+          // }
         ],
         authDesc: [
           {
@@ -118,9 +123,8 @@ export default {
             resIdList: this.$refs.tree.getCheckedKeys(),
             authType: "1002"
           };
-          createList(data).then(() => {
+          (this.id ? editList(data) : createList(data)).then(() => {
             this.$router.push("/acount/permission");
-            this.$route.params.getList();
             this.$notify({
               title: "Success",
               message: "Created Successfully",

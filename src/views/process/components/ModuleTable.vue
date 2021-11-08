@@ -15,8 +15,8 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectDepartmentData"
-                    :key="item.orgCode"
+                    v-for="(item, index) in selectDepartmentData"
+                    :key="index"
                     :label="item.orgName"
                     :value="item.orgCode"
                   />
@@ -34,9 +34,9 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectTemplateData"
-                    :key="item.appKey"
-                    :label="item.appName"
+                    v-for="(item, index) in selectTemplateData"
+                    :key="index"
+                    :label="`${item.appName} (${item.appKey})`"
                     :value="item.appKey"
                   />
                 </el-select>
@@ -97,19 +97,19 @@
           >
         </template>
       </el-table-column>
-      <el-table-column label="平均超时">
+      <el-table-column label="平均超时" prop="processOverTime" sortable>
         <template slot-scope="scope">
-          {{ scope.row.processOverTime }}
+          {{ getDuration(scope.row.processOverTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="平均耗时">
+      <el-table-column label="平均耗时" prop="personPassTime" sortable>
         <template slot-scope="scope">
-          {{ scope.row.personPassTime }}
+          {{ getDuration(scope.row.personPassTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="平均超时率">
+      <el-table-column label="平均超时率" prop="finishRatio" sortable>
         <template slot-scope="scope">
-          {{ scope.row.finishRatio }}
+          {{ toPercent(scope.row.finishRatio) }}
         </template>
       </el-table-column>
     </el-table>
@@ -117,8 +117,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.current"
-      :limit.sync="listQuery.size"
+      :page.sync="listQuery.pageNo"
+      :limit.sync="listQuery.pageSize"
       @pagination="getList"
     />
     <el-dialog title="添加视图" :visible.sync="dialogVisible">
@@ -152,7 +152,10 @@ import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
 import rangeNumber from "@/utils/numberRange";
+import getDuration from "@/utils/getDuration";
+import toPercent from "@/utils/toPercent";
 import {addQuickView} from "@/api/workbench";
+
 
 export default {
   components: { Pagination, FilterItem, BreadText },
@@ -163,6 +166,8 @@ export default {
       total: 0,
       listLoading: true,
       checkList: [],
+      getDuration,
+      toPercent,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -204,7 +209,7 @@ export default {
         }
       });
       this.total = totalCount;
-
+      console.log(data, "listData");
       this.list = data;
       this.listLoading = false;
     },
@@ -221,8 +226,8 @@ export default {
     },
     handleReset() {
       this.listQuery = {
-        current: 1,
-        size: 10,
+        pageNo: 1,
+        pageSize: 10,
         orgCode: undefined,
         appKey: undefined,
         procDefName: undefined

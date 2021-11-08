@@ -10,9 +10,9 @@
 
       <div class="content">
         <span class="template-class">模板名称:</span>
-        <span>{{ data.procDefName }}</span>
+        <span>{{ data.procDefName ? data.procDefName : "无" }}</span>
         <span class="content-text">模板超时:</span>
-        <span v-if="!isSelected">{{ value }}</span>
+        <span v-if="!isSelected">{{ value }} h</span>
         <el-select v-else v-model="value" placeholder="请选择" size="mini">
           <el-option
             v-for="item in rangeNumber"
@@ -77,7 +77,7 @@
               icon="el-icon-circle-check-outline"
               @click="confirmEdit(row)"
             >
-              确定
+              保存
             </el-button>
             <el-button
               v-else
@@ -123,11 +123,11 @@ export default {
   },
   methods: {
     getEditData() {
-      const query = this.$route.query;
+      const { appKey, procDefKey } = this.$route.query;
       fetchTimeConfig({
         condition: {
-          appKey: "multiTenant",
-          procDefKey: "process_890183536603914240:1:2964640"
+          appKey,
+          procDefKey
         }
       }).then(res => {
         this.data = res.data;
@@ -214,7 +214,8 @@ export default {
     margin-left: 15px;
   }
 }
-// .el-container {
-//   min-height: calc(100vh - 240px);
-// }
+.el-radio {
+  display: block;
+  margin: 20px 0px;
+}
 </style>

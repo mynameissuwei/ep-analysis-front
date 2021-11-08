@@ -28,29 +28,7 @@
         </card-container>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
-      <!-- <el-col :span="12">
-        <card-container>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <pie-chart
-                id="leftChart"
-                :data="leftChartData"
-                :getCasCadePie="getCasCadePie"
-                type="category"
-              />
-            </el-col>
-            <el-col :span="12">
-              <pie-chart
-                id="rightChart"
-                :data="rightChartData"
-                :getCasCadePie="getCasCadePie"
-                type="section"
-              />
-            </el-col>
-          </el-row>
-        </card-container>
-      </el-col> -->
+    <el-row :gutter="20" v-loading="loading">
       <el-col :span="24">
         <card-container>
           <el-row type="flex" justify="space-around">
@@ -142,7 +120,8 @@ export default {
       rightChartData: [],
       pieMap: {},
       toPercent,
-      getDuration
+      getDuration,
+      loading: false
     };
   },
   components: {
@@ -183,12 +162,14 @@ export default {
       }
     },
     async getCasCadePie(params) {
+      this.loading = true;
       const { data } = await fetchCasCadePie({
         condition: {
           sqlKey: "pieCasCadeMap",
           extParam: params
         }
       });
+      this.loading = false;
       this.pieMap = data;
     }
   }

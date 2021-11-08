@@ -47,9 +47,9 @@
 </template>
 
 <script>
-import BarChart from "../process/components/BarChart";
+import BarChart from "@/views/process/components/BarChart";
 import { fetchExecSqlToList, fetchExecSqlToMap } from "@/api/ops";
-import PieChart from "../process/components/PieChart";
+import PieChart from "@/views/process/components/PieChart";
 import CardContainer from "@/components/CardContainer";
 import OpsTable from "./OpsTable";
 import addPng from "@/assets/add.png";
@@ -57,6 +57,8 @@ import finishTimePng from "@/assets/finishTime.png";
 import responseTime from "@/assets/responseTime.png";
 import orderCnt from "@/assets/orderCnt.png";
 import totalPassTime from "@/assets/totalPassTime.png";
+import getDuration from "@/utils/getDuration";
+import toPercent from "@/utils/toPercent";
 
 export default {
   components: { BarChart, PieChart, CardContainer, OpsTable },
@@ -67,7 +69,7 @@ export default {
       opsPieData: [],
       rightMap: [],
       panes: [
-        { label: "本天", key: "day" },
+        { label: "本周", key: "day" },
         { label: "本月", key: "month" },
         { label: "本年", key: "year" }
       ],
@@ -75,7 +77,9 @@ export default {
       finishTimePng,
       responseTime,
       orderCnt,
-      totalPassTime
+      totalPassTime,
+      getDuration,
+      toPercent
     };
   },
   created() {
@@ -94,10 +98,11 @@ export default {
         ...rightData,
         ...leftData
       };
+
       let changeData = Object.keys(data).map(item =>
         this.changeRightMap(item, data)
       );
-      console.log(Object.keys(data), changeData, "changeData");
+
       this.rightMap = changeData;
     },
     async getEchartData(sqlKey) {
@@ -114,7 +119,7 @@ export default {
           extParam: {
             target: panValue
           },
-          sqlKey: "procIncrList"
+          sqlKey: "orderIncTrendList"
         }
       });
       let xAxis = data.map(item => item.dayTime);
@@ -146,14 +151,14 @@ export default {
           };
         case "finishTime":
           return {
-            num: data[value],
+            num: this.getDuration(data[value]),
             imgName: this.finishTimePng,
             text: "平均完成时间",
             className: "finishTime"
           };
         case "responseTime":
           return {
-            num: data[value],
+            num: this.getDuration(data[value]),
             imgName: this.responseTime,
             text: "平均响应时间",
             className: "responseTime"
@@ -167,10 +172,17 @@ export default {
           };
         case "totalPassTime":
           return {
-            num: data[value],
+            num: this.getDuration(data[value]),
             imgName: this.totalPassTime,
             text: "处理总耗时",
             className: "cnt"
+          };
+        case "sum(fault_time)":
+          return {
+            num: this.toPercent(data[value]),
+            imgName: this.finishTimePng,
+            text: "工单完结率",
+            className: "finishTime"
           };
         default:
           return {};

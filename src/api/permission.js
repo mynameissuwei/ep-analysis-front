@@ -24,6 +24,14 @@ export function createList(data) {
   });
 }
 
+export function editList(data) {
+  return request({
+    url: "/auth",
+    method: "put",
+    data
+  });
+}
+
 export function fetchSourceList() {
   return request({
     url: "/auth/resource/tree",

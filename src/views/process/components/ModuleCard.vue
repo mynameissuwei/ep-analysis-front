@@ -4,14 +4,14 @@
       <el-col :span="24">
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.procDefNum"
-            cardText="模板总数"
+            :cardTitle="isNill(itemDetail.taskNum)"
+            cardText="节点长度"
             svgText="overtime"
           />
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.totalPassTime"
+            :cardTitle="getDuration(itemDetail.totalPassTime)"
             cardText="耗时总长"
             svgText="template"
           />
@@ -29,21 +29,21 @@
       <el-col :span="24">
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.processPassTime"
+            :cardTitle="getDuration(itemDetail.processPassTime)"
             cardText="平均耗时"
             svgText="timeConsume"
           />
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.finishRatio"
+            :cardTitle="toPercent(itemDetail.finishRatio)"
             cardText="完成率"
             svgText="complete"
           />
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.totalOverTime"
+            :cardTitle="getDuration(itemDetail.totalOverTime)"
             cardText="超时总长"
             svgText="overtime"
           />
@@ -61,7 +61,7 @@
         </div>
         <div class="card-template">
           <display-card
-            :cardTitle="itemDetail.processOverTime"
+            :cardTitle="getDuration(itemDetail.processOverTime)"
             cardText="平均超时"
             svgText="overtime"
           />
@@ -73,8 +73,17 @@
 
 <script>
 import DisplayCard from "@/components/DisplayCard";
+import getDuration from "@/utils/getDuration";
+import toPercent, { isNill } from "@/utils/toPercent";
 
 export default {
+  data() {
+    return {
+      getDuration,
+      isNill,
+      toPercent
+    };
+  },
   props: ["itemDetail"],
   components: {
     DisplayCard

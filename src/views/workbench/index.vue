@@ -49,13 +49,17 @@
             <!-- right button -->
             <el-col :span="6">
               <div style="float: right">
-                <el-button size="small" type="primary" @click="handleSearch">
+                <el-button
+                  size="small"
+                  type="primary"
+                  @click="handleSearch('message')"
+                >
                   查询
                 </el-button>
                 <el-button
                   size="small"
                   style="margin-left: 10px;"
-                  @click="handleReset"
+                  @click="handleReset('message')"
                 >
                   重置
                 </el-button>
@@ -70,19 +74,9 @@
             fit
             highlight-current-row
           >
-            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="noticeContent" label="通知内容">
-            </el-table-column>
-            <el-table-column prop="systemType" label="系统类型">
-            </el-table-column>
-            <el-table-column prop="noticeType" label="通知类型">
-            </el-table-column>
-            <el-table-column prop="tenantId" label="租户ID"></el-table-column>
             <el-table-column prop="createTime" label="创建时间">
-            </el-table-column>
-            <el-table-column prop="updateTime" label="更新时间">
             </el-table-column>
           </el-table>
           <pagination
@@ -131,13 +125,17 @@
             <!-- right button -->
             <el-col :span="6">
               <div style="float: right">
-                <el-button size="small" type="primary" @click="handleSearch">
+                <el-button
+                  size="small"
+                  type="primary"
+                  @click="handleSearch('matter')"
+                >
                   查询
                 </el-button>
                 <el-button
                   size="small"
                   style="margin-left: 10px;"
-                  @click="handleReset"
+                  @click="handleReset('matter')"
                 >
                   重置
                 </el-button>
@@ -152,19 +150,9 @@
             fit
             highlight-current-row
           >
-            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="noticeContent" label="通知内容">
-            </el-table-column>
-            <el-table-column prop="systemType" label="系统类型">
-            </el-table-column>
-            <el-table-column prop="noticeType" label="通知类型">
-            </el-table-column>
-            <el-table-column prop="tenantId" label="租户ID"></el-table-column>
             <el-table-column prop="createTime" label="创建时间">
-            </el-table-column>
-            <el-table-column prop="updateTime" label="更新时间">
             </el-table-column>
           </el-table>
           <pagination
@@ -346,18 +334,42 @@ export default {
       await deleteView(row.id)
       await this.getTemplate(type)
     },
-    handleSearch() {
-      this.getList();
+    handleSearch(type) {
+      if (type === "message") {
+        this.getMessageList({
+          noticeType: 1,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      } else {
+        this.getMatterList({
+          noticeType: 2,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      }
     },
-    handleReset() {
-      this.listQuery = {
-        pageNo: 1,
-        pageSize: 10,
-        createOrgCode: "",
-        appKey: "",
-        startUserName: ""
-      };
-      this.getList();
+    handleReset(type) {
+      if (type === "message") {
+        this.messageListQuery = {
+          pageNum: 1,
+          pageSize: 5,
+          viewed: undefined,
+          title: undefined
+        };
+        this.getMessageList({
+          noticeType: 1,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      } else {
+        this.matterListQuery = {
+          pageNum: 1,
+          pageSize: 5,
+          viewed: undefined
+        };
+        this.getMatterList({
+          noticeType: 2,
+          systemType: this.isAdmin ? 2 : 1
+        });
+      }
     },
     handleEdit() {
     }

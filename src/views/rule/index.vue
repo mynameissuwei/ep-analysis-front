@@ -34,9 +34,9 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in selectTemplateData"
-                    :key="item.appKey"
-                    :label="item.appName"
+                    v-for="(item, index) in selectTemplateData"
+                    :key="index"
+                    :label="`${item.appName} (${item.appKey})`"
                     :value="item.appKey"
                   />
                 </el-select>
@@ -77,6 +77,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
+      :disabled="multipleSelection.length ? false : true"
       @click="batchDeploy"
     >
       批量配置
@@ -94,15 +95,15 @@
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="模板名称">
         <template slot-scope="scope">
-          <span>{{ scope.row.appName }}</span>
+          <span>{{ scope.row.procDefName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="模板代码">
+      <el-table-column label="模板类别">
         <template slot-scope="scope">
-          {{ scope.row.orgCode }}
+          {{ scope.row.appName }}
         </template>
       </el-table-column>
-      <el-table-column label="归属部门">
+      <el-table-column label="指定部门">
         <template slot-scope="scope">
           {{ scope.row.orgName }}
         </template>
@@ -249,15 +250,6 @@ export default {
         params: { getList: this.getList }
       });
     },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
-      this.dialogStatus = "update";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
-    },
     overTimeDeploy(row) {
       this.$router.push({
         name: "createRule",
@@ -277,9 +269,10 @@ export default {
       }));
       batchSave(array).then(() => {
         this.getList();
+        this.dialogVisible = false;
         this.$notify({
-          title: "Success",
-          message: "Created Successfully",
+          title: "成功",
+          message: "配置成功",
           type: "success",
           duration: 2000
         });

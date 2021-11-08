@@ -51,12 +51,6 @@ export const constantRoutes = [
         name: "Efficiency",
         meta: { title: "效能大盘" }
       },
-      // {
-      //   path: "operate",
-      //   component: () => import("@/views/process/OperateBoard"),
-      //   name: "Operate",
-      //   meta: { title: "运营大盘" }
-      // },
       {
         path: "category",
         component: () => import("@/views/process/category"),
@@ -156,18 +150,18 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: "/ops",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/ops"),
-        name: "ops",
-        meta: { title: "统一运维", icon: "link" }
-      }
-    ]
-  },
+  // {
+  //   path: "/ops",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/ops"),
+  //       name: "ops",
+  //       meta: { title: "统一运维", icon: "link" }
+  //     }
+  //   ]
+  // },
   {
     path: "/workbench",
     component: Layout,
@@ -208,7 +202,6 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        // component: () => import("@/views/operate"),
         component: () => import("@/views/process/OperateBoard"),
         name: "operate",
         meta: { title: "运营大盘", icon: "eye" }
@@ -269,7 +262,7 @@ export const constantRoutes = [
         hidden: true,
         props: true,
         meta: {
-          title: "添加权限",
+          title: "权限编辑",
           noCache: true,
           activeMenu: "/acount/permission"
         }

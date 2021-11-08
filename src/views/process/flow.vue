@@ -43,7 +43,7 @@
             <yellow-svg
               start-color="#8FB4FF"
               end-color="#6D78FD"
-              :count="execSqlToMap.finishRatio"
+              :count="`${execSqlToMap.finishRatio}%`"
               text="总体完成率"
             />
           </el-col>
@@ -68,7 +68,7 @@ export default {
       execSqlToMap: {},
       execSqlToList: {},
       panes: [
-        { label: "本天", key: "day" },
+        { label: "本周", key: "day" },
         { label: "本月", key: "month" },
         { label: "本年", key: "year" }
       ],

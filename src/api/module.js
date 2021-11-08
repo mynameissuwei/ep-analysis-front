@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchListMore(params) {
   return request({
-    url: "/api/ck/execSqlToList",
+    url: "/api/ck/execSqlToPage",
     method: "get",
     params
   });
