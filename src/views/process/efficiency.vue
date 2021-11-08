@@ -199,7 +199,7 @@ export default {
         // 获取卡片数据
         this.displayCardData = { ...extra };
         this.displayCardData.completeRate =
-          parseFloat(this.displayCardData.completeRate) * 100 + "%";
+          parseInt(parseFloat(this.displayCardData.completeRate).toFixed(2) * 100) + "%";
 
         // 获取效能评分
         this.efficiencyScore = extra.efficiencyScore / 100;

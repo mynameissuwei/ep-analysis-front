@@ -28,7 +28,7 @@ export function getTimeConsuming (my_time) {
   let time = "";
   if(days) time += days + "天";
   if(hours) time += hours + "小时";
-  if(minutes) time += minutes + "分钟";
+  // if(minutes) time += minutes + "分钟";
   if(!time) time = 0;
   return time;
 }
