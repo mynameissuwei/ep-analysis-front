@@ -84,6 +84,7 @@ import NumberCard from "./components/NumberCard";
 import EventCard from "./components/EventCard";
 import { getEfficiencyData } from "@/api/efficiencyDashboard";
 import { convertToHoursFormat } from '@/utils/getDuration'
+import { getUserInfo } from '@/utils/auth'
 
 
 export default {
@@ -154,7 +155,7 @@ export default {
       processTotalAmountData: 1897,
       queryParam: {
         tenantId: "ep-analysis-flink",
-        senderId: "ep-analysis-flink",
+        senderId: localStorage.getItem("originTenantId"),
         pageNum: 1,
         pageSize: 1
       }
