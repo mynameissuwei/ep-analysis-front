@@ -4,11 +4,22 @@
       <span class="text">实时事件</span>
       <svg-icon icon-class="event" />
     </div>
-    <el-row v-for="event in events" :gutter="20" justify="space-between" class="textEvent">
-      <el-col :span="4"><span>{{event.operateName}}</span> </el-col>
-      <el-col :span="12"><span>{{event.noticeType}}: {{event.processName}}</span> </el-col>
-      <el-col :span="8" style="text-align:right"><span>{{event.operateTime}}</span> </el-col>
-    </el-row>
+
+    <el-table :data="events" height="250px" :show-header="false">
+      <el-table-column prop="operateName" />
+      <el-table-column prop="noticeText" label="通知内容">
+        <template slot-scope="scope">
+          <el-tooltip class="item"
+                      effect="dark"
+                      :disabled="isShowOverLengthStringTip(scope.row.noticeText)"
+                      :content="scope.row.noticeText"
+                      placement="top-end">
+            <span>{{showOverLengthStr(scope.row.noticeText)}}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="operateTime" label="操作时间"/>
+    </el-table>
   </div>
 </template>
 
@@ -18,6 +29,17 @@ export default {
     events: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    showOverLengthStr(text){
+      if(text.length > 9){
+        return text.substring(0,9)+"...";
+      }
+      return text;
+    },
+    isShowOverLengthStringTip(text){
+      return text.length <= 9;
     }
   }
 };
