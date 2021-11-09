@@ -10,7 +10,7 @@
           />
           <el-tooltip class="item"
                       effect="dark"
-                      :value="parseFloat(convertTimeFormat(displayCardData.templateTimeConsuming).replace('h','')) > 8"
+                      :disabled="parseFloat(convertTimeFormat(displayCardData.templateTimeConsuming).replace('h','')) < 8"
                       :content="parseFloat(convertTimeFormat(displayCardData.templateTimeConsuming).replace('h',''))/8 + '人天'"
                       placement="top-end">
             <display-card
@@ -26,7 +26,7 @@
             cardText="完成率"
             svgText="complete"
           />
-          <el-tooltip class="item" effect="dark" :value="false" :content="parseFloat(convertTimeFormat(displayCardData.averageTimeConsuming).replace('h',''))/8 + '人天'" placement="top-end">
+          <el-tooltip class="item" effect="dark" :disabled="parseFloat(convertTimeFormat(displayCardData.templateTimeConsuming).replace('h','')) < 8" :content="parseFloat(convertTimeFormat(displayCardData.averageTimeConsuming).replace('h',''))/8 + '人天'" placement="top-end">
             <display-card
               :cardTitle="convertHourUnit(displayCardData.averageTimeConsuming)"
               cardText="平均耗时"
@@ -169,6 +169,7 @@ export default {
     };
   },
   methods: {
+    // 转换为人天
     convertTimeFormat(a){
       return a;
     },
