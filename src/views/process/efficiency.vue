@@ -8,11 +8,17 @@
             cardText="模板总数"
             svgText="template"
           />
-          <display-card
-            :cardTitle="convertTimeFormat(displayCardData.templateTimeConsuming)"
-            cardText="模板总耗时"
-            svgText="timeConsume"
-          />
+          <el-tooltip class="item"
+                      effect="dark"
+                      :value="parseFloat(convertTimeFormat(displayCardData.templateTimeConsuming).replace('h','')) > 8"
+                      :content="parseFloat(convertTimeFormat(displayCardData.templateTimeConsuming).replace('h',''))/8 + '人天'"
+                      placement="top-end">
+            <display-card
+              :cardTitle="convertHourUnit(displayCardData.templateTimeConsuming)"
+              cardText="模板总耗时"
+              svgText="timeConsume"
+            />
+          </el-tooltip>
         </el-col>
         <el-col :span="4">
           <display-card
@@ -20,23 +26,25 @@
             cardText="完成率"
             svgText="complete"
           />
-          <display-card
-            :cardTitle="convertTimeFormat(displayCardData.averageTimeConsuming)"
-            cardText="平均耗时"
-            svgText="timeConsume"
-          />
+          <el-tooltip class="item" effect="dark" :value="false" :content="parseFloat(convertTimeFormat(displayCardData.averageTimeConsuming).replace('h',''))/8 + '人天'" placement="top-end">
+            <display-card
+              :cardTitle="convertHourUnit(displayCardData.averageTimeConsuming)"
+              cardText="平均耗时"
+              svgText="timeConsume"
+            />
+          </el-tooltip>
         </el-col>
         <el-col :span="8" class="chart-container">
           <card-chart title="效能评分" :score="efficiencyScore" />
         </el-col>
         <el-col :span="4">
           <display-card
-            :cardTitle="convertTimeFormat(displayCardData.templateTotalExpiredTime)"
+            :cardTitle="convertHourUnit(displayCardData.templateTotalExpiredTime)"
             cardText="模板总超时"
             svgText="overtime"
           />
           <display-card
-            :cardTitle="convertTimeFormat(displayCardData.averageTimeExpired)"
+            :cardTitle="convertHourUnit(displayCardData.averageTimeExpired)"
             cardText="平均超时"
             svgText="overtime"
           />
@@ -48,7 +56,7 @@
             svgText="people"
           />
           <display-card
-            :cardTitle="convertTimeFormat(displayCardData.humanPerTimeConsuming)"
+            :cardTitle="convertHourUnit(displayCardData.humanPerTimeConsuming)"
             cardText="人均耗时"
             svgText="timeConsume"
           />
@@ -83,8 +91,7 @@ import LineChart from "./components/LineChart";
 import NumberCard from "./components/NumberCard";
 import EventCard from "./components/EventCard";
 import { getEfficiencyData } from "@/api/efficiencyDashboard";
-import { convertToHoursFormat } from '@/utils/getDuration'
-import { getUserInfo } from '@/utils/auth'
+import { convertToDaysFormat } from '@/utils/getDuration'
 
 
 export default {
@@ -162,8 +169,11 @@ export default {
     };
   },
   methods: {
-    convertTimeFormat(secondTime){
-      return convertToHoursFormat(secondTime);
+    convertTimeFormat(a){
+      return a;
+    },
+    convertHourUnit(hourTime){
+      return hourTime + "h";
     },
     // 轮询方法
     polling() {
