@@ -16,19 +16,19 @@
             }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平均超时">
+      <el-table-column label="平均超时(小时)">
         <template slot-scope="scope">
-          {{ scope.row.processOverTime }}
+          {{ getDuration(scope.row.processOverTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="平均耗时">
+      <el-table-column label="平均耗时(小时)">
         <template slot-scope="scope">
-          {{ scope.row.personPassTime }}
+          {{ getDuration(scope.row.personPassTime) }}
         </template>
       </el-table-column>
       <el-table-column label="平均超时率">
         <template slot-scope="scope">
-          {{ scope.row.finishRatio }}
+          {{ toPercent(scope.row.finishRatio) }}
         </template>
       </el-table-column>
     </el-table>
@@ -47,6 +47,8 @@
 import {fetchList} from "@/api/module";
 import Pagination from "@/components/Pagination";
 import BreadText from "@/components/Breadtext";
+import getDuration from "@/utils/getDuration";
+import toPercent from "@/utils/toPercent";
 
 export default {
   components: {Pagination, BreadText},
@@ -55,6 +57,8 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      getDuration,
+      toPercent,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -90,7 +94,7 @@ export default {
     },
     getParams() {
       let params = this.$route.params.definitionList;
-      if(!params){
+      if (!params) {
         return;
       }
       let p = {};

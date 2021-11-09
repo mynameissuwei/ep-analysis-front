@@ -3,7 +3,7 @@ const getDuration = my_time => {
     return "无";
   }
   let hours = my_time / 1000 / 60 / 60;
-  let hoursRound = Math.floor(hours);
+  let hoursRound = hours.toFixed(3);
   // var days = my_time / 1000 / 60 / 60 / 24;
   // var daysRound = Math.floor(days);
   // var hours = my_time / 1000 / 60 / 60 - 24 * daysRound;
@@ -17,7 +17,7 @@ const getDuration = my_time => {
   //   60 * 60 * hoursRound -
   //   60 * minutesRound;
 
-  return `${hoursRound} h`;
+  return `${hoursRound}`;
 };
 
 // 按照每天8小时计算
