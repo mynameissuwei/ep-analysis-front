@@ -14,7 +14,7 @@
                   <filter-item>
                     <template v-slot:left><span>搜索</span></template>
                     <template v-slot:right>
-                      <el-input
+                      <el-input size="small"
                         v-model="messageListQuery.title"
                         placeholder="请输入"
                       />
@@ -25,7 +25,7 @@
                   <filter-item>
                     <template v-slot:left><span>状态</span></template>
                     <template v-slot:right>
-                      <el-select
+                      <el-select size="small"
                         v-model="messageListQuery.viewed"
                         clearable
                         placeholder="请选择"
@@ -76,14 +76,15 @@
           >
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="createTime" align="center" label="创建时间">
             </el-table-column>
           </el-table>
           <pagination
             v-show="messageTotal > 0"
             :total="messageTotal"
-            :page.sync="messageListQuery.pageSize"
-            :limit.sync="messageListQuery.pageNum"
+            :page-sizes="[5,10]"
+            :page.sync="messageListQuery.pageNum"
+            :limit.sync="messageListQuery.pageSize"
             @pagination="getMessageList"
           />
         </el-card>
@@ -101,7 +102,7 @@
                   <filter-item>
                     <template v-slot:left><span>状态</span></template>
                     <template v-slot:right>
-                      <el-select
+                      <el-select size="small"
                         v-model="matterListQuery.viewed"
                         clearable
                         placeholder="请选择"
@@ -152,14 +153,15 @@
           >
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="createTime" align="center" label="创建时间">
             </el-table-column>
           </el-table>
           <pagination
             v-show="matterTotal > 0"
             :total="matterTotal"
-            :page.sync="matterListQuery.pageSize"
-            :limit.sync="matterListQuery.pageNum"
+            :page-sizes="[5,10]"
+            :page.sync="matterListQuery.pageNum"
+            :limit.sync="matterListQuery.pageSize"
             @pagination="getMatterList"
           />
         </el-card>
@@ -172,13 +174,15 @@
           <div slot="header" class="clearfix">
             <span>快捷入口</span>
           </div>
+          <!--          <div class="text-container">-->
+          <!--            <svg-icon icon-class="password" fill="#0F55FA"/>-->
+          <!--            <div>报表设计</div>-->
+          <!--          </div>-->
           <div class="text-container">
-            <svg-icon icon-class="password" fill="#0F55FA"/>
-            <div>报表设计</div>
-          </div>
-          <div class="text-container">
-            <svg-icon icon-class="password" fill="#0F55FA"/>
-            <div>添加用户</div>
+            <router-link :to="{name:'createUser'}">
+              <svg-icon icon-class="password" fill="#0F55FA"/>
+              <div>添加用户</div>
+            </router-link>
           </div>
         </el-card>
       </el-col>
@@ -245,7 +249,6 @@
 import FilterItem from "@/components/FilterItem";
 import Pagination from "@/components/Pagination";
 import {deleteView, fetchList, fetchTemplate} from "@/api/workbench";
-import {deleteList} from "@/api/permission";
 
 export default {
   components: {Pagination, FilterItem},
@@ -274,36 +277,38 @@ export default {
     };
   },
   created() {
-    this.getMessageList({
-      noticeType: 1,
-      systemType: this.isAdmin ? 2 : 1
-    });
-    this.getMatterList({
-      noticeType: 2,
-      systemType: this.isAdmin ? 2 : 1
-    });
+    this.getMessageList();
+    this.getMatterList();
     this.getTemplate("process");
     this.getTemplate("template");
   },
   methods: {
-    async getMessageList(params) {
+    async getMessageList() {
+      let params = {
+        noticeType: 1,
+        systemType: this.isAdmin ? 2 : 1
+      }
       this.messageListLoading = true;
       const {data, totalCount} = await fetchList({
         ...this.messageListQuery,
         ...params
       });
       this.messageTotal = totalCount;
-      this.messageList = [];
+      this.messageList = data;
       this.messageListLoading = false;
     },
-    async getMatterList(params) {
+    async getMatterList() {
+      let params = {
+        noticeType: 2,
+        systemType: this.isAdmin ? 2 : 1
+      }
       this.matterListLoading = true;
       const {data, totalCount} = await fetchList({
         ...this.matterListQuery,
         ...params
       });
       this.matterTotal = totalCount;
-      this.matterList = [];
+      this.matterList = data;
       this.matterListLoading = false;
     },
     async getTemplate(type) {
@@ -346,15 +351,9 @@ export default {
     },
     handleSearch(type) {
       if (type === "message") {
-        this.getMessageList({
-          noticeType: 1,
-          systemType: this.isAdmin ? 2 : 1
-        });
-      } else {
-        this.getMatterList({
-          noticeType: 2,
-          systemType: this.isAdmin ? 2 : 1
-        });
+        this.getMessageList()
+      } else if (type === "matter") {
+        this.getMatterList();
       }
     },
     handleReset(type) {
