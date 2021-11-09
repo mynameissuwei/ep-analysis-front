@@ -97,12 +97,12 @@
           >
         </template>
       </el-table-column>
-      <el-table-column label="平均超时" prop="processOverTime" sortable>
+      <el-table-column label="平均超时(小时)" prop="processOverTime" sortable>
         <template slot-scope="scope">
           {{ getDuration(scope.row.processOverTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="平均耗时" prop="personPassTime" sortable>
+      <el-table-column label="平均耗时(小时)" prop="personPassTime" sortable>
         <template slot-scope="scope">
           {{ getDuration(scope.row.personPassTime) }}
         </template>

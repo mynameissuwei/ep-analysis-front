@@ -245,6 +245,7 @@
 import FilterItem from "@/components/FilterItem";
 import Pagination from "@/components/Pagination";
 import {deleteView, fetchList, fetchTemplate} from "@/api/workbench";
+import {deleteList} from "@/api/permission";
 
 export default {
   components: {Pagination, FilterItem},
@@ -329,10 +330,19 @@ export default {
         });
       }
     },
-    async deleteView(row,type) {
-      console.log(row.id)
-      await deleteView(row.id)
-      await this.getTemplate(type)
+    async deleteView(row, type) {
+      this.$confirm("确定要删除该视图吗？", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(async () => {
+        await deleteView(row.id)
+        await this.getTemplate(type)
+        this.$message({
+          type: "success",
+          message: "删除成功!"
+        });
+      });
     },
     handleSearch(type) {
       if (type === "message") {
