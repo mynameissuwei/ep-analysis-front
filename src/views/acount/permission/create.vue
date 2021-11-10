@@ -36,7 +36,7 @@
     <el-footer class="footerContainer">
       <div>
         <el-button @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="createData">保存</el-button>
+        <el-button type="primary" @click="createData" :loading="submitLoading">保存</el-button>
       </div>
     </el-footer>
   </el-container>
@@ -68,6 +68,7 @@ export default {
         authDesc: "",
         audit: true
       },
+      submitLoading:false,
       sourceList: [],
       rules: {
         authName: [
@@ -126,8 +127,8 @@ export default {
           (this.id ? editList(data) : createList(data)).then(() => {
             this.$router.push("/acount/permission");
             this.$notify({
-              title: "Success",
-              message: "Created Successfully",
+              title: "成功",
+              message: "创建成功",
               type: "success",
               duration: 2000
             });

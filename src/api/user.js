@@ -56,6 +56,13 @@ export function getInfo() {
   });
 }
 
+export function getRouterInfo() {
+  return request({
+    url: "/user/resource/page",
+    method: "get"
+  });
+}
+
 export function logout() {
   return request({
     url: "/vue-admin-template/user/logout",

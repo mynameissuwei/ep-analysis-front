@@ -186,61 +186,6 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="12">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>快捷视图</span>
-          </div>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <div class="process-container">
-                模板视图
-              </div>
-              <el-table
-                :data="temTemplate"
-                style="width: 100%; margin-top:20px"
-                :show-header="false"
-              >
-                <el-table-column prop="viewName" label="viewName">
-                  <template slot-scope="{ row, $index }">
-                    <a style="color: blue" @click="handleSkip('template',row)">{{ row.viewName }}</a>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" align="right">
-                  <template slot-scope="{ row, $index }">
-                    <span class="actionStyle" @click="deleteView(row,'template')">
-                      删除
-                    </span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-col>
-            <el-col :span="12">
-              <div class="process-container">
-                流程视图
-              </div>
-              <el-table
-                :data="processTemplate"
-                style="width: 100%; margin-top:20px"
-                :show-header="false"
-              >
-                <el-table-column prop="viewName" label="viewName">
-                  <template slot-scope="{ row, $index }">
-                    <a style="color: blue" @click="handleSkip('process',row)">{{ row.viewName }}</a>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" align="right">
-                  <template slot-scope="{ row, $index }">
-                    <span class="actionStyle" @click="deleteView(row,'process')">
-                      删除
-                    </span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
     </el-row>
   </div>
 </template>
@@ -248,7 +193,7 @@
 <script>
 import FilterItem from "@/components/FilterItem";
 import Pagination from "@/components/Pagination";
-import {deleteView, fetchList, fetchTemplate} from "@/api/workbench";
+import { fetchList } from "@/api/workbench";
 
 export default {
   components: {Pagination, FilterItem},
@@ -272,23 +217,17 @@ export default {
         processed: undefined
       },
       matterTotal: 0,
-      processTemplate: [],
-      temTemplate: []
     };
   },
   created() {
     this.getMessageList();
     this.getMatterList();
-    this.getTemplate("process");
-    this.getTemplate("template");
   },
   methods: {
     async getMessageList() {
       let params = {
         noticeType: 1,
-        systemType:  1,
-        tenantId:this.$store.state.user.tenantId,
-        userId:this.$store.state.user.userId
+        systemType: 2
       }
       this.messageListLoading = true;
       const {data, totalCount} = await fetchList({
@@ -302,9 +241,7 @@ export default {
     async getMatterList() {
       let params = {
         noticeType: 2,
-        systemType:  1,
-        tenantId:this.$store.state.user.tenantId,
-        userId:this.$store.state.user.userId
+        systemType: 2
       }
       this.matterListLoading = true;
       const {data, totalCount} = await fetchList({
@@ -314,44 +251,6 @@ export default {
       this.matterTotal = totalCount;
       this.matterList = data;
       this.matterListLoading = false;
-    },
-    async getTemplate(type) {
-      let data = await fetchTemplate({
-        viewType: type,
-        limit: 5
-      });
-      if (type === "process") {
-        this.processTemplate = data.data;
-      } else if (type === "template") {
-        this.temTemplate = data.data;
-      }
-    },
-    handleSkip(type, row) {
-      if (type === "template") {
-        this.$router.push({
-          name: "templateTable",
-          params: row
-        });
-      } else {
-        this.$router.push({
-          name: "processTable",
-          params: row
-        });
-      }
-    },
-    async deleteView(row, type) {
-      this.$confirm("确定要删除该视图吗？", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(async () => {
-        await deleteView(row.id)
-        await this.getTemplate(type)
-        this.$message({
-          type: "success",
-          message: "删除成功!"
-        });
-      });
     },
     handleSearch(type) {
       if (type === "message") {
@@ -370,7 +269,7 @@ export default {
         };
         this.getMessageList({
           noticeType: 1,
-          systemType:  1
+          systemType: 2
         });
       } else {
         this.matterListQuery = {
@@ -380,7 +279,7 @@ export default {
         };
         this.getMatterList({
           noticeType: 2,
-          systemType:  1
+          systemType: 2
         });
       }
     },

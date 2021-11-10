@@ -21,21 +21,8 @@ export const constantRoutes = [
       {
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
-        name: "Dashboard",
+        name: "index",
         meta: { title: "效能词典", icon: "tree" }
-      }
-    ]
-  },
-  {
-    path: "/platdict",
-    component: Layout,
-    redirect: "/platdict",
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/platdict/index"),
-        name: "Dashboard",
-        meta: { title: "词典管理", icon: "tree" }
       }
     ]
   },
@@ -197,6 +184,44 @@ export const constantRoutes = [
     ]
   },
   {
+    path: "/opbench",
+    component: Layout,
+    redirect: "/opbench",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/opbench"),
+        name: "opbench",
+        meta: { title: "运营工作台", icon: "form" }
+      },
+    ]
+  },
+  // {
+  //   path: "/operate",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/process/OperateBoard"),
+  //       name: "operate",
+  //       meta: { title: "运营大盘", icon: "eye" }
+  //     }
+  //   ]
+  // },
+  {
+    path: "/platdict",
+    component: Layout,
+    redirect: "/platdict",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/platdict/index"),
+        name: "Dashboard",
+        meta: { title: "词典管理", icon: "tree" }
+      }
+    ]
+  },
+  {
     path: "/operate",
     component: Layout,
     children: [
@@ -272,17 +297,24 @@ export const constantRoutes = [
   { path: "*", redirect: "/404", hidden: true }
 ];
 
+
 const createRouter = () =>
   new Router({
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRoutes
   });
 
+const createNewRouter = () =>
+  new Router({
+    scrollBehavior: () => ({ y: 0 }),
+    routes: []
+  });
+
 const router = createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter();
+  const newRouter = createNewRouter();
   router.matcher = newRouter.matcher; // reset router
 }
 

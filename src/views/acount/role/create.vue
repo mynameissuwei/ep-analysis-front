@@ -144,7 +144,6 @@ export default {
       roleUserData: [],
       roleEditUserData: [],
       userList: [],
-      contrastUserLit: [],
       rules: {
         roleName: [
           { required: true, message: "请输入权限名称", trigger: "blur" },
@@ -214,7 +213,7 @@ export default {
             roleType: "1001",
             status: this.form.status ? 1 : 0
           };
-          // this.submitLoading = true;
+          this.submitLoading = true;
           const userResult = this.userList.map(item => ({
             accountId: item.accountId,
             roleId: this.form.roleId
@@ -224,16 +223,14 @@ export default {
             authIds: this.multipleSelection.map(item => item.authId).join(",")
           };
 
-          this.submitLoading = false;
           this.id ? await updateList(data) : await createList(data);
 
           await Promise.all([
             createUserole(userResult),
             createAuthRole(authResult)
           ]).then(result => {
-            console.log(result, "result");
-            this.$router.push("/acount/role");
             this.submitLoading = false;
+            this.$router.push("/acount/role");
             this.$notify({
               title: "成功",
               message: "创建成功",
@@ -241,8 +238,6 @@ export default {
               duration: 2000
             });
           });
-
-          // this.submitLoading = false;
         }
       });
     },
@@ -294,7 +289,6 @@ export default {
       const id = this.id;
       fetchRoleUser({ roleId: id }).then(res => {
         this.userList = res.data;
-        this.contrastUserLit = res.data;
       });
     },
     handleSelectionChange(val) {
@@ -302,20 +296,25 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       var roleUserData = this.roleUserData;
+      
       var results = queryString
         ? roleUserData.filter(this.createStateFilter(queryString))
         : roleUserData;
-
+      
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         cb(results);
       }, 3000 * Math.random());
     },
     createStateFilter(queryString) {
-      return state => {
-        return (
-          state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        );
+      
+      return (item) => {
+        
+        if(item.nickname) {
+          return (item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        } else {
+          return false
+        }
       };
     },
     handleSelect(item) {
