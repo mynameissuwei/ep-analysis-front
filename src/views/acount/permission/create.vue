@@ -24,6 +24,7 @@
       <el-main>
         <bread-text name="资源配置"> </bread-text>
         <el-tree
+          :check-strictly="checkStrictly"
           ref="tree"
           node-key="resId"
           :props="props"
@@ -36,7 +37,9 @@
     <el-footer class="footerContainer">
       <div>
         <el-button @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="createData" :loading="submitLoading">保存</el-button>
+        <el-button type="primary" @click="createData" :loading="submitLoading"
+          >保存</el-button
+        >
       </div>
     </el-footer>
   </el-container>
@@ -55,10 +58,11 @@ export default {
   props: ["id"],
   components: { BreadText },
   created() {
+    this.getSourceList();
+
     if (this.id) {
       this.getEditData();
     }
-    this.getSourceList();
   },
   data() {
     return {
@@ -68,7 +72,8 @@ export default {
         authDesc: "",
         audit: true
       },
-      submitLoading:false,
+      checkStrictly: false,
+      submitLoading: false,
       sourceList: [],
       rules: {
         authName: [
@@ -121,11 +126,14 @@ export default {
           const data = {
             ...this.form,
             audit: this.form.audit ? "1" : "0",
-            resIdList: this.$refs.tree.getCheckedKeys(),
+            resIdList: this.$refs.tree
+              .getCheckedKeys()
+              .concat(this.$refs.tree.getHalfCheckedKeys()),
             authType: "1002"
           };
           (this.id ? editList(data) : createList(data)).then(() => {
             this.$router.push("/acount/permission");
+            this.$store.dispatch("user/changeRoles");
             this.$notify({
               title: "成功",
               message: "创建成功",
@@ -143,13 +151,20 @@ export default {
       const id = this.id;
       fetchEditData(id).then(res => {
         const { authName, authId, authDesc, audit, resIdList } = res.data;
-        this.$refs.tree.setCheckedKeys(resIdList);
         this.form = {
           authName,
           authId,
           authDesc,
           audit
         };
+        this.checkStrictly = true;
+
+        this.$nextTick(() => {
+          this.$refs.tree.setCheckedKeys(resIdList);
+          setTimeout(() => {
+            this.checkStrictly = false;
+          }, 1.5 * 1000);
+        });
       });
     },
     async getSourceList() {

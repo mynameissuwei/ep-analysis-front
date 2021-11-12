@@ -7,11 +7,11 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
+              <template v-slot:left> <span>姓名</span> </template>
               <template v-slot:right>
                 <el-input
                   v-model="tableUserName"
-                  placeholder="搜索名称"
+                  placeholder="请输入"
                   size="normal"
                   clearable
                   @change="handleInput"

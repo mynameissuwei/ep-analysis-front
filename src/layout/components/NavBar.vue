@@ -20,7 +20,7 @@
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
           class="user-avatar"
         />
-         <div class="user-name">{{this.$store.state.user.nickName}}</div>
+        <div class="user-name">{{ this.$store.state.user.nickName }}</div>
         <i class="el-icon-caret-bottom" />
       </div>
     </el-popover>
@@ -39,7 +39,7 @@ export default {
     logout() {
       console.log("logout ");
       this.authSdk.logout();
-    },
+    }
   }
 };
 </script>

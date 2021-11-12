@@ -274,8 +274,8 @@ export default {
             this.getList();
             this.dialogVisible = false;
             this.$notify({
-              title: "Success",
-              message: "Created Successfully",
+              title: "成功",
+              message: "创建成功",
               type: "success",
               duration: 2000
             });

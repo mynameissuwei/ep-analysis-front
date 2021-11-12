@@ -59,17 +59,17 @@
       <!-- right button -->
       <el-col :span="6">
         <div style="float: right">
-          <el-button size="small" type="primary" @click="handleSearch">
+          <el-button type="primary" @click="handleSearch">
             查询
           </el-button>
-          <el-button
-            size="small"
-            style="margin-left: 10px;"
-            @click="handleReset"
-          >
+          <el-button style="margin-left: 10px;" @click="handleReset">
             重置
           </el-button>
-          <el-button size="small" icon="el-icon-circle-plus" style="margin-left: 10px;" @click="open()">
+          <el-button
+            icon="el-icon-circle-plus"
+            style="margin-left: 10px;"
+            @click="open()"
+          >
             保存为快捷视图
           </el-button>
         </div>
@@ -128,9 +128,10 @@
         :model="form"
         label-position="left"
         label-width="150px"
-        style="width: 400px; margin-left:50px;">
+        style="width: 400px; margin-left:50px;"
+      >
         <el-form-item label="视图名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入名称"/>
+          <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -154,8 +155,7 @@ import BreadText from "@/components/Breadtext";
 import rangeNumber from "@/utils/numberRange";
 import getDuration from "@/utils/getDuration";
 import toPercent from "@/utils/toPercent";
-import {addQuickView} from "@/api/workbench";
-
+import { addQuickView } from "@/api/workbench";
 
 export default {
   components: { Pagination, FilterItem, BreadText },
@@ -181,7 +181,20 @@ export default {
       rangeNumber: rangeNumber(),
       isSelected: false,
       rules: {
-        name: [{required: true, message: "请输入名称", trigger: "blur"}]
+        name: [
+          { required: true, message: "请输入名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[a-zA-Z0-9\u4e00-\u9fa5()（）]+$/,
+            message: "只能输入汉字、数字、字母、括号",
+            trigger: "blur"
+          }
+        ]
       },
       form: {
         name: ""
@@ -259,19 +272,23 @@ export default {
     async addView() {
       let param = {
         viewName: this.form.name,
-        viewType: 'template',
-        definitionList:[{
-          paramName: 'orgCode',
-          paramValue: this.listQuery.orgCode
-        }, {
-          paramName: 'appKey',
-          paramValue: this.listQuery.appKey
-        }, {
-          paramName: 'procDefName',
-          paramValue: this.listQuery.procDefName
-        }]
-      }
-      await addQuickView(param)
+        viewType: "template",
+        definitionList: [
+          {
+            paramName: "orgCode",
+            paramValue: this.listQuery.orgCode
+          },
+          {
+            paramName: "appKey",
+            paramValue: this.listQuery.appKey
+          },
+          {
+            paramName: "procDefName",
+            paramValue: this.listQuery.procDefName
+          }
+        ]
+      };
+      await addQuickView(param);
       this.$message({
         type: "success",
         message: "创建成功!"

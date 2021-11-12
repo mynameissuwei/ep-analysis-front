@@ -56,7 +56,7 @@
           {{ scope.row.mobile }}
         </template>
       </el-table-column>
-      <el-table-column label="用户邮件">
+      <el-table-column label="用户邮箱">
         <template slot-scope="scope">
           {{ scope.row.email }}
         </template>

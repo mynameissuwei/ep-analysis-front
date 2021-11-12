@@ -8,21 +8,31 @@ import Layout from "@/layout";
 import demandRouter from "./modules/demand.js";
 
 export const constantRoutes = [
-  // {
-  //   path: "/login",
-  //   component: () => import("@/views/login/index"),
-  //   hidden: true
-  // },
+  {
+    path: "/404",
+    meta: {
+      id: "404"
+    },
+    component: () => import("@/views/404"),
+    hidden: true
+  },
   {
     path: "/",
     component: Layout,
     redirect: "/dashboard",
+    meta: {
+      id: "EFFICIENCY_ANALYSIS_TENANT_DICT"
+    },
     children: [
       {
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
         name: "index",
-        meta: { title: "效能词典", icon: "tree" }
+        meta: {
+          title: "效能词典",
+          icon: "tree",
+          id: "EFFICIENCY_ANALYSIS_TENANT_DICT"
+        }
       }
     ]
   },
@@ -30,25 +40,29 @@ export const constantRoutes = [
     path: "/process",
     component: Layout,
     redirect: "/process/efficiency",
-    meta: { title: "效能分析", icon: "dict" },
+    meta: {
+      title: "效能分析",
+      icon: "dict",
+      id: "EFFICIENCY_ANALYSIS"
+    },
     children: [
       {
         path: "efficiency",
         component: () => import("@/views/process/efficiency"),
         name: "Efficiency",
-        meta: { title: "效能大盘" }
+        meta: { title: "效能大盘", id: "EFFICIENCY_ANALYSIS_TENANT_DASHBOARD" }
       },
       {
         path: "category",
         component: () => import("@/views/process/category"),
         name: "Category",
-        meta: { title: "类别分析" }
+        meta: { title: "类别分析", id: "EFFICIENCY_ANALYSIS_TENANT_CATEGORY" }
       },
       {
         path: "module",
         component: () => import("@/views/process/module"),
         name: "Module",
-        meta: { title: "模板分析" }
+        meta: { title: "模板分析", id: "EFFICIENCY_ANALYSIS_TENANT_TEMPLATE" }
       },
       {
         path: "module/more",
@@ -58,7 +72,8 @@ export const constantRoutes = [
         meta: {
           title: "查看模板",
           noCache: true,
-          activeMenu: "/process/module"
+          activeMenu: "/process/module",
+          id: "EFFICIENCY_ANALYSIS_TENANT_TEMPLATE"
         }
       },
       {
@@ -70,59 +85,50 @@ export const constantRoutes = [
         meta: {
           title: "查看流程",
           noCache: true,
-          activeMenu: "/process/module"
+          activeMenu: "/process/module",
+          id: "EFFICIENCY_ANALYSIS_TENANT_TEMPLATE"
         }
       },
       {
         path: "flow",
         component: () => import("@/views/process/flow"),
         name: "Flow",
-        meta: { title: "流程分析" }
+        meta: { title: "流程分析", id: "EFFICIENCY_ANALYSIS_TENANT_PROCESS" }
       },
       {
         path: "people",
         component: () => import("@/views/process/people"),
         name: "People",
-        meta: { title: "人效分析" }
+        meta: {
+          title: "人效分析",
+          id: "EFFICIENCY_ANALYSIS_TENANT_HUMAN_EFFECT"
+        }
       },
       {
         path: "design",
         component: () => import("@/views/process/design"),
         name: "design",
-        meta: { title: "设计分析" }
+        meta: { title: "设计分析", id: "EFFICIENCY_ANALYSIS_TENANT_DESIGN" }
       }
     ]
   },
-  // {
-  //   path: "/info",
-  //   component: Layout,
-  //   redirect: "/info/task",
-  //   meta: { title: "统计分析", icon: "dashboard" },
-  //   children: [
-  //     {
-  //       path: "task",
-  //       name: "Task",
-  //       component: () => import("@/views/info/task"),
-  //       meta: { title: "任务类别维度统计", icon: "dashboard" }
-  //     },
-  //     {
-  //       path: "repair",
-  //       name: "Repair",
-  //       component: () => import("@/views/info/repair"),
-  //       meta: { title: "工单类别维度统计", icon: "dashboard" }
-  //     }
-  //   ]
-  // },
   demandRouter,
   {
     path: "/rule",
     component: Layout,
+    meta: {
+      id: "EFFICIENCY_ANALYSIS_TENANT_RULE_CONFIG"
+    },
     children: [
       {
         path: "index",
         component: () => import("@/views/rule"),
         name: "rule",
-        meta: { title: "规则配置", icon: "el-icon-s-help" }
+        meta: {
+          title: "规则配置",
+          icon: "el-icon-s-help",
+          id: "EFFICIENCY_ANALYSIS_TENANT_RULE_CONFIG"
+        }
       },
       {
         path: "index/create",
@@ -132,32 +138,28 @@ export const constantRoutes = [
         meta: {
           title: "添加规则",
           noCache: true,
-          activeMenu: "/rule/index"
+          activeMenu: "/rule/index",
+          id: "EFFICIENCY_ANALYSIS_TENANT_RULE_CONFIG"
         }
       }
     ]
   },
-  // {
-  //   path: "/ops",
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/views/ops"),
-  //       name: "ops",
-  //       meta: { title: "统一运维", icon: "link" }
-  //     }
-  //   ]
-  // },
   {
     path: "/workbench",
     component: Layout,
+    meta: {
+      id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
+    },
     children: [
       {
         path: "index",
         component: () => import("@/views/workbench"),
         name: "workbench",
-        meta: { title: "工作台", icon: "form" }
+        meta: {
+          title: "工作台",
+          icon: "form",
+          id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
+        }
       },
       {
         path: "templateTable",
@@ -167,7 +169,8 @@ export const constantRoutes = [
         meta: {
           title: "工作台",
           icon: "el-icon-s-help",
-          activeMenu: "/workbench/index"
+          activeMenu: "/workbench/index",
+          id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
         }
       },
       {
@@ -178,7 +181,8 @@ export const constantRoutes = [
         meta: {
           title: "工作台",
           icon: "el-icon-s-help",
-          activeMenu: "/workbench/index"
+          activeMenu: "/workbench/index",
+          id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
         }
       }
     ]
@@ -187,49 +191,54 @@ export const constantRoutes = [
     path: "/opbench",
     component: Layout,
     redirect: "/opbench",
+    meta: {
+      id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
+    },
     children: [
       {
         path: "index",
         component: () => import("@/views/opbench"),
         name: "opbench",
-        meta: { title: "运营工作台", icon: "form" }
-      },
+        meta: {
+          title: "运营工作台",
+          icon: "form",
+          id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
+        }
+      }
     ]
   },
-  // {
-  //   path: "/operate",
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/views/process/OperateBoard"),
-  //       name: "operate",
-  //       meta: { title: "运营大盘", icon: "eye" }
-  //     }
-  //   ]
-  // },
   {
     path: "/platdict",
     component: Layout,
     redirect: "/platdict",
+    meta: {
+      id: "PLATFORM_DICT_MANAGE"
+    },
     children: [
       {
         path: "index",
         component: () => import("@/views/platdict/index"),
         name: "Dashboard",
-        meta: { title: "词典管理", icon: "tree" }
+        meta: { title: "词典管理", icon: "tree", id: "PLATFORM_DICT_MANAGE" }
       }
     ]
   },
   {
     path: "/operate",
     component: Layout,
+    meta: {
+      id: "PLATFORM_OPERATION_DASHBOARD"
+    },
     children: [
       {
         path: "index",
         component: () => import("@/views/process/OperateBoard"),
         name: "operate",
-        meta: { title: "运营大盘", icon: "eye" }
+        meta: {
+          title: "运营大盘",
+          icon: "eye",
+          id: "PLATFORM_OPERATION_DASHBOARD"
+        }
       }
     ]
   },
@@ -237,13 +246,20 @@ export const constantRoutes = [
     path: "/acount",
     component: Layout,
     redirect: "/acount/user",
-    meta: { title: "账户管理", icon: "acount" },
+    meta: {
+      title: "账户管理",
+      icon: "acount",
+      id: "EFFICIENCY_ANALTSIS_TENANT_ACCOUNT_MANAGE"
+    },
     children: [
       {
         path: "user",
         name: "User",
         component: () => import("@/views/acount/user/index"),
-        meta: { title: "用户管理" }
+        meta: {
+          title: "用户管理",
+          id: "EFFICIENCY_ANALYSIS_TENANT_USER_MANAGE"
+        }
       },
       {
         path: "user/create",
@@ -253,14 +269,18 @@ export const constantRoutes = [
         meta: {
           title: "添加用户",
           noCache: true,
-          activeMenu: "/acount/user"
+          activeMenu: "/acount/user",
+          id: "EFFICIENCY_ANALYSIS_TENANT_ADD_USER"
         }
       },
       {
         path: "role",
         name: "Role",
         component: () => import("@/views/acount/role/index"),
-        meta: { title: "角色管理" }
+        meta: {
+          title: "角色管理",
+          id: "EFFICIENCY_ANALYSIS_TENANT_ROLE_MANAGE"
+        }
       },
       {
         path: "role/create/:id?",
@@ -271,14 +291,18 @@ export const constantRoutes = [
         meta: {
           title: "添加角色",
           noCache: true,
-          activeMenu: "/acount/role"
+          activeMenu: "/acount/role",
+          id: "EFFICIENCY_ANALYSIS_TENANT_ADD_ROLE"
         }
       },
       {
         path: "permission",
         name: "Permission",
         component: () => import("@/views/acount/permission/index"),
-        meta: { title: "权限管理" }
+        meta: {
+          title: "权限管理",
+          id: "EFFICIENCY_ANALYSIS_TENANT_AUTHORITY_MANAGE"
+        }
       },
       {
         path: "permission/create/:id?",
@@ -289,14 +313,21 @@ export const constantRoutes = [
         meta: {
           title: "权限编辑",
           noCache: true,
-          activeMenu: "/acount/permission"
+          activeMenu: "/acount/permission",
+          id: "EFFICIENCY_ANALYSIS_TENANT_ADD_AUTHORITY"
         }
       }
     ]
   },
-  { path: "*", redirect: "/404", hidden: true }
+  {
+    path: "*",
+    redirect: "/404",
+    meta: {
+      id: "404redirect"
+    },
+    hidden: true
+  }
 ];
-
 
 const createRouter = () =>
   new Router({

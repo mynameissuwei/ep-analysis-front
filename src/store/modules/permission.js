@@ -1,34 +1,85 @@
-import { constantRoutes } from '@/router'
-import router, { resetRouter } from "@/router";
+import { constantRoutes } from "@/router";
 
-
-const state = {
-  routes: [],
-}
-
-const mutations = {
-  SET_ROUTES: (state, routes) => {
-    state.routes = routes
+function hasRoute(routeArray, route) {
+  if (route.meta && route.meta.id) {
+    if (routeArray.includes(route.meta.id)) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return true;
   }
 }
+
+function filterRoute(routes, routeArray) {
+  const res = [];
+  routes.forEach(route => {
+    const temp = { ...route };
+
+    if (hasRoute(routeArray, temp)) {
+      if (temp.children) {
+        temp.children = filterRoute(temp.children, routeArray);
+      }
+
+      res.push(temp);
+    }
+  });
+  return res;
+}
+
+function flatId(routes) {
+  let res = [];
+  routes.forEach(route => {
+    const temp = { ...route };
+    res.push(temp.component);
+    if (temp.children) {
+      res.push(flatId(temp.children));
+    }
+  });
+  return res;
+}
+
+const flattenDeep = array =>
+  array.reduce((a, b) => a.concat(Array.isArray(b) ? flattenDeep(b) : b), []);
+
+const state = {
+  permission_routes: []
+};
+
+const mutations = {
+  SET_ROUTES: (state, permission_routes) => {
+    state.permission_routes = permission_routes;
+  }
+};
 
 const actions = {
   generateRoutes({ commit }, routerInfo) {
-    resetRouter()
-    console.log(router.options.routes,routerInfo,'routerInfo')
+    // resetRouter();
     return new Promise(resolve => {
-      let accessedRoutes
-      accessedRoutes = constantRoutes || []
-      router.addRoutes(constantRoutes)
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
-    })
+      let accessedRoutes;
+
+      let flatArray = flattenDeep(
+        flatId(routerInfo.length ? routerInfo[0].children : [])
+      );
+
+      let result = filterRoute(
+        constantRoutes,
+        flatArray.concat(["404", "404redirect"])
+      );
+
+      console.log(flatArray, "flatArrayflatArray");
+      accessedRoutes = result || [];
+      commit("SET_ROUTES", accessedRoutes);
+      // router.addRoutes(accessedRoutes);
+      resolve(accessedRoutes);
+    });
   }
-}
+};
 
 export default {
   namespaced: true,
   state,
   mutations,
   actions
-}
+};

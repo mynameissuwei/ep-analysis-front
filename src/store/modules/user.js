@@ -1,10 +1,9 @@
-import { login, logout, getInfo, getTokenId,getRouterInfo } from "@/api/user";
-import { getToken, setToken, removeToken } from "@/utils/auth";
-import { resetRouter } from "@/router";
+import { getInfo, getTokenId, getRouterInfo } from "@/api/user";
+import router, { constantRoutes, resetRouter } from "@/router";
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
+    token: "",
     name: "",
     avatar: "",
     preventId: "",
@@ -12,7 +11,8 @@ const getDefaultState = () => {
     username: "",
     nickName: "",
     hasTenant: true,
-    tenantId: ""
+    tenantId: "",
+    routeInfo: []
   };
 };
 
@@ -48,11 +48,13 @@ const mutations = {
   },
   SET_TENANTID: (state, tenantId) => {
     state.tenantId = tenantId;
+  },
+  SET_ROUTER: (state, routeInfo) => {
+    state.routeInfo = routeInfo;
   }
 };
 
 const actions = {
-
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
@@ -78,7 +80,6 @@ const actions = {
     });
   },
 
-
   // 防止重复登陆
   getPreventId({ commit, state }) {
     return new Promise((resolve, reject) => {
@@ -96,20 +97,30 @@ const actions = {
   },
 
   // 获取路由信息
-  getRouterInfo() {
-    return new Promise((resolve,reject) => {
+  getRouterInfo({ commit }) {
+    return new Promise((resolve, reject) => {
       getRouterInfo()
         .then(response => {
           const { data } = response;
-          console.log(response,'router')
+          commit("SET_ROUTER", data);
           resolve(data);
         })
         .catch(error => {
           reject(error);
         });
-    })
-  }
+    });
+  },
 
+  async changeRoles({ commit, dispatch }) {
+    resetRouter();
+    let routerInfo = await dispatch("user/getRouterInfo", null, { root: true });
+    const accessRoutes = await dispatch(
+      "permission/generateRoutes",
+      routerInfo,
+      { root: true }
+    );
+    router.addRoutes(accessRoutes);
+  }
 };
 
 export default {

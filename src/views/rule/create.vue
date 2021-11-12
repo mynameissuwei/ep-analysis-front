@@ -168,8 +168,8 @@ export default {
       postTimeConfig(data).then(() => {
         this.$router.push("/rule/index");
         this.$notify({
-          title: "Success",
-          message: "Created Successfully",
+          title: "成功",
+          message: "成功",
           type: "success",
           duration: 2000
         });

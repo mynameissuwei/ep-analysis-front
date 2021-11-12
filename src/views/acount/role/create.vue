@@ -146,7 +146,7 @@ export default {
       userList: [],
       rules: {
         roleName: [
-          { required: true, message: "请输入权限名称", trigger: "blur" },
+          { required: true, message: "请输入角色名称", trigger: "blur" },
           {
             min: 1,
             max: 10,
@@ -160,7 +160,7 @@ export default {
           // }
         ],
         roleId: [
-          { required: true, message: "请输入权限编码", trigger: "blur" },
+          { required: true, message: "请输入角色编码", trigger: "blur" },
           {
             min: 1,
             max: 20,
@@ -296,24 +296,24 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       var roleUserData = this.roleUserData;
-      
+
       var results = queryString
         ? roleUserData.filter(this.createStateFilter(queryString))
         : roleUserData;
-      
+
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         cb(results);
       }, 3000 * Math.random());
     },
     createStateFilter(queryString) {
-      
-      return (item) => {
-        
-        if(item.nickname) {
-          return (item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      return item => {
+        if (item.nickname) {
+          return (
+            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+          );
         } else {
-          return false
+          return false;
         }
       };
     },
