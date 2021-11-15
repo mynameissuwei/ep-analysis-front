@@ -66,6 +66,24 @@
             svgText="overtime"
           />
         </div>
+        <div class="card-template">
+          <display-card
+            :cardTitle="getDuration(itemDetail.personPassTime)"
+            cardText="人均耗时"
+            svgText="overtime"
+          />
+        </div>
+      </el-col>
+    </el-row>
+    <el-row type="flex" justify="space-around">
+      <el-col :span="24">
+        <div class="card-template">
+          <display-card
+            :cardTitle="toPercent(itemDetail.overRatio)"
+            cardText="平均超时率"
+            svgText="people"
+          />
+        </div>
       </el-col>
     </el-row>
   </div>

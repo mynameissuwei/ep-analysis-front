@@ -7,7 +7,7 @@
     </div>
     <div>
       <card-container>
-        <div style="padding-left: 350px; padding-top: 40px" v-if="list.length">
+        <div style="padding-left: 100px; padding-top: 40px" v-if="list.length">
           <div
             style="padding: 30px 30px"
             v-for="(item, index) in list"

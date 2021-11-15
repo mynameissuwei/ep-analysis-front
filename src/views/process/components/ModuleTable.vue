@@ -97,6 +97,25 @@
           >
         </template>
       </el-table-column>
+      <el-table-column prop="defName" label="模板名称" />
+      <el-table-column prop="orgName" label="归属部门" />
+      <el-table-column prop="taskNum" label="节点长度" />
+      <el-table-column prop="totalPassTime" label="超时总长" sortable>
+        <template slot-scope="scope">
+          {{ getDuration(scope.row.totalOverTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="totalCnt" label="流程总数" sortable />
+      <el-table-column prop="totalPassTime" label="耗时总长" sortable>
+        <template slot-scope="scope">
+          {{ getDuration(scope.row.totalPassTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="finishRatio" label="完成率" sortable>
+        <template slot-scope="scope">
+          {{ toPercent(scope.row.finishRatio) }}
+        </template>
+      </el-table-column>
       <el-table-column label="平均超时(小时)" prop="processOverTime" sortable>
         <template slot-scope="scope">
           {{ getDuration(scope.row.processOverTime) }}

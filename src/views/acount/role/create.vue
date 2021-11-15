@@ -84,7 +84,7 @@
                 {{ scope.row.mobile }}
               </template>
             </el-table-column>
-            <el-table-column label="用户登陆名称">
+            <el-table-column label="用户登录名称">
               <template slot-scope="scope">
                 {{ scope.row.loginName }}
               </template>
@@ -121,9 +121,10 @@ import {
   createList,
   updateList,
   createUserole,
-  createAuthRole
+  createAuthRole,
+  deleteAuthRole
 } from "@/api/role";
-import qs from "qs";
+import deepClone from "@/utils/deep-clone";
 
 export default {
   props: ["id"],
@@ -136,6 +137,7 @@ export default {
         roleDesc: "",
         status: false
       },
+      editUserList: [],
       permissionList: [],
       permissionListLoading: false,
       submitLoading: false,
@@ -174,9 +176,8 @@ export default {
           // }
         ],
         roleDesc: [
-          { required: true, message: "请输入权限描述", trigger: "blur" },
           {
-            min: 1,
+            min: 0,
             max: 100,
             message: "最大长度100字符",
             trigger: "blur"
@@ -207,6 +208,18 @@ export default {
     },
     onSubmit() {
       this.$refs["dataForm"].validate(async valid => {
+        console.log(this.editUserList, this.userList, "userList");
+        let deleteArray = [];
+        this.editUserList.forEach(item => {
+          if (!this.userList.find(l => l.accountId === item.accountId)) {
+            deleteArray.push(item);
+          }
+        });
+        let deleteResult = deleteArray.map(item => ({
+          accountId: item.accountId,
+          roleId: this.form.roleId
+        }));
+        console.log(deleteArray, "deleteArray");
         if (valid) {
           const data = {
             ...this.form,
@@ -224,6 +237,7 @@ export default {
           };
 
           this.id ? await updateList(data) : await createList(data);
+          deleteArray.length && (await deleteAuthRole(deleteResult));
 
           await Promise.all([
             createUserole(userResult),
@@ -288,6 +302,7 @@ export default {
     getEditRoleUser() {
       const id = this.id;
       fetchRoleUser({ roleId: id }).then(res => {
+        this.editUserList = deepClone(res.data);
         this.userList = res.data;
       });
     },

@@ -14,7 +14,7 @@
             />
           </div>
           <div class="card-bottom">
-            本月添加 {{ data.tenantCurrentMonthGrowth }}
+            本月添加: {{ data.tenantCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -31,7 +31,7 @@
             />
           </div>
           <div class="card-bottom">
-            本月添加 {{ data.accountCurrentMonthGrowth }}
+            本月添加: {{ data.accountCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -48,7 +48,7 @@
             />
           </div>
           <div class="card-bottom">
-            本月添加 {{ data.templateCurrentMonthGrowth }}
+            本月添加: {{ data.templateCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>
@@ -65,7 +65,7 @@
             />
           </div>
           <div class="card-bottom">
-            本月添加 {{ data.processCurrentMonthGrowth }}
+            本月添加: {{ data.processCurrentMonthGrowth }}
           </div>
         </card-container>
       </el-col>

@@ -65,6 +65,11 @@
           {{ toPercent(scope.row.finishRatio) }}
         </template>
       </el-table-column>
+      <el-table-column prop="overRatio" sortable label="个人效率评分">
+        <template slot-scope="scope">
+          <span v-html="flowRate(scope.row.overRatio)"></span>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -98,6 +103,23 @@ export default {
     handleReset() {
       this.tableUserName = "";
       this.$emit("onResetUsername", "");
+    },
+    flowRate(value, data) {
+      console.log(value, "value");
+      // let html = <i class="el-icon-star-on"></i>;
+      if (0 <= value <= 20) {
+        return '<div><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i></div>';
+      } else if (21 <= value <= 40) {
+        return '<div><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i></div>';
+      } else if (41 <= value <= 60) {
+        return '<div><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i></div>';
+      } else if (61 <= value <= 90) {
+        return '<div><i class="el-icon-star-on"></i><i class="el-icon-star-on"></i></div>';
+      } else if (81 <= value <= 100) {
+        return '<div><i class="el-icon-star-on"></i></div>';
+      } else {
+        return "<div>无</div>";
+      }
     }
   }
 };

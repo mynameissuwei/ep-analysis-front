@@ -289,7 +289,7 @@ export const constantRoutes = [
         hidden: true,
         props: true,
         meta: {
-          title: "添加角色",
+          title: "角色配置",
           noCache: true,
           activeMenu: "/acount/role",
           id: "EFFICIENCY_ANALYSIS_TENANT_ADD_ROLE"
@@ -311,7 +311,7 @@ export const constantRoutes = [
         hidden: true,
         props: true,
         meta: {
-          title: "权限编辑",
+          title: "权限配置",
           noCache: true,
           activeMenu: "/acount/permission",
           id: "EFFICIENCY_ANALYSIS_TENANT_ADD_AUTHORITY"

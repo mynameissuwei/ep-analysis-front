@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="5" class="filter-item">
-    <el-col :span="6">
+    <el-col :span="6" class="leftContainer">
       <slot name="left"></slot>
     </el-col>
     <el-col :span="18">
@@ -15,4 +15,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.leftContainer {
+  padding-left: 15px !important;
+}
+</style>

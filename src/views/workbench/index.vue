@@ -14,7 +14,8 @@
                   <filter-item>
                     <template v-slot:left><span>搜索</span></template>
                     <template v-slot:right>
-                      <el-input size="small"
+                      <el-input
+                        size="small"
                         v-model="messageListQuery.noticeTitle"
                         placeholder="请输入"
                       />
@@ -25,7 +26,8 @@
                   <filter-item>
                     <template v-slot:left><span>状态</span></template>
                     <template v-slot:right>
-                      <el-select size="small"
+                      <el-select
+                        size="small"
                         v-model="messageListQuery.processed"
                         clearable
                         placeholder="请选择"
@@ -58,7 +60,7 @@
                 </el-button>
                 <el-button
                   size="small"
-                  style="margin-left: 10px;"
+                  style="margin-left: 10px;color:rgb(64, 158, 255)"
                   @click="handleReset('message')"
                 >
                   重置
@@ -73,16 +75,22 @@
             element-loading-text="Loading"
             fit
             highlight-current-row
+            header-row-class-name="headerCell"
           >
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="createTime" align="center" label="创建时间">
+            <el-table-column
+              prop="createTime"
+              align="center"
+              label="创建时间"
+              sortable
+            >
             </el-table-column>
           </el-table>
           <pagination
             v-show="messageTotal > 0"
             :total="messageTotal"
-            :page-sizes="[5,10]"
+            :page-sizes="[5, 10]"
             :page.sync="messageListQuery.pageNum"
             :limit.sync="messageListQuery.pageSize"
             @pagination="getMessageList"
@@ -102,7 +110,8 @@
                   <filter-item>
                     <template v-slot:left><span>状态</span></template>
                     <template v-slot:right>
-                      <el-select size="small"
+                      <el-select
+                        size="small"
                         v-model="matterListQuery.processed"
                         clearable
                         placeholder="请选择"
@@ -153,13 +162,18 @@
           >
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="createTime" align="center" label="创建时间">
+            <el-table-column
+              prop="createTime"
+              align="center"
+              label="创建时间"
+              sortable
+            >
             </el-table-column>
           </el-table>
           <pagination
             v-show="matterTotal > 0"
             :total="matterTotal"
-            :page-sizes="[5,10]"
+            :page-sizes="[5, 10]"
             :page.sync="matterListQuery.pageNum"
             :limit.sync="matterListQuery.pageSize"
             @pagination="getMatterList"
@@ -179,8 +193,8 @@
           <!--            <div>报表设计</div>-->
           <!--          </div>-->
           <div class="text-container">
-            <router-link :to="{name:'createUser'}">
-              <svg-icon icon-class="password" fill="#0F55FA"/>
+            <router-link :to="{ name: 'createUser' }">
+              <svg-icon icon-class="password" fill="#0F55FA" />
               <div>添加用户</div>
             </router-link>
           </div>
@@ -203,12 +217,19 @@
               >
                 <el-table-column prop="viewName" label="viewName">
                   <template slot-scope="{ row, $index }">
-                    <a style="color: blue" @click="handleSkip('template',row)">{{ row.viewName }}</a>
+                    <a
+                      style="color: blue"
+                      @click="handleSkip('template', row)"
+                      >{{ row.viewName }}</a
+                    >
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" align="right">
                   <template slot-scope="{ row, $index }">
-                    <span class="actionStyle" @click="deleteView(row,'template')">
+                    <span
+                      class="actionStyle"
+                      @click="deleteView(row, 'template')"
+                    >
                       删除
                     </span>
                   </template>
@@ -226,12 +247,19 @@
               >
                 <el-table-column prop="viewName" label="viewName">
                   <template slot-scope="{ row, $index }">
-                    <a style="color: blue" @click="handleSkip('process',row)">{{ row.viewName }}</a>
+                    <a
+                      style="color: blue"
+                      @click="handleSkip('process', row)"
+                      >{{ row.viewName }}</a
+                    >
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" align="right">
                   <template slot-scope="{ row, $index }">
-                    <span class="actionStyle" @click="deleteView(row,'process')">
+                    <span
+                      class="actionStyle"
+                      @click="deleteView(row, 'process')"
+                    >
                       删除
                     </span>
                   </template>
@@ -248,10 +276,10 @@
 <script>
 import FilterItem from "@/components/FilterItem";
 import Pagination from "@/components/Pagination";
-import {deleteView, fetchList, fetchTemplate} from "@/api/workbench";
+import { deleteView, fetchList, fetchTemplate } from "@/api/workbench";
 
 export default {
-  components: {Pagination, FilterItem},
+  components: { Pagination, FilterItem },
   data() {
     return {
       isAdmin: true,
@@ -286,12 +314,12 @@ export default {
     async getMessageList() {
       let params = {
         noticeType: 1,
-        systemType:  1,
-        tenantId:this.$store.state.user.tenantId,
-        userId:this.$store.state.user.userId
-      }
+        systemType: 1,
+        tenantId: this.$store.state.user.tenantId,
+        userId: this.$store.state.user.userId
+      };
       this.messageListLoading = true;
-      const {data, totalCount} = await fetchList({
+      const { data, totalCount } = await fetchList({
         ...this.messageListQuery,
         ...params
       });
@@ -302,12 +330,12 @@ export default {
     async getMatterList() {
       let params = {
         noticeType: 2,
-        systemType:  1,
-        tenantId:this.$store.state.user.tenantId,
-        userId:this.$store.state.user.userId
-      }
+        systemType: 1,
+        tenantId: this.$store.state.user.tenantId,
+        userId: this.$store.state.user.userId
+      };
       this.matterListLoading = true;
-      const {data, totalCount} = await fetchList({
+      const { data, totalCount } = await fetchList({
         ...this.matterListQuery,
         ...params
       });
@@ -345,8 +373,8 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        await deleteView(row.id)
-        await this.getTemplate(type)
+        await deleteView(row.id);
+        await this.getTemplate(type);
         this.$message({
           type: "success",
           message: "删除成功!"
@@ -355,7 +383,7 @@ export default {
     },
     handleSearch(type) {
       if (type === "message") {
-        this.getMessageList()
+        this.getMessageList();
       } else if (type === "matter") {
         this.getMatterList();
       }
@@ -370,7 +398,7 @@ export default {
         };
         this.getMessageList({
           noticeType: 1,
-          systemType:  1
+          systemType: 1
         });
       } else {
         this.matterListQuery = {
@@ -380,17 +408,19 @@ export default {
         };
         this.getMatterList({
           noticeType: 2,
-          systemType:  1
+          systemType: 1
         });
       }
     },
-    handleEdit() {
-    }
+    handleEdit() {}
   }
 };
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table thead {
+  color: rgb(64, 158, 255);
+}
 .template-container {
   width: 100%;
   height: 46px;
@@ -408,7 +438,6 @@ export default {
   text-align: center;
   line-height: 46px;
 }
-
 .text-container {
   margin-right: 40px;
   display: inline-block;

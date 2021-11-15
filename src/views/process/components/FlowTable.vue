@@ -3,9 +3,9 @@
     <bread-text name="流程分析明细" />
     <el-row class="filter-container">
       <!-- left search -->
-      <el-col :span="18">
+      <el-col :span="16">
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :span="6">
             <filter-item>
               <template v-slot:left><span>归属部门</span></template>
               <template v-slot:right>
@@ -24,7 +24,7 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <filter-item>
               <template v-slot:left><span>模板类别</span></template>
               <template v-slot:right>
@@ -43,7 +43,7 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <filter-item>
               <template v-slot:left><span>发起人</span></template>
               <template v-slot:right>
@@ -57,7 +57,7 @@
         </el-row>
       </el-col>
       <!-- right button -->
-      <el-col :span="6">
+      <el-col :span="8">
         <div style="float: right">
           <el-button type="primary" @click="handleSearch">
             查询

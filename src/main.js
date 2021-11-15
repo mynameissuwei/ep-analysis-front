@@ -27,11 +27,7 @@ Vue.prototype.$echarts = Echarts;
       authUrl: process.env.VUE_APP_AUTH_API,
       env: "env", // 当前运行环境 develop or production
       warningCb: message => {
-        Message({
-          type: "error",
-          message: message,
-          showClose: true
-        });
+        console.log(message, "error");
       }, // 错误提示回调函数
       whiteList: [/(.*)\.baidu\.com/i, "https://xxx.com"] // 第三方js白名单
     });

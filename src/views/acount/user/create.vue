@@ -44,7 +44,7 @@
               {{ scope.row.mobile }}
             </template>
           </el-table-column>
-          <el-table-column label="用户登陆名称">
+          <el-table-column label="用户登录名称">
             <template slot-scope="scope">
               {{ scope.row.loginName }}
             </template>

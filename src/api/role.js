@@ -40,6 +40,14 @@ export function createAuthRole(params) {
   });
 }
 
+export function deleteAuthRole(data) {
+  return request({
+    url: "/userole",
+    method: "delete",
+    data
+  });
+}
+
 export function deleteList(data) {
   return request({
     url: "/role",

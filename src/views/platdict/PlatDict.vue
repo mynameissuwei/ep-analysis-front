@@ -33,7 +33,7 @@
           </el-col>
           <el-col :span="8">
             <filter-item>
-              <template v-slot:left> <span>查询时间</span> </template>
+              <template v-slot:left> <span>创建时间</span> </template>
               <template v-slot:right>
                 <el-date-picker
                   v-model="dateValue"
@@ -77,6 +77,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
+      :disabled="!multipleSelection.length"
       @click="handleCheckBoxDelete"
     >
       删除
@@ -119,7 +120,10 @@
       @pagination="getList"
     />
 
-    <el-dialog title="添加词典" :visible.sync="dialogVisible">
+    <el-dialog
+      :title="dialogStatus === 'create' ? '添加词典' : '编辑词典'"
+      :visible.sync="dialogVisible"
+    >
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -131,7 +135,7 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="temp.name" placeholder="请输入名称" />
         </el-form-item>
-        <el-form-item label="定义">
+        <el-form-item label="定义" prop="definition">
           <el-input
             v-model="temp.definition"
             :autosize="{ minRows: 2, maxRows: 4 }"
@@ -144,7 +148,7 @@
             <el-radio :label="1">非指标</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="计算公式">
+        <el-form-item label="计算公式" prop="formula" v-if="temp.type === 0">
           <el-input v-model="temp.formula" />
         </el-form-item>
       </el-form>
@@ -152,7 +156,11 @@
         <el-button @click="dialogVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="createData()">
+        <el-button
+          type="primary"
+          @click="createData()"
+          :loading="buttonLoading"
+        >
           确认
         </el-button>
       </div>
@@ -175,6 +183,7 @@ export default {
   data() {
     return {
       listLoading: false,
+      buttonLoading: false,
       total: 10,
       list: [],
       dateValue: [],
@@ -184,6 +193,7 @@ export default {
         type: 0,
         formula: ""
       },
+      dialogStatus: "create",
       dialogVisible: false,
       listQuery: {
         page: 1,
@@ -200,7 +210,38 @@ export default {
       ],
       activeName: "indicator",
       rules: {
-        name: [{ required: true, message: "请输入名称", trigger: "change" }]
+        name: [
+          { required: true, message: "请输入名称", trigger: "change" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: "只能输入中文和字母",
+            trigger: "blur"
+          }
+        ],
+        definition: [
+          { required: true, message: "请输入定义", trigger: "change" },
+          {
+            min: 1,
+            max: 200,
+            message: "长度在 1 到 200 个字符",
+            trigger: "blur"
+          }
+        ],
+        formula: [
+          { required: true, message: "请输入计算公式", trigger: "change" },
+          {
+            min: 1,
+            max: 100,
+            message: "长度在 1 到 100 个字符",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
@@ -229,6 +270,7 @@ export default {
       });
     },
     datePick(value) {
+      console.log(value, "dateValueValue");
       if (value == null) {
         this.listQuery.startTime = null;
         this.listQuery.endTime = null;
@@ -261,6 +303,7 @@ export default {
       }).then(async () => {
         const auIdarray = this.multipleSelection.map(item => item.id);
         await deleteList(auIdarray);
+        await this.getList();
         this.$message({
           type: "success",
           message: "删除成功!"
@@ -270,8 +313,18 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
+          this.buttonLoading = true;
           createList(this.temp).then(() => {
+            this.listQuery = {
+              page: 1,
+              size: 10,
+              name: "",
+              calcStatus: "",
+              startTime: null,
+              endTime: null
+            };
             this.getList();
+            this.buttonLoading = false;
             this.dialogVisible = false;
             this.$notify({
               title: "成功",
@@ -284,11 +337,19 @@ export default {
       });
     },
     handleCreate() {
+      this.dialogStatus = "create";
       this.dialogVisible = true;
+      this.temp = {
+        name: "",
+        definition: "",
+        type: 0,
+        formula: ""
+      };
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row);
       this.dialogVisible = true;
+      this.dialogStatus = "edit";
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
       });

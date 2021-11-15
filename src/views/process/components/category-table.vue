@@ -28,7 +28,7 @@
               </el-col>
               <el-col :span="8">
                 <filter-item>
-                  <template v-slot:left> <span>查询时间</span> </template>
+                  <template v-slot:left> <span>创建时间</span> </template>
                   <template v-slot:right>
                     <el-date-picker
                       v-model="dateValue"
@@ -152,7 +152,7 @@
               </el-col>
               <el-col :span="8">
                 <filter-item>
-                  <template v-slot:left> <span>查询时间</span> </template>
+                  <template v-slot:left> <span>创建时间</span> </template>
                   <template v-slot:right>
                     <el-date-picker
                       v-model="dateValue"
@@ -222,6 +222,16 @@
           <el-table-column prop="totalPassTime" label="耗时总长" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="processPassTime" label="平均耗时" sortable>
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.processPassTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="finishRatio" label="完成率" sortable>
+            <template slot-scope="scope">
+              {{ toPercent(scope.row.finishRatio) }}
             </template>
           </el-table-column>
         </el-table>
@@ -315,6 +325,7 @@ export default {
     },
     async getSelectTemplate() {
       const { data } = await fetchSelectTemplate();
+      console.log(data, "datadatadata");
       this.selectTemplateData = data;
     },
     datePick(value) {

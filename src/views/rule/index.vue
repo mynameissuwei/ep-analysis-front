@@ -4,7 +4,7 @@
     <el-row class="filter-container">
       <!-- left search -->
       <el-col :span="18">
-        <el-row :gutter="20">
+        <el-row :gutter="60">
           <el-col :span="8">
             <filter-item>
               <template v-slot:left> <span>归属部门</span> </template>
@@ -146,7 +146,11 @@
           </el-select>
           <span
             v-if="!isSelected"
-            class="actionStyle deployText"
+            :class="
+              radio == 1
+                ? 'actionStyle deployText '
+                : 'actionStyle deployText canNotClick'
+            "
             @click="isSelected = true"
             >配置</span
           >

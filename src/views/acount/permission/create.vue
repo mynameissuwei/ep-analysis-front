@@ -151,11 +151,13 @@ export default {
       const id = this.id;
       fetchEditData(id).then(res => {
         const { authName, authId, authDesc, audit, resIdList } = res.data;
+        let status = audit === "1" ? true : false;
+
         this.form = {
           authName,
           authId,
           authDesc,
-          audit
+          audit: status
         };
         this.checkStrictly = true;
 
