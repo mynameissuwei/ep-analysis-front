@@ -32,6 +32,14 @@ export function deployRole(data) {
   });
 }
 
+export function deleteRole(data) {
+  return request({
+    url: "/userole",
+    method: "delete",
+    data
+  });
+}
+
 export function createList(data) {
   return request({
     url: "/tenant/user/bind",

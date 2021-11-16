@@ -1,7 +1,8 @@
 <template>
   <div class="DashTemplate">
     <div class="title">
-      <svg-icon icon-class="timeConsumeBlue" />
+      <!-- <svg-icon icon-class="timeConsumeBlue" /> -->
+      <img :src="indicator" class="ops-card-img" alt="" />
       <span class="title-text">{{ data.name }}</span>
     </div>
     <div class="content">
@@ -30,6 +31,8 @@
 </template>
 
 <script>
+import indicator from "@/assets/indicator.svg";
+
 export default {
   props: {
     data: {
@@ -38,6 +41,11 @@ export default {
         return {};
       }
     }
+  },
+  data() {
+    return {
+      indicator
+    };
   }
 };
 </script>
@@ -55,7 +63,14 @@ export default {
   .title {
     color: #0f55fa;
   }
+  .ops-card-img {
+    position: relative;
+    top: 2px;
+  }
   .title-text {
+    // height: 20px;
+    // line-height: 20px;
+    // display: inline-block;
     margin-left: 15px;
   }
   .content {

@@ -42,6 +42,8 @@
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   @change="datePick"
+                  value-format="yyyy-MM-dd hh:mm:ss"
+                  :picker-options="pickerOptions"
                 >
                 </el-date-picker>
               </template>
@@ -172,7 +174,6 @@
 import Pagination from "@/components/Pagination";
 import { fetchList, createList, deleteList } from "@/api/dashboard";
 import FilterItem from "@/components/FilterItem";
-import moment from "moment";
 
 export default {
   props: ["type"],
@@ -209,6 +210,46 @@ export default {
         { label: "非指标", key: "other" }
       ],
       activeName: "indicator",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一天",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
       rules: {
         name: [
           { required: true, message: "请输入名称", trigger: "change" },
@@ -251,16 +292,8 @@ export default {
       fetchList({
         ...this.listQuery,
         type: this.type === "0" ? 0 : 1,
-        startTime: this.listQuery.startTime
-          ? moment(parseInt(this.listQuery.startTime)).format(
-              "YYYY-MM-DD hh:mm:ss"
-            )
-          : this.listQuery.startTime,
+        startTime: this.listQuery.startTime,
         endTime: this.listQuery.endTime
-          ? moment(parseInt(this.listQuery.endTime)).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )
-          : this.listQuery.endTime
       }).then(response => {
         this.list = response.data.records;
         this.total = response.data.total;
@@ -270,13 +303,13 @@ export default {
       });
     },
     datePick(value) {
-      console.log(value, "dateValueValue");
+      console.log(value, "valuelue");
       if (value == null) {
         this.listQuery.startTime = null;
         this.listQuery.endTime = null;
       } else {
-        this.listQuery.startTime = new Date(value[0]).getTime();
-        this.listQuery.endTime = new Date(value[1]).getTime();
+        this.listQuery.startTime = value[0];
+        this.listQuery.endTime = value[1];
       }
     },
     handleSearch() {

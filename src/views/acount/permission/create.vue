@@ -23,6 +23,8 @@
       </el-aside>
       <el-main>
         <bread-text name="资源配置"> </bread-text>
+        <el-checkbox v-model="checked" @change="checkedAll" /> 全选
+
         <el-tree
           :check-strictly="checkStrictly"
           ref="tree"
@@ -75,6 +77,7 @@ export default {
       checkStrictly: false,
       submitLoading: false,
       sourceList: [],
+      checked: false,
       rules: {
         authName: [
           { required: true, message: "请输入权限名称", trigger: "blur" },
@@ -148,6 +151,13 @@ export default {
           });
         }
       });
+    },
+    checkedAll() {
+      if (this.checked) {
+        this.$refs.tree.setCheckedNodes(this.sourceList);
+      } else {
+        this.$refs.tree.setCheckedKeys([]);
+      }
     },
     onCancel() {
       this.$router.push("/acount/permission");

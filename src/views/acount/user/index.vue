@@ -114,7 +114,7 @@
           <el-button @click="dialogVisible = false">
             取消
           </el-button>
-          <el-button type="primary" @click="onSubmit">
+          <el-button type="primary" @click="onSubmit" :loading="buttonLoading">
             确认
           </el-button>
         </div>
@@ -124,9 +124,9 @@
 </template>
 
 <script>
-import { fetchList, fetchTenantList, deployRole } from "@/api/user";
+import { fetchList, fetchTenantList, deployRole, deleteRole } from "@/api/user";
 import * as roleApi from "@/api/role";
-
+import deepClone from "@/utils/deep-clone";
 import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
 import BreadText from "@/components/Breadtext";
@@ -143,8 +143,10 @@ export default {
         size: 10,
         keyword: ""
       },
+      buttonLoading: false,
       dialogVisible: false,
       checkedList: [],
+      editCheckedList: [],
       tenantList: [],
       temp: {}
     };
@@ -169,11 +171,13 @@ export default {
     getCheckedTenantList(accountId) {
       fetchTenantList({ accountId }).then(response => {
         this.checkedList = response.data.map(item => item.roleId);
+        this.editCheckedList = deepClone(
+          response.data.map(item => item.roleId)
+        );
       });
     },
     getTenantList() {
       roleApi.fetchList({ page: 1, size: 10 }).then(response => {
-        console.log(response, "response");
         roleApi.fetchList({ page: 1, size: response.data.total }).then(res => {
           this.tenantList = res.data.records;
         });
@@ -196,14 +200,28 @@ export default {
       };
       this.getList();
     },
-    onSubmit() {
-      const data = this.checkedList.map(item => ({
+    async onSubmit() {
+      this.buttonLoading = true;
+      let deleteArray = [];
+      this.editCheckedList.forEach(item => {
+        if (!this.checkedList.includes(item)) {
+          deleteArray.push(item);
+        }
+      });
+      let deleteResult = deleteArray.map(item => ({
         roleId: item,
         accountId: this.temp.accountId
       }));
 
+      deleteResult.length && (await deleteRole(deleteResult));
+
+      const data = this.checkedList.map(item => ({
+        roleId: item,
+        accountId: this.temp.accountId
+      }));
       deployRole(data).then(() => {
         this.getList();
+        this.buttonLoading = false;
         this.dialogVisible = false;
         this.$notify({
           title: "成功",

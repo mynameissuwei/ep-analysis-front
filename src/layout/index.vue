@@ -66,6 +66,6 @@ export default {
   top: 59px;
 }
 .bread-container {
-  margin-bottom: 14px;
+  // margin-bottom: 14px;
 }
 </style>

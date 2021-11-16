@@ -1,7 +1,7 @@
 <template>
   <div class="dashBoard">
     <div class="img-container">
-      <div class="module-img" style="height: 309px">
+      <div class="module-img" style="height: 204px">
         <span class="img-title">效能词典</span>
         <el-input
           class="img-input"
@@ -9,6 +9,7 @@
           prefix-icon="el-icon-search"
           v-model="listQuery.name"
           width="220px"
+          @change="handleSearch"
         >
         </el-input>
       </div>
@@ -99,6 +100,9 @@ export default {
           this.listLoading = false;
         }, 1.5 * 1000);
       });
+    },
+    handleSearch() {
+      this.getList();
     }
   }
 };
@@ -133,8 +137,8 @@ export default {
     }
   }
   .dict-container {
-    margin-left: 101px;
-    margin-top: 56px;
+    margin-left: 24px;
+    margin-top: 24px;
     margin-bottom: 75px;
     margin-right: 150px;
   }
@@ -142,7 +146,7 @@ export default {
     width: 220px;
   }
   ::v-deep .el-tabs__header {
-    width: 297px;
+    width: 138px;
     height: 416px;
     background: #f8f9fa;
     .el-tabs__item {
