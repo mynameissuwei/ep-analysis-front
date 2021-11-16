@@ -83,12 +83,12 @@ export default {
             max: 10,
             message: "长度在 1 到 10 个字符",
             trigger: "blur"
+          },
+          {
+            pattern: /^[\u4e00-\u9fa5]+$/,
+            message: "只能输入中文字符",
+            trigger: "blur"
           }
-          // {
-          //   pattern: /^[\u4e00-\u9fa5]+$/,
-          //   message: "只能输入中文字符",
-          //   trigger: "blur"
-          // }
         ],
         authId: [
           { required: true, message: "请输入权限编码", trigger: "blur" },
@@ -97,18 +97,23 @@ export default {
             max: 20,
             message: "长度在 1 到 20 个字符",
             trigger: "blur"
+          },
+          {
+            pattern: /^[A-Za-z_]+$/,
+            message: "只能输入英文字符和下划线",
+            trigger: "blur"
           }
-          // {
-          //   pattern: /^[A-Za-z_]+$/,
-          //   message: "只能输入英文字符和下划线",
-          //   trigger: "blur"
-          // }
         ],
         authDesc: [
           {
             min: 0,
             max: 100,
             message: "最大长度100字符",
+            trigger: "blur"
+          },
+          {
+            pattern: /^[\u4e00-\u9fa5]+$/,
+            message: "只能输入中文字符",
             trigger: "blur"
           }
         ]
