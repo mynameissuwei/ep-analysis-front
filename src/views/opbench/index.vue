@@ -32,8 +32,8 @@
                       >
                         <el-option
                           v-for="item in [
-                            { value: 0, name: '待阅' },
-                            { value: 1, name: '已阅' },
+                            { value: 0, name: '待办' },
+                            { value: 1, name: '已办' },
                             { value: undefined, name: '全部' }
                           ]"
                           :key="item.value"
@@ -76,7 +76,7 @@
           >
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="createTime" align="center" label="创建时间">
+            <el-table-column prop="createTime" align="center" label="创建时间" sortable>
             </el-table-column>
           </el-table>
           <pagination
@@ -109,8 +109,8 @@
                       >
                         <el-option
                           v-for="item in [
-                            { value: 0, name: '待阅' },
-                            { value: 1, name: '已阅' },
+                            { value: 0, name: '待办' },
+                            { value: 1, name: '已办' },
                             { value: undefined, name: '全部' }
                           ]"
                           :key="item.value"
@@ -153,7 +153,7 @@
           >
             <el-table-column prop="noticeTitle" label="通知标题">
             </el-table-column>
-            <el-table-column prop="createTime" align="center" label="创建时间">
+            <el-table-column prop="createTime" align="center" label="创建时间" sortable>
             </el-table-column>
           </el-table>
           <pagination

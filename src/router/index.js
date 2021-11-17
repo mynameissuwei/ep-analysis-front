@@ -270,7 +270,7 @@ export const constantRoutes = [
           title: "添加用户",
           noCache: true,
           activeMenu: "/acount/user",
-          id: "EFFICIENCY_ANALYSIS_TENANT_ADD_USER"
+          id: "EFFICIENCY_ANALYSIS_TENANT_USER_MANAGE"
         }
       },
       {
@@ -292,7 +292,7 @@ export const constantRoutes = [
           title: "角色配置",
           noCache: true,
           activeMenu: "/acount/role",
-          id: "EFFICIENCY_ANALYSIS_TENANT_ADD_ROLE"
+          id: "EFFICIENCY_ANALYSIS_TENANT_ROLE_MANAGE"
         }
       },
       {
@@ -314,7 +314,7 @@ export const constantRoutes = [
           title: "权限配置",
           noCache: true,
           activeMenu: "/acount/permission",
-          id: "EFFICIENCY_ANALYSIS_TENANT_ADD_AUTHORITY"
+          id: "EFFICIENCY_ANALYSIS_TENANT_AUTHORITY_MANAGE"
         }
       }
     ]

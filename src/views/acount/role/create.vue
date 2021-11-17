@@ -333,10 +333,10 @@ export default {
     },
     createStateFilter(queryString) {
       return item => {
-        console.log(item,'itemitme')
-        if (item.nickname) {
+        console.log(item.nickname,item.accountId,'itemitme')
+        if (item.nickname && item.accountId) {
           return (
-            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) != -1
+            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) != -1 || item.accountId.toLowerCase().indexOf(queryString.toLowerCase()) != -1
           );
         } else {
           return false;
