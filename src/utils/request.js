@@ -35,7 +35,7 @@ service.interceptors.response.use(
         type: "error",
         duration: 5 * 1000
       });
-
+      store.dispatch('loading/cancelLoading')
       return Promise.reject(new Error(res.message || "Error"));
     } else {
       return res;

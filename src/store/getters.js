@@ -11,6 +11,7 @@ const getters = {
   hasTenant: state => state.user.hasTenant,
   tenantId: state => state.user.tenantId,
   permission_routes: state => state.permission.permission_routes,
-  routeInfo: state => state.user.routeInfo
+  routeInfo: state => state.user.routeInfo,
+  buttonLoading: state => state.loading.buttonLoading,
 };
 export default getters;

@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <bread-text name="模块分析明细" />
+    <bread-text name="模板分析明细" />
     <el-row class="filter-container">
       <!-- left search -->
       <el-col :span="18">

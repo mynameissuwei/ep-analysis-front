@@ -63,7 +63,7 @@
             <i class="el-icon-edit el-input__icon" slot="suffix"> </i>
             <template slot-scope="{ item }">
               <div class="name">
-                <span class="accountText">用户ID: {{ item.accountId }}</span>
+                <span class="accountText" style="margin-right: 15px">用户ID: {{ item.accountId }}</span>
                 <span>用户名称: {{ item.nickname }}</span>
               </div>
             </template>
@@ -103,7 +103,7 @@
     <el-footer class="footerContainer">
       <div>
         <el-button @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="onSubmit" :loading="submitLoading"
+        <el-button type="primary" @click="onSubmit" :loading="buttonLoading"
           >保存</el-button
         >
       </div>
@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BreadText from "@/components/Breadtext";
 import { fetchList } from "@/api/permission";
 import * as userApi from "@/api/user";
@@ -128,6 +129,11 @@ import deepClone from "@/utils/deep-clone";
 
 export default {
   props: ["id"],
+  computed: {
+    ...mapGetters([
+      'buttonLoading',
+    ]),
+  },
   components: { BreadText },
   data() {
     return {
@@ -140,7 +146,6 @@ export default {
       editUserList: [],
       permissionList: [],
       permissionListLoading: false,
-      submitLoading: false,
       multipleSelection: [],
       inputRoleUserValue: "",
       roleUserData: [],
@@ -170,8 +175,9 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[A-Za-z_]+$/,
-            message: "只能输入英文字符和下划线",
+            pattern: /^[5A-Za-z0-9-\_]+$/,
+            // message: "只能输入英文字符和下划线",
+            message: "只能输入英文，数字，下划线，横线",
             trigger: "blur"
           }
         ],
@@ -224,14 +230,13 @@ export default {
           accountId: item.accountId,
           roleId: this.form.roleId
         }));
-        console.log(deleteArray, "deleteArray");
         if (valid) {
           const data = {
             ...this.form,
             roleType: "1001",
             status: this.form.status ? 1 : 0
           };
-          this.submitLoading = true;
+          this.$store.dispatch('loading/setLoading')
           const userResult = this.userList.map(item => ({
             accountId: item.accountId,
             roleId: this.form.roleId
@@ -248,7 +253,7 @@ export default {
             createUserole(userResult),
             createAuthRole(authResult)
           ]).then(result => {
-            this.submitLoading = false;
+            this.$store.dispatch('loading/cancelLoading')
             this.$router.push("/acount/role");
             this.$notify({
               title: "成功",
@@ -328,9 +333,10 @@ export default {
     },
     createStateFilter(queryString) {
       return item => {
+        console.log(item,'itemitme')
         if (item.nickname) {
           return (
-            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) != -1
           );
         } else {
           return false;

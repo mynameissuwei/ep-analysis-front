@@ -65,12 +65,12 @@ const actions = {
 
       let result = filterRoute(
         constantRoutes,
-        flatArray.concat(["404", "404redirect"])
+        flatArray.length ? flatArray.concat(["404", "404redirect"]) : flatArray.concat(["404", "404redirect","EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE","EFFICIENCY_ANALYSIS_TENANT_DICT"])
       );
 
       console.log(flatArray, "flatArrayflatArray");
       accessedRoutes = result || [];
-      commit("SET_ROUTES", accessedRoutes);
+      commit("SET_ROUTES", constantRoutes);
       // router.addRoutes(accessedRoutes);
       resolve(accessedRoutes);
     });

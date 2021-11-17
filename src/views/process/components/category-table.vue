@@ -193,7 +193,7 @@
           loading
         >
           <el-table-column prop="appName" label="模板类别" width="180" />
-          <el-table-column prop="orgName" label="名称" width="180" />
+          <el-table-column prop="orgName" label="部门名称" width="180" />
           <el-table-column
             prop="overRatio"
             label="平均超时率"

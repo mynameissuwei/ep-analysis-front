@@ -192,7 +192,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: "/opbench",
     meta: {
-      id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
+      id: "EFFICIENCY_ANALYSIS_OPERATION_WORKBENCH"
     },
     children: [
       {
@@ -202,7 +202,7 @@ export const constantRoutes = [
         meta: {
           title: "运营工作台",
           icon: "form",
-          id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
+          id: "EFFICIENCY_ANALYSIS_OPERATION_WORKBENCH"
         }
       }
     ]
@@ -212,14 +212,14 @@ export const constantRoutes = [
     component: Layout,
     redirect: "/platdict",
     meta: {
-      id: "PLATFORM_DICT_MANAGE"
+      id: "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE"
     },
     children: [
       {
         path: "index",
         component: () => import("@/views/platdict/index"),
         name: "Dashboard",
-        meta: { title: "词典管理", icon: "tree", id: "PLATFORM_DICT_MANAGE" }
+        meta: { title: "词典管理", icon: "tree", id: "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE" }
       }
     ]
   },
@@ -227,7 +227,7 @@ export const constantRoutes = [
     path: "/operate",
     component: Layout,
     meta: {
-      id: "PLATFORM_OPERATION_DASHBOARD"
+      id: "EFFICIENCY_ANALYSIS_OPERATION_DASHBOARD"
     },
     children: [
       {
@@ -237,7 +237,7 @@ export const constantRoutes = [
         meta: {
           title: "运营大盘",
           icon: "eye",
-          id: "PLATFORM_OPERATION_DASHBOARD"
+          id: "EFFICIENCY_ANALYSIS_OPERATION_DASHBOARD"
         }
       }
     ]

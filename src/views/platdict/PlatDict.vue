@@ -102,7 +102,7 @@
           {{ scope.row.calcStatus === 0 ? "未计算" : "已计算" }}
         </template>
       </el-table-column>
-      <el-table-column prop="updateTime" label="维护时间" />
+      <el-table-column prop="updateTime" label="创建时间" />
       <el-table-column label="操作" width="230">
         <template slot-scope="{ row, $index }">
           <span class="actionStyle" @click="handleUpdate(row)">
@@ -131,7 +131,7 @@
         :rules="rules"
         :model="temp"
         label-position="left"
-        label-width="70px"
+        label-width="80px"
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item label="名称" prop="name">
@@ -171,12 +171,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Pagination from "@/components/Pagination";
 import { fetchList, createList, deleteList } from "@/api/dashboard";
 import FilterItem from "@/components/FilterItem";
 
 export default {
   props: ["type"],
+  computed: {
+    ...mapGetters([
+      'buttonLoading',
+    ]),
+  },
   components: { Pagination, FilterItem },
   created() {
     this.getList();
@@ -184,7 +190,6 @@ export default {
   data() {
     return {
       listLoading: false,
-      buttonLoading: false,
       total: 10,
       list: [],
       dateValue: [],
@@ -346,7 +351,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          this.buttonLoading = true;
+          this.$store.dispatch('loading/setLoading')
           createList(this.temp).then(() => {
             this.listQuery = {
               page: 1,
@@ -357,7 +362,7 @@ export default {
               endTime: null
             };
             this.getList();
-            this.buttonLoading = false;
+            this.$store.dispatch('loading/cancelLoading')
             this.dialogVisible = false;
             this.$notify({
               title: "成功",

@@ -13,7 +13,7 @@
               :disabled="id ? true : false"
             ></el-input>
           </el-form-item>
-          <el-form-item label="权限描述">
+          <el-form-item label="权限描述" prop="authDesc">
             <el-input type="textarea" v-model="form.authDesc"></el-input>
           </el-form-item>
           <el-form-item label="状态">
@@ -102,8 +102,8 @@ export default {
             trigger: "blur"
           },
           {
-            pattern: /^[A-Za-z_]+$/,
-            message: "只能输入英文字符和下划线",
+            pattern: /^[5A-Za-z0-9-\_]+$/,
+            message: "只能输入英文，数字，下划线，横线",
             trigger: "blur"
           }
         ],
