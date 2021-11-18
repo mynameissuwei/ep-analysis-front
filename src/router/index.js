@@ -218,7 +218,7 @@ export const constantRoutes = [
       {
         path: "index",
         component: () => import("@/views/platdict/index"),
-        name: "Dashboard",
+        name: "platdict",
         meta: { title: "词典管理", icon: "tree", id: "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE" }
       }
     ]
@@ -332,7 +332,7 @@ export const constantRoutes = [
 const createRouter = () =>
   new Router({
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes
+    routes: []
   });
 
 const createNewRouter = () =>

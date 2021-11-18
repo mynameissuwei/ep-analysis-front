@@ -32,8 +32,8 @@
                       >
                         <el-option
                           v-for="item in [
-                            { value: 0, name: '已读' },
-                            { value: 1, name: '未读' },
+                            { value: 0, name: '已阅' },
+                            { value: 1, name: '未阅' },
                             { value: undefined, name: '全部' }
                           ]"
                           :key="item.value"
@@ -179,10 +179,10 @@
           <!--            <div>报表设计</div>-->
           <!--          </div>-->
           <div class="text-container">
-            <router-link :to="{name:'createUser'}">
+            <!-- <router-link :to="{name:'createUser'}"> -->
               <svg-icon icon-class="password" fill="#0F55FA"/>
               <div>添加用户</div>
-            </router-link>
+            <!-- </router-link> -->
           </div>
         </el-card>
       </el-col>

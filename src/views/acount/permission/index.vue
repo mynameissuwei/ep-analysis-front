@@ -34,6 +34,7 @@
       size="small"
       type="primary"
       style="margin-bottom:16px"
+      :disabled='multipleSelection.length ? false : true'
       @click="handleCheckBoxDelete"
     >
       删除

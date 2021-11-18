@@ -58,21 +58,22 @@ const actions = {
     // resetRouter();
     return new Promise(resolve => {
       let accessedRoutes;
-      console.log(routerInfo,'routerInforouterInfo')
+      
       let flatArray = flattenDeep(
         flatId(routerInfo.length ?  (routerInfo.length === 2 ? routerInfo[0].children.concat(routerInfo[1].children) : routerInfo[0].children) : [])
       );
 
+      let flatResult = flatArray.length ? flatArray.concat(["404", "404redirect"]) : flatArray.concat(["404", "404redirect","EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE","EFFICIENCY_ANALYSIS_TENANT_DICT"])
+
       let result = filterRoute(
         constantRoutes,
-        flatArray.length ? flatArray.concat(["404", "404redirect"]) : flatArray.concat(["404", "404redirect","EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE","EFFICIENCY_ANALYSIS_TENANT_DICT"])
+        flatResult
       );
         
-      console.log(flatArray, "flatArrayflatArray");
       accessedRoutes = result || [];
       commit("SET_ROUTES", accessedRoutes);
       // router.addRoutes(accessedRoutes);
-      resolve(accessedRoutes);
+      resolve({ accessedRoutes,flatResult });
     });
   }
 };

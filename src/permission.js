@@ -83,7 +83,7 @@ router.beforeEach(async (to, from, next) => {
     const hasTenant = store.getters.tenantId;
     const hasRoute =
       store.getters.routeInfo && store.getters.routeInfo.length > 0;
-    console.log(hasTenant, hasRoute, "hasRoute");
+    
 
     if (hasTenant && hasRoute) {
       next();
@@ -92,15 +92,24 @@ router.beforeEach(async (to, from, next) => {
         resetRouter();
         await store.dispatch("user/getInfo");
         let routerInfo = await store.dispatch("user/getRouterInfo");
-        const accessRoutes = await store.dispatch(
+        const { accessedRoutes,flatResult }  = await store.dispatch(
           "permission/generateRoutes",
           routerInfo
         );
-
-        router.addRoutes(accessRoutes);
-        next();
+        console.log(accessedRoutes,flatResult,'flatResult');
+        router.addRoutes(accessedRoutes);
+        let currentId = to.meta.id
+        next()
+        // if(flatResult.includes(currentId)) {
+        //   debugger;
+        //   next()
+        // } else {
+        //   debugger;
+        //   next('/404')
+        // }
         // next({ ...to, replace: true });
       } catch (error) {
+        
         next();
       }
     }

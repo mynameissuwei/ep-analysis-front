@@ -18,7 +18,7 @@
       </div>
       <div>
         <div style="margin-bottom:10px">
-          <span class="text-title">维护时间：</span>
+          <span class="text-title">创建时间：</span>
           <span>{{ data.updateTime ? data.updateTime : "无" }}</span>
         </div>
         <div>
