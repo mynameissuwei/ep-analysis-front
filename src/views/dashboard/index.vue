@@ -7,7 +7,7 @@
           class="img-input"
           placeholder="请输入内容"
           prefix-icon="el-icon-search"
-          v-model="listQuery.name"
+          v-model="listQuery.keyword"
           width="220px"
           @change="handleSearch"
         >
@@ -61,7 +61,7 @@ export default {
       listQuery: {
         page: 1,
         size: 10,
-        name: ""
+        keyword: ""
       },
       tabMapOptions: [
         { label: "指标", key: "indicator" },
