@@ -12,6 +12,7 @@ import App from "./App";
 import store from "./store";
 import router from "./router";
 
+
 import "@/icons"; // icon
 import "@/permission"; // permission control
 import * as Echarts from "echarts";
@@ -60,6 +61,25 @@ function initVue() {
   Vue.use(ElementUI);
 
   Vue.config.productionTip = false;
+
+  const monitorEnv = process.env.NODE_ENV === 'development' ? MonitorJS.EnnDEV : MonitorJS.EnnPROD;
+
+  new MonitorJS().init({
+    pageId: 'ep-analysis-front', //上线应用id
+    env: monitorEnv, //上报错误地址
+    consoleError:true,
+    vueError:true, //是否上报Vue错误
+    vue:Vue,
+
+  });
+
+  new MonitorJS().monitorPerformance({
+    pageId: 'ep-analysis-front',
+    env: monitorEnv, //上报错误地址
+    isRXHR: false,
+    isPage: true,
+
+  });
 
   new Vue({
     el: "#app",
