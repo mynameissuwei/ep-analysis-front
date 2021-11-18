@@ -4,7 +4,7 @@
       <!-- left search -->
       <el-col :span="18">
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :span="7">
             <filter-item>
               <template v-slot:left> <span>模板名称</span> </template>
               <template v-slot:right>
@@ -12,7 +12,7 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="7">
             <filter-item>
               <template v-slot:left> <span>计算状态</span> </template>
               <template v-slot:right>
@@ -31,19 +31,18 @@
               </template>
             </filter-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <filter-item>
               <template v-slot:left> <span>创建时间</span> </template>
               <template v-slot:right>
                 <el-date-picker
                   v-model="dateValue"
-                  type="daterange"
+                  type="datetimerange"
+                  value-format="yyyy-MM-dd hh:mm:ss"
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   @change="datePick"
-                  value-format="yyyy-MM-dd hh:mm:ss"
-                  :picker-options="pickerOptions"
                 >
                 </el-date-picker>
               </template>
@@ -383,6 +382,9 @@ export default {
         type: 0,
         formula: ""
       };
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row);

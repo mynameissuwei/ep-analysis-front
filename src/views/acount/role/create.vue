@@ -3,7 +3,7 @@
     <div class="app-container createRole-container">
       <el-row :gutter="80">
         <el-col :span="5">
-          <bread-text></bread-text>
+          <bread-text :name='id ? "编辑角色" : "创建角色" '></bread-text>
           <el-form
             ref="dataForm"
             :model="form"

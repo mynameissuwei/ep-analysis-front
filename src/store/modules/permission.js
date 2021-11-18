@@ -70,7 +70,7 @@ const actions = {
 
       console.log(flatArray, "flatArrayflatArray");
       accessedRoutes = result || [];
-      commit("SET_ROUTES", constantRoutes);
+      commit("SET_ROUTES", accessedRoutes);
       // router.addRoutes(accessedRoutes);
       resolve(accessedRoutes);
     });

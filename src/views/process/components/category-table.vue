@@ -32,7 +32,8 @@
                   <template v-slot:right>
                     <el-date-picker
                       v-model="dateValue"
-                      type="daterange"
+                      type="datetimerange"
+                      value-format="yyyy-MM-dd hh:mm:ss"
                       range-separator="至"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
@@ -156,7 +157,8 @@
                   <template v-slot:right>
                     <el-date-picker
                       v-model="dateValue"
-                      type="daterange"
+                      type="datetimerange"
+                      value-format="yyyy-MM-dd hh:mm:ss"
                       range-separator="至"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
@@ -289,6 +291,7 @@ export default {
 
   methods: {
     handleClick() {
+      this.dateValue = []
       this.getList();
     },
     async getList() {
