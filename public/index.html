@@ -23,7 +23,7 @@
     <script src="https://plantformcdn.fanneng.com/js/frontend-monitor-sdk/1.0.1/js/monitor.min.js"></script>
     <script>
       new MonitorJS().init({
-        pageId: 'fn-cloud-builder',
+        pageId: 'ep-analysis-front',
         env:  MonitorJS.EnnDEV, //上报错误地址
         consoleError:true,
         vueError:true,  //是否上报Vue错误
@@ -32,7 +32,7 @@
       });
 
       new MonitorJS().monitorPerformance({
-        pageId: 'fn-cloud-builder',
+        pageId: 'ep-analysis-front',
         env:  MonitorJS.EnnDEV, //上报错误地址
         isRXHR:false,
         isPage: true,
@@ -86,7 +86,7 @@
           },
           func2(){
             new MonitorJS().monitorPerformance({
-              pageId:"page_0001",
+              pageId:"ep-analysis-front",
               url:"",    //上报错误地址
               isRXHR:false,
               isPage: true,
