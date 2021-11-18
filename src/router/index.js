@@ -119,6 +119,7 @@ export const constantRoutes = [
     meta: {
       id: "EFFICIENCY_ANALYSIS_TENANT_RULE_CONFIG"
     },
+    redirect: "/rule/index",
     children: [
       {
         path: "index",
@@ -150,6 +151,7 @@ export const constantRoutes = [
     meta: {
       id: "EFFICIENCY_ANALYSIS_TENANT_WORKBENCH"
     },
+    redirect: "/workbench/index",
     children: [
       {
         path: "index",
@@ -190,7 +192,7 @@ export const constantRoutes = [
   {
     path: "/opbench",
     component: Layout,
-    redirect: "/opbench",
+    redirect: "/opbench/index",
     meta: {
       id: "EFFICIENCY_ANALYSIS_OPERATION_WORKBENCH"
     },
@@ -210,7 +212,7 @@ export const constantRoutes = [
   {
     path: "/platdict",
     component: Layout,
-    redirect: "/platdict",
+    redirect: "/platdict/index",
     meta: {
       id: "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE"
     },
@@ -226,6 +228,7 @@ export const constantRoutes = [
   {
     path: "/operate",
     component: Layout,
+    redirect: "/operate/index",
     meta: {
       id: "EFFICIENCY_ANALYSIS_OPERATION_DASHBOARD"
     },

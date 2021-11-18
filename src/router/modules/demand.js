@@ -67,7 +67,7 @@ const demandRouter = {
         title: "泛能网",
         id: "EFFICIENCY_ANALYSIS_PTSW"
       },
-      // redirect: "/demand/water/alarm",
+      redirect: "/ops/devops",
       children: [
         {
           path: "devops",

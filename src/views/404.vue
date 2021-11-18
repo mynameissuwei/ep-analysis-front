@@ -9,18 +9,35 @@
       <div class="bullshit__headline">{{ message }}</div>
     </div>
     <div class="buttonContainer">
-          <a href="" class="bullshit__return-home">返回首页</a>
+          <span @click='handleSkip' class="bullshit__return-home">返回首页</span>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: "Page404",
   computed: {
+    ...mapGetters([
+      'permission_routes',
+      'sidebar'
+    ]),
     message() {
       return "您暂无权限访问，请联系管理员";
-    }
+    },
+    routes() {
+      console.log(this.$router.options.routes,'routes');
+      return this.$router.options.routes
+    },
+  },
+   methods: {
+    handleSkip() {
+      this.$router.push({
+        path: this.permission_routes[1].redirect,
+      });
+    },
   }
 };
 </script>

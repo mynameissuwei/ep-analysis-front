@@ -12,7 +12,7 @@ const getDefaultState = () => {
     nickName: "",
     hasTenant: true,
     tenantId: "",
-    routeInfo: []
+    routeInfo: undefined
   };
 };
 
