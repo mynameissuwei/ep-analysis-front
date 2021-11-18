@@ -32,8 +32,8 @@
                       >
                         <el-option
                           v-for="item in [
-                            { value: 0, name: '待办' },
-                            { value: 1, name: '已办' },
+                            { value: 0, name: '已读' },
+                            { value: 1, name: '未读' },
                             { value: undefined, name: '全部' }
                           ]"
                           :key="item.value"

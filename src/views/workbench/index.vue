@@ -34,8 +34,8 @@
                       >
                         <el-option
                           v-for="item in [
-                            { value: 0, name: '待办' },
-                            { value: 1, name: '已办' },
+                            { value: 0, name: '已读' },
+                            { value: 1, name: '未读' },
                             { value: undefined, name: '全部' }
                           ]"
                           :key="item.value"
@@ -144,7 +144,7 @@
                 </el-button>
                 <el-button
                   size="small"
-                  style="margin-left: 10px;"
+                  style="margin-left: 10px;color:rgb(64, 158, 255)"
                   @click="handleReset('matter')"
                 >
                   重置

@@ -97,7 +97,7 @@ router.beforeEach(async (to, from, next) => {
           routerInfo
         );
 
-        router.addRoutes(constantRoutes);
+        router.addRoutes(accessRoutes);
         next();
         // next({ ...to, replace: true });
       } catch (error) {

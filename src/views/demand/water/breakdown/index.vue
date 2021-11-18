@@ -2,7 +2,7 @@
   <div class="app-container">
     <bread-text></bread-text>
     <el-row :gutter="20" class="filter-container">
-      <el-col :span="6">
+      <el-col :span="5">
         <filter-item>
           <template v-slot:left> <span>设备名称</span> </template>
           <template v-slot:right>
@@ -21,7 +21,7 @@
           </template>
         </filter-item>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="5">
         <filter-item>
           <template v-slot:left> <span>所属厂区</span> </template>
           <template v-slot:right>
@@ -40,14 +40,14 @@
           </template>
         </filter-item>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="8">
         <filter-item>
           <template v-slot:left> <span>创建时间</span> </template>
           <template v-slot:right>
             <el-date-picker
               v-model="dateValue"
-              type="daterange"
-              range-separator="至"
+              type="datetimerange"
+              value-format="yyyy-MM-dd hh:mm:ss"              range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               @change="datePick"

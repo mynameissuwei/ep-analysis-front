@@ -3,20 +3,11 @@
     <bread-text></bread-text>
     <el-row class="filter-container">
       <!-- left search -->
-      <el-col :span="18">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <filter-item>
-              <template v-slot:left> <span>名称</span> </template>
-              <template v-slot:right>
-                <el-input v-model="listQuery.name" placeholder="搜索名称" />
-              </template>
-            </filter-item>
-          </el-col>
-        </el-row>
+      <el-col :span="6">
+        <el-input v-model="listQuery.name" placeholder="搜索名称" />
       </el-col>
       <!-- right button -->
-      <el-col :span="6">
+      <el-col :span="18">
         <div style="float: right">
           <el-button size="small" type="primary" @click="handleSearch">
             查询
