@@ -6,7 +6,7 @@
       <el-col :span="6">
         <el-input
           v-model="listQuery.keyword"
-          placeholder="输入用户名/手机号/邮箱地址搜索"
+          placeholder="输入登录名/手机号/邮箱地址搜索"
         />
       </el-col>
       <!-- right button -->
