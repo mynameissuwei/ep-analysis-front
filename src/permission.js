@@ -13,6 +13,7 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       try {
+        console.log(to,'toEnter');
         resetRouter();
         await store.dispatch("user/getInfo");
         let routerInfo = await store.dispatch("user/getRouterInfo");

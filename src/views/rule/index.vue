@@ -64,7 +64,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -76,7 +76,7 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
+      style="margin-bottom: 16px"
       :disabled="multipleSelection.length ? false : true"
       @click="batchDeploy"
     >
@@ -156,16 +156,12 @@
           >
           <span v-else>
             <span @click="isSelected = false" class="actionStyle">保存</span>
-            <span @click="isSelected = false" class="actionStyle ">取消</span>
+            <span @click="isSelected = false" class="actionStyle">取消</span>
           </span>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">
-            取消
-          </el-button>
-          <el-button type="primary" @click="onSubmit">
-            确认
-          </el-button>
+          <el-button @click="dialogVisible = false"> 取消 </el-button>
+          <el-button type="primary" @click="onSubmit"> 确认 </el-button>
         </div>
       </div>
     </el-dialog>
@@ -177,7 +173,7 @@ import {
   fetchList,
   fetchSelectDepartment,
   fetchSelectTemplate,
-  batchSave
+  batchSave,
 } from "@/api/rule";
 import Pagination from "@/components/Pagination";
 import FilterItem from "@/components/FilterItem";
@@ -198,7 +194,7 @@ export default {
         size: 10,
         orgCode: undefined,
         appKey: undefined,
-        procDefName: undefined
+        procDefName: undefined,
       },
       value: 0,
       radio: 0,
@@ -206,7 +202,7 @@ export default {
       selectTemplateData: [],
       rangeNumber: rangeNumber(),
       isSelected: false,
-      multipleSelection: []
+      multipleSelection: [],
     };
   },
   created() {
@@ -218,7 +214,7 @@ export default {
     async getList() {
       this.listLoading = true;
       const { data, totalCount } = await fetchList({
-        condition: this.listQuery
+        condition: this.listQuery,
       });
       this.total = totalCount;
       this.list = data;
@@ -244,20 +240,20 @@ export default {
         size: 10,
         orgCode: undefined,
         appKey: undefined,
-        procDefName: undefined
+        procDefName: undefined,
       };
       this.getList();
     },
     handleCreate(row) {
       this.$router.push({
         name: "createUser",
-        params: { getList: this.getList }
+        params: { getList: this.getList },
       });
     },
     overTimeDeploy(row) {
       this.$router.push({
         name: "createRule",
-        query: { procDefKey: row.procDefKey, appKey: row.appKey }
+        query: { procDefKey: row.procDefKey, appKey: row.appKey },
       });
     },
     batchDeploy() {
@@ -266,23 +262,21 @@ export default {
       this.dialogVisible = true;
     },
     onSubmit() {
-      let array = this.multipleSelection.map(item => ({
+      let array = this.multipleSelection.map((item) => ({
         ...item,
         configType: this.radio,
-        procOverTime: this.value
+        procOverTime: this.value,
       }));
       batchSave(array).then(() => {
         this.getList();
         this.dialogVisible = false;
-        this.$notify({
-          title: "成功",
-          message: "配置成功",
+        this.$message({
           type: "success",
-          duration: 2000
+          message: "配置成功!",
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

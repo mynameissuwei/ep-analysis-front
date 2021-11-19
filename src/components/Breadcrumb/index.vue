@@ -19,13 +19,13 @@ import pathToRegexp from "path-to-regexp";
 export default {
   data() {
     return {
-      levelList: null
+      levelList: null,
     };
   },
   watch: {
     $route() {
       this.getBreadcrumb();
-    }
+    },
   },
   created() {
     this.getBreadcrumb();
@@ -34,7 +34,7 @@ export default {
     getBreadcrumb() {
       // only show routes with meta.title
       let matched = this.$route.matched.filter(
-        item => item.meta && item.meta.title
+        (item) => item.meta && item.meta.title
       );
       const first = matched[0];
 
@@ -45,7 +45,7 @@ export default {
       }
 
       this.levelList = matched.filter(
-        item => item.meta && item.meta.title && item.meta.breadcrumb !== false
+        (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false
       );
     },
     isDashboard(route) {
@@ -70,8 +70,8 @@ export default {
         return;
       }
       this.$router.push(this.pathCompile(path));
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -79,7 +79,7 @@ export default {
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
   font-size: 14px;
-  line-height: 50px;
+  line-height: 35px;
   margin-left: 8px;
 
   .no-redirect {

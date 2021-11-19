@@ -29,7 +29,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -41,24 +41,24 @@
       <el-table-column prop="userName" label="姓名"> </el-table-column>
       <el-table-column prop="procDefNum" sortable label="审批模版数">
       </el-table-column>
-      <el-table-column prop="overTime" sortable label="超时总长">
-        <template slot-scope="scope">
-          {{ getDuration(scope.row.overTime) }}
-        </template>
+      <el-table-column prop="taskNum" sortable label="审批任务数">
       </el-table-column>
       <el-table-column prop="passTime" sortable label="耗时总长">
         <template slot-scope="scope">
           {{ getDuration(scope.row.passTime) }}
         </template>
       </el-table-column>
-      <el-table-column prop="overRatio" sortable label="超时率">
+      <el-table-column prop="overTime" sortable label="超时总长">
         <template slot-scope="scope">
-          {{ toPercent(scope.row.overRatio) }}
+          {{ getDuration(scope.row.overTime) }}
         </template>
       </el-table-column>
       <el-table-column prop="overNum" sortable label="超时次数">
       </el-table-column>
-      <el-table-column prop="taskNum" sortable label="审批任务数">
+      <el-table-column prop="overRatio" sortable label="超时率">
+        <template slot-scope="scope">
+          {{ toPercent(scope.row.overRatio) }}
+        </template>
       </el-table-column>
       <el-table-column prop="finishRatio" sortable label="任务积压率">
         <template slot-scope="scope">
@@ -88,11 +88,11 @@ export default {
       activeName: "first",
       listQuery: {
         title: "",
-        limit: 20
+        limit: 20,
       },
       tableUserName: this.username,
       getDuration,
-      toPercent
+      toPercent,
     };
   },
   methods: {
@@ -120,8 +120,8 @@ export default {
       } else {
         return "<div>无</div>";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

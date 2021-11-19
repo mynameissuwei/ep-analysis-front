@@ -59,15 +59,13 @@
       <!-- right button -->
       <el-col :span="8">
         <div style="float: right">
-          <el-button type="primary" @click="handleSearch">
-            查询
-          </el-button>
-          <el-button style="margin-left: 10px;" @click="handleReset">
+          <el-button type="primary" @click="handleSearch"> 查询 </el-button>
+          <el-button style="margin-left: 10px" @click="handleReset">
             重置
           </el-button>
           <el-button
             icon="el-icon-circle-plus"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="open()"
           >
             保存为快捷视图
@@ -78,9 +76,11 @@
     <el-table :data="list" style="width: 100%">
       <el-table-column prop="app_name" label="模板名称"></el-table-column>
       <el-table-column prop="start_user_name" label="发起人"></el-table-column>
-      <el-table-column prop="proc_pass_time" label="耗时总长(小时)" sortable>
+      <el-table-column prop="start_time" label="发起时间" sortable>
+      </el-table-column>
+      <el-table-column label="当前状态">
         <template slot-scope="scope">
-          <span>{{ getDuration(scope.row.proc_pass_time) }}</span>
+          <span>{{ scope.row.proc_over === 0 ? "未结束" : "结束" }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -90,16 +90,19 @@
         width="150px"
       >
       </el-table-column>
+      <el-table-column prop="proc_pass_time" label="耗时总长(小时)" sortable>
+        <template slot-scope="scope">
+          <span>{{ getDuration(scope.row.proc_pass_time) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="proc_over_time" label="超时总长(小时)" sortable>
         <template slot-scope="scope">
           <span>{{ getDuration(scope.row.proc_over_time) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="start_time" label="发起时间" sortable>
-      </el-table-column>
-      <el-table-column label="当前状态">
+      <el-table-column prop="ratio" label="人均耗时(小时)" sortable>
         <template slot-scope="scope">
-          <span>{{ scope.row.proc_over === 0 ? "未结束" : "结束" }}</span>
+          <span>{{ getDuration(scope.row.ratio) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="proc_cost_time" label="最长耗时(小时)" sortable>
@@ -108,11 +111,6 @@
         </template>
       </el-table-column>
       <el-table-column prop="proc_approve_user" label="最长耗时审批人">
-      </el-table-column>
-      <el-table-column prop="ratio" label="人均耗时(小时)" sortable>
-        <template slot-scope="scope">
-          <span>{{ getDuration(scope.row.ratio) }}</span>
-        </template>
       </el-table-column>
     </el-table>
     <pagination
@@ -129,19 +127,15 @@
         :model="form"
         label-position="left"
         label-width="150px"
-        style="width: 400px; margin-left:50px;"
+        style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="视图名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="confirm()">
-          确认
-        </el-button>
-        <el-button @click="close()">
-          取消
-        </el-button>
+        <el-button type="primary" @click="confirm()"> 确认 </el-button>
+        <el-button @click="close()"> 取消 </el-button>
       </div>
     </el-dialog>
   </div>
@@ -172,7 +166,7 @@ export default {
         pageSize: 10,
         createOrgCode: undefined,
         appKey: undefined,
-        startUserName: undefined
+        startUserName: undefined,
       },
       rules: {
         name: [
@@ -181,19 +175,19 @@ export default {
             min: 1,
             max: 20,
             message: "长度在 1 到 20 个字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             pattern: /^[a-zA-Z0-9\u4e00-\u9fa5()（）]+$/,
             message: "只能输入汉字、数字、字母、括号",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       form: {
-        name: ""
+        name: "",
       },
-      getDuration
+      getDuration,
     };
   },
   created() {
@@ -209,12 +203,12 @@ export default {
           extParam: {
             createOrgCode: this.listQuery.createOrgCode,
             appKey: this.listQuery.appKey,
-            startUserName: this.listQuery.startUserName
+            startUserName: this.listQuery.startUserName,
           },
           pageNo: this.listQuery.pageNo,
           pageSize: this.listQuery.pageSize,
-          sqlKey: "procAnalyPage"
-        }
+          sqlKey: "procAnalyPage",
+        },
       });
       this.total = totalCount;
       this.list = data;
@@ -240,7 +234,7 @@ export default {
         pageSize: 10,
         createOrgCode: "",
         appKey: "",
-        startUserName: ""
+        startUserName: "",
       };
       this.getList();
     },
@@ -260,33 +254,33 @@ export default {
         definitionList: [
           {
             paramName: "createOrgCode",
-            paramValue: this.listQuery.createOrgCode
+            paramValue: this.listQuery.createOrgCode,
           },
           {
             paramName: "appKey",
-            paramValue: this.listQuery.appKey
+            paramValue: this.listQuery.appKey,
           },
           {
             paramName: "startUserName",
-            paramValue: this.listQuery.startUserName
-          }
-        ]
+            paramValue: this.listQuery.startUserName,
+          },
+        ],
       };
       await addQuickView(param);
       this.$message({
         type: "success",
-        message: "创建成功!"
+        message: "创建成功!",
       });
     },
     validateAndSubmit() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.close();
           this.addView();
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

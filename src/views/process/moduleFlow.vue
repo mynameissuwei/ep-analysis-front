@@ -3,7 +3,21 @@
     <el-row :gutter="20">
       <el-col :span="12" :offset="0">
         <card-container>
-          <div id="container"></div>
+          <div
+            id="container"
+            v-show="
+              this.flowChartData.nodes.length && this.flowChartData.edges.length
+            "
+          ></div>
+          <el-empty
+            style="height: 500px"
+            v-show="
+              !(
+                this.flowChartData.nodes.length &&
+                this.flowChartData.edges.length
+              )
+            "
+          ></el-empty>
         </card-container>
       </el-col>
       <el-col :span="12" :offset="0">
@@ -28,20 +42,37 @@ export default {
   data() {
     return {
       itemDetail: {},
-      flowChartData: null
+      flowChartData: {
+        nodes: [
+          {
+            id: "1",
+            name: "alps_file1",
+          },
+          {
+            id: "2",
+            name: "alps_file2",
+          },
+        ],
+        edges: [
+          {
+            source: "1",
+            target: "2",
+          },
+        ],
+      },
     };
   },
   components: {
     CardContainer,
-    ModuleCard
+    ModuleCard,
   },
   created() {
     this.getFlow();
     this.getItemDetail();
   },
-  mounted() {
-    this.init();
-  },
+  // mounted() {
+  //   this.flowChartData && this.init();
+  // },
   watch: {
     flowChartData: {
       handler(newVal, oldVal) {
@@ -49,15 +80,15 @@ export default {
           this.init();
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     getFlow() {
       fetchFlow({
         source: this.$route.query.source,
-        procDefKey: this.$route.query.procDefKey
-      }).then(response => {
+        procDefKey: this.$route.query.procDefKey,
+      }).then((response) => {
         const { data } = response;
         this.flowChartData = data;
       });
@@ -66,23 +97,23 @@ export default {
       fetchItemDetail({
         condition: {
           sqlKey: "procAnalyItemMap",
-          extParam: { procDefKey: this.id }
-        }
-      }).then(response => {
+          extParam: { procDefKey: this.id },
+        },
+      }).then((response) => {
         const { data } = response;
         this.itemDetail = data;
       });
     },
     init() {
       const data = {
-        nodes: this.flowChartData.nodes.map(item => ({
+        nodes: this.flowChartData.nodes.map((item) => ({
           id: item.id,
-          name: item.name
+          name: item.name,
         })),
-        edges: this.flowChartData.edges.map(item => ({
+        edges: this.flowChartData.edges.map((item) => ({
           source: item.source,
-          target: item.target
-        }))
+          target: item.target,
+        })),
       };
 
       G6.registerNode(
@@ -98,9 +129,9 @@ export default {
                 radius: 10,
                 stroke: "#5B8FF9",
                 fill: "#C6E5FF",
-                lineWidth: 3
+                lineWidth: 3,
               },
-              name: "rect-shape"
+              name: "rect-shape",
             });
             if (cfg.name) {
               group.addShape("text", {
@@ -112,18 +143,21 @@ export default {
                   fontSize: 14,
                   textAlign: "center",
                   textBaseline: "middle",
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 },
-                name: "text-shape"
+                name: "text-shape",
               });
             }
             return rect;
-          }
+          },
         },
         "single-node"
       );
 
       const container = document.getElementById("container");
+      console.log(container, "containercontainer");
+      console.log(this.flowChartData, "flowChartData");
+      // debugger;
       const width = container.scrollWidth;
       const height = container.scrollHeight || 500;
       const graph = new G6.Graph({
@@ -132,17 +166,17 @@ export default {
         height,
         layout: {
           type: "dagre",
-          nodesepFunc: d => {
+          nodesepFunc: (d) => {
             if (d.id === "3") {
               return 500;
             }
             return 50;
           },
           ranksep: 70,
-          controlPoints: true
+          controlPoints: true,
         },
         defaultNode: {
-          type: "sql"
+          type: "sql",
         },
         defaultEdge: {
           type: "polyline",
@@ -151,40 +185,25 @@ export default {
             offset: 45,
             endArrow: true,
             lineWidth: 2,
-            stroke: "#C2C8D5"
-          }
+            stroke: "#C2C8D5",
+          },
         },
         nodeStateStyles: {
           selected: {
             stroke: "#d9d9d9",
-            fill: "#5394ef"
-          }
+            fill: "#5394ef",
+          },
         },
         modes: {
-          default: [
-            "drag-canvas",
-            "zoom-canvas",
-            "click-select",
-            {
-              type: "tooltip",
-              formatText(model) {
-                const cfg = model.conf;
-                const text = [];
-                cfg.forEach(row => {
-                  text.push(row.label + ":" + row.value + "<br>");
-                });
-                return text.join("\n");
-              },
-              offset: 30
-            }
-          ]
+          default: ["drag-canvas", "zoom-canvas", "click-select"],
         },
-        fitView: true
+        fitView: true,
       });
       graph.data(data);
+      // debugger;
       graph.render();
-    }
-  }
+    },
+  },
 };
 </script>
 

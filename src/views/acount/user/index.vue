@@ -17,7 +17,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -28,7 +28,7 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
+      style="margin-bottom: 16px"
       @click="handleCreate"
     >
       添加
@@ -111,9 +111,7 @@
           </div>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">
-            取消
-          </el-button>
+          <el-button @click="dialogVisible = false"> 取消 </el-button>
           <el-button type="primary" @click="onSubmit" :loading="buttonLoading">
             确认
           </el-button>
@@ -141,14 +139,14 @@ export default {
       listQuery: {
         page: 1,
         size: 10,
-        keyword: ""
+        keyword: "",
       },
       buttonLoading: false,
       dialogVisible: false,
       checkedList: [],
       editCheckedList: [],
       tenantList: [],
-      temp: {}
+      temp: {},
     };
   },
   created() {
@@ -157,9 +155,9 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      fetchList(this.listQuery).then(response => {
+      fetchList(this.listQuery).then((response) => {
         const {
-          data: { records, total }
+          data: { records, total },
         } = response;
         this.list = records;
         this.total = total;
@@ -169,18 +167,20 @@ export default {
       });
     },
     getCheckedTenantList(accountId) {
-      fetchTenantList({ accountId }).then(response => {
-        this.checkedList = response.data.map(item => item.roleId);
+      fetchTenantList({ accountId }).then((response) => {
+        this.checkedList = response.data.map((item) => item.roleId);
         this.editCheckedList = deepClone(
-          response.data.map(item => item.roleId)
+          response.data.map((item) => item.roleId)
         );
       });
     },
     getTenantList() {
-      roleApi.fetchList({ page: 1, size: 10 }).then(response => {
-        roleApi.fetchList({ page: 1, size: response.data.total }).then(res => {
-          this.tenantList = res.data.records;
-        });
+      roleApi.fetchList({ page: 1, size: 10 }).then((response) => {
+        roleApi
+          .fetchList({ page: 1, size: response.data.total })
+          .then((res) => {
+            this.tenantList = res.data.records;
+          });
       });
     },
     handleDeploy(row) {
@@ -196,48 +196,46 @@ export default {
       this.listQuery = {
         page: 1,
         size: 10,
-        keyword: ""
+        keyword: "",
       };
       this.getList();
     },
     async onSubmit() {
       this.buttonLoading = true;
       let deleteArray = [];
-      this.editCheckedList.forEach(item => {
+      this.editCheckedList.forEach((item) => {
         if (!this.checkedList.includes(item)) {
           deleteArray.push(item);
         }
       });
-      let deleteResult = deleteArray.map(item => ({
+      let deleteResult = deleteArray.map((item) => ({
         roleId: item,
-        accountId: this.temp.accountId
+        accountId: this.temp.accountId,
       }));
 
       deleteResult.length && (await deleteRole(deleteResult));
 
-      const data = this.checkedList.map(item => ({
+      const data = this.checkedList.map((item) => ({
         roleId: item,
-        accountId: this.temp.accountId
+        accountId: this.temp.accountId,
       }));
       deployRole(data).then(() => {
         this.getList();
         this.buttonLoading = false;
         this.dialogVisible = false;
-        this.$notify({
-          title: "成功",
-          message: "配置成功",
+        this.$message({
           type: "success",
-          duration: 2000
+          message: "配置成功!",
         });
       });
     },
     handleCreate() {
       this.$router.push({
         name: "createUser",
-        params: { getList: this.getList }
+        params: { getList: this.getList },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

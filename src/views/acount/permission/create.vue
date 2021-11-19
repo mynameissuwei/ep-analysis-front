@@ -53,7 +53,7 @@ import {
   createList,
   editList,
   fetchSourceList,
-  fetchEditData
+  fetchEditData,
 } from "@/api/permission";
 
 export default {
@@ -72,7 +72,7 @@ export default {
         authName: "",
         authId: "",
         authDesc: "",
-        audit: true
+        audit: true,
       },
       checkStrictly: false,
       submitLoading: false,
@@ -85,13 +85,13 @@ export default {
             min: 1,
             max: 10,
             message: "长度在 1 到 10 个字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             pattern: /^[\u4e00-\u9fa5]+$/,
             message: "只能输入中文字符",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         authId: [
           { required: true, message: "请输入权限编码", trigger: "blur" },
@@ -99,37 +99,37 @@ export default {
             min: 1,
             max: 20,
             message: "长度在 1 到 20 个字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             pattern: /^[5A-Za-z0-9-\_]+$/,
             message: "只能输入英文，数字，下划线，横线",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         authDesc: [
           {
             min: 0,
             max: 100,
             message: "最大长度100字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             pattern: /^[\u4e00-\u9fa5]+$/,
             message: "只能输入中文字符",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       props: {
         label: "resName",
-        children: "children"
-      }
+        children: "children",
+      },
     };
   },
   methods: {
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           const data = {
             ...this.form,
@@ -137,16 +137,14 @@ export default {
             resIdList: this.$refs.tree
               .getCheckedKeys()
               .concat(this.$refs.tree.getHalfCheckedKeys()),
-            authType: "1002"
+            authType: "1002",
           };
           (this.id ? editList(data) : createList(data)).then(() => {
             this.$router.push("/acount/permission");
             this.$store.dispatch("user/changeRoles");
-            this.$notify({
-              title: "成功",
-              message: "创建成功",
+            this.$message({
               type: "success",
-              duration: 2000
+              message: "创建成功!",
             });
           });
         }
@@ -164,7 +162,7 @@ export default {
     },
     getEditData() {
       const id = this.id;
-      fetchEditData(id).then(res => {
+      fetchEditData(id).then((res) => {
         const { authName, authId, authDesc, audit, resIdList } = res.data;
         let status = audit === "1" ? true : false;
 
@@ -172,7 +170,7 @@ export default {
           authName,
           authId,
           authDesc,
-          audit: status
+          audit: status,
         };
         this.checkStrictly = true;
 
@@ -187,8 +185,8 @@ export default {
     async getSourceList() {
       const res = await fetchSourceList();
       this.sourceList = res.data;
-    }
-  }
+    },
+  },
 };
 </script>
 

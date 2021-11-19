@@ -3,7 +3,7 @@
     <div class="app-container createRole-container">
       <el-row :gutter="80">
         <el-col :span="5">
-          <bread-text :name='id ? "编辑角色" : "创建角色" '></bread-text>
+          <bread-text :name="id ? '编辑角色' : '创建角色'"></bread-text>
           <el-form
             ref="dataForm"
             :model="form"
@@ -63,7 +63,9 @@
             <i class="el-icon-edit el-input__icon" slot="suffix"> </i>
             <template slot-scope="{ item }">
               <div class="name">
-                <span class="accountText" style="margin-right: 15px">用户ID: {{ item.accountId }}</span>
+                <span class="accountText" style="margin-right: 15px"
+                  >用户ID: {{ item.accountId }}</span
+                >
                 <span>用户名称: {{ item.nickname }}</span>
               </div>
             </template>
@@ -112,7 +114,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 import BreadText from "@/components/Breadtext";
 import { fetchList } from "@/api/permission";
 import * as userApi from "@/api/user";
@@ -123,16 +125,14 @@ import {
   updateList,
   createUserole,
   createAuthRole,
-  deleteAuthRole
+  deleteAuthRole,
 } from "@/api/role";
 import deepClone from "@/utils/deep-clone";
 
 export default {
   props: ["id"],
   computed: {
-    ...mapGetters([
-      'buttonLoading',
-    ]),
+    ...mapGetters(["buttonLoading"]),
   },
   components: { BreadText },
   data() {
@@ -141,7 +141,7 @@ export default {
         roleName: "",
         roleId: "",
         roleDesc: "",
-        status: false
+        status: false,
       },
       editUserList: [],
       permissionList: [],
@@ -158,7 +158,7 @@ export default {
             min: 1,
             max: 10,
             message: "长度在 1 到 10 个字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           // {
           //   pattern: /^[\u4e00-\u9fa5]+$/,
@@ -178,23 +178,23 @@ export default {
             pattern: /^[5A-Za-z0-9-\_]+$/,
             // message: "只能输入英文字符和下划线",
             message: "只能输入英文，数字，下划线，横线",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         roleDesc: [
           {
             min: 0,
             max: 100,
             message: "最大长度100字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           // {
           //   pattern: /^[\u4e00-\u9fa5]+$/,
           //   message: "只能输入中文字符",
           //   trigger: "blur"
           // }
-        ]
-      }
+        ],
+      },
     };
   },
   created() {
@@ -205,7 +205,7 @@ export default {
         roleName,
         roleId,
         roleDesc,
-        status: status ? true : false
+        status: status ? true : false,
       };
       this.getEditRoleUser();
     }
@@ -218,32 +218,34 @@ export default {
       this.$router.push("/acount/role");
     },
     onSubmit() {
-      this.$refs["dataForm"].validate(async valid => {
+      this.$refs["dataForm"].validate(async (valid) => {
         console.log(this.editUserList, this.userList, "userList");
         let deleteArray = [];
-        this.editUserList.forEach(item => {
-          if (!this.userList.find(l => l.accountId === item.accountId)) {
+        this.editUserList.forEach((item) => {
+          if (!this.userList.find((l) => l.accountId === item.accountId)) {
             deleteArray.push(item);
           }
         });
-        let deleteResult = deleteArray.map(item => ({
+        let deleteResult = deleteArray.map((item) => ({
           accountId: item.accountId,
-          roleId: this.form.roleId
+          roleId: this.form.roleId,
         }));
         if (valid) {
           const data = {
             ...this.form,
             roleType: "1001",
-            status: this.form.status ? 1 : 0
+            status: this.form.status ? 1 : 0,
           };
-          this.$store.dispatch('loading/setLoading')
-          const userResult = this.userList.map(item => ({
+          this.$store.dispatch("loading/setLoading");
+          const userResult = this.userList.map((item) => ({
             accountId: item.accountId,
-            roleId: this.form.roleId
+            roleId: this.form.roleId,
           }));
           const authResult = {
             roleId: this.form.roleId,
-            authIds: this.multipleSelection.map(item => item.authId).join(",")
+            authIds: this.multipleSelection
+              .map((item) => item.authId)
+              .join(","),
           };
 
           this.id ? await updateList(data) : await createList(data);
@@ -251,15 +253,13 @@ export default {
 
           await Promise.all([
             createUserole(userResult),
-            createAuthRole(authResult)
-          ]).then(result => {
-            this.$store.dispatch('loading/cancelLoading')
+            createAuthRole(authResult),
+          ]).then((result) => {
+            this.$store.dispatch("loading/cancelLoading");
             this.$router.push("/acount/role");
-            this.$notify({
-              title: "成功",
-              message: "创建成功",
+            this.$message({
               type: "success",
-              duration: 2000
+              message: "创建成功!",
             });
           });
         }
@@ -289,8 +289,8 @@ export default {
       this.$refs[tablename].clearSelection();
       if (selectRows.length > 0) {
         this.$nextTick(() => {
-          totalRows.forEach(row => {
-            selectRows.forEach(item => {
+          totalRows.forEach((row) => {
+            selectRows.forEach((item) => {
               //判断条件
               if (item.authId == row.authId) {
                 this.$refs[tablename].toggleRowSelection(row);
@@ -305,13 +305,13 @@ export default {
       const total = response.data.total;
       const res = await userApi.fetchList({
         page: 1,
-        size: total
+        size: total,
       });
       this.roleUserData = res.data.records;
     },
     getEditRoleUser() {
       const id = this.id;
-      fetchRoleUser({ roleId: id }).then(res => {
+      fetchRoleUser({ roleId: id }).then((res) => {
         this.editUserList = deepClone(res.data);
         this.userList = res.data;
       });
@@ -332,11 +332,14 @@ export default {
       }, 3000 * Math.random());
     },
     createStateFilter(queryString) {
-      return item => {
-        console.log(item.nickname,item.accountId,'itemitme')
+      return (item) => {
+        console.log(item.nickname, item.accountId, "itemitme");
         if (item.nickname && item.accountId) {
           return (
-            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) != -1 || item.accountId.toLowerCase().indexOf(queryString.toLowerCase()) != -1
+            item.nickname.toLowerCase().indexOf(queryString.toLowerCase()) !=
+              -1 ||
+            item.accountId.toLowerCase().indexOf(queryString.toLowerCase()) !=
+              -1
           );
         } else {
           return false;
@@ -352,8 +355,8 @@ export default {
       let array = this.userList;
       array.splice(index, 1);
       this.userList = array;
-    }
-  }
+    },
+  },
 };
 </script>
 

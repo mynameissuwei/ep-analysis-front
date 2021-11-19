@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" style=" width:100%; height: 316px;" />
+  <div :id="id" style="width: 100%; height: 316px" />
 </template>
 
 <script>
@@ -10,19 +10,19 @@ export default {
   mixins: [resize],
   props: {
     text: {
-      type: String
+      type: String,
     },
     execSqlToList: {
-      type: Object
+      type: Object,
     },
     id: {
       type: String,
-      default: "chart"
-    }
+      default: "chart",
+    },
   },
   data() {
     return {
-      chart: null
+      chart: null,
     };
   },
   mounted() {
@@ -48,8 +48,8 @@ export default {
           this.initChart();
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     initChart() {
@@ -58,29 +58,28 @@ export default {
     },
     getOption() {
       const { xAxis, yAxis } = this.execSqlToList;
-
       return {
         title: {
-          text: this.text
+          text: this.text,
         },
         xAxis: {
           type: "category",
-          data: xAxis
+          data: xAxis,
         },
         yAxis: {
-          type: "value"
+          type: "value",
         },
         series: [
           {
             data: yAxis,
             type: "bar",
             barWidth: "40%",
-            color: "#558CFF"
-          }
-        ]
+            color: "#558CFF",
+          },
+        ],
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

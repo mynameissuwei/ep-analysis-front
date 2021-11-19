@@ -85,27 +85,25 @@ export default {
       listQuery: {
         page: 1,
         size: 10,
-        keyword: ""
+        keyword: "",
       },
       restaurants: [],
       state: "",
-      timeout: null
+      timeout: null,
     };
   },
 
   methods: {
     onSubmit() {
-      const data = this.list.map(item => item.accountId);
+      const data = this.list.map((item) => item.accountId);
       createList({
-        accountIds: data
+        accountIds: data,
       }).then(() => {
         this.$router.push("/acount/user");
         this.$route.params.getList();
-        this.$notify({
-          title: "成功",
-          message: "创建成功",
+        this.$message({
           type: "success",
-          duration: 2000
+          message: "创建成功!",
         });
       });
     },
@@ -113,9 +111,9 @@ export default {
       this.$router.push("/acount/user");
     },
     loadAll() {
-      fetchCenterList(this.listQuery).then(response => {
+      fetchCenterList(this.listQuery).then((response) => {
         const {
-          data: { records }
+          data: { records },
         } = response;
         this.restaurants = records;
       });
@@ -132,7 +130,7 @@ export default {
       }, 3000 * Math.random());
     },
     createStateFilter(queryString) {
-      return state => {
+      return (state) => {
         return (
           state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
         );
@@ -147,11 +145,11 @@ export default {
       let array = this.list;
       array.splice(index, 1);
       this.list = array;
-    }
+    },
   },
   mounted() {
     this.loadAll();
-  }
+  },
 };
 </script>
 

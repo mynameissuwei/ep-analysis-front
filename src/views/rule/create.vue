@@ -32,8 +32,8 @@
           >配置</span
         >
         <span v-else>
-          <span @click="isSelected = false" class="actionStyle ">保存</span>
-          <span @click="isSelected = false" class="actionStyle ">取消</span>
+          <span @click="isSelected = false" class="actionStyle">保存</span>
+          <span @click="isSelected = false" class="actionStyle">取消</span>
         </span>
         <div class="title">模板节点</div>
       </div>
@@ -119,7 +119,7 @@ export default {
       isSelected: false,
       value: 0,
       rangeNumber: rangeNumber(),
-      tableData: []
+      tableData: [],
     };
   },
   created() {
@@ -131,15 +131,15 @@ export default {
       fetchTimeConfig({
         condition: {
           appKey,
-          procDefKey
-        }
-      }).then(res => {
+          procDefKey,
+        },
+      }).then((res) => {
         this.data = res.data;
         this.value = res.data.procOverTime;
         this.radio = Number(res.data.configType);
 
         let tableData = JSON.parse(res.data.taskOverConfig);
-        this.tableData = tableData.map(v => {
+        this.tableData = tableData.map((v) => {
           this.$set(v, "edit", false);
           v.originalTitle = v.overTime;
           return v;
@@ -163,19 +163,17 @@ export default {
         ...this.$route.query,
         configType: this.radio,
         procOverTime: this.value,
-        taskOverConfig: JSON.stringify(this.tableData)
+        taskOverConfig: JSON.stringify(this.tableData),
       };
       postTimeConfig(data).then(() => {
         this.$router.push("/rule/index");
-        this.$notify({
-          title: "成功",
-          message: "成功",
+        this.$message({
           type: "success",
-          duration: 2000
+          message: "成功!",
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

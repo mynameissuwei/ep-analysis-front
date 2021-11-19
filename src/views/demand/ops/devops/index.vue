@@ -18,11 +18,17 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <card-container>
-          <pie-chart id="opsPie" :data="opsPieData" height="316px" />
+          <pie-chart
+            id="opsPie"
+            :data="opsPieData"
+            height="316px"
+            v-if="opsPieData.length"
+          />
+          <el-empty v-else style="height: 316px"></el-empty>
         </card-container>
       </el-col>
       <el-col :span="16">
-        <el-card class="box-card" style="height:314px">
+        <el-card class="box-card" style="height: 314px">
           <div class="bar-container">
             <el-tabs v-model="paneValue" @tab-click="tabChange">
               <el-tab-pane
@@ -71,7 +77,7 @@ export default {
       panes: [
         { label: "本周", key: "day" },
         { label: "本月", key: "month" },
-        { label: "本年", key: "year" }
+        { label: "本年", key: "year" },
       ],
       addPng,
       finishTimePng,
@@ -79,7 +85,7 @@ export default {
       orderCnt,
       totalPassTime,
       getDuration,
-      toPercent
+      toPercent,
     };
   },
   created() {
@@ -96,10 +102,10 @@ export default {
       let leftData = await this.getEchartData("fnwTodayIncMap");
       let data = {
         ...rightData,
-        ...leftData
+        ...leftData,
       };
 
-      let changeData = Object.keys(data).map(item =>
+      let changeData = Object.keys(data).map((item) =>
         this.changeRightMap(item, data)
       );
 
@@ -108,8 +114,8 @@ export default {
     async getEchartData(sqlKey) {
       const { data } = await fetchExecSqlToMap({
         condition: {
-          sqlKey
-        }
+          sqlKey,
+        },
       });
       return data;
     },
@@ -117,27 +123,27 @@ export default {
       const { data } = await fetchExecSqlToList({
         condition: {
           extParam: {
-            target: panValue
+            target: panValue,
           },
-          sqlKey: "orderIncTrendList"
-        }
+          sqlKey: "orderIncTrendList",
+        },
       });
-      let xAxis = data.map(item => item.dayTime);
-      let yAxis = data.map(item => item.num);
+      let xAxis = data.map((item) => item.dayTime);
+      let yAxis = data.map((item) => item.num);
       this.execSqlToList = {
         xAxis,
-        yAxis
+        yAxis,
       };
     },
     async getPieData() {
       const { data } = await fetchExecSqlToList({
         condition: {
-          sqlKey: "procTypePieList"
-        }
+          sqlKey: "procTypePieList",
+        },
       });
-      this.opsPieData = data.map(item => ({
+      this.opsPieData = data.map((item) => ({
         value: item.cnt,
-        name: item.type
+        name: item.type,
       }));
     },
     changeRightMap(value, data) {
@@ -147,42 +153,42 @@ export default {
             num: data[value],
             imgName: this.addPng,
             text: "今日新增",
-            className: "cnt"
+            className: "cnt",
           };
         case "finishTime":
           return {
             num: this.getDuration(data[value]),
             imgName: this.finishTimePng,
             text: "平均完成时间",
-            className: "finishTime"
+            className: "finishTime",
           };
         case "responseTime":
           return {
             num: this.getDuration(data[value]),
             imgName: this.responseTime,
             text: "平均响应时间",
-            className: "responseTime"
+            className: "responseTime",
           };
         case "orderCnt":
           return {
             num: data[value],
             imgName: this.orderCnt,
             text: "工单总数",
-            className: "orderCnt"
+            className: "orderCnt",
           };
         case "totalPassTime":
           return {
             num: this.getDuration(data[value]),
             imgName: this.totalPassTime,
             text: "处理总耗时",
-            className: "cnt"
+            className: "cnt",
           };
         case "sum(fault_time)":
           return {
             num: this.toPercent(data[value]),
             imgName: this.finishTimePng,
             text: "工单完结率",
-            className: "finishTime"
+            className: "finishTime",
           };
         default:
           return {};
@@ -190,8 +196,8 @@ export default {
     },
     tabChange(value) {
       this.getExecSqlToList(value.name);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -210,7 +216,6 @@ export default {
 .ops-card {
   width: 100%;
   height: 92px;
-  border: 1px solid black;
   position: relative;
   border-radius: 2px;
   // display: inline-block;

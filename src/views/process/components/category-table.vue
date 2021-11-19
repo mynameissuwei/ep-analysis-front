@@ -3,7 +3,7 @@
     <bread-text name="类别分析明细" />
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="按部门" name="section">
-        <el-row class="filter-container" style="margin-top:10px">
+        <el-row class="filter-container" style="margin-top: 10px">
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
@@ -53,7 +53,7 @@
               </el-button>
               <el-button
                 size="small"
-                style="margin-left: 10px;"
+                style="margin-left: 10px"
                 @click="handleReset"
               >
                 重置
@@ -70,6 +70,8 @@
           loading
         >
           <el-table-column prop="orgName" label="部门名称" width="180" />
+          <el-table-column prop="procDefNum" label="模版总数" sortable />
+          <el-table-column prop="totalCnt" label="流程总数" sortable />
           <el-table-column
             prop="overRatio"
             label="平均超时率"
@@ -80,23 +82,26 @@
               {{ toPercent(scope.row.overRatio) }}
             </template>
           </el-table-column>
+          <el-table-column prop="finishRatio" label="完成率" sortable>
+            <template slot-scope="scope">
+              {{ toPercent(scope.row.finishRatio) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="partNum" label="审批总人数" sortable />
           <el-table-column prop="personPassTime" label="人均耗时" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.personPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="procDefNum" label="模版总数" sortable />
-          <el-table-column label="平均超时" sortable>
-            <template slot-scope="scope">
-              {{ getDuration(scope.row.processOverTime) }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="totalCnt" label="流程总数" sortable />
           <el-table-column prop="totalOverTime" label="超时总长" sortable />
           <el-table-column prop="totalPassTime" label="耗时总长" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column label="平均超时" sortable>
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.processOverTime) }}
             </template>
           </el-table-column>
         </el-table>
@@ -109,7 +114,7 @@
         />
       </el-tab-pane>
       <el-tab-pane label="按类别" name="category">
-        <el-row class="filter-container" style="margin-top:10px">
+        <el-row class="filter-container" style="margin-top: 10px">
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
@@ -178,7 +183,7 @@
               </el-button>
               <el-button
                 size="small"
-                style="margin-left: 10px;"
+                style="margin-left: 10px"
                 @click="handleReset"
               >
                 重置
@@ -279,8 +284,8 @@ export default {
         orgCode: undefined,
         appKey: undefined,
         startTime: null,
-        endTime: null
-      }
+        endTime: null,
+      },
     };
   },
   created() {
@@ -291,7 +296,7 @@ export default {
 
   methods: {
     handleClick() {
-      this.dateValue = []
+      this.dateValue = [];
       this.getList();
     },
     async getList() {
@@ -314,9 +319,9 @@ export default {
               ? moment(parseInt(this.listQuery.endTime)).format(
                   "YYYY-MM-DD HH:mm:ss"
                 )
-              : this.listQuery.endTime
-          }
-        }
+              : this.listQuery.endTime,
+          },
+        },
       });
       this.total = totalCount;
       this.list = data;
@@ -350,12 +355,12 @@ export default {
         orgCode: undefined,
         appKey: undefined,
         startTime: null,
-        endTime: null
+        endTime: null,
       };
       this.dateValue = [];
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>
 

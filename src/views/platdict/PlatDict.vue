@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row class="filter-container" style="margin-top:10px">
+    <el-row class="filter-container" style="margin-top: 10px">
       <!-- left search -->
       <el-col :span="18">
         <el-row :gutter="20">
@@ -20,7 +20,7 @@
                   <el-option
                     v-for="item in [
                       { name: '已计算', value: 1 },
-                      { name: '未计算', value: 0 }
+                      { name: '未计算', value: 0 },
                     ]"
                     :key="item.value"
                     :label="item.name"
@@ -58,7 +58,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -69,7 +69,7 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
+      style="margin-bottom: 16px"
       @click="handleCreate"
     >
       添加
@@ -77,7 +77,7 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
+      style="margin-bottom: 16px"
       :disabled="!multipleSelection.length"
       @click="handleCheckBoxDelete"
     >
@@ -104,9 +104,7 @@
       <el-table-column prop="updateTime" label="创建时间" />
       <el-table-column label="操作" width="230">
         <template slot-scope="{ row, $index }">
-          <span class="actionStyle" @click="handleUpdate(row)">
-            编辑
-          </span>
+          <span class="actionStyle" @click="handleUpdate(row)"> 编辑 </span>
           <span class="actionStyle" @click="handleDelete(row, $index)">
             删除
           </span>
@@ -131,7 +129,7 @@
         :model="temp"
         label-position="left"
         label-width="80px"
-        style="width: 400px; margin-left:50px;"
+        style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="名称" prop="name">
           <el-input v-model="temp.name" placeholder="请输入名称" />
@@ -154,9 +152,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">
-          取消
-        </el-button>
+        <el-button @click="dialogVisible = false"> 取消 </el-button>
         <el-button
           type="primary"
           @click="createData()"
@@ -170,7 +166,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 import Pagination from "@/components/Pagination";
 import { fetchList, createList, deleteList } from "@/api/dashboard";
 import FilterItem from "@/components/FilterItem";
@@ -178,9 +174,7 @@ import FilterItem from "@/components/FilterItem";
 export default {
   props: ["type"],
   computed: {
-    ...mapGetters([
-      'buttonLoading',
-    ]),
+    ...mapGetters(["buttonLoading"]),
   },
   components: { Pagination, FilterItem },
   created() {
@@ -196,7 +190,7 @@ export default {
         name: "",
         definition: "",
         type: 0,
-        formula: ""
+        formula: "",
       },
       dialogStatus: "create",
       dialogVisible: false,
@@ -206,12 +200,12 @@ export default {
         name: "",
         calcStatus: "",
         startTime: null,
-        endTime: null
+        endTime: null,
       },
       multipleSelection: [],
       tabMapOptions: [
         { label: "指标", key: "indicator" },
-        { label: "非指标", key: "other" }
+        { label: "非指标", key: "other" },
       ],
       activeName: "indicator",
       pickerOptions: {
@@ -223,7 +217,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "最近一周",
@@ -232,7 +226,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "最近一个月",
@@ -241,7 +235,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            }
+            },
           },
           {
             text: "最近三个月",
@@ -250,9 +244,9 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       rules: {
         name: [
@@ -261,13 +255,13 @@ export default {
             min: 1,
             max: 10,
             message: "长度在 1 到 10 个字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
             message: "只能输入中文和字母",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         definition: [
           { required: true, message: "请输入定义", trigger: "change" },
@@ -275,8 +269,8 @@ export default {
             min: 1,
             max: 200,
             message: "长度在 1 到 200 个字符",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         formula: [
           { required: true, message: "请输入计算公式", trigger: "change" },
@@ -284,10 +278,10 @@ export default {
             min: 1,
             max: 100,
             message: "长度在 1 到 100 个字符",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -297,8 +291,8 @@ export default {
         ...this.listQuery,
         type: this.type === "0" ? 0 : 1,
         startTime: this.listQuery.startTime,
-        endTime: this.listQuery.endTime
-      }).then(response => {
+        endTime: this.listQuery.endTime,
+      }).then((response) => {
         this.list = response.data.records;
         this.total = response.data.total;
         setTimeout(() => {
@@ -323,7 +317,7 @@ export default {
       this.listQuery = {
         page: 1,
         size: 10,
-        name: ""
+        name: "",
       };
       this.dateValue = [];
       this.multipleSelection = [];
@@ -336,21 +330,21 @@ export default {
       this.$confirm("你确定要删除该数据？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(async () => {
-        const auIdarray = this.multipleSelection.map(item => item.id);
+        const auIdarray = this.multipleSelection.map((item) => item.id);
         await deleteList(auIdarray);
         await this.getList();
         this.$message({
           type: "success",
-          message: "删除成功!"
+          message: "删除成功!",
         });
       });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
-          this.$store.dispatch('loading/setLoading')
+          this.$store.dispatch("loading/setLoading");
           createList(this.temp).then(() => {
             this.listQuery = {
               page: 1,
@@ -358,16 +352,14 @@ export default {
               name: "",
               calcStatus: "",
               startTime: null,
-              endTime: null
+              endTime: null,
             };
             this.getList();
-            this.$store.dispatch('loading/cancelLoading')
+            this.$store.dispatch("loading/cancelLoading");
             this.dialogVisible = false;
-            this.$notify({
-              title: "成功",
-              message: "创建成功",
+            this.$message({
               type: "success",
-              duration: 2000
+              message: "创建成功!",
             });
           });
         }
@@ -380,11 +372,11 @@ export default {
         name: "",
         definition: "",
         type: 0,
-        formula: ""
+        formula: "",
       };
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+        this.$refs["dataForm"].clearValidate();
+      });
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row);
@@ -398,17 +390,17 @@ export default {
       this.$confirm("你确定要删除该数据？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(async () => {
         const res = await deleteList([row.id]);
         this.getList();
         this.$message({
           type: "success",
-          message: "删除成功!"
+          message: "删除成功!",
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
