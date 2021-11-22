@@ -36,7 +36,7 @@
                           v-for="item in [
                             { value: 0, name: '已阅' },
                             { value: 1, name: '未阅' },
-                            { value: undefined, name: '全部' }
+                            { value: undefined, name: '全部' },
                           ]"
                           :key="item.value"
                           :label="item.name"
@@ -60,7 +60,7 @@
                 </el-button>
                 <el-button
                   size="small"
-                  style="margin-left: 10px;color:rgb(64, 158, 255)"
+                  style="margin-left: 10px; color: rgb(64, 158, 255)"
                   @click="handleReset('message')"
                 >
                   重置
@@ -120,7 +120,7 @@
                           v-for="item in [
                             { value: 0, name: '待办' },
                             { value: 1, name: '已办' },
-                            { value: undefined, name: '全部' }
+                            { value: undefined, name: '全部' },
                           ]"
                           :key="item.value"
                           :label="item.name"
@@ -144,7 +144,7 @@
                 </el-button>
                 <el-button
                   size="small"
-                  style="margin-left: 10px;color:rgb(64, 158, 255)"
+                  style="margin-left: 10px; color: rgb(64, 158, 255)"
                   @click="handleReset('matter')"
                 >
                   重置
@@ -194,8 +194,8 @@
           <!--          </div>-->
           <div class="text-container">
             <!-- <router-link :to="{ name: 'createUser' }"> -->
-              <svg-icon icon-class="password" fill="#0F55FA" />
-              <div>添加用户</div>
+            <svg-icon icon-class="password" fill="#0F55FA" />
+            <div>添加用户</div>
             <!-- </router-link> -->
           </div>
         </el-card>
@@ -207,12 +207,10 @@
           </div>
           <el-row :gutter="20">
             <el-col :span="12">
-              <div class="process-container">
-                模板视图
-              </div>
+              <div class="process-container">模板视图</div>
               <el-table
                 :data="temTemplate"
-                style="width: 100%; margin-top:20px"
+                style="width: 100%; margin-top: 20px"
                 :show-header="false"
               >
                 <el-table-column prop="viewName" label="viewName">
@@ -237,12 +235,10 @@
               </el-table>
             </el-col>
             <el-col :span="12">
-              <div class="process-container">
-                流程视图
-              </div>
+              <div class="process-container">流程视图</div>
               <el-table
                 :data="processTemplate"
-                style="width: 100%; margin-top:20px"
+                style="width: 100%; margin-top: 20px"
                 :show-header="false"
               >
                 <el-table-column prop="viewName" label="viewName">
@@ -290,18 +286,18 @@ export default {
         pageNum: 1,
         pageSize: 5,
         processed: undefined,
-        noticeTitle: undefined
+        noticeTitle: undefined,
       },
       matterList: null,
       matterListLoading: true,
       matterListQuery: {
         pageNum: 1,
         pageSize: 5,
-        processed: undefined
+        processed: undefined,
       },
       matterTotal: 0,
       processTemplate: [],
-      temTemplate: []
+      temTemplate: [],
     };
   },
   created() {
@@ -316,12 +312,12 @@ export default {
         noticeType: 1,
         systemType: 1,
         tenantId: this.$store.state.user.tenantId,
-        userId: this.$store.state.user.userId
+        userId: this.$store.state.user.userId,
       };
       this.messageListLoading = true;
       const { data, totalCount } = await fetchList({
         ...this.messageListQuery,
-        ...params
+        ...params,
       });
       this.messageTotal = totalCount;
       this.messageList = data;
@@ -332,12 +328,12 @@ export default {
         noticeType: 2,
         systemType: 1,
         tenantId: this.$store.state.user.tenantId,
-        userId: this.$store.state.user.userId
+        userId: this.$store.state.user.userId,
       };
       this.matterListLoading = true;
       const { data, totalCount } = await fetchList({
         ...this.matterListQuery,
-        ...params
+        ...params,
       });
       this.matterTotal = totalCount;
       this.matterList = data;
@@ -346,7 +342,9 @@ export default {
     async getTemplate(type) {
       let data = await fetchTemplate({
         viewType: type,
-        limit: 5
+        limit: 5,
+        tenantId: this.$store.state.user.tenantId,
+        userId: this.$store.state.user.userId,
       });
       if (type === "process") {
         this.processTemplate = data.data;
@@ -358,12 +356,12 @@ export default {
       if (type === "template") {
         this.$router.push({
           name: "templateTable",
-          params: row
+          params: row,
         });
       } else {
         this.$router.push({
           name: "processTable",
-          params: row
+          params: row,
         });
       }
     },
@@ -371,13 +369,13 @@ export default {
       this.$confirm("确定要删除该视图吗？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(async () => {
         await deleteView(row.id);
         await this.getTemplate(type);
         this.$message({
           type: "success",
-          message: "删除成功!"
+          message: "删除成功!",
         });
       });
     },
@@ -394,26 +392,26 @@ export default {
           pageNum: 1,
           pageSize: 5,
           processed: undefined,
-          noticeTitle: undefined
+          noticeTitle: undefined,
         };
         this.getMessageList({
           noticeType: 1,
-          systemType: 1
+          systemType: 1,
         });
       } else {
         this.matterListQuery = {
           pageNum: 1,
           pageSize: 5,
-          processed: undefined
+          processed: undefined,
         };
         this.getMatterList({
           noticeType: 2,
-          systemType: 1
+          systemType: 1,
         });
       }
     },
-    handleEdit() {}
-  }
+    handleEdit() {},
+  },
 };
 </script>
 

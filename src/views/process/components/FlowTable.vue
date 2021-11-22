@@ -251,6 +251,8 @@ export default {
       let param = {
         viewName: this.form.name,
         viewType: "process",
+        tenantId: this.$store.state.user.tenantId,
+        userId: this.$store.state.user.userId,
         definitionList: [
           {
             paramName: "createOrgCode",

@@ -59,15 +59,13 @@
       <!-- right button -->
       <el-col :span="6">
         <div style="float: right">
-          <el-button type="primary" @click="handleSearch">
-            查询
-          </el-button>
-          <el-button style="margin-left: 10px;" @click="handleReset">
+          <el-button type="primary" @click="handleSearch"> 查询 </el-button>
+          <el-button style="margin-left: 10px" @click="handleReset">
             重置
           </el-button>
           <el-button
             icon="el-icon-circle-plus"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="open()"
           >
             保存为快捷视图
@@ -86,11 +84,11 @@
       <el-table-column label="模版类别">
         <template slot-scope="scope">
           <span
-            style="color: #0F55FA; cursor: pointer"
+            style="color: #0f55fa; cursor: pointer"
             @click="
               textClick({
                 source: scope.row.source,
-                procDefKey: scope.row.procDefKey
+                procDefKey: scope.row.procDefKey,
               })
             "
             >{{ scope.row.appName }}</span
@@ -148,19 +146,15 @@
         :model="form"
         label-position="left"
         label-width="150px"
-        style="width: 400px; margin-left:50px;"
+        style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="视图名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="confirm()">
-          确认
-        </el-button>
-        <el-button @click="close()">
-          取消
-        </el-button>
+        <el-button type="primary" @click="confirm()"> 确认 </el-button>
+        <el-button @click="close()"> 取消 </el-button>
       </div>
     </el-dialog>
   </div>
@@ -193,7 +187,7 @@ export default {
         pageSize: 10,
         orgCode: undefined,
         appKey: undefined,
-        procDefName: undefined
+        procDefName: undefined,
       },
       value: 0,
       selectDepartmentData: [],
@@ -207,18 +201,18 @@ export default {
             min: 1,
             max: 20,
             message: "长度在 1 到 20 个字符",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             pattern: /^[a-zA-Z0-9\u4e00-\u9fa5()（）]+$/,
             message: "只能输入汉字、数字、字母、括号",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       form: {
-        name: ""
-      }
+        name: "",
+      },
     };
   },
   created() {
@@ -234,12 +228,12 @@ export default {
           extParam: {
             createOrgCode: this.listQuery.orgCode,
             appKey: this.listQuery.appKey,
-            procDefName: this.listQuery.procDefName
+            procDefName: this.listQuery.procDefName,
           },
           pageNo: this.listQuery.pageNo,
           pageSize: this.listQuery.pageSize,
-          sqlKey: "procDefDetailPage"
-        }
+          sqlKey: "procDefDetailPage",
+        },
       });
       this.total = totalCount;
       console.log(data, "listData");
@@ -263,7 +257,7 @@ export default {
         pageSize: 10,
         orgCode: undefined,
         appKey: undefined,
-        procDefName: undefined
+        procDefName: undefined,
       };
       this.getList();
     },
@@ -271,13 +265,13 @@ export default {
     overTimeDeploy(row) {
       this.$router.push({
         name: "createRule",
-        params: { id: row.procDefKey }
+        params: { id: row.procDefKey },
       });
     },
     textClick(query) {
       this.$router.push({
         name: "moduleFlow",
-        query
+        query,
       });
     },
     close() {
@@ -293,36 +287,38 @@ export default {
       let param = {
         viewName: this.form.name,
         viewType: "template",
+        tenantId: this.$store.state.user.tenantId,
+        userId: this.$store.state.user.userId,
         definitionList: [
           {
             paramName: "orgCode",
-            paramValue: this.listQuery.orgCode
+            paramValue: this.listQuery.orgCode,
           },
           {
             paramName: "appKey",
-            paramValue: this.listQuery.appKey
+            paramValue: this.listQuery.appKey,
           },
           {
             paramName: "procDefName",
-            paramValue: this.listQuery.procDefName
-          }
-        ]
+            paramValue: this.listQuery.procDefName,
+          },
+        ],
       };
       await addQuickView(param);
       this.$message({
         type: "success",
-        message: "创建成功!"
+        message: "创建成功!",
       });
     },
     validateAndSubmit() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.close();
           this.addView();
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
