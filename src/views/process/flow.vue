@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="12">
-        <el-card class="box-card" style="height:314px">
+        <el-card class="box-card" style="height: 314px">
           <div class="bar-container">
             <el-tabs v-model="paneValue" @tab-click="tabChange">
               <el-tab-pane
@@ -24,25 +24,13 @@
       <el-col :span="12">
         <el-row :gutter="20" class="right-card">
           <el-col :span="8" :offset="0">
-            <yellow-svg
-              start-color="#FFFFFF"
-              end-color="#5599FF"
-              :count="execSqlToMap.todayNum"
-              text="今日添加"
-            />
+            <blue-svg :count="execSqlToMap.todayNum" text="今日添加" />
           </el-col>
           <el-col :span="8" :offset="0">
-            <yellow-svg
-              start-color="#FFB64B"
-              end-color="#FF972A"
-              :count="execSqlToMap.total"
-              text="流程总数"
-            />
+            <blue-svg :count="execSqlToMap.total" text="流程总数" />
           </el-col>
           <el-col :span="8" :offset="0">
-            <yellow-svg
-              start-color="#8FB4FF"
-              end-color="#6D78FD"
+            <blue-svg
               :count="`${execSqlToMap.finishRatio}%`"
               text="总体完成率"
             />
@@ -57,12 +45,21 @@
 <script>
 import { fetchExecSqlToList, fetchExecSqlToMap } from "@/api/flow";
 import BarChart from "./components/BarChart";
+import PurpleSvg from "./components/PurpleSvg";
 import YellowSvg from "./components/YellowSvg";
+import BlueSvg from "./components/BlueSvg";
 import FlowTable from "./components/FlowTable";
 import Pagination from "@/components/Pagination";
 
 export default {
-  components: { Pagination, BarChart, YellowSvg, FlowTable },
+  components: {
+    Pagination,
+    BarChart,
+    BlueSvg,
+    YellowSvg,
+    PurpleSvg,
+    FlowTable,
+  },
   data() {
     return {
       execSqlToMap: {},
@@ -70,9 +67,9 @@ export default {
       panes: [
         { label: "本周", key: "day" },
         { label: "本月", key: "month" },
-        { label: "本年", key: "year" }
+        { label: "本年", key: "year" },
       ],
-      paneValue: "day"
+      paneValue: "day",
     };
   },
   created() {
@@ -87,29 +84,29 @@ export default {
       const { data } = await fetchExecSqlToList({
         condition: {
           extParam: {
-            target: panValue
+            target: panValue,
           },
-          sqlKey: "procIncrList"
-        }
+          sqlKey: "procIncrList",
+        },
       });
-      let xAxis = data.map(item => item.dayTime);
-      let yAxis = data.map(item => item.num);
+      let xAxis = data.map((item) => item.dayTime);
+      let yAxis = data.map((item) => item.num);
 
       this.execSqlToList = {
         xAxis,
-        yAxis
+        yAxis,
       };
     },
     async getExecSqlToMap() {
       const { data } = await fetchExecSqlToMap({
-        condition: { sqlKey: "procOtherMap" }
+        condition: { sqlKey: "procOtherMap" },
       });
       this.execSqlToMap = data;
     },
     tabChange(value) {
       this.getExecSqlToList(value.name);
-    }
-  }
+    },
+  },
 };
 </script>
 

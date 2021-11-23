@@ -47,7 +47,8 @@
             <el-date-picker
               v-model="dateValue"
               type="datetimerange"
-              value-format="yyyy-MM-dd hh:mm:ss"              range-separator="至"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               @change="datePick"
@@ -63,7 +64,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -132,7 +133,7 @@
 import {
   fetchRepairsList,
   fetchRepairsDevice,
-  fetchRepairsFac
+  fetchRepairsFac,
 } from "@/api/task";
 
 import BreadText from "@/components/Breadtext";
@@ -153,11 +154,11 @@ export default {
         deviceName: "",
         factoryName: "",
         startTime: null,
-        endTime: null
+        endTime: null,
       },
       alertFac: [],
       alertDevice: [],
-      dateValue: []
+      dateValue: [],
     };
   },
   created() {
@@ -171,7 +172,7 @@ export default {
       const { data, totalCount } = await fetchRepairsList(
         {
           page: this.listQueryBody.page,
-          size: this.listQueryBody.size
+          size: this.listQueryBody.size,
         },
         this.listQueryBody
       );
@@ -180,13 +181,13 @@ export default {
       this.listLoading = false;
     },
     getAlertFac() {
-      fetchRepairsFac().then(res => {
+      fetchRepairsFac().then((res) => {
         const { data } = res;
         this.alertFac = data;
       });
     },
     getAlertDevice() {
-      fetchRepairsDevice().then(res => {
+      fetchRepairsDevice().then((res) => {
         const { data } = res;
         this.alertDevice = data;
       });
@@ -211,11 +212,11 @@ export default {
         deviceName: "",
         factoryName: "",
         startTime: null,
-        endTime: null
+        endTime: null,
       };
       this.dateValue = [];
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>

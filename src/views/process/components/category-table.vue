@@ -33,7 +33,7 @@
                     <el-date-picker
                       v-model="dateValue"
                       type="datetimerange"
-                      value-format="yyyy-MM-dd hh:mm:ss"
+                      value-format="yyyy-MM-dd HH:mm:ss"
                       range-separator="至"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
@@ -163,7 +163,7 @@
                     <el-date-picker
                       v-model="dateValue"
                       type="datetimerange"
-                      value-format="yyyy-MM-dd hh:mm:ss"
+                      value-format="yyyy-MM-dd HH:mm:ss"
                       range-separator="至"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
@@ -312,7 +312,7 @@ export default {
             appKey: this.listQuery.appKey,
             startTime: this.listQuery.startTime
               ? moment(parseInt(this.listQuery.startTime)).format(
-                  "YYYY-MM-DD hh:mm:ss"
+                  "YYYY-MM-DD HH:mm:ss"
                 )
               : this.listQuery.startTime,
             endTime: this.listQuery.endTime
@@ -333,7 +333,7 @@ export default {
     },
     async getSelectTemplate() {
       const { data } = await fetchSelectTemplate();
-      console.log(data, "datadatadata");
+
       this.selectTemplateData = data;
     },
     datePick(value) {

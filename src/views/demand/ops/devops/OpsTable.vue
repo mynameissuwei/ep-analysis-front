@@ -31,8 +31,8 @@
                 <el-date-picker
                   v-model="dateValue"
                   type="datetimerange"
-                  value-format="yyyy-MM-dd hh:mm:ss"
                   range-separator="至"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   @change="datePick"
@@ -51,7 +51,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -65,7 +65,8 @@
       <el-table-column prop="order_type" label="工单类型">
         <template slot-scope="scope">
           <span>{{
-            orderTypeData.find(item => item.value === scope.row.order_type).name
+            orderTypeData.find((item) => item.value === scope.row.order_type)
+              .name
           }}</span>
         </template>
       </el-table-column>
@@ -99,7 +100,7 @@ export default {
       orderTypeData: [
         { value: "6", name: "巡检" },
         { value: "8", name: "抢修" },
-        { value: "10", name: "消缺" }
+        { value: "10", name: "消缺" },
       ],
       list: [],
       listLoading: false,
@@ -109,8 +110,8 @@ export default {
         pageSize: 10,
         orderType: undefined,
         startTime: null,
-        endTime: null
-      }
+        endTime: null,
+      },
     };
   },
   created() {
@@ -125,19 +126,19 @@ export default {
             orderType: this.listQuery.orderType,
             startTime: this.listQuery.startTime
               ? moment(parseInt(this.listQuery.startTime)).format(
-                  "YYYY-MM-DD hh:mm:ss"
+                  "YYYY-MM-DD HH:mm:ss"
                 )
               : this.listQuery.startTime,
             endTime: this.listQuery.endTime
               ? moment(parseInt(this.listQuery.endTime)).format(
                   "YYYY-MM-DD HH:mm:ss"
                 )
-              : this.listQuery.endTime
+              : this.listQuery.endTime,
           },
           pageNo: this.listQuery.pageNo,
           pageSize: this.listQuery.pageSize,
-          sqlKey: "fnwTenantProcPage"
-        }
+          sqlKey: "fnwTenantProcPage",
+        },
       });
       this.total = totalCount;
       this.list = data;
@@ -150,11 +151,6 @@ export default {
       } else {
         this.listQuery.startTime = new Date(value[0]).getTime();
         this.listQuery.endTime = new Date(value[1]).getTime();
-        console.log(
-          this.listQuery.startTime,
-          this.listQuery.endTime,
-          "endTime"
-        );
       }
     },
     handleSearch() {
@@ -166,12 +162,12 @@ export default {
         pageSize: 10,
         orderType: undefined,
         startTime: null,
-        endTime: null
+        endTime: null,
       };
       this.dateValue = [];
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>
 

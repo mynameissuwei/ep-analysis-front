@@ -47,7 +47,7 @@
             <el-date-picker
               v-model="dateValue"
               type="datetimerange"
-              value-format="yyyy-MM-dd hh:mm:ss"
+              value-format="yyyy-MM-dd HH:mm:ss"
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
@@ -64,7 +64,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -134,7 +134,7 @@
 import {
   fetchInspectionsList,
   fetchInspectionsOrderStatuses,
-  fetchInspectionsTeams
+  fetchInspectionsTeams,
 } from "@/api/task";
 
 import BreadText from "@/components/Breadtext";
@@ -155,11 +155,11 @@ export default {
         orderStatus: "",
         team: "",
         startTime: null,
-        endTime: null
+        endTime: null,
       },
       alertFac: [],
       alertDevice: [],
-      dateValue: []
+      dateValue: [],
     };
   },
   created() {
@@ -173,7 +173,7 @@ export default {
       const { data, totalCount } = await fetchInspectionsList(
         {
           page: this.listQueryBody.page,
-          size: this.listQueryBody.size
+          size: this.listQueryBody.size,
         },
         this.listQueryBody
       );
@@ -182,13 +182,13 @@ export default {
       this.listLoading = false;
     },
     getAlertFac() {
-      fetchInspectionsTeams().then(res => {
+      fetchInspectionsTeams().then((res) => {
         const { data } = res;
         this.alertFac = data;
       });
     },
     getAlertDevice() {
-      fetchInspectionsOrderStatuses().then(res => {
+      fetchInspectionsOrderStatuses().then((res) => {
         const { data } = res;
         this.alertDevice = data;
       });
@@ -213,11 +213,11 @@ export default {
         orderStatus: "",
         team: "",
         startTime: null,
-        endTime: null
+        endTime: null,
       };
       this.dateValue = [];
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>
