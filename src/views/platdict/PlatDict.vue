@@ -87,6 +87,7 @@
     <el-table
       v-loading="listLoading"
       :data="list"
+      ref="multipleTable"
       element-loading-text="Loading"
       fit
       highlight-current-row
@@ -301,7 +302,6 @@ export default {
       });
     },
     datePick(value) {
-      console.log(value, "valuelue");
       if (value == null) {
         this.listQuery.startTime = null;
         this.listQuery.endTime = null;
@@ -368,6 +368,7 @@ export default {
     handleCreate() {
       this.dialogStatus = "create";
       this.dialogVisible = true;
+      this.$refs.multipleTable.clearSelection();
       this.temp = {
         name: "",
         definition: "",
@@ -379,14 +380,17 @@ export default {
       });
     },
     handleUpdate(row) {
+      this.$refs.multipleTable.clearSelection();
       this.temp = Object.assign({}, row);
       this.dialogVisible = true;
       this.dialogStatus = "edit";
+
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
       });
     },
     handleDelete(row) {
+      this.$refs.multipleTable.clearSelection();
       this.$confirm("你确定要删除该数据？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

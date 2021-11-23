@@ -2,7 +2,10 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="24">
-        <card-container>
+        <card-container style="position: relative">
+          <el-button size="small" class="resetButton" @click="handleReset">
+            重置
+          </el-button>
           <el-row :gutter="20">
             <el-col :span="12">
               <pie-chart
@@ -11,7 +14,7 @@
                 :getCasCadePie="getCasCadePie"
                 title="类别饼图"
                 type="category"
-                height="500px"
+                height="650px"
               />
             </el-col>
             <el-col :span="12">
@@ -21,7 +24,7 @@
                 :getCasCadePie="getCasCadePie"
                 title="部门饼图"
                 type="section"
-                height="500px"
+                height="650px"
               />
             </el-col>
           </el-row>
@@ -97,7 +100,7 @@
       </el-col>
     </el-row>
 
-    <card-container style="padding:24px">
+    <card-container style="padding: 24px">
       <category-table />
     </card-container>
   </div>
@@ -121,14 +124,14 @@ export default {
       pieMap: {},
       toPercent,
       getDuration,
-      loading: false
+      loading: false,
     };
   },
   components: {
     DisplayCard,
     PieChart,
     CategoryTable,
-    CardContainer
+    CardContainer,
   },
   created() {
     this.init();
@@ -139,24 +142,28 @@ export default {
       this.getExecSqlToPie("orgPieList");
       this.getCasCadePie();
     },
+    handleReset() {
+      this.getCasCadePie({});
+      console.log("Reset");
+    },
     async getExecSqlToPie(pieType) {
       const { data } = await fetchExecSqlToPie({
         condition: {
-          sqlKey: pieType
-        }
+          sqlKey: pieType,
+        },
       });
       if (pieType === "appNamePie") {
-        let leftChartData = data.map(item => ({
+        let leftChartData = data.map((item) => ({
           name: item.appName,
           value: item.procDefNum,
-          appKey: item.appKey
+          appKey: item.appKey,
         }));
         this.leftChartData = leftChartData;
       } else {
-        let rightChartData = data.map(item => ({
+        let rightChartData = data.map((item) => ({
           name: item.orgName,
           value: item.procDefNum,
-          orgCode: item.orgCode
+          orgCode: item.orgCode,
         }));
         this.rightChartData = rightChartData;
       }
@@ -166,13 +173,13 @@ export default {
       const { data } = await fetchCasCadePie({
         condition: {
           sqlKey: "pieCasCadeMap",
-          extParam: params
-        }
+          extParam: params,
+        },
       });
       this.loading = false;
       this.pieMap = data;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -182,5 +189,11 @@ export default {
 }
 #rightChart {
   padding-top: 40px;
+}
+.resetButton {
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  z-index: 3;
 }
 </style>

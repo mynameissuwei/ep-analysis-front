@@ -55,7 +55,7 @@
               line-spacing="22"
               fill="#333333"
             >
-              <tspan x="72" y="98">
+              <tspan x="60" y="98">
                 {{ this.count ? this.count : 0 }}
               </tspan>
             </text>
@@ -78,7 +78,7 @@
 
 <script>
 export default {
-  props: ["startColor", "endColor", "count", "text"]
+  props: ["startColor", "endColor", "count", "text"],
 };
 </script>
 

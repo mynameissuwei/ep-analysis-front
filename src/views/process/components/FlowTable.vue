@@ -242,6 +242,9 @@ export default {
       this.dialogVisible = false;
     },
     open() {
+      this.form = {
+        name: "",
+      };
       this.dialogVisible = true;
     },
     confirm() {
@@ -269,6 +272,13 @@ export default {
         ],
       };
       await addQuickView(param);
+      this.listQuery = {
+        pageNo: 1,
+        pageSize: 10,
+        createOrgCode: undefined,
+        appKey: undefined,
+        startUserName: undefined,
+      };
       this.$message({
         type: "success",
         message: "创建成功!",

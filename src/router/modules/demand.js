@@ -8,7 +8,7 @@ const demandRouter = {
   meta: {
     title: "业务定制",
     icon: "dashboard",
-    id: "EFFICIENCY_ANALYSIS_CUSTOMIZE"
+    id: "EFFICIENCY_ANALYSIS_CUSTOMIZE",
   },
   children: [
     {
@@ -17,7 +17,7 @@ const demandRouter = {
       name: "Water",
       meta: {
         title: "平潭水务",
-        id: "EFFICIENCY_ANALYSIS_PTSW"
+        id: "EFFICIENCY_ANALYSIS_PTSW",
       },
       redirect: "/demand/water/alarm",
       children: [
@@ -27,8 +27,8 @@ const demandRouter = {
           name: "Alarm",
           meta: {
             title: "告警工单",
-            id: "EFFICIENCY_ANALYSIS_PTSW"
-          }
+            id: "EFFICIENCY_ANALYSIS_PTSW",
+          },
         },
         {
           path: "maintenance",
@@ -36,8 +36,8 @@ const demandRouter = {
           name: "Maintenance",
           meta: {
             title: "养护工单",
-            id: "EFFICIENCY_ANALYSIS_PTSW"
-          }
+            id: "EFFICIENCY_ANALYSIS_PTSW",
+          },
         },
         {
           path: "breakdown",
@@ -45,8 +45,8 @@ const demandRouter = {
           name: "Breakdown",
           meta: {
             title: "故障维修工单",
-            id: "EFFICIENCY_ANALYSIS_PTSW"
-          }
+            id: "EFFICIENCY_ANALYSIS_PTSW",
+          },
         },
         {
           path: "inspection",
@@ -54,18 +54,17 @@ const demandRouter = {
           name: "Inspection",
           meta: {
             title: "巡检工单",
-            id: "EFFICIENCY_ANALYSIS_PTSW"
-          }
-        }
-      ]
+            id: "EFFICIENCY_ANALYSIS_PTSW",
+          },
+        },
+      ],
     },
     {
       path: "ops",
       component: () => import("@/views/demand/ops/index"), // Parent router-view
       name: "ops",
       meta: {
-        title: "泛能网",
-        id: "EFFICIENCY_ANALYSIS_PTSW"
+        id: "EFFICIENCY_ANALYSIS_PTSW",
       },
       redirect: "/ops/devops",
       children: [
@@ -75,12 +74,12 @@ const demandRouter = {
           name: "devops",
           meta: {
             title: "统一运维",
-            id: "EFFICIENCY_ANALYSIS_PTSW"
-          }
-        }
-      ]
-    }
-  ]
+            id: "EFFICIENCY_ANALYSIS_PTSW",
+          },
+        },
+      ],
+    },
+  ],
 };
 
 export default demandRouter;

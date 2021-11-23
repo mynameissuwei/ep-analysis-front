@@ -7,17 +7,17 @@
     </div>
     <div class="content">
       <div>
-        <div style="margin-bottom:10px">
+        <div style="margin-bottom: 10px">
           <span class="text-title">定义:</span>
           <span> {{ data.definition ? data.definition : "无" }} </span>
         </div>
-        <div>
+        <div v-if="activeName === 'indicator'">
           <span class="text-title">公式:</span>
           <span>{{ data.formula ? data.formula : "无" }}</span>
         </div>
       </div>
       <div>
-        <div style="margin-bottom:10px">
+        <div style="margin-bottom: 10px">
           <span class="text-title">创建时间：</span>
           <span>{{ data.updateTime ? data.updateTime : "无" }}</span>
         </div>
@@ -39,14 +39,18 @@ export default {
       type: Object,
       default: () => {
         return {};
-      }
-    }
+      },
+    },
+    activeName: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
-      indicator
+      indicator,
     };
-  }
+  },
 };
 </script>
 

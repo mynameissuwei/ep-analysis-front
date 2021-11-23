@@ -9,9 +9,9 @@ export default {
   props: {
     height: {
       type: String,
-      default: "100%"
-    }
-  }
+      default: "100%",
+    },
+  },
 };
 </script>
 

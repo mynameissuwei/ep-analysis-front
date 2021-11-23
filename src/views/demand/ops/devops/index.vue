@@ -104,11 +104,15 @@ export default {
         ...rightData,
         ...leftData,
       };
-
-      let changeData = Object.keys(data).map((item) =>
-        this.changeRightMap(item, data)
-      );
-
+      let changeData = [
+        "cnt",
+        "orderCnt",
+        "sum(fault_time)",
+        "totalPassTime",
+        "responseTime",
+        "finishTime",
+      ].map((item) => this.changeRightMap(item, data));
+      console.log(changeData, "changeData");
       this.rightMap = changeData;
     },
     async getEchartData(sqlKey) {

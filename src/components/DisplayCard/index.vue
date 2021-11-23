@@ -1,31 +1,34 @@
 <template>
-  <div class="displayCard">
-    <div class="left">
+  <el-row class="rowContainer" type="flex" justify="center" align="center">
+    <el-col :span="6" class="rowItem">
       <svg-icon :icon-class="svgText" />
-    </div>
-    <div class="right">
-      <div class="cardTitle">{{ cardTitle }}</div>
-      <div class="cardText">{{ cardText }}</div>
-    </div>
-  </div>
+    </el-col>
+    <el-col :span="18" class="rowItem">
+      <div>
+        <div class="cardTitle">{{ cardTitle }}</div>
+        <div class="cardText">{{ cardText }}</div>
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 export default {
   name: "DisplayCard",
-  props: ["cardTitle", "cardText", "svgText"]
+  props: ["cardTitle", "cardText", "svgText"],
 };
 </script>
 
 <style lang="scss" scoped>
-.displayCard {
+.rowContainer {
   width: 100%;
   height: 126px;
-  // background: #f8f9fa;
+  margin-bottom: 24px;
+}
+.rowItem {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
 }
 .cardTitle {
   text-align: center;
@@ -38,15 +41,6 @@ export default {
   font-size: 14px;
   font-weight: 400;
   color: #343a40;
-}
-.left {
-  height: 70px;
-  margin-right: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.right {
-  display: inline-block;
+  text-align: center;
 }
 </style>

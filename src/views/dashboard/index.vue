@@ -17,7 +17,7 @@
       <!-- <img src="@/assets/energy.svg" alt="LOGO" style="height: 308px" /> -->
     </div>
     <div class="dict-container">
-      <el-tabs v-model="activeName" tab-position="left" style="height: 416px;">
+      <el-tabs v-model="activeName" tab-position="left" style="height: 416px">
         <el-tab-pane
           v-for="item in tabMapOptions"
           :key="item.key"
@@ -27,6 +27,7 @@
           <keep-alive>
             <div v-if="activeName == item.key">
               <dash-template
+                :activeName="activeName"
                 :data="every"
                 v-for="every in list"
                 :key="every.id"
@@ -61,13 +62,13 @@ export default {
       listQuery: {
         page: 1,
         size: 10,
-        keyword: ""
+        keyword: "",
       },
       tabMapOptions: [
         { label: "指标", key: "indicator" },
-        { label: "非指标", key: "other" }
+        { label: "非指标", key: "other" },
       ],
-      activeName: "indicator"
+      activeName: "indicator",
     };
   },
   created() {
@@ -77,23 +78,23 @@ export default {
     activeName(val) {
       fetchList({
         ...this.listQuery,
-        type: this.activeName === "indicator" ? 0 : 1
-      }).then(response => {
+        type: this.activeName === "indicator" ? 0 : 1,
+      }).then((response) => {
         this.list = response.data.records;
         this.total = response.data.total;
         setTimeout(() => {
           this.listLoading = false;
         }, 1.5 * 1000);
       });
-    }
+    },
   },
   methods: {
     getList() {
       this.listLoading = true;
       fetchList({
         ...this.listQuery,
-        type: this.activeName === "indicator" ? 0 : 1
-      }).then(response => {
+        type: this.activeName === "indicator" ? 0 : 1,
+      }).then((response) => {
         this.list = response.data.records;
         this.total = response.data.total;
         setTimeout(() => {
@@ -103,8 +104,8 @@ export default {
     },
     handleSearch() {
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>
 

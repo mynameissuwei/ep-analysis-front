@@ -8,13 +8,17 @@
             cardText="模板总数"
             svgText="template"
           />
-          <el-tooltip class="item"
-                      effect="dark"
-                      :disabled="tooltipShow(displayCardData.templateTimeConsuming)"
-                      :content="convertTimeFormat(displayCardData.templateTimeConsuming)"
-                      placement="top-end">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :disabled="tooltipShow(displayCardData.templateTimeConsuming)"
+            :content="convertTimeFormat(displayCardData.templateTimeConsuming)"
+            placement="top-end"
+          >
             <display-card
-              :cardTitle="convertHourUnit(displayCardData.templateTimeConsuming)"
+              :cardTitle="
+                convertHourUnit(displayCardData.templateTimeConsuming)
+              "
               cardText="模板总耗时"
               svgText="timeConsume"
             />
@@ -26,10 +30,13 @@
             cardText="完成率"
             svgText="complete"
           />
-          <el-tooltip class="item" effect="dark"
-                      :disabled="tooltipShow(displayCardData.averageTimeConsuming)"
-                      :content="convertTimeFormat(displayCardData.averageTimeConsuming)"
-                      placement="top-end">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :disabled="tooltipShow(displayCardData.averageTimeConsuming)"
+            :content="convertTimeFormat(displayCardData.averageTimeConsuming)"
+            placement="top-end"
+          >
             <display-card
               :cardTitle="convertHourUnit(displayCardData.averageTimeConsuming)"
               cardText="平均耗时"
@@ -41,20 +48,30 @@
           <card-chart title="效能评分" :score="efficiencyScore" />
         </el-col>
         <el-col :span="4">
-          <el-tooltip class="item" effect="dark"
-                      :disabled="tooltipShow(displayCardData.templateTotalExpiredTime)"
-                      :content="convertTimeFormat(displayCardData.templateTotalExpiredTime)"
-                      placement="top-end">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :disabled="tooltipShow(displayCardData.templateTotalExpiredTime)"
+            :content="
+              convertTimeFormat(displayCardData.templateTotalExpiredTime)
+            "
+            placement="top-end"
+          >
             <display-card
-            :cardTitle="convertHourUnit(displayCardData.templateTotalExpiredTime)"
-            cardText="模板总超时"
-            svgText="overtime"
+              :cardTitle="
+                convertHourUnit(displayCardData.templateTotalExpiredTime)
+              "
+              cardText="模板总超时"
+              svgText="overtime"
             />
           </el-tooltip>
-          <el-tooltip class="item" effect="dark"
-                      :disabled="tooltipShow(displayCardData.averageTimeExpired)"
-                      :content="convertTimeFormat(displayCardData.averageTimeExpired)"
-                      placement="top-end">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :disabled="tooltipShow(displayCardData.averageTimeExpired)"
+            :content="convertTimeFormat(displayCardData.averageTimeExpired)"
+            placement="top-end"
+          >
             <display-card
               :cardTitle="convertHourUnit(displayCardData.averageTimeExpired)"
               cardText="平均超时"
@@ -68,12 +85,17 @@
             cardText="参与审批总人数"
             svgText="people"
           />
-          <el-tooltip class="item" effect="dark"
-                      :disabled="tooltipShow(displayCardData.humanPerTimeConsuming)"
-                      :content="convertTimeFormat(displayCardData.humanPerTimeConsuming)"
-                      placement="top-end">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :disabled="tooltipShow(displayCardData.humanPerTimeConsuming)"
+            :content="convertTimeFormat(displayCardData.humanPerTimeConsuming)"
+            placement="top-end"
+          >
             <display-card
-              :cardTitle="convertHourUnit(displayCardData.humanPerTimeConsuming)"
+              :cardTitle="
+                convertHourUnit(displayCardData.humanPerTimeConsuming)
+              "
               cardText="人均耗时"
               svgText="timeConsume"
             />
@@ -89,7 +111,7 @@
         </card-container>
       </el-col>
       <el-col :span="16">
-        <card-container height="478px" style="padding-top:24px">
+        <card-container height="478px" style="padding-top: 24px">
           <line-chart
             :chart-data="lineChartData.charData"
             :legend-data="lineChartData.legendData"
@@ -109,8 +131,7 @@ import LineChart from "./components/LineChart";
 import NumberCard from "./components/NumberCard";
 import EventCard from "./components/EventCard";
 import { getEfficiencyData } from "@/api/efficiencyDashboard";
-import NOTICE_TYPE from '@/utils/noticeType'
-
+import NOTICE_TYPE from "@/utils/noticeType";
 
 export default {
   name: "Efficiency",
@@ -120,7 +141,7 @@ export default {
     LineChart,
     NumberCard,
     EventCard,
-    CardContainer
+    CardContainer,
   },
   data() {
     return {
@@ -129,7 +150,7 @@ export default {
           [100, 150, 271, 400, 201, 248, 124],
           [200, 300, 400, 800, 400, 500, 300],
           [300, 450, 610, 1200, 600, 600, 300],
-          [400, 600, 800, 1600, 800, 900, 400]
+          [400, 600, 800, 1600, 800, 900, 400],
         ],
         // legendData: [
         //   "每小时完成流程数",
@@ -137,14 +158,17 @@ export default {
         //   "每小时流程超时数",
         //   "每小时流程数"
         // ],
-        legendData: [
-          "完成流程数",
-          "超时流程数",
-          "流程超时数",
-          "流程数"
-        ],
+        legendData: ["完成流程数", "超时流程数", "流程超时数", "流程数"],
         // xAxisData: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        xAxisData: ["2021-11-15 8", "2021-11-15 9", "2021-11-15 10", "2021-11-15 11", "2021-11-15 12", "2021-11-15 13", "2021-11-15 14dasdas12121"]
+        xAxisData: [
+          "2021-11-15 8",
+          "2021-11-15 9",
+          "2021-11-15 10",
+          "2021-11-15 11",
+          "2021-11-15 12",
+          "2021-11-15 13",
+          "2021-11-15 14dasdas12121",
+        ],
       },
       displayCardData: {
         templateTotalAmount: 250,
@@ -154,7 +178,7 @@ export default {
         templateTotalExpiredTime: 2131,
         averageTimeExpired: 123,
         approveTotalAmount: 897,
-        humanPerTimeConsuming: 348
+        humanPerTimeConsuming: 348,
       },
       efficiencyScore: 0.89,
       eventsData: [
@@ -162,26 +186,26 @@ export default {
           operateName: "吴雷",
           noticeType: "发起",
           processName: "流程名称",
-          operateTime: "2021-10-29"
+          operateTime: "2021-10-29",
         },
         {
           operateName: "吴雷",
           noticeType: "发起",
           processName: "流程名称",
-          operateTime: "2021-10-29"
+          operateTime: "2021-10-29",
         },
         {
           operateName: "吴雷",
           noticeType: "发起",
           processName: "流程名称",
-          operateTime: "2021-10-29"
+          operateTime: "2021-10-29",
         },
         {
           operateName: "吴雷",
           noticeType: "发起",
           processName: "流程名称",
-          operateTime: "2021-10-29"
-        }
+          operateTime: "2021-10-29",
+        },
       ],
       pollingST: null,
       processTotalAmountData: 1897,
@@ -189,26 +213,27 @@ export default {
         tenantId: "ep-analysis-flink",
         senderId: this.$store.state.user.tenantId,
         pageNum: 1,
-        pageSize: 1
-      }
+        pageSize: 1,
+      },
     };
   },
   methods: {
     // 小于1个人天则不展示
-    tooltipShow(hourTime){
+    tooltipShow(hourTime) {
       return parseFloat(hourTime) < 8;
     },
     // 转换为人天
-    convertTimeFormat(hourTime){
-      return (parseFloat(hourTime)/8).toFixed(2) + '人天';
+    convertTimeFormat(hourTime) {
+      return (parseFloat(hourTime) / 8).toFixed(2) + "人天";
     },
-    convertHourUnit(hourTime){
-      if(parseInt(hourTime) > 10000) return hourTime = hourTime.substring(0,4)+"...h"
+    convertHourUnit(hourTime) {
+      if (parseInt(hourTime) > 10000)
+        return (hourTime = hourTime.substring(0, 4) + "...h");
       return hourTime + "h";
     },
     // 轮询方法
     polling() {
-      this.getEfficiencyDashboardData().then(res => {
+      this.getEfficiencyDashboardData().then((res) => {
         console.log("getEfficiencyDashboardData start");
         this.pollingST = setTimeout(() => {
           clearTimeout(this.pollingST);
@@ -217,7 +242,7 @@ export default {
       });
     },
     async getEfficiencyDashboardData() {
-      getEfficiencyData(this.queryParam).then(response => {
+      getEfficiencyData(this.queryParam).then((response) => {
         let extra = response.data[0].extra;
         if (extra) extra = JSON.parse(extra);
         // 获取分时图数据
@@ -231,7 +256,10 @@ export default {
         this.lineChartData.xAxisData = this.convertToXAxisData(
           timeQuantumStatistics
         );
-        console.log("this.lineChartData.xAxisData ", this.lineChartData.xAxisData);
+        console.log(
+          "this.lineChartData.xAxisData ",
+          this.lineChartData.xAxisData
+        );
         // this.lineChartData.legendData = this.convertToLegendData(timeQuantumStatistics);
         this.lineChartData.charData = this.convertToChartData(
           timeQuantumStatistics
@@ -240,7 +268,9 @@ export default {
         // 获取卡片数据
         this.displayCardData = { ...extra };
         this.displayCardData.completeRate =
-          parseInt(parseFloat(this.displayCardData.completeRate).toFixed(2) * 100) + "%";
+          parseInt(
+            parseFloat(this.displayCardData.completeRate).toFixed(2) * 100
+          ) + "%";
 
         // 获取效能评分
         this.efficiencyScore = extra.efficiencyScore / 100;
@@ -251,23 +281,25 @@ export default {
         // 获取实时事件
         this.eventsData = this.convertToEventData(JSON.parse(extra.cacheEvent));
         console.log("convertToEventData ", this.eventsData);
-
       });
     },
-    convertToEventData(origin){
-      return origin.map(event => {
-        event.noticeText = NOTICE_TYPE[event.noticeType] + ":" + event.processName;
-        if(!event.operateName) event.operateName = "xxx";
+    convertToEventData(origin) {
+      return origin.map((event) => {
+        event.noticeText =
+          NOTICE_TYPE[event.noticeType] + ":" + event.processName;
+        if (!event.operateName) event.operateName = "xxx";
         return event;
       });
     },
     convertToXAxisData(timeQuantumStatistics) {
-
       return Object.values(timeQuantumStatistics)
-        .sort((a,b) => {
-          return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+        .sort((a, b) => {
+          return (
+            Date.parse(a.timeQuantum + ":00:00") -
+            Date.parse(b.timeQuantum + ":00:00")
+          );
         })
-        .map( timeQuantumStatistic => timeQuantumStatistic.timeQuantum);
+        .map((timeQuantumStatistic) => timeQuantumStatistic.timeQuantum);
     },
     convertToLegendData(timeQuantumStatistics) {
       console.log(
@@ -279,36 +311,48 @@ export default {
     convertToChartData(timeQuantumStatistics) {
       return [
         Object.values(timeQuantumStatistics)
-          .sort((a,b) => {
-            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          .sort((a, b) => {
+            return (
+              Date.parse(a.timeQuantum + ":00:00") -
+              Date.parse(b.timeQuantum + ":00:00")
+            );
           })
           .map(
-          timeQuantumStatistic => timeQuantumStatistic.hourPerCompleteAmount
-        ), //每小时完成流程数
+            (timeQuantumStatistic) => timeQuantumStatistic.hourPerCompleteAmount
+          ), //每小时完成流程数
         Object.values(timeQuantumStatistics)
-          .sort((a,b) => {
-            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          .sort((a, b) => {
+            return (
+              Date.parse(a.timeQuantum + ":00:00") -
+              Date.parse(b.timeQuantum + ":00:00")
+            );
           })
           .map(
-          timeQuantumStatistic =>
-            timeQuantumStatistic.hourPerExpiredProcessAmount
-        ), //每小时超时流程数量
+            (timeQuantumStatistic) =>
+              timeQuantumStatistic.hourPerExpiredProcessAmount
+          ), //每小时超时流程数量
         Object.values(timeQuantumStatistics)
-          .sort((a,b) => {
-            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          .sort((a, b) => {
+            return (
+              Date.parse(a.timeQuantum + ":00:00") -
+              Date.parse(b.timeQuantum + ":00:00")
+            );
           })
           .map(
-          timeQuantumStatistic => timeQuantumStatistic.hourPerExpiredTime
-        ), // 每小时流程超时数
+            (timeQuantumStatistic) => timeQuantumStatistic.hourPerExpiredTime
+          ), // 每小时流程超时数
         Object.values(timeQuantumStatistics)
-          .sort((a,b) => {
-            return Date.parse(a.timeQuantum+":00:00")-Date.parse(b.timeQuantum+":00:00")
+          .sort((a, b) => {
+            return (
+              Date.parse(a.timeQuantum + ":00:00") -
+              Date.parse(b.timeQuantum + ":00:00")
+            );
           })
           .map(
-          timeQuantumStatistic => timeQuantumStatistic.hourPerProcessAmount
-        ) // 每小时流程数
+            (timeQuantumStatistic) => timeQuantumStatistic.hourPerProcessAmount
+          ), // 每小时流程数
       ];
-    }
+    },
   },
   created() {
     this.polling();
@@ -316,7 +360,7 @@ export default {
   beforeDestroy() {
     clearInterval(this.pollingST); // 清除定时器
     this.pollingST = null;
-  }
+  },
 };
 </script>
 

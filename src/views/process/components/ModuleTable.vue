@@ -125,9 +125,9 @@
           {{ getDuration(scope.row.personPassTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="平均超时率" prop="finishRatio" sortable>
+      <el-table-column label="平均超时率" prop="overRatio" sortable>
         <template slot-scope="scope">
-          {{ toPercent(scope.row.finishRatio) }}
+          {{ toPercent(scope.row.overRatio) }}
         </template>
       </el-table-column>
     </el-table>
@@ -278,6 +278,9 @@ export default {
       this.dialogVisible = false;
     },
     open() {
+      this.form = {
+        name: "",
+      };
       this.dialogVisible = true;
     },
     confirm() {
@@ -305,6 +308,13 @@ export default {
         ],
       };
       await addQuickView(param);
+      this.listQuery = {
+        pageNo: 1,
+        pageSize: 10,
+        orgCode: undefined,
+        appKey: undefined,
+        procDefName: undefined,
+      };
       this.$message({
         type: "success",
         message: "创建成功!",

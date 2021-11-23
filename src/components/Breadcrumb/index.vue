@@ -44,9 +44,11 @@ export default {
         );
       }
 
-      this.levelList = matched.filter(
+      let levelList = matched.filter(
         (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false
       );
+      levelList.shift();
+      this.levelList = levelList;
     },
     isDashboard(route) {
       const name = route && route.name;

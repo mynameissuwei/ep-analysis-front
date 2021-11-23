@@ -11,33 +11,33 @@ export default {
   props: {
     id: {
       type: String,
-      default: "chart"
+      default: "chart",
     },
     width: {
       type: String,
-      default: "100%"
+      default: "100%",
     },
     height: {
       type: String,
-      default: "300px"
+      default: "300px",
     },
     data: {
-      type: Array
+      type: Array,
     },
     getCasCadePie: {
-      type: Function
+      type: Function,
     },
     type: {
-      type: String
+      type: String,
     },
     title: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
     return {
-      chart: null
+      chart: null,
     };
   },
   mounted() {
@@ -63,14 +63,14 @@ export default {
           this.initChart();
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id));
       this.chart.setOption(this.getOption());
-      this.chart.on("click", param => {
+      this.chart.on("click", (param) => {
         this.getCasCadePie(
           this.type === "category"
             ? { appKey: param.data.appKey }
@@ -79,15 +79,14 @@ export default {
       });
     },
     getOption() {
-      console.log(this.data, "datadata");
       return {
         title: {
           text: this.title,
-          left: "center"
+          left: "center",
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
         },
         series: [
           {
@@ -96,13 +95,13 @@ export default {
             center: ["50%", "50%"],
             // roseType: "area",
             itemStyle: {
-              borderRadius: 8
+              borderRadius: 8,
             },
-            data: this.data
-          }
-        ]
+            data: this.data,
+          },
+        ],
       };
-    }
-  }
+    },
+  },
 };
 </script>
