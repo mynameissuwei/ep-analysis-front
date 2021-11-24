@@ -28,7 +28,7 @@ module.exports = {
       [process.env.VUE_APP_BASE_API]: {
         // target: "https://efficiency-analysis-backend.dev.ennew.com",
         // target: "http://10.20.39.102:8080",
-        target: "http://rdfa-gateway.dev.ennewi.cn/mining/",
+        target: "http://rdfa-gateway.dev.ennewi.cn/mining",
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: ""
