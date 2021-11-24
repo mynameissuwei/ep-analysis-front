@@ -7,7 +7,10 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // baseURL: "https://efficiency-analysis-backend.dev.ennew.com", // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 10000 // request timeout
+  timeout: 10000, // request timeout
+  headers: {
+    'x-gw-accessKey': process.env.VUE_APP_ACCESS_KEY
+  }
 });
 
 // request interceptor
