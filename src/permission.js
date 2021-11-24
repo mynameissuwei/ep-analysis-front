@@ -22,7 +22,7 @@ router.beforeEach(async (to, from, next) => {
           routerInfo
         );
         console.log(accessedRoutes, "accessedRoutes");
-        router.addRoutes(constantRoutes);
+        router.addRoutes(accessedRoutes);
         next({ ...to, replace: true });
       } catch (error) {
         next();

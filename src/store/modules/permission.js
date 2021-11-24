@@ -81,7 +81,7 @@ const actions = {
       let result = filterRoute(constantRoutes, flatResult);
 
       accessedRoutes = result || [];
-      commit("SET_ROUTES", constantRoutes);
+      commit("SET_ROUTES", accessedRoutes);
       // router.addRoutes(accessedRoutes);
       resolve({ accessedRoutes, flatResult });
     });
