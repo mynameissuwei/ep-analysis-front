@@ -1,9 +1,9 @@
 <template>
   <el-row class="rowContainer" type="flex" justify="center" align="center">
-    <el-col :span="6" class="rowItem">
+    <el-col :span="6" class="rowItem rowIcon">
       <svg-icon :icon-class="svgText" />
     </el-col>
-    <el-col :span="18" class="rowItem">
+    <el-col :span="18" class="rowItem rowText">
       <div>
         <div class="cardTitle">{{ cardTitle }}</div>
         <div class="cardText">{{ cardText }}</div>
@@ -24,6 +24,12 @@ export default {
   width: 100%;
   height: 126px;
   margin-bottom: 24px;
+}
+.rowIcon {
+  margin-left: 20px;
+}
+.rowText {
+  margin-right: 20px;
 }
 .rowItem {
   display: flex;

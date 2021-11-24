@@ -14,7 +14,7 @@ function hasRoute(routeArray, route) {
 
 function filterRoute(routes, routeArray) {
   const res = [];
-  routes.forEach(route => {
+  routes.forEach((route) => {
     const temp = { ...route };
 
     if (hasRoute(routeArray, temp)) {
@@ -30,7 +30,7 @@ function filterRoute(routes, routeArray) {
 
 function flatId(routes) {
   let res = [];
-  routes.forEach(route => {
+  routes.forEach((route) => {
     const temp = { ...route };
     res.push(temp.component);
     if (temp.children) {
@@ -40,47 +40,57 @@ function flatId(routes) {
   return res;
 }
 
-const flattenDeep = array =>
+const flattenDeep = (array) =>
   array.reduce((a, b) => a.concat(Array.isArray(b) ? flattenDeep(b) : b), []);
 
 const state = {
-  permission_routes: []
+  permission_routes: [],
 };
 
 const mutations = {
   SET_ROUTES: (state, permission_routes) => {
     state.permission_routes = permission_routes;
-  }
+  },
 };
 
 const actions = {
   generateRoutes({ commit }, routerInfo) {
     // resetRouter();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       let accessedRoutes;
-      
+
       let flatArray = flattenDeep(
-        flatId(routerInfo.length ?  (routerInfo.length === 2 ? routerInfo[0].children.concat(routerInfo[1].children) : routerInfo[0].children) : [])
+        flatId(
+          routerInfo.length
+            ? routerInfo.length === 2
+              ? routerInfo[0].children.concat(routerInfo[1].children)
+              : routerInfo[0].children
+            : []
+        )
       );
 
-      let flatResult = flatArray.length ? flatArray.concat(["404", "404redirect"]) : flatArray.concat(["404", "404redirect","EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE","EFFICIENCY_ANALYSIS_TENANT_DICT"])
+      let flatResult = flatArray.length
+        ? flatArray.concat(["404", "404redirect"])
+        : flatArray.concat([
+            "404",
+            "404redirect",
+            "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE",
+            "EFFICIENCY_ANALYSIS_TENANT_DICT",
+          ]);
 
-      let result = filterRoute(
-        constantRoutes,
-        flatResult
-      );
-        
+      let result = filterRoute(constantRoutes, flatResult);
+
       accessedRoutes = result || [];
-      commit("SET_ROUTES", accessedRoutes);
+      commit("SET_ROUTES", constantRoutes);
       // router.addRoutes(accessedRoutes);
-      resolve({ accessedRoutes,flatResult });
+      resolve({ accessedRoutes, flatResult });
     });
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };

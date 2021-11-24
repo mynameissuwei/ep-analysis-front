@@ -354,6 +354,7 @@ export default {
               startTime: null,
               endTime: null,
             };
+            this.dateValue = [];
             this.getList();
             this.$store.dispatch("loading/cancelLoading");
             this.dialogVisible = false;
