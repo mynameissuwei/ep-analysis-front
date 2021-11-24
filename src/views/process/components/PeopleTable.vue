@@ -43,12 +43,12 @@
       </el-table-column>
       <el-table-column prop="taskNum" sortable label="审批任务数">
       </el-table-column>
-      <el-table-column prop="passTime" sortable label="耗时总长">
+      <el-table-column prop="passTime" sortable label="耗时总长(小时)">
         <template slot-scope="scope">
           {{ getDuration(scope.row.passTime) }}
         </template>
       </el-table-column>
-      <el-table-column prop="overTime" sortable label="超时总长">
+      <el-table-column prop="overTime" sortable label="超时总长(小时)">
         <template slot-scope="scope">
           {{ getDuration(scope.row.overTime) }}
         </template>

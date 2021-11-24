@@ -12,14 +12,15 @@ const getDefaultState = () => {
     nickName: "",
     hasTenant: true,
     tenantId: "",
-    routeInfo: undefined
+    routeInfo: undefined,
+    isOperation: false,
   };
 };
 
 const state = getDefaultState();
 
 const mutations = {
-  RESET_STATE: state => {
+  RESET_STATE: (state) => {
     Object.assign(state, getDefaultState());
   },
   SET_TOKEN: (state, token) => {
@@ -51,7 +52,10 @@ const mutations = {
   },
   SET_ROUTER: (state, routeInfo) => {
     state.routeInfo = routeInfo;
-  }
+  },
+  SET_OPERATION: (state, isOperation) => {
+    state.isOperation = isOperation;
+  },
 };
 
 const actions = {
@@ -59,22 +63,24 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo()
-        .then(response => {
+        .then((response) => {
           const { data } = response;
 
           if (!data) {
             reject("Verification failed, please Login again.");
           }
 
-          const { userId, username, nickName, hasTenant, tenantId } = data;
+          const { userId, username, nickName, hasTenant, tenantId, operation } =
+            data;
           commit("SET_USERID", userId);
           commit("SET_USERNAME", username);
           commit("SET_NICKNAME", nickName);
           commit("SET_HASTENANT", hasTenant);
           commit("SET_TENANTID", tenantId);
+          commit("SET_OPERATION", operation);
           resolve(data);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -84,13 +90,13 @@ const actions = {
   getPreventId({ commit, state }) {
     return new Promise((resolve, reject) => {
       getTokenId()
-        .then(response => {
+        .then((response) => {
           const { data } = response;
 
           commit("SET_PREVENT", data);
           resolve(data);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -100,12 +106,12 @@ const actions = {
   getRouterInfo({ commit }) {
     return new Promise((resolve, reject) => {
       getRouterInfo()
-        .then(response => {
+        .then((response) => {
           const { data } = response;
           commit("SET_ROUTER", data);
           resolve(data);
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
     });
@@ -120,12 +126,12 @@ const actions = {
       { root: true }
     );
     router.addRoutes(accessRoutes);
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };

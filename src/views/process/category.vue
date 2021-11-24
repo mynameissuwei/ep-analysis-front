@@ -37,7 +37,7 @@
           <el-row type="flex" justify="space-around">
             <el-col :span="4">
               <display-card
-                :cardTitle="pieMap.procDefNum"
+                :cardTitle="isNill(pieMap.procDefNum)"
                 cardText="模板总数"
                 svgText="template"
               />
@@ -49,7 +49,7 @@
             </el-col>
             <el-col :span="4">
               <display-card
-                :cardTitle="pieMap.totalProcessCnt"
+                :cardTitle="isNill(pieMap.totalProcessCnt)"
                 cardText="流程总数"
                 svgText="flow"
               />
@@ -61,24 +61,24 @@
             </el-col>
             <el-col :span="4">
               <display-card
-                :cardTitle="pieMap.finishRatio"
+                :cardTitle="isNill(pieMap.finishRatio)"
                 cardText="完成率"
                 svgText="complete"
               />
               <display-card
-                :cardTitle="pieMap.totalOverTime"
+                :cardTitle="getDuration(pieMap.totalOverTime)"
                 cardText="超时总长"
                 svgText="overtime"
               />
             </el-col>
             <el-col :span="4">
               <display-card
-                :cardTitle="pieMap.partNum"
+                :cardTitle="isNill(pieMap.partNum)"
                 cardText="审批总人数"
                 svgText="people"
               />
               <display-card
-                :cardTitle="pieMap.processOverTime"
+                :cardTitle="getDuration(pieMap.processOverTime)"
                 cardText="平均超时"
                 svgText="overtime"
               />
@@ -112,7 +112,7 @@ import DisplayCard from "@/components/DisplayCard";
 import CardContainer from "@/components/CardContainer";
 import PieChart from "./components/PieChart";
 import CategoryTable from "./components/category-table";
-import toPercent from "@/utils/toPercent";
+import toPercent, { isNill } from "@/utils/toPercent";
 import getDuration from "@/utils/getDuration";
 
 export default {
@@ -124,6 +124,7 @@ export default {
       pieMap: {},
       toPercent,
       getDuration,
+      isNill,
       loading: false,
     };
   },

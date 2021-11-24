@@ -1,13 +1,7 @@
-import Vue from "vue";
-import Router from "vue-router";
-
-Vue.use(Router);
-
-/* Layout */
 import Layout from "@/layout";
-import demandRouter from "./modules/demand.js";
+import demandRouter from "./demand.js";
 
-export const constantRoutes = [
+export const tenantSidebar = [
   {
     path: "/404",
     meta: {
@@ -32,26 +26,6 @@ export const constantRoutes = [
           title: "效能词典",
           icon: "tree",
           id: "EFFICIENCY_ANALYSIS_TENANT_DICT",
-        },
-      },
-    ],
-  },
-  {
-    path: "/",
-    component: Layout,
-    redirect: "/dashboard",
-    meta: {
-      id: "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE",
-    },
-    children: [
-      {
-        path: "dashboard",
-        component: () => import("@/views/platdict/index"),
-        name: "index",
-        meta: {
-          title: "词典管理",
-          icon: "tree",
-          id: "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE",
         },
       },
     ],
@@ -210,46 +184,6 @@ export const constantRoutes = [
     ],
   },
   {
-    path: "/opbench",
-    component: Layout,
-    redirect: "/opbench/index",
-    meta: {
-      id: "EFFICIENCY_ANALYSIS_OPERATION_WORKBENCH",
-    },
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/opbench"),
-        name: "opbench",
-        meta: {
-          title: "运营工作台",
-          icon: "form",
-          id: "EFFICIENCY_ANALYSIS_OPERATION_WORKBENCH",
-        },
-      },
-    ],
-  },
-  {
-    path: "/operate",
-    component: Layout,
-    redirect: "/operate/index",
-    meta: {
-      id: "EFFICIENCY_ANALYSIS_OPERATION_DASHBOARD",
-    },
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/process/OperateBoard"),
-        name: "operate",
-        meta: {
-          title: "运营大盘",
-          icon: "eye",
-          id: "EFFICIENCY_ANALYSIS_OPERATION_DASHBOARD",
-        },
-      },
-    ],
-  },
-  {
     path: "/acount",
     component: Layout,
     redirect: "/acount/user",
@@ -335,25 +269,3 @@ export const constantRoutes = [
     hidden: true,
   },
 ];
-
-const createRouter = () =>
-  new Router({
-    scrollBehavior: () => ({ y: 0 }),
-    routes: [],
-  });
-
-const createNewRouter = () =>
-  new Router({
-    scrollBehavior: () => ({ y: 0 }),
-    routes: [],
-  });
-
-const router = createRouter();
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createNewRouter();
-  router.matcher = newRouter.matcher; // reset router
-}
-
-export default router;

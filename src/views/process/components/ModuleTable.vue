@@ -99,13 +99,13 @@
       <el-table-column prop="orgName" label="归属部门" />
       <el-table-column prop="taskNum" label="节点长度" />
       <el-table-column prop="partNum" label="审批总人数" />
-      <el-table-column prop="totalPassTime" label="超时总长" sortable>
+      <el-table-column prop="totalPassTime" label="超时总长(小时)" sortable>
         <template slot-scope="scope">
           {{ getDuration(scope.row.totalOverTime) }}
         </template>
       </el-table-column>
       <el-table-column prop="totalCnt" label="流程总数" sortable />
-      <el-table-column prop="totalPassTime" label="耗时总长" sortable>
+      <el-table-column prop="totalPassTime" label="耗时总长(小时)" sortable>
         <template slot-scope="scope">
           {{ getDuration(scope.row.totalPassTime) }}
         </template>
@@ -120,7 +120,7 @@
           {{ getDuration(scope.row.processOverTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="人均耗时" prop="personPassTime" sortable>
+      <el-table-column label="人均耗时(小时)" prop="personPassTime" sortable>
         <template slot-scope="scope">
           {{ getDuration(scope.row.personPassTime) }}
         </template>

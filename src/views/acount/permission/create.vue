@@ -24,13 +24,13 @@
       <el-main>
         <bread-text name="资源配置"> </bread-text>
         <!-- <el-checkbox v-model="checked" @change="checkedAll" /> 全选 -->
-
         <el-tree
           :check-strictly="checkStrictly"
           ref="tree"
           node-key="resId"
           :props="props"
           :data="sourceList"
+          :default-checked-keys="['EFFICIENCY_ANALYSIS_TENANT_DICT']"
           show-checkbox
         >
         </el-tree>
@@ -184,6 +184,16 @@ export default {
     },
     async getSourceList() {
       const res = await fetchSourceList();
+      res.data[0].children = res.data[0].children.map((item) => {
+        if (item.resId === "EFFICIENCY_ANALYSIS_TENANT_DICT") {
+          return {
+            ...item,
+            disabled: true,
+          };
+        }
+        return item;
+      });
+      console.log(res.data, "sourceList");
       this.sourceList = res.data;
     },
   },

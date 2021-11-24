@@ -1,4 +1,7 @@
 import { constantRoutes } from "@/router";
+import { operateSidebar } from "@/router/modules/operate";
+import { tenantSidebar } from "@/router/modules/tenant";
+import store from "../index";
 
 function hasRoute(routeArray, route) {
   if (route.meta && route.meta.id) {
@@ -55,6 +58,8 @@ const mutations = {
 
 const actions = {
   generateRoutes({ commit }, routerInfo) {
+    console.log(store.getters, "gettersgetters");
+    const isOperation = store.getters.isOperation;
     // resetRouter();
     return new Promise((resolve) => {
       let accessedRoutes;
@@ -71,17 +76,21 @@ const actions = {
 
       let flatResult = flatArray.length
         ? flatArray.concat(["404", "404redirect"])
-        : flatArray.concat([
-            "404",
-            "404redirect",
-            "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE",
-            "EFFICIENCY_ANALYSIS_TENANT_DICT",
-          ]);
+        : flatArray.concat(
+            isOperation
+              ? [
+                  "404",
+                  "404redirect",
+                  "EFFICIENCY_ANALYSIS_OPERATION_DICT_MANAGE",
+                ]
+              : ["404", "404redirect", "EFFICIENCY_ANALYSIS_TENANT_DICT"]
+          );
 
       let result = filterRoute(constantRoutes, flatResult);
 
       accessedRoutes = result || [];
-      commit("SET_ROUTES", accessedRoutes);
+      // commit("SET_ROUTES", accessedRoutes);
+      commit("SET_ROUTES", isOperation ? operateSidebar : tenantSidebar);
       // router.addRoutes(accessedRoutes);
       resolve({ accessedRoutes, flatResult });
     });

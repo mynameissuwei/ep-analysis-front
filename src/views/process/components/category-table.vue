@@ -88,18 +88,26 @@
             </template>
           </el-table-column>
           <el-table-column prop="partNum" label="审批总人数" sortable />
-          <el-table-column prop="personPassTime" label="人均耗时" sortable>
+          <el-table-column
+            prop="personPassTime"
+            label="人均耗时(小时)"
+            sortable
+          >
             <template slot-scope="scope">
               {{ getDuration(scope.row.personPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="totalOverTime" label="超时总长" sortable />
-          <el-table-column prop="totalPassTime" label="耗时总长" sortable>
+          <el-table-column
+            prop="totalOverTime"
+            label="超时总长(小时)"
+            sortable
+          />
+          <el-table-column prop="totalPassTime" label="耗时总长(小时)" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column label="平均超时" sortable>
+          <el-table-column label="平均超时(小时)" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.processOverTime) }}
             </template>
