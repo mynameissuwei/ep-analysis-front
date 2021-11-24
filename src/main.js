@@ -12,6 +12,8 @@ import App from "./App";
 import store from "./store";
 import router from "./router";
 
+console.log(router, "router");
+
 import "@/icons"; // icon
 import "@/permission"; // permission control
 import * as Echarts from "echarts";

@@ -43,7 +43,7 @@
               />
               <display-card
                 :cardTitle="getDuration(pieMap.totalPassTime)"
-                cardText="耗时总长"
+                cardText="耗时总长(小时)"
                 svgText="overtime"
               />
             </el-col>
@@ -55,7 +55,7 @@
               />
               <display-card
                 :cardTitle="getDuration(pieMap.processPassTime)"
-                cardText="平均耗时"
+                cardText="平均耗时(小时)"
                 svgText="timeConsume"
               />
             </el-col>
@@ -67,7 +67,7 @@
               />
               <display-card
                 :cardTitle="getDuration(pieMap.totalOverTime)"
-                cardText="超时总长"
+                cardText="超时总长(小时)"
                 svgText="overtime"
               />
             </el-col>
@@ -79,14 +79,14 @@
               />
               <display-card
                 :cardTitle="getDuration(pieMap.processOverTime)"
-                cardText="平均超时"
+                cardText="平均超时(小时)"
                 svgText="overtime"
               />
             </el-col>
             <el-col :span="4">
               <display-card
                 :cardTitle="getDuration(pieMap.personPassTime)"
-                cardText="人均耗时"
+                cardText="人均耗时(小时)"
                 svgText="timeConsume"
               />
               <display-card

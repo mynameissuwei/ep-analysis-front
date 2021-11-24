@@ -11,24 +11,17 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   name: "Page404",
   computed: {
-    ...mapGetters(["permission_routes", "sidebar"]),
     message() {
       return "您暂无该菜单权限，请联系管理员";
-    },
-    routes() {
-      console.log(this.$router.options.routes, "routes");
-      return this.$router.options.routes;
     },
   },
   methods: {
     handleSkip() {
       this.$router.push({
-        path: this.permission_routes[1].redirect,
+        path: "/dashboard",
       });
     },
   },

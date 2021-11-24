@@ -157,7 +157,6 @@ export default {
       const container = document.getElementById("container");
       console.log(container, "containercontainer");
       console.log(this.flowChartData, "flowChartData");
-      // debugger;
       const width = container.scrollWidth;
       const height = container.scrollHeight || 500;
       const graph = new G6.Graph({
@@ -200,7 +199,6 @@ export default {
         fitView: true,
       });
       graph.data(data);
-      // debugger;
       graph.render();
     },
   },
