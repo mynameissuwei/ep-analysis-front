@@ -39,9 +39,7 @@
     <el-footer class="footerContainer">
       <div>
         <el-button @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="createData" :loading="submitLoading"
-          >保存</el-button
-        >
+        <el-button type="primary" @click="createData">保存</el-button>
       </div>
     </el-footer>
   </el-container>
@@ -75,7 +73,6 @@ export default {
         audit: true,
       },
       checkStrictly: false,
-      submitLoading: false,
       sourceList: [],
       // checked: false,
       rules: {

@@ -120,12 +120,13 @@ const actions = {
   async changeRoles({ commit, dispatch }) {
     resetRouter();
     let routerInfo = await dispatch("user/getRouterInfo", null, { root: true });
-    const accessRoutes = await dispatch(
+    const { accessedRoutes } = await dispatch(
       "permission/generateRoutes",
       routerInfo,
       { root: true }
     );
-    router.addRoutes(accessRoutes);
+    console.log(accessedRoutes, "accessedRoutes");
+    router.addRoutes(accessedRoutes);
   },
 };
 

@@ -24,14 +24,14 @@
       <el-col :span="12">
         <el-row :gutter="20" class="right-card">
           <el-col :span="8" :offset="0">
-            <blue-svg :count="execSqlToMap.todayNum" text="今日添加" />
+            <blue-svg :count="isNill(execSqlToMap.todayNum)" text="今日添加" />
           </el-col>
           <el-col :span="8" :offset="0">
-            <blue-svg :count="execSqlToMap.total" text="流程总数" />
+            <blue-svg :count="isNill(execSqlToMap.total)" text="流程总数" />
           </el-col>
           <el-col :span="8" :offset="0">
             <blue-svg
-              :count="`${execSqlToMap.finishRatio}%`"
+              :count="`${toPercent(execSqlToMap.finishRatio)}`"
               text="总体完成率"
             />
           </el-col>
@@ -50,6 +50,7 @@ import YellowSvg from "./components/YellowSvg";
 import BlueSvg from "./components/BlueSvg";
 import FlowTable from "./components/FlowTable";
 import Pagination from "@/components/Pagination";
+import toPercent, { isNill } from "@/utils/toPercent";
 
 export default {
   components: {
@@ -64,6 +65,8 @@ export default {
     return {
       execSqlToMap: {},
       execSqlToList: {},
+      isNill,
+      toPercent,
       panes: [
         { label: "本周", key: "day" },
         { label: "本月", key: "month" },
