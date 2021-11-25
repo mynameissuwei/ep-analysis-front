@@ -61,7 +61,7 @@
             </el-col>
             <el-col :span="4">
               <display-card
-                :cardTitle="isNill(pieMap.finishRatio)"
+                :cardTitle="toPercent(pieMap.finishRatio)"
                 cardText="完成率"
                 svgText="complete"
               />

@@ -36,7 +36,7 @@
         <el-table-column prop="app_name" label="模板名称"> </el-table-column>
         <el-table-column prop="start_user_name" label="发起人">
         </el-table-column>
-        <el-table-column prop="proc_pass_time" label="耗时总长" sortable>
+        <el-table-column prop="proc_pass_time" label="耗时总长(小时)" sortable>
         </el-table-column>
         <el-table-column
           prop="task_part_num"
@@ -45,7 +45,7 @@
           width="150px"
         >
         </el-table-column>
-        <el-table-column prop="proc_over_time" label="超时总长" sortable>
+        <el-table-column prop="proc_over_time" label="超时总长(小时)" sortable>
         </el-table-column>
         <el-table-column prop="start_time" label="发起时间" sortable>
         </el-table-column>
@@ -54,11 +54,11 @@
             <span>{{ scope.row.proc_over === 0 ? "未结束" : "结束" }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="proc_cost_time" label="最长耗时" sortable>
+        <el-table-column prop="proc_cost_time" label="最长耗时(小时)" sortable>
         </el-table-column>
         <el-table-column prop="proc_approve_user" label="最长耗时审批人">
         </el-table-column>
-        <el-table-column prop="ratio" label="人均耗时" sortable>
+        <el-table-column prop="ratio" label="人均耗时(小时)" sortable>
         </el-table-column>
       </el-table>
       <pagination
@@ -88,8 +88,8 @@ export default {
       listLoading: false,
       listQuery: {
         pageNo: 1,
-        pageSize: 10
-      }
+        pageSize: 10,
+      },
     };
   },
   created() {
@@ -106,8 +106,8 @@ export default {
         condition: {
           pageNo: this.listQuery.pageNo,
           pageSize: this.listQuery.pageSize,
-          sqlKey: "procAnalyPage"
-        }
+          sqlKey: "procAnalyPage",
+        },
       });
       this.total = totalCount;
       this.list = data;
@@ -128,7 +128,7 @@ export default {
       let yAxis = [120, 200, 150, 80, 70, 110, 130];
       this.execSqlToList = {
         xAxis,
-        yAxis
+        yAxis,
       };
     },
     handleClick(tab, event) {
@@ -140,11 +140,11 @@ export default {
     handleReset() {
       this.listQuery = {
         pageNo: 1,
-        pageSize: 10
+        pageSize: 10,
       };
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>
 

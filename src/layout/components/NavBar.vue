@@ -32,7 +32,7 @@ export default {
   name: "CommonHeader",
   props: {
     productName: String,
-    companyName: String
+    companyName: String,
   },
   components: {},
   methods: {

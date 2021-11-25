@@ -30,7 +30,6 @@
           node-key="resId"
           :props="props"
           :data="sourceList"
-          :default-checked-keys="['EFFICIENCY_ANALYSIS_TENANT_DICT']"
           show-checkbox
         >
         </el-tree>
@@ -170,9 +169,10 @@ export default {
           audit: status,
         };
         this.checkStrictly = true;
-
         this.$nextTick(() => {
-          this.$refs.tree.setCheckedKeys(resIdList);
+          this.$refs.tree.setCheckedKeys([
+            ...new Set([...resIdList, "EFFICIENCY_ANALYSIS_TENANT_DICT"]),
+          ]);
           setTimeout(() => {
             this.checkStrictly = false;
           }, 1.5 * 1000);
@@ -190,7 +190,7 @@ export default {
         }
         return item;
       });
-      console.log(res.data, "sourceList");
+
       this.sourceList = res.data;
     },
   },

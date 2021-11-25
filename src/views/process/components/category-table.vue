@@ -7,7 +7,7 @@
           <!-- left search -->
           <el-col :span="18">
             <el-row :gutter="20">
-              <el-col :span="8">
+              <el-col :span="10">
                 <filter-item>
                   <template v-slot:left> <span>归属部门</span> </template>
                   <template v-slot:right>
@@ -26,7 +26,7 @@
                   </template>
                 </filter-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="10">
                 <filter-item>
                   <template v-slot:left> <span>创建时间</span> </template>
                   <template v-slot:right>
@@ -221,25 +221,37 @@
           </el-table-column>
           <el-table-column prop="partNum" label="审批总人数" sortable>
           </el-table-column>
-          <el-table-column prop="personPassTime" label="人均耗时" sortable>
+          <el-table-column
+            prop="personPassTime"
+            label="人均耗时(小时)"
+            sortable
+          >
             <template slot-scope="scope">
               {{ getDuration(scope.row.personPassTime) }}
             </template>
           </el-table-column>
           <el-table-column prop="procDefNum" label="模版总数" sortable />
-          <el-table-column label="平均超时" sortable>
+          <el-table-column label="平均超时(小时)" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.processOverTime) }}
             </template>
           </el-table-column>
           <el-table-column prop="totalCnt" label="流程总数" sortable />
-          <el-table-column prop="totalOverTime" label="超时总长" sortable />
-          <el-table-column prop="totalPassTime" label="耗时总长" sortable>
+          <el-table-column prop="totalOverTime" label="超时总长(小时)" sortable>
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.totalOverTime) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="totalPassTime" label="耗时总长(小时)" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column prop="processPassTime" label="平均耗时" sortable>
+          <el-table-column
+            prop="processPassTime"
+            label="平均耗时(小时)"
+            sortable
+          >
             <template slot-scope="scope">
               {{ getDuration(scope.row.processPassTime) }}
             </template>

@@ -6,6 +6,7 @@
           id="designChart"
           text="模板节点长度分布总览"
           :execSqlToList="execSqlToList"
+          showHour="true"
         />
       </el-card>
     </el-col>
@@ -18,7 +19,7 @@ import { fetchBar } from "@/api/design";
 export default {
   data() {
     return {
-      execSqlToList: {}
+      execSqlToList: {},
     };
   },
   created() {
@@ -32,16 +33,16 @@ export default {
     async getExecSqlToList() {
       const { data } = await fetchBar({
         length: 20,
-        step: 2
+        step: 2,
       });
-      let xAxis = data.map(item => item.range);
-      let yAxis = data.map(item => item.count);
+      let xAxis = data.map((item) => item.range);
+      let yAxis = data.map((item) => item.count);
       this.execSqlToList = {
         xAxis,
-        yAxis
+        yAxis,
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

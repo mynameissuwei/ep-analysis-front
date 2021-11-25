@@ -2,7 +2,57 @@
   <div class="card-container">
     <bread-text name="流程分析明细" />
     <el-row class="filter-container">
-      <!-- left search -->
+      <!-- <span class="text-item">归属部门</span>
+      <el-select
+        v-model="listQuery.createOrgCode"
+        clearable
+        class="filter-item"
+        style="width: 200px"
+        placeholder="请选择"
+      >
+        <el-option
+          v-for="item in selectDepartmentData"
+          :key="item.orgCode"
+          :label="item.orgName"
+          :value="item.orgCode"
+        />
+      </el-select>
+      <span class="text-item">模板类别</span>
+      <el-select
+        class="filter-item"
+        style="width: 200px"
+        v-model="listQuery.appKey"
+        clearable
+        placeholder="请选择"
+      >
+        <el-option
+          v-for="(item, key) in selectTemplateData"
+          :key="item.key"
+          :label="`${item.appName} (${item.appKey})`"
+          :value="item.appKey"
+        />
+      </el-select>
+      <span class="text-item">发起人</span>
+      <el-input
+        class="filter-item"
+        style="width: 200px"
+        v-model="listQuery.startUserName"
+        placeholder="请输入"
+      />
+      <el-button type="primary" style="margin-left: 40px" @click="handleSearch">
+        查询
+      </el-button>
+      <el-button style="margin-left: 10px" @click="handleReset">
+        重置
+      </el-button>
+      <el-button
+        icon="el-icon-circle-plus"
+        style="margin-left: 10px"
+        @click="open()"
+      >
+        保存为快捷视图
+      </el-button> -->
+
       <el-col :span="16">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -56,7 +106,6 @@
           </el-col>
         </el-row>
       </el-col>
-      <!-- right button -->
       <el-col :span="8">
         <div style="float: right">
           <el-button type="primary" @click="handleSearch"> 查询 </el-button>
