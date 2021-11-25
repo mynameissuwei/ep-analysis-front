@@ -37,8 +37,8 @@ export default {
   components: {},
   methods: {
     logout() {
-      console.log("logout ");
-      this.authSdk.logout();
+      console.log("logout ",process.env.VUE_APP_ACCESS_URL);
+      this.authSdk.logout(process.env.VUE_APP_ACCESS_URL);
     }
   }
 };
