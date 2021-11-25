@@ -97,11 +97,11 @@
               {{ getDuration(scope.row.personPassTime) }}
             </template>
           </el-table-column>
-          <el-table-column
-            prop="totalOverTime"
-            label="超时总长(小时)"
-            sortable
-          />
+          <el-table-column prop="totalOverTime" label="超时总长(小时)" sortable>
+            <template slot-scope="scope">
+              {{ getDuration(scope.row.totalOverTime) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="totalPassTime" label="耗时总长(小时)" sortable>
             <template slot-scope="scope">
               {{ getDuration(scope.row.totalPassTime) }}

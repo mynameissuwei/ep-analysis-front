@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "FilterItem"
+  name: "FilterItem",
 };
 </script>
 

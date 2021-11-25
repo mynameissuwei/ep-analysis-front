@@ -85,35 +85,35 @@
           {{ scope.row.deviceName }}
         </template>
       </el-table-column>
-      <el-table-column label="所属厂区" align="center">
+      <el-table-column label="所属厂区">
         <template slot-scope="scope">
           <span>{{ scope.row.affiliatedName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="警报等级" align="center">
+      <el-table-column label="警报等级">
         <template slot-scope="scope">
           {{ scope.row.alarmLevel }}
         </template>
       </el-table-column>
-      <el-table-column label="警报状态" align="center">
+      <el-table-column label="警报状态">
         <template slot-scope="scope">
           {{ scope.row.alarmStatus }}
         </template>
       </el-table-column>
 
-      <el-table-column label="报警时间" align="center">
+      <el-table-column label="报警时间">
         <template slot-scope="scope">
           {{ scope.row.alarmTime }}
         </template>
       </el-table-column>
 
-      <el-table-column label="回复时间" align="center">
+      <el-table-column label="回复时间">
         <template slot-scope="scope">
           {{ scope.row.replyTime }}
         </template>
       </el-table-column>
 
-      <el-table-column label="当前值班人" align="center">
+      <el-table-column label="当前值班人">
         <template slot-scope="scope">
           {{ scope.row.currentDutyManName }}
         </template>

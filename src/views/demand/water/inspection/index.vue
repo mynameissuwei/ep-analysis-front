@@ -85,35 +85,35 @@
           {{ scope.row.taskOrderId }}
         </template>
       </el-table-column>
-      <el-table-column label="任务名称" align="center">
+      <el-table-column label="任务名称">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="巡检人姓名" align="center">
+      <el-table-column label="巡检人姓名">
         <template slot-scope="scope">
           {{ scope.row.inspectorName }}
         </template>
       </el-table-column>
-      <el-table-column label="工单状态" align="center">
+      <el-table-column label="工单状态">
         <template slot-scope="scope">
           {{ scope.row.taskStatus }}
         </template>
       </el-table-column>
 
-      <el-table-column label="班组" align="center">
+      <el-table-column label="班组">
         <template slot-scope="scope">
           {{ scope.row.team }}
         </template>
       </el-table-column>
 
-      <el-table-column label="开始时间" align="center">
+      <el-table-column label="开始时间">
         <template slot-scope="scope">
           {{ scope.row.startTime }}
         </template>
       </el-table-column>
 
-      <el-table-column label="结束时间" align="center">
+      <el-table-column label="结束时间">
         <template slot-scope="scope">
           {{ scope.row.endTime }}
         </template>

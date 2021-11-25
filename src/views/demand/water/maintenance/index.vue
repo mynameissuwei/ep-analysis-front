@@ -85,35 +85,35 @@
           {{ scope.row.taskOrderId }}
         </template>
       </el-table-column>
-      <el-table-column label="设备名称" align="center">
+      <el-table-column label="设备名称">
         <template slot-scope="scope">
           <span>{{ scope.row.deviceName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="养护名称" align="center">
+      <el-table-column label="养护名称">
         <template slot-scope="scope">
           {{ scope.row.maintenanceName }}
         </template>
       </el-table-column>
-      <el-table-column label="养护部件" align="center">
+      <el-table-column label="养护部件">
         <template slot-scope="scope">
           {{ scope.row.maintenancePart }}
         </template>
       </el-table-column>
 
-      <el-table-column label="养护方式" align="center">
+      <el-table-column label="养护方式">
         <template slot-scope="scope">
           {{ scope.row.maintenanceMethod }}
         </template>
       </el-table-column>
 
-      <el-table-column label="养护标准" align="center">
+      <el-table-column label="养护标准">
         <template slot-scope="scope">
           {{ scope.row.maintenanceStandard }}
         </template>
       </el-table-column>
 
-      <el-table-column label="维修人" align="center">
+      <el-table-column label="维修人">
         <template slot-scope="scope">
           {{ scope.row.maintenanceManName }}
         </template>

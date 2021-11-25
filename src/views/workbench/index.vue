@@ -416,9 +416,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-table thead {
-  color: rgb(64, 158, 255);
-}
 .template-container {
   width: 100%;
   height: 46px;

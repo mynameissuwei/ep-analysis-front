@@ -90,29 +90,29 @@
           {{ scope.row.deviceName }}
         </template>
       </el-table-column>
-      <el-table-column label="故障发生位置" align="center">
+      <el-table-column label="故障发生位置">
         <template slot-scope="scope">
           <span>{{ scope.row.faultOccurrenceLocation }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="厂站名称" align="center">
+      <el-table-column label="厂站名称">
         <template slot-scope="scope">
           {{ scope.row.factoryName }}
         </template>
       </el-table-column>
-      <el-table-column label="故障类型" align="center">
+      <el-table-column label="故障类型">
         <template slot-scope="scope">
           {{ scope.row.faultType }}
         </template>
       </el-table-column>
 
-      <el-table-column label="故障等级" align="center">
+      <el-table-column label="故障等级">
         <template slot-scope="scope">
           {{ scope.row.faultLevel }}
         </template>
       </el-table-column>
 
-      <el-table-column label="故障描述" align="center">
+      <el-table-column label="故障描述">
         <template slot-scope="scope">
           {{ scope.row.faultDesc }}
         </template>
