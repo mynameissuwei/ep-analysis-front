@@ -12,6 +12,10 @@ export default {
     text: {
       type: String,
     },
+    showHour: {
+      type: Boolean,
+      default: false,
+    },
     execSqlToList: {
       type: Object,
     },
@@ -68,6 +72,9 @@ export default {
         },
         yAxis: {
           type: "value",
+          axisLabel: {
+            formatter: this.showHour ? "{value} h" : "{value}",
+          },
         },
         series: [
           {

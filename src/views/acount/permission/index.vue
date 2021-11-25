@@ -14,7 +14,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -25,7 +25,7 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
+      style="margin-bottom: 16px"
       @click="handleCreate"
     >
       添加
@@ -33,8 +33,8 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
-      :disabled='multipleSelection.length ? false : true'
+      style="margin-bottom: 16px"
+      :disabled="multipleSelection.length ? false : true"
       @click="handleCheckBoxDelete"
     >
       删除
@@ -72,7 +72,12 @@
       </el-table-column>
       <el-table-column label="操作" width="230">
         <template slot-scope="{ row, $index }">
-          <span class="actionStyle" @click="handleUpdate(row)">
+          <span
+            :class="
+              row.audit == 0 ? 'actionStyle canNotClick ' : 'actionStyle '
+            "
+            @click="handleUpdate(row)"
+          >
             编辑
           </span>
           <span class="actionStyle" @click="handleDelete(row, $index)">
@@ -97,10 +102,10 @@ export default {
       const statusMap = {
         published: "success",
         draft: "gray",
-        deleted: "danger"
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
   data() {
     return {
@@ -108,8 +113,8 @@ export default {
       listLoading: true,
       multipleSelection: [],
       listQuery: {
-        name: ""
-      }
+        name: "",
+      },
     };
   },
   created() {
@@ -118,7 +123,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      fetchList(this.listQuery).then(res => {
+      fetchList(this.listQuery).then((res) => {
         this.list = res.data;
         setTimeout(() => {
           this.listLoading = false;
@@ -128,14 +133,14 @@ export default {
     handleCreate() {
       this.$router.push({
         name: "createPermission",
-        params: { id: undefined }
+        params: { id: undefined },
       });
     },
     handleUpdate(row) {
       console.log(row.authId, "authId");
       this.$router.push({
         name: "createPermission",
-        params: { id: row.authId }
+        params: { id: row.authId },
       });
     },
     handleSearch() {
@@ -143,7 +148,7 @@ export default {
     },
     handleReset() {
       this.listQuery = {
-        name: ""
+        name: "",
       };
       this.multipleSelection = [];
       this.getList();
@@ -155,14 +160,14 @@ export default {
       this.$confirm("你确定要删除该权限？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(async () => {
         await deleteList([row.authId]);
         await this.getList();
 
         this.$message({
           type: "success",
-          message: "删除成功!"
+          message: "删除成功!",
         });
       });
     },
@@ -170,17 +175,17 @@ export default {
       this.$confirm("你确定要删除该权限？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(async () => {
-        const auIdarray = this.multipleSelection.map(item => item.authId);
+        const auIdarray = this.multipleSelection.map((item) => item.authId);
         await deleteList(auIdarray);
         await this.getList();
         this.$message({
           type: "success",
-          message: "删除成功!"
+          message: "删除成功!",
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>

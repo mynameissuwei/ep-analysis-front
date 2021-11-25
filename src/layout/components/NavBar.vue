@@ -32,15 +32,18 @@ export default {
   name: "CommonHeader",
   props: {
     productName: String,
-    companyName: String
+    companyName: String,
   },
   components: {},
   methods: {
     logout() {
       console.log("logout ");
-      this.authSdk.logout();
-    }
-  }
+      this.authSdk.logout(
+        window.location.protocol + "//" + window.location.host + "/#/dashboard"
+      );
+      // this.authSdk.logout();
+    },
+  },
 };
 </script>
 

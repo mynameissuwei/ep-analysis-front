@@ -221,7 +221,7 @@ export default {
       this.$refs["dataForm"].validate(async (valid) => {
         console.log(this.editUserList, this.userList, "userList");
         let deleteArray = [];
-        this.editUserList.forEach((item) => {
+        (this.editUserList ? this.editUserList : []).forEach((item) => {
           if (!this.userList.find((l) => l.accountId === item.accountId)) {
             deleteArray.push(item);
           }
@@ -237,10 +237,12 @@ export default {
             status: this.form.status ? 1 : 0,
           };
           this.$store.dispatch("loading/setLoading");
-          const userResult = this.userList.map((item) => ({
-            accountId: item.accountId,
-            roleId: this.form.roleId,
-          }));
+          const userResult = (this.userList ? this.userList : []).map(
+            (item) => ({
+              accountId: item.accountId,
+              roleId: this.form.roleId,
+            })
+          );
           const authResult = {
             roleId: this.form.roleId,
             authIds: this.multipleSelection
