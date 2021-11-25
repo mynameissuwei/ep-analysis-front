@@ -83,6 +83,7 @@ export default {
       deep: true,
     },
   },
+
   methods: {
     getFlow() {
       fetchFlow({
@@ -97,7 +98,7 @@ export default {
       fetchItemDetail({
         condition: {
           sqlKey: "procAnalyItemMap",
-          extParam: { procDefKey: this.id },
+          extParam: { procDefKey: this.$route.query.procDefKey },
         },
       }).then((response) => {
         const { data } = response;

@@ -1,9 +1,7 @@
 <template>
   <div class="module">
     <div class="module-img" style="height: 309px">
-      <div class="module-text">
-        AI模板智能分析诊断
-      </div>
+      <div class="module-text">AI模板智能分析诊断</div>
     </div>
     <div>
       <card-container>
@@ -13,7 +11,7 @@
             v-for="(item, index) in list"
             :key="index"
           >
-            <div style="padding-bottom: 20px; color: #E2292C; cursor: pointer;">
+            <div style="padding-bottom: 20px; color: #e2292c; cursor: pointer">
               {{ index + 1 }} . {{ item.defName }}
             </div>
             <div style="padding-left: 25px">
@@ -50,10 +48,10 @@ export default {
       total: 0,
       listQuery: {
         pageNo: 1,
-        pageSize: 10
+        pageSize: 10,
       },
       getDuration,
-      toPercent
+      toPercent,
     };
   },
   created() {
@@ -67,9 +65,9 @@ export default {
         condition: {
           sqlKey: "procAnalyMorePage",
           pageSize: this.listQuery.pageSize,
-          pageNo: this.listQuery.pageNo
-        }
-      }).then(response => {
+          pageNo: this.listQuery.pageNo,
+        },
+      }).then((response) => {
         const { data, totalCount } = response;
         console.log(data, "datadata");
         this.list = data;
@@ -78,8 +76,8 @@ export default {
           this.listLoading = false;
         }, 1.5 * 1000);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

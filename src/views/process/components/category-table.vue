@@ -124,7 +124,7 @@
       <el-tab-pane label="按类别" name="category">
         <el-row class="filter-container" style="margin-top: 10px">
           <!-- left search -->
-          <el-col :span="18">
+          <el-col :span="14">
             <el-row :gutter="20">
               <el-col :span="8">
                 <filter-item>
@@ -184,7 +184,7 @@
             </el-row>
           </el-col>
           <!-- right button -->
-          <el-col :span="6">
+          <el-col :span="10">
             <div style="float: right">
               <el-button size="small" type="primary" @click="handleSearch">
                 查询

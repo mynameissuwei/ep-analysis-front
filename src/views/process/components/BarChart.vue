@@ -65,15 +65,21 @@ export default {
       return {
         title: {
           text: this.text,
+          top: -5,
         },
         xAxis: {
           type: "category",
           data: xAxis,
+          name: this.showHour ? "节点数量" : "",
         },
         yAxis: {
           type: "value",
-          axisLabel: {
-            formatter: this.showHour ? "{value} h" : "{value}",
+          name: this.showHour ? "模版数" : "",
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
           },
         },
         series: [

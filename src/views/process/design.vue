@@ -6,7 +6,7 @@
           id="designChart"
           text="模板节点长度分布总览"
           :execSqlToList="execSqlToList"
-          showHour="true"
+          :showHour="true"
         />
       </el-card>
     </el-col>

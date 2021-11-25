@@ -1,9 +1,9 @@
 <template>
   <el-row :gutter="5" class="filter-item">
-    <el-col :span="6" class="leftContainer">
+    <el-col :span="8" class="leftContainer">
       <slot name="left"></slot>
     </el-col>
-    <el-col :span="18">
+    <el-col :span="16">
       <slot name="right"></slot>
     </el-col>
   </el-row>
