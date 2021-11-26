@@ -168,12 +168,6 @@ export default {
         ],
         roleId: [
           { required: true, message: "请输入角色编码", trigger: "blur" },
-          // {
-          //   min: 1,
-          //   max: 20,
-          //   message: "长度在 1 到 120 个字符",
-          //   trigger: "blur"
-          // },
           {
             pattern: /^[5A-Za-z0-9-\_]+$/,
             // message: "只能输入英文字符和下划线",
@@ -183,16 +177,16 @@ export default {
         ],
         roleDesc: [
           {
+            required: true,
+            message: "请输入角色编码",
+            trigger: "blur"
+          },
+          {
             min: 0,
             max: 100,
             message: "最大长度100字符",
             trigger: "blur",
           },
-          // {
-          //   pattern: /^[\u4e00-\u9fa5]+$/,
-          //   message: "只能输入中文字符",
-          //   trigger: "blur"
-          // }
         ],
       },
     };
