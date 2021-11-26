@@ -147,7 +147,7 @@ export default {
     return {
       lineChartData: {
         charData: [],
-        legendData: ["完成流程数", "超时流程数", "流程超时数", "流程数"],
+        legendData: ["完成流程数", "超时流程数", "流程超时数(小时)", "流程数"],
         xAxisData: [],
       },
       displayCardData: {
