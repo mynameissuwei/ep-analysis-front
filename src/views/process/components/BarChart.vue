@@ -65,7 +65,10 @@ export default {
       return {
         title: {
           text: this.text,
-          top: -5,
+          top: 10,
+        },
+        grid: {
+          top: "30%",
         },
         xAxis: {
           type: "category",
