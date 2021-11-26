@@ -77,7 +77,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          name: this.showHour ? "模版数" : "",
+          name: this.showHour ? "模板数" : "",
         },
         tooltip: {
           trigger: "axis",
