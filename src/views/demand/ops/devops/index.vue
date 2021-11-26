@@ -112,7 +112,7 @@ export default {
         "responseTime",
         "finishTime",
       ].map((item) => this.changeRightMap(item, data));
-      console.log(changeData, "changeData");
+
       this.rightMap = changeData;
     },
     async getEchartData(sqlKey) {
@@ -139,15 +139,22 @@ export default {
         yAxis,
       };
     },
+
     async getPieData() {
+      let peiNameData = [
+        { value: "6", name: "巡检" },
+        { value: "8", name: "抢修" },
+        { value: "10", name: "消缺" },
+      ];
       const { data } = await fetchExecSqlToList({
         condition: {
           sqlKey: "procTypePieList",
         },
       });
+
       this.opsPieData = data.map((item) => ({
         value: item.cnt,
-        name: item.type,
+        name: peiNameData.find((l) => l.value == item.type).name,
       }));
     },
     changeRightMap(value, data) {
@@ -189,7 +196,8 @@ export default {
           };
         case "sum(fault_time)":
           return {
-            num: this.toPercent(data[value]),
+            // num: this.toPercent(data[value]),
+            num: this.toPercent(1),
             imgName: this.finishTimePng,
             text: "工单完结率",
             className: "finishTime",

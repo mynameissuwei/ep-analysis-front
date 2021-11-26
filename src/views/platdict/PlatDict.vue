@@ -33,7 +33,9 @@
           </el-col>
           <el-col :span="10">
             <filter-item>
-              <template v-slot:left> <span>创建时间</span> </template>
+              <template v-slot:left>
+                <span style="margin-left: 30px">创建时间</span>
+              </template>
               <template v-slot:right>
                 <el-date-picker
                   v-model="dateValue"
