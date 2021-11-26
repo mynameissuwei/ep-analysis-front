@@ -4,7 +4,7 @@
       <el-card class="box-card">
         <bar-chart
           id="designChart"
-          text="模板节点长度分布总览"
+          text="模版节点长度分布总览"
           :execSqlToList="execSqlToList"
           :showHour="true"
         />

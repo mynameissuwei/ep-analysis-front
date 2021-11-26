@@ -64,7 +64,7 @@ const demandRouter = {
       component: () => import("@/views/demand/ops/index"), // Parent router-view
       name: "ops",
       meta: {
-        id: "EFFICIENCY_ANALYSIS_PTSW",
+        id: "EFFICIENCY_ANALYSIS_UNIFORMITY_OP",
       },
       redirect: "/ops/devops",
       children: [
@@ -74,7 +74,7 @@ const demandRouter = {
           name: "devops",
           meta: {
             title: "统一运维",
-            id: "EFFICIENCY_ANALYSIS_PTSW",
+            id: "EFFICIENCY_ANALYSIS_UNIFORMITY_OP",
           },
         },
       ],

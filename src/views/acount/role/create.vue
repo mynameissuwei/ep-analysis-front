@@ -178,8 +178,8 @@ export default {
         roleDesc: [
           {
             required: true,
-            message: "请输入角色编码",
-            trigger: "blur"
+            message: "请输入角色描述",
+            trigger: "blur",
           },
           {
             min: 0,
