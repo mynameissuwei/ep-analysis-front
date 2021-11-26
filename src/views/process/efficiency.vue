@@ -146,69 +146,24 @@ export default {
   data() {
     return {
       lineChartData: {
-        charData: [
-          [100, 150, 271, 400, 201, 248, 124],
-          [200, 300, 400, 800, 400, 500, 300],
-          [300, 450, 610, 1200, 600, 600, 300],
-          [400, 600, 800, 1600, 800, 900, 400],
-        ],
-        // legendData: [
-        //   "每小时完成流程数",
-        //   "每小时超时流程数量",
-        //   "每小时流程超时数",
-        //   "每小时流程数"
-        // ],
+        charData: [],
         legendData: ["完成流程数", "超时流程数", "流程超时数", "流程数"],
-        // xAxisData: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        xAxisData: [
-          "2021-11-15 8",
-          "2021-11-15 9",
-          "2021-11-15 10",
-          "2021-11-15 11",
-          "2021-11-15 12",
-          "2021-11-15 13",
-          "2021-11-15 14dasdas12121",
-        ],
+        xAxisData: [],
       },
       displayCardData: {
-        templateTotalAmount: 250,
-        templateTimeConsuming: 250,
-        completeRate: "98%",
-        averageTimeConsuming: 123,
-        templateTotalExpiredTime: 2131,
-        averageTimeExpired: 123,
-        approveTotalAmount: 897,
-        humanPerTimeConsuming: 348,
+        templateTotalAmount: 0,
+        templateTimeConsuming: 0,
+        completeRate: "0%",
+        averageTimeConsuming: 0,
+        templateTotalExpiredTime: 0,
+        averageTimeExpired: 0,
+        approveTotalAmount: 0,
+        humanPerTimeConsuming: 0,
       },
-      efficiencyScore: 0.89,
-      eventsData: [
-        {
-          operateName: "吴雷",
-          noticeType: "发起",
-          processName: "流程名称",
-          operateTime: "2021-10-29",
-        },
-        {
-          operateName: "吴雷",
-          noticeType: "发起",
-          processName: "流程名称",
-          operateTime: "2021-10-29",
-        },
-        {
-          operateName: "吴雷",
-          noticeType: "发起",
-          processName: "流程名称",
-          operateTime: "2021-10-29",
-        },
-        {
-          operateName: "吴雷",
-          noticeType: "发起",
-          processName: "流程名称",
-          operateTime: "2021-10-29",
-        },
-      ],
+      efficiencyScore: 0,
+      eventsData: [],
       pollingST: null,
-      processTotalAmountData: 1897,
+      processTotalAmountData: 0,
       queryParam: {
         tenantId: "ep-analysis-flink",
         senderId: this.$store.state.user.tenantId,
@@ -243,27 +198,27 @@ export default {
     },
     async getEfficiencyDashboardData() {
       getEfficiencyData(this.queryParam).then((response) => {
-        let extra = response.data[0].extra;
-        if (extra) extra = JSON.parse(extra);
+        let extra = JSON.parse(response.data[0].extra);
+        if(extra === '' || Object.keys(extra).length === 0 ) return;
         // 获取分时图数据
         console.log("/interMsg/list extra:", extra);
-        let timeQuantumStatistics = JSON.parse(extra.timeQuantumStatistics);
-        console.log(
-          "/interMsg/list timeQuantumStatistics:",
-          timeQuantumStatistics
-        );
-
-        this.lineChartData.xAxisData = this.convertToXAxisData(
-          timeQuantumStatistics
-        );
-        console.log(
-          "this.lineChartData.xAxisData ",
-          this.lineChartData.xAxisData
-        );
-        // this.lineChartData.legendData = this.convertToLegendData(timeQuantumStatistics);
-        this.lineChartData.charData = this.convertToChartData(
-          timeQuantumStatistics
-        );
+        if(extra.timeQuantumStatistics) {
+          let timeQuantumStatistics = JSON.parse(extra.timeQuantumStatistics);
+          console.log(
+            "/interMsg/list timeQuantumStatistics:",
+            timeQuantumStatistics
+          );
+          this.lineChartData.xAxisData = this.convertToXAxisData(
+            timeQuantumStatistics
+          );
+          console.log(
+            "this.lineChartData.xAxisData ",
+            this.lineChartData.xAxisData
+          );
+          this.lineChartData.charData = this.convertToChartData(
+            timeQuantumStatistics
+          );
+        }
 
         // 获取卡片数据
         this.displayCardData = { ...extra };
