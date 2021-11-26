@@ -19,7 +19,7 @@
               :cardTitle="
                 convertHourUnit(displayCardData.templateTimeConsuming)
               "
-              cardText="模板总耗时"
+              cardText="模板总耗时(小时)"
               svgText="timeConsume"
             />
           </el-tooltip>
@@ -39,7 +39,7 @@
           >
             <display-card
               :cardTitle="convertHourUnit(displayCardData.averageTimeConsuming)"
-              cardText="平均耗时"
+              cardText="平均耗时(小时)"
               svgText="timeConsume"
             />
           </el-tooltip>
@@ -61,7 +61,7 @@
               :cardTitle="
                 convertHourUnit(displayCardData.templateTotalExpiredTime)
               "
-              cardText="模板总超时"
+              cardText="模板总超时(小时)"
               svgText="overtime"
             />
           </el-tooltip>
@@ -74,7 +74,7 @@
           >
             <display-card
               :cardTitle="convertHourUnit(displayCardData.averageTimeExpired)"
-              cardText="平均超时"
+              cardText="平均超时(小时)"
               svgText="overtime"
             />
           </el-tooltip>
@@ -96,7 +96,7 @@
               :cardTitle="
                 convertHourUnit(displayCardData.humanPerTimeConsuming)
               "
-              cardText="人均耗时"
+              cardText="人均耗时(小时)"
               svgText="timeConsume"
             />
           </el-tooltip>
@@ -228,8 +228,8 @@ export default {
     },
     convertHourUnit(hourTime) {
       if (parseInt(hourTime) > 10000)
-        return (hourTime = hourTime.substring(0, 4) + "...h");
-      return hourTime + "h";
+        return (hourTime = hourTime.substring(0, 4) + "...");
+      return hourTime;
     },
     // 轮询方法
     polling() {
@@ -238,7 +238,7 @@ export default {
         this.pollingST = setTimeout(() => {
           clearTimeout(this.pollingST);
           this.polling();
-        }, 100000);
+        }, 10000);
       });
     },
     async getEfficiencyDashboardData() {
@@ -271,7 +271,6 @@ export default {
           parseInt(
             parseFloat(this.displayCardData.completeRate).toFixed(2) * 100
           ) + "%";
-
         // 获取效能评分
         this.efficiencyScore = extra.efficiencyScore / 100;
 
