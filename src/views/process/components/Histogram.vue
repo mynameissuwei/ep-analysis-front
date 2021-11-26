@@ -58,7 +58,8 @@ export default {
           data: xAxis
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          minInterval : 1
         },
         grid: {
           top: "50px",
