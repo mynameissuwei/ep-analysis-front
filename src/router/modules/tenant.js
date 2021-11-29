@@ -40,12 +40,12 @@ export const tenantSidebar = [
       id: "EFFICIENCY_ANALYSIS",
     },
     children: [
-      {
-        path: "efficiency",
-        component: () => import("@/views/process/efficiency"),
-        name: "Efficiency",
-        meta: { title: "效能大盘", id: "EFFICIENCY_ANALYSIS_TENANT_DASHBOARD" },
-      },
+      // {
+      //   path: "efficiency",
+      //   component: () => import("@/views/process/efficiency"),
+      //   name: "Efficiency",
+      //   meta: { title: "效能大盘", id: "EFFICIENCY_ANALYSIS_TENANT_DASHBOARD" },
+      // },
       {
         path: "category",
         component: () => import("@/views/process/category"),
