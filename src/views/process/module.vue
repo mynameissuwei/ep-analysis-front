@@ -7,8 +7,12 @@
           <div style="padding-bottom: 20px">1、{{ list[0].defName }}</div>
           <div style="padding-bottom: 20px; padding-left: 20px">
             月度累计超 {{ list[0].totalCnt }} 次申请，其中超时率
-            {{ toPercent(list[0].overRatio) }}，累计超时
-            {{ getDuration(list[0].totalPassTime) }}，建议对该模板调整优化
+            {{ toPercent(list[0].overRatio) }}，人均耗时
+            {{ getDuration(list[0].avgPassTimePerson) }} 小时，平均耗时
+            {{
+              getDuration(list[0].avgPassTimeProc)
+            }}
+            小时，建议对该模板调整优化
           </div>
         </div>
         <el-button type="primary" size="default" @click="viewMore"
@@ -56,7 +60,7 @@ export default {
         },
       }).then((response) => {
         const { data } = response;
-        console.log(data, "listData");
+        console.log(data[0], "listData");
         this.list = data;
       });
     },
