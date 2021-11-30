@@ -59,7 +59,7 @@ export const constantRoutes = [
   {
     path: "/process",
     component: Layout,
-    redirect: "/process/efficiency",
+    redirect: "/process/category",
     meta: {
       title: "效能分析",
       icon: "dict",

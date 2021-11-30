@@ -90,7 +90,7 @@ export default {
         },
         series: [
           {
-            name: "Nightingale Chart",
+            name: "",
             type: "pie",
             center: ["50%", "50%"],
             // roseType: "area",
