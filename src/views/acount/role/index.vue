@@ -12,7 +12,7 @@
           </el-button>
           <el-button
             size="small"
-            style="margin-left: 10px;"
+            style="margin-left: 10px"
             @click="handleReset"
           >
             重置
@@ -23,7 +23,7 @@
     <el-button
       size="small"
       type="primary"
-      style="margin-bottom:16px"
+      style="margin-bottom: 16px"
       @click="handleCreate"
     >
       添加
@@ -40,9 +40,7 @@
       <el-table-column prop="createdTime" label="创建时间"> </el-table-column>
       <el-table-column label="操作" width="230">
         <template slot-scope="{ row, $index }">
-          <span class="actionStyle" @click="handleUpdate(row)">
-            编辑
-          </span>
+          <span class="actionStyle" @click="handleUpdate(row)"> 编辑 </span>
           <span class="actionStyle" @click="handleDelete(row, $index)">
             删除
           </span>
@@ -85,24 +83,21 @@ export default {
       listQuery: {
         page: 1,
         size: 10,
-        name: ""
+        name: "",
       },
       dialogVisible: false,
-      temp: {}
+      temp: {},
     };
   },
   methods: {
     getList() {
       this.listLoading = true;
-      fetchList(this.listQuery).then(response => {
-        console.log(response, "response");
+      fetchList(this.listQuery).then((response) => {
         this.list = response.data.records;
         this.total = response.data.total;
+        this.listLoading = false;
 
         // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false;
-        }, 1.5 * 1000);
       });
     },
     handleSearch() {
@@ -119,20 +114,24 @@ export default {
     handleCreate() {
       this.$router.push({
         name: "createRole",
-        params: { id: undefined, getList: this.getList, dialogStatus: "create" }
+        params: {
+          id: undefined,
+          getList: this.getList,
+          dialogStatus: "create",
+        },
       });
     },
     handleDelete(row) {
       this.$confirm("你确定要删除该角色？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(async () => {
         await deleteList([row.roleId]);
         await this.getList();
         this.$message({
           type: "success",
-          message: "删除成功!"
+          message: "删除成功!",
         });
       });
     },
@@ -143,18 +142,18 @@ export default {
           id: row.roleId,
           getList: this.getList,
           row,
-          dialogStatus: "edit"
-        }
+          dialogStatus: "edit",
+        },
       });
     },
     handleReset() {
       this.listQuery = {
         page: 1,
         size: 10,
-        name: ""
+        name: "",
       };
       this.getList();
-    }
-  }
+    },
+  },
 };
 </script>

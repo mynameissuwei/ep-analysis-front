@@ -65,6 +65,9 @@
                 >
                   重置
                 </el-button>
+                <el-button size="small" type="primary" @click="handDownload()">
+                  下载
+                </el-button>
               </div>
             </el-col>
           </el-row>
@@ -351,6 +354,9 @@ export default {
       } else if (type === "template") {
         this.temTemplate = data.data;
       }
+    },
+    handDownload() {
+      console.log("downLoad");
     },
     handleSkip(type, row) {
       if (type === "template") {

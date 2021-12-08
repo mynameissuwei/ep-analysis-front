@@ -125,9 +125,7 @@ export default {
       this.listLoading = true;
       fetchList(this.listQuery).then((res) => {
         this.list = res.data;
-        setTimeout(() => {
-          this.listLoading = false;
-        }, 1.5 * 1000);
+        this.listLoading = false;
       });
     },
     handleCreate() {

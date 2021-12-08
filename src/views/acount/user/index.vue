@@ -161,9 +161,7 @@ export default {
         } = response;
         this.list = records;
         this.total = total;
-        setTimeout(() => {
-          this.listLoading = false;
-        }, 1.5 * 1000);
+        this.listLoading = false;
       });
     },
     getCheckedTenantList(accountId) {
