@@ -1,5 +1,5 @@
 FROM fnwharbor.enncloud.cn/fnw/nginx-brotli:latest
-ADD default_PRO.conf /etc/nginx/conf.d/
+ADD default_NEW_PRO_ONLINE.conf /etc/nginx/conf.d/
 ADD default_DEV.conf /etc/nginx/conf.d/
 ADD dist/. /usr/share/nginx/html/
 
