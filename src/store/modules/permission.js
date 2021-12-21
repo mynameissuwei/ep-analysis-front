@@ -93,6 +93,7 @@ const actions = {
       commit("SET_ROUTES", isOperation ? operateSidebar : tenantSidebar);
       // router.addRoutes(accessedRoutes);
       resolve({ accessedRoutes, flatResult });
+      // resolve({ constantRoutes, flatResult });
     });
   },
 };

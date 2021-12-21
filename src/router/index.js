@@ -73,6 +73,12 @@ export const constantRoutes = [
       //   meta: { title: "效能大盘", id: "EFFICIENCY_ANALYSIS_TENANT_DASHBOARD" },
       // },
       {
+        path: "example",
+        component: () => import("@/views/example"),
+        name: "Example",
+        meta: { title: "实例分析", id: "EFFICIENCY_ANALYSIS_TENANT_CATEGORY" },
+      },
+      {
         path: "category",
         component: () => import("@/views/process/category"),
         name: "Category",
