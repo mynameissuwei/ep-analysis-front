@@ -2,10 +2,10 @@
   <div class="components-container">
     <split-pane split="vertical" @resize="resize">
       <template slot="paneL">
-        <left-container />
+        <slot name="left"></slot>
       </template>
       <template slot="paneR">
-        <right-container />
+        <slot name="right"></slot>
       </template>
     </split-pane>
   </div>

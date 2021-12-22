@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="rectangle"></div>
-    <div class="rect-text">
+    <div class="rect-text" :style="style">
       {{ name ? name : text }}
     </div>
   </div>
@@ -9,18 +9,16 @@
 
 <script>
 export default {
-  props: {
-    name: String
-  },
+  props: ["name", "style"],
   data() {
     return {
-      text: ""
+      text: "",
     };
   },
   watch: {
     $route() {
       this.getBreadcrumb();
-    }
+    },
   },
   created() {
     this.getBreadcrumb();
@@ -28,11 +26,11 @@ export default {
   methods: {
     getBreadcrumb() {
       let matched = this.$route.matched.filter(
-        item => item.meta && item.meta.title
+        (item) => item.meta && item.meta.title
       );
       this.text = matched[matched.length - 1].meta.title;
-    }
-  }
+    },
+  },
 };
 </script>
 

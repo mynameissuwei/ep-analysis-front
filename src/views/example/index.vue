@@ -1,8 +1,13 @@
 <template>
   <div>
     <div class="card-container" style="height: 136px">
-      <el-row :gutter="44" class="filter-container example-container">
-        <el-col :span="8">
+      <el-row
+        :gutter="22"
+        class="filter-container example-container"
+        type="flex"
+        justify="space-between"
+      >
+        <el-col :span="7">
           <el-row :gutter="5">
             <el-col :span="6">
               <span>选择组织</span>
@@ -24,7 +29,7 @@
             </el-col>
           </el-row>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-row :gutter="5">
             <el-col :span="6">
               <span>选择租户</span>
@@ -46,12 +51,12 @@
             </el-col>
           </el-row>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="10">
           <el-row :gutter="5">
-            <el-col :span="6">
+            <el-col :span="8">
               <span>选择流程类型（租户）</span>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="16">
               <el-select
                 v-model="listQuery.createOrgCode"
                 clearable
@@ -69,8 +74,13 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="44" class="filter-container example-container">
-        <el-col :span="8">
+      <el-row
+        :gutter="22"
+        class="filter-container example-container"
+        type="flex"
+        justify="space-between"
+      >
+        <el-col :span="7">
           <el-row :gutter="5">
             <el-col :span="6">
               <span>选择流程</span>
@@ -92,33 +102,42 @@
             </el-col>
           </el-row>
         </el-col>
+        <el-col :span="14">
+          <el-button class="button-container">今日</el-button>
+          <el-button class="button-container">本周</el-button>
+          <el-button class="button-container">本月</el-button>
+          <el-button class="button-container">全年</el-button>
+          <el-date-picker
+            class="date-container"
+            size="small"
+            v-model="dateValue"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
+          </el-date-picker>
+        </el-col>
+        <el-col :span="3">
+          <div style="float: right">
+            <el-button type="primary" size="small">查询</el-button>
+            <el-button size="small">重置</el-button>
+          </div>
+        </el-col>
       </el-row>
     </div>
 
     <div class="tab-container" style="position: relative">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="流程指数" name="first">
-          <tab-container />
+          <tab-container>
+            <template v-slot:left> <left-container /> </template>
+            <template v-slot:right> <right-container /> </template>
+          </tab-container>
         </el-tab-pane>
         <el-tab-pane label="节点分析" name="second">节点分析</el-tab-pane>
         <el-tab-pane label="流程指数" name="third">流程指数</el-tab-pane>
       </el-tabs>
-      <div style="position: absolute; right: 10px; top: 10px">
-        <el-button class="button-container">今日</el-button>
-        <el-button class="button-container">本周</el-button>
-        <el-button class="button-container">本月</el-button>
-        <el-button class="button-container">全年</el-button>
-        <el-date-picker
-          class="date-container"
-          size="small"
-          v-model="dateValue"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        >
-        </el-date-picker>
-      </div>
     </div>
   </div>
 </template>
@@ -126,9 +145,11 @@
 <script>
 import FilterItem from "@/components/FilterItem";
 import TabContainer from "./TabContainer";
+import LeftContainer from "./LeftContainer";
+import RightContainer from "./RightContainer";
 
 export default {
-  components: { FilterItem, TabContainer },
+  components: { FilterItem, TabContainer, LeftContainer, RightContainer },
   data() {
     return {
       selectDepartmentData: [
