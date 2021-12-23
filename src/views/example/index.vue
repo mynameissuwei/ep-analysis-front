@@ -135,8 +135,18 @@
             <template v-slot:right> <right-container /> </template>
           </tab-container>
         </el-tab-pane>
-        <el-tab-pane label="节点分析" name="second">节点分析</el-tab-pane>
-        <el-tab-pane label="流程指数" name="third">流程指数</el-tab-pane>
+        <el-tab-pane label="节点分析" name="second">
+          <tab-container>
+            <template v-slot:left> <left-container /> </template>
+            <template v-slot:right> <node-detail /> </template>
+          </tab-container>
+        </el-tab-pane>
+        <el-tab-pane label="流程指数" name="third">
+          <tab-container>
+            <template v-slot:left> <left-container /> </template>
+            <template v-slot:right> <export-detail /> </template>
+          </tab-container>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -147,9 +157,18 @@ import FilterItem from "@/components/FilterItem";
 import TabContainer from "./TabContainer";
 import LeftContainer from "./LeftContainer";
 import RightContainer from "./RightContainer";
+import NodeDetail from "./NodeDetail";
+import ExportDetail from "./ExportDetail";
 
 export default {
-  components: { FilterItem, TabContainer, LeftContainer, RightContainer },
+  components: {
+    FilterItem,
+    TabContainer,
+    LeftContainer,
+    RightContainer,
+    NodeDetail,
+    ExportDetail,
+  },
   data() {
     return {
       selectDepartmentData: [
@@ -159,7 +178,7 @@ export default {
         },
       ],
       dateValue: "",
-      activeName: "first",
+      activeName: "second",
       listQuery: {
         pageNo: 1,
         pageSize: 10,

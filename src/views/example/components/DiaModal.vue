@@ -1,16 +1,26 @@
 <template>
   <div class="diaModal">
     <el-dialog
-      title="新增里程碑"
+      title="里程碑及诶单执行力分析因子设置"
       :visible="false"
       width="800px"
-      :before-close="handleClose"
     >
+      <add-node-modal
+        :innerVisible="innerVisible"
+        :handleCloseInner="handleCloseInner"
+      />
+      <add-mile-stone
+        :visible="mileStoneVisible"
+        :handleCloseInner="handleCloseMileStone"
+      />
       <div class="container">
         <div class="left-container">
           <div class="left-container-title">
             <span class="mileMan">里程碑管理</span>
-            <span style="float: right">
+            <span
+              style="float: right; cursor: pointer"
+              @click="mileStoneVisible = true"
+            >
               <i
                 class="el-icon-circle-plus-outline"
                 style="margin-right: 10px"
@@ -24,8 +34,12 @@
               </el-table-column>
               <el-table-column label="操作" width="230">
                 <template slot-scope="{ row, $index }">
-                  <i class="el-icon-edit"></i>
-                  <i class="el-icon-delete"></i>
+                  <i class="el-icon-edit" style="cursor: pointer"></i>
+                  <i
+                    class="el-icon-delete"
+                    style="margin-left: 10px; cursor: pointer"
+                    @click="deleteMile"
+                  ></i>
                 </template>
               </el-table-column>
             </el-table>
@@ -36,10 +50,7 @@
             <span class="mileMan">撰写文件</span>
             <span>
               <span>
-                <el-button
-                  type="primary"
-                  @click="dialogVisible = false"
-                  size="small"
+                <el-button type="primary" @click="handleOpenInner" size="small"
                   >添加节点</el-button
                 ></span
               ></span
@@ -59,7 +70,7 @@
               <el-table-column label="操作" width="120">
                 <template slot-scope="scope">
                   <el-button
-                    @click.native.prevent="deleteRow(scope.$index, tableData)"
+                    @click.native.prevent="removeNode"
                     type="text"
                     size="small"
                   >
@@ -133,12 +144,22 @@
 </template>
 
 <script>
+import AddNodeModal from "./AddNodeModal";
+import AddMileStone from "./AddMileStone";
+
 export default {
   props: ["visible"],
+  components: {
+    AddNodeModal,
+    AddMileStone,
+  },
   data() {
     return {
       dialogVisible: false,
       input: "",
+      innerVisible: false,
+      mileStoneVisible: false,
+      dengmiQueryForm: "",
       tableData: [
         {
           date: "2016-05-02",
@@ -164,12 +185,44 @@ export default {
     };
   },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
+    handleCloseInner() {
+      this.innerVisible = false;
+    },
+    handleCloseMileStone() {
+      this.mileStoneVisible = false;
+    },
+    handleOpenInner() {
+      console.log(123, "123123");
+      this.innerVisible = true;
+    },
+    deleteMile() {
+      this.$msgbox({
+        title: "删除里程碑",
+        message: "请先移除该里程碑中所有节点，再进行删除里程碑操作",
+        showCancelButton: true,
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      }).then(() => {
+        this.$message({
+          type: "success",
+          message: "删除成功!",
+        });
+      });
+    },
+    removeNode() {
+      this.$msgbox({
+        title: "移除节点",
+        message:
+          "是否确认将“产业公司经办人撰写文件/提交”节点移出里程碑“撰写文件”？",
+        showCancelButton: true,
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      }).then(() => {
+        this.$message({
+          type: "success",
+          message: "删除成功!",
+        });
+      });
     },
   },
 };
