@@ -14,8 +14,17 @@
               content: '78%',
               text: '总',
               textData: '210条',
+              showButton: false,
             }"
-          />
+          >
+            <template v-slot:right>
+              <el-progress
+                type="circle"
+                :percentage="0"
+                width="50"
+              ></el-progress>
+            </template>
+          </process-card>
         </el-col>
         <el-col :span="12">
           <process-card
@@ -24,8 +33,17 @@
               content: 'B+',
               text: '比率',
               textData: '87%',
+              showButton: false,
             }"
-          />
+          >
+            <template v-slot:right>
+              <el-progress
+                type="circle"
+                :percentage="0"
+                width="50"
+              ></el-progress>
+            </template>
+          </process-card>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="center-row">
@@ -35,7 +53,11 @@
               title: '流效率',
               content: '9%',
             }"
-          />
+          >
+            <template v-slot:right>
+              <img src="@/assets/warn.svg" class="warnClass" alt="" />
+            </template>
+          </process-card>
         </el-col>
         <el-col :span="12">
           <process-card
@@ -43,25 +65,34 @@
               title: '时效',
               content: '23.3人天',
             }"
-          />
+          >
+            <template v-slot:right>
+              <img src="@/assets/warn.svg" class="warnClass" alt="" />
+            </template>
+          </process-card>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
           <process-card
             v-bind="{
-              title: '时效',
-              content: '23.3人天',
+              title: '流程平均干系人',
+              content: '23.3人',
             }"
-          />
+          >
+          </process-card>
         </el-col>
         <el-col :span="12">
           <process-card
             v-bind="{
-              title: '时效',
+              title: '人效',
               content: '23.3人天',
             }"
-          />
+          >
+            <template v-slot:right>
+              <img src="@/assets/warn.svg" class="warnClass" alt="" />
+            </template>
+          </process-card>
         </el-col>
       </el-row>
       <el-row :gutter="20" class="bottomRow">
@@ -70,7 +101,8 @@
             v-bind="{
               title: '节点价值分布',
             }"
-          />
+          >
+          </process-chart>
         </el-col>
       </el-row>
     </div>
@@ -117,6 +149,7 @@ export default {
 }
 .bottomRow {
   margin-top: 20px;
+  margin-bottom: 46px;
 }
 .right-container {
   padding-left: 20px;
@@ -150,5 +183,9 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+.warnClass {
+  position: relative;
+  bottom: 10px;
 }
 </style>

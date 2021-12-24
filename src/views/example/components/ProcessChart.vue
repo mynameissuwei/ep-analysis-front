@@ -10,24 +10,35 @@
     <div class="container">
       <div>
         <div class="container-content">
-          <div><zen-badge color="#52c41a" /> <span>增值</span></div>
+          <div>
+            <zen-badge color="#52c41a" />
+            <span class="text-container">增值</span>
+          </div>
           <div class="container-content-number">50%</div>
         </div>
         <div class="container-content">
-          <div><zen-badge color="#52c41a" /> <span>增值</span></div>
+          <div>
+            <zen-badge color="#52c41a" />
+            <span class="text-container">增值</span>
+          </div>
           <div class="container-content-number">50%</div>
         </div>
         <div class="container-content">
-          <div><zen-badge color="#52c41a" /> <span>增值</span></div>
+          <div>
+            <zen-badge color="#52c41a" />
+            <span class="text-container">增值</span>
+          </div>
           <div class="container-content-number">50%</div>
         </div>
       </div>
+      <div id="pie" style="width: 50%; height: 90px" />
     </div>
   </el-card>
 </template>
 
 <script>
 import ZenBadge from "@/components/ZenBadge";
+import * as echarts from "echarts";
 
 export default {
   props: {
@@ -38,6 +49,49 @@ export default {
   },
   components: {
     ZenBadge,
+  },
+  data() {
+    return {
+      chart: null,
+    };
+  },
+  mounted() {
+    this.initChart();
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return;
+    }
+    this.chart.dispose();
+    this.chart = null;
+  },
+  methods: {
+    initChart() {
+      this.chart = echarts.init(document.getElementById("pie"));
+      this.chart.setOption(this.getOption());
+    },
+    getOption() {
+      return {
+        series: [
+          {
+            name: "Access From",
+            type: "pie",
+            label: {
+              show: false,
+              position: "center",
+            },
+            right: -70,
+            data: [
+              { value: 1048, name: "Search Engine" },
+              { value: 735, name: "Direct" },
+              { value: 580, name: "Email" },
+              { value: 484, name: "Union Ads" },
+              { value: 300, name: "Video Ads" },
+            ],
+          },
+        ],
+      };
+    },
   },
 };
 </script>
@@ -61,6 +115,10 @@ export default {
         margin-left: 40px;
       }
     }
+  }
+  .text-container {
+    color: #999999;
+    margin-left: 5px;
   }
 }
 </style>

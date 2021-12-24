@@ -9,7 +9,7 @@
     </div>
 
     <div class="container">
-      <div>
+      <div class="top-container">
         <div class="container-title">
           {{ content }}
         </div>
@@ -18,12 +18,13 @@
           <span>{{ textData }}</span>
         </div>
       </div>
-      <el-progress type="circle" :percentage="0" width="50"></el-progress>
+
+      <slot name="right"></slot>
     </div>
 
-    <div class="bottom-container">
+    <div class="bottom-container" v-if="showButton">
       <div>
-        <div>
+        <div style="color: #999999">
           <span>流效期望</span>
           <el-tooltip placement="top" style="margin-left: 8px">
             <div slot="content">多行信息<br />第二行信息</div>
@@ -33,7 +34,7 @@
         <div style="margin-top: 5px">>50%</div>
       </div>
       <div>
-        <div>
+        <div style="color: #999999">
           <span>流效红线</span>
           <el-tooltip placement="top" style="margin-left: 8px">
             <div slot="content">多行信息<br />第二行信息</div>
@@ -65,11 +66,20 @@ export default {
       type: String,
       default: "",
     },
+
+    showButton: {
+      type: Boolean,
+      default: true,
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.warnClass {
+  width: 30px;
+  height: 30px;
+}
 .box-card {
   .title {
     font-size: 14px;
@@ -81,7 +91,9 @@ export default {
     margin-top: 5px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .container-title {
+      // margin-top: 15px;
       font-size: 32px;
       font-weight: bold;
       color: #333333;

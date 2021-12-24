@@ -1,6 +1,11 @@
 <template>
   <div class="components-container">
-    <split-pane split="vertical" @resize="resize">
+    <split-pane
+      split="vertical"
+      v-on:resize="resize"
+      :min-percent="33"
+      :default-percent="50"
+    >
       <template slot="paneL">
         <slot name="left"></slot>
       </template>
@@ -13,12 +18,10 @@
 
 <script>
 import splitPane from "vue-splitpane";
-import LeftContainer from "./LeftContainer";
-import rightContainer from "./RightContainer";
 
 export default {
   name: "SplitpaneDemo",
-  components: { splitPane, rightContainer, LeftContainer },
+  components: { splitPane },
   methods: {
     resize() {
       console.log("resize");
