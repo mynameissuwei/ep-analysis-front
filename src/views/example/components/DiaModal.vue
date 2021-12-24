@@ -2,7 +2,8 @@
   <div class="diaModal">
     <el-dialog
       title="里程碑及诶单执行力分析因子设置"
-      :visible="false"
+      :visible.sync="visible"
+      :before-close="handleClose"
       width="800px"
     >
       <add-node-modal
@@ -134,7 +135,7 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+        <el-button @click="handleClose" size="small">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false" size="small"
           >确 定</el-button
         >
@@ -148,7 +149,7 @@ import AddNodeModal from "./AddNodeModal";
 import AddMileStone from "./AddMileStone";
 
 export default {
-  props: ["visible"],
+  props: ["visible", "handleClose"],
   components: {
     AddNodeModal,
     AddMileStone,

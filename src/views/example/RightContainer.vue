@@ -111,7 +111,9 @@
         <img class="pic-404__parent" src="@/assets/withoutData.png" alt="404" />
       </div>
     </div>
-    <dia-modal />
+
+    <!-- 弹框 -->
+    <process-modal :dialogVisible="dialogVisible" :handleClose="handleClose" />
   </div>
 </template>
 
@@ -119,14 +121,12 @@
 import ProcessCard from "./components/ProcessCard";
 import ProcessChart from "./components/ProcessChart";
 import ProcessModal from "./components/ProcessModal";
-import DiaModal from "./components/DiaModal";
 
 export default {
   components: {
     ProcessCard,
     ProcessModal,
     ProcessChart,
-    DiaModal,
   },
   data() {
     return {
@@ -135,8 +135,10 @@ export default {
   },
   methods: {
     handleShow() {
-      console.log(123);
       this.dialogVisible = true;
+    },
+    handleClose() {
+      this.dialogVisible = false;
     },
   },
 };

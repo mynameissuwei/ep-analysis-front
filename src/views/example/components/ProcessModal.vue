@@ -263,7 +263,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false"> 取消 </el-button>
+        <el-button @click="handleClose"> 取消 </el-button>
         <el-button type="primary" @click="onSubmit" :loading="buttonLoading">
           确认
         </el-button>
@@ -277,7 +277,7 @@ import BreadText from "@/components/Breadtext";
 
 export default {
   components: { BreadText },
-  props: ["dialogVisible"],
+  props: ["dialogVisible", "handleClose"],
   name: "dengmiQuery",
   data() {
     return {

@@ -110,13 +110,18 @@
       </div>
       <el-divider></el-divider>
     </div>
+
+    <dia-modal :visible="dialogVisible" :handleClose="handleClose" />
   </div>
 </template>
 
 <script>
+import DiaModal from "./components/DiaModal";
+
 export default {
   data() {
     return {
+      dialogVisible: false,
       tableData: [
         {
           date: "2016-05-03",
@@ -177,9 +182,15 @@ export default {
       ],
     };
   },
+  components: {
+    DiaModal,
+  },
   methods: {
     handleShow() {
-      console.log("show");
+      this.dialogVisible = true;
+    },
+    handleClose() {
+      this.dialogVisible = false;
     },
   },
 };
