@@ -2,7 +2,7 @@
   <div class="node-modal">
     <el-dialog
       title="节点执行事件明细因子设置"
-      :visible.sync="dialogVisible"
+      :visible.sync="visible"
       :before-close="handleClose"
       width="800px"
     >
@@ -38,6 +38,7 @@
                 :min="1"
                 :max="10"
               ></el-input-number>
+              <div class="ant-input-number-group-addon">$</div>
             </el-form-item>
           </el-col>
           <el-col span="8">
@@ -50,6 +51,7 @@
                 :min="1"
                 :max="10"
               ></el-input-number>
+              <div class="ant-input-number-group-addon">$</div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -58,7 +60,7 @@
         <el-button type="primary" @click="dialogVisible = false" size="small"
           >确 定</el-button
         >
-        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+        <el-button @click="handleClose" size="small">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -66,6 +68,7 @@
 
 <script>
 export default {
+  props: ["visible", "handleClose"],
   data() {
     return {
       num: 1,
@@ -77,7 +80,6 @@ export default {
       console.log(value);
     },
   },
-  props: ["dialogVisible"],
 };
 </script>
 
@@ -91,11 +93,22 @@ export default {
   ::v-deep .el-form-item__label {
     color: #999999;
   }
+  ::v-deep .el-input__inner {
+    border-radius: 0px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
   .ant-input-number-group-addon {
     display: inline-block;
-    width: 31.67px;
+    width: 20px;
+    height: 28px;
+    position: relative;
+    top: 2px;
+    border-left: 0px;
     border: 1px solid #d9d9d9;
-    border-radius: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    text-align: center;
   }
 }
 </style>
