@@ -108,6 +108,7 @@ export default {
       }
     }
   }
+
   .bottom-container {
     display: flex;
     justify-content: space-between;

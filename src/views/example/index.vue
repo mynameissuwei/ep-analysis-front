@@ -58,16 +58,15 @@
             </el-col>
             <el-col :span="16">
               <el-select
-                v-model="listQuery.createOrgCode"
+                v-model="listQuery.templateTypesValue"
                 clearable
                 placeholder="请选择"
-                class="my-el-select"
               >
                 <el-option
-                  v-for="item in selectDepartmentData"
-                  :key="item.orgCode"
-                  :label="item.orgName"
-                  :value="item.orgCode"
+                  v-for="(item, index) in selectTemplateData"
+                  :key="index"
+                  :label="`${item.appName} (${item.appKey})`"
+                  :value="item.appKey"
                 />
               </el-select>
             </el-col>
@@ -87,16 +86,16 @@
             </el-col>
             <el-col :span="18">
               <el-select
-                v-model="listQuery.createOrgCode"
+                v-model="listQuery.procDefValue"
                 clearable
                 placeholder="请选择"
                 class="my-el-select"
               >
                 <el-option
-                  v-for="item in selectDepartmentData"
-                  :key="item.orgCode"
-                  :label="item.orgName"
-                  :value="item.orgCode"
+                  v-for="item in procFactorData"
+                  :key="item.procDefKey"
+                  :label="item.procDefName"
+                  :value="item.procDefKey"
                 />
               </el-select>
             </el-col>
@@ -132,7 +131,9 @@
         <el-tab-pane label="流程指数" name="first">
           <tab-container>
             <template v-slot:left> <left-container /> </template>
-            <template v-slot:right> <right-container /> </template>
+            <template v-slot:right>
+              <right-container :procFactorDetail="procFactorDetail" />
+            </template>
           </tab-container>
         </el-tab-pane>
         <el-tab-pane label="节点分析" name="second">
@@ -159,6 +160,12 @@ import LeftContainer from "./LeftContainer";
 import RightContainer from "./RightContainer";
 import NodeDetail from "./NodeDetail";
 import ExportDetail from "./ExportDetail";
+import {
+  fetchProc,
+  fetchSelectTemplate,
+  fetchProcFactor,
+  fetchProcIndexRule,
+} from "@/api/example";
 
 export default {
   components: {
@@ -177,20 +184,61 @@ export default {
           orgName: "123",
         },
       ],
+      selectTemplateData: [],
       dateValue: "",
-      activeName: "second",
+      activeName: "first",
+      procFactorData: [],
+      procFactorDetail: {},
+      procFactorRuleData: {},
       listQuery: {
-        pageNo: 1,
-        pageSize: 10,
-        createOrgCode: undefined,
-        appKey: undefined,
-        startUserName: undefined,
+        templateTypesValue: "",
+        procDefValue: "",
       },
     };
   },
+  created() {
+    this.getSelectTemplate();
+    this.getProcDef();
+    this.getProcFactor();
+    this.getProcIndexRule();
+  },
   methods: {
-    handleClick() {
-      console.log("click");
+    handleClick() {},
+    async getSelectTemplate() {
+      const { data } = await fetchSelectTemplate();
+      this.selectTemplateData = data;
+    },
+    async getProcDef() {
+      const { data } = await fetchProc({
+        condition: {
+          appKey: "foundation",
+          tenantId: "1369559970221985794",
+        },
+      });
+
+      this.procFactorData = data;
+    },
+    // 获取流效期望
+    async getProcIndexRule() {
+      const { data } = await fetchProcIndexRule(
+        JSON.stringify({
+          tenantId: "1369559970221985794",
+          procDefKey: "appConvertProc003",
+        })
+      );
+      this.procFactorRuleData = data;
+    },
+    // 获取流效样本
+    async getProcFactor() {
+      const { data } = await fetchProcFactor({
+        procDefKey: "appConvertProc003",
+        tenantId: 1369559970221985794,
+        appKey: "appConvertTest001",
+        startTime: "2021-12-12",
+        endTime: "2021-12-20",
+      });
+
+      this.procFactorDetail = data;
     },
   },
 };
