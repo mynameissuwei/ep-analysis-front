@@ -7,32 +7,36 @@
         <i class="el-icon-warning-outline"></i>
       </el-tooltip>
     </div>
-    <div class="container">
-      <div>
-        <div class="container-content">
-          <div>
-            <zen-badge color="#52c41a" />
-            <span class="text-container">增值</span>
+    <el-row>
+      <el-col :span="12">
+        <div>
+          <div class="container-content">
+            <div>
+              <zen-badge color="#52c41a" />
+              <span class="text-container">增值</span>
+            </div>
+            <span class="container-content-number">50%</span>
           </div>
-          <div class="container-content-number">50%</div>
-        </div>
-        <div class="container-content">
-          <div>
-            <zen-badge color="#52c41a" />
-            <span class="text-container">增值</span>
+          <div class="container-content">
+            <div>
+              <zen-badge color="#52c41a" />
+              <span class="text-container">增值</span>
+            </div>
+            <div class="container-content-number">50%</div>
           </div>
-          <div class="container-content-number">50%</div>
-        </div>
-        <div class="container-content">
-          <div>
-            <zen-badge color="#52c41a" />
-            <span class="text-container">增值</span>
+          <div class="container-content">
+            <div>
+              <zen-badge color="#52c41a" />
+              <span class="text-container">增值</span>
+            </div>
+            <div class="container-content-number">50%</div>
           </div>
-          <div class="container-content-number">50%</div>
         </div>
-      </div>
-      <div id="pie" style="width: 50%; height: 90px" />
-    </div>
+      </el-col>
+      <el-col :span="12">
+        <div id="pie" style="width: 100%; height: 90px" />
+      </el-col>
+    </el-row>
   </el-card>
 </template>
 
@@ -80,7 +84,6 @@ export default {
               show: false,
               position: "center",
             },
-            right: -70,
             data: [
               { value: 1048, name: "Search Engine" },
               { value: 735, name: "Direct" },
@@ -104,17 +107,10 @@ export default {
     color: #999999;
     line-height: 20px;
   }
-  .container {
+  .container-content {
     display: flex;
     justify-content: space-between;
-    .container-content {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 12px;
-      .container-content-number {
-        margin-left: 40px;
-      }
-    }
+    margin-top: 12px;
   }
   .text-container {
     color: #999999;

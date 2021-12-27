@@ -110,12 +110,12 @@
         class="row-container"
         :gutter="44"
       >
-        <el-col span="12">
+        <el-col :span="12">
           <el-row :gutter="4">
-            <el-col span="6">
+            <el-col :span="6">
               <span>选择占比类型</span>
             </el-col>
-            <el-col span="18">
+            <el-col :span="18">
               <el-input
                 v-model="input"
                 placeholder="123"
@@ -126,12 +126,12 @@
             </el-col>
           </el-row>
         </el-col>
-        <el-col span="12">
+        <el-col :span="12">
           <el-row :gutter="4">
-            <el-col span="6">
+            <el-col :span="6">
               <span>选择占比类型</span>
             </el-col>
-            <el-col span="18">
+            <el-col :span="18">
               <el-input
                 v-model="input"
                 placeholder="123"

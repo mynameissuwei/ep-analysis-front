@@ -11,17 +11,20 @@
           <process-card
             v-bind="{
               title: '参与流程样本',
-              content: '78%',
+              content: `${procFactorDetail.partRadio}%`,
               text: '总',
-              textData: '210条',
+              textData: `${procFactorDetail.total}条`,
               showButton: false,
             }"
           >
             <template v-slot:right>
               <el-progress
                 type="circle"
-                :percentage="0"
-                width="50"
+                :percentage="
+                  procFactorDetail.partRadio &&
+                  Number(procFactorDetail.partRadio)
+                "
+                :width="60"
               ></el-progress>
             </template>
           </process-card>
@@ -30,18 +33,16 @@
           <process-card
             v-bind="{
               title: '线上率',
-              content: 'B+',
+              content: '--',
               text: '比率',
-              textData: '87%',
+              textData: '0.00%',
               showButton: false,
             }"
           >
             <template v-slot:right>
-              <el-progress
-                type="circle"
-                :percentage="0"
-                width="50"
-              ></el-progress>
+              <div style="width: 60%">
+                <el-progress :percentage="0"></el-progress>
+              </div>
             </template>
           </process-card>
         </el-col>
@@ -51,7 +52,11 @@
           <process-card
             v-bind="{
               title: '流效率',
-              content: '9%',
+              content: `${procFactorDetail.flowRadio}%`,
+              expect: `${procFactorRuleData.rule.flowEffic.expect}`,
+              redLine: `${procFactorRuleData.rule.flowEffic.expect}`,
+              redLineText: '流效红线',
+              expectText: '流效期望',
             }"
           >
             <template v-slot:right>
@@ -63,30 +68,11 @@
           <process-card
             v-bind="{
               title: '时效',
-              content: '23.3人天',
-            }"
-          >
-            <template v-slot:right>
-              <img src="@/assets/warn.svg" class="warnClass" alt="" />
-            </template>
-          </process-card>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <process-card
-            v-bind="{
-              title: '流程平均干系人',
-              content: '23.3人',
-            }"
-          >
-          </process-card>
-        </el-col>
-        <el-col :span="12">
-          <process-card
-            v-bind="{
-              title: '人效',
-              content: '23.3人天',
+              content: `${procFactorDetail.timeLimit}人天`,
+              expect: `${procFactorRuleData.rule.timeEffic.expect}`,
+              redLine: `${procFactorRuleData.rule.timeEffic.expect}`,
+              redLineText: '时效红线',
+              expectText: '时效期望',
             }"
           >
             <template v-slot:right>
@@ -97,6 +83,37 @@
       </el-row>
       <el-row :gutter="20" class="bottomRow">
         <el-col :span="12">
+          <process-card
+            v-bind="{
+              title: '流程平均干系人',
+              content: `${procFactorDetail.avgHolder}人`,
+              redLineText: '主线干系',
+              expectText: '分支干系',
+              expect: '0人',
+              redLine: '0人',
+            }"
+          >
+          </process-card>
+        </el-col>
+        <el-col :span="12">
+          <process-card
+            v-bind="{
+              title: '人效',
+              content: `${procFactorDetail.personLimit}人天`,
+              expect: `${procFactorRuleData.rule.personEffic.expect}`,
+              redLine: `${procFactorRuleData.rule.personEffic.redLine}`,
+              redLineText: '人效红线',
+              expectText: '人效期望',
+            }"
+          >
+            <template v-slot:right>
+              <img src="@/assets/warn.svg" class="warnClass" alt="" />
+            </template>
+          </process-card>
+        </el-col>
+      </el-row>
+      <!-- <el-row :gutter="20" class="bottomRow">
+        <el-col :span="12">
           <process-chart
             v-bind="{
               title: '节点价值分布',
@@ -104,16 +121,21 @@
           >
           </process-chart>
         </el-col>
-      </el-row>
+      </el-row> -->
     </div>
     <div v-else class="right-without-container">
       <div>
         <img class="pic-404__parent" src="@/assets/withoutData.png" alt="404" />
       </div>
     </div>
-
     <!-- 弹框 -->
-    <process-modal :dialogVisible="dialogVisible" :handleClose="handleClose" />
+    <process-modal
+      :dialogVisible="dialogVisible"
+      :handleClose="handleClose"
+      :procFactorRuleData="procFactorRuleData"
+      :getProcIndexRule="getProcIndexRule"
+      :getProcFactor="getProcFactor"
+    />
   </div>
 </template>
 
@@ -123,6 +145,12 @@ import ProcessChart from "./components/ProcessChart";
 import ProcessModal from "./components/ProcessModal";
 
 export default {
+  props: [
+    "procFactorDetail",
+    "procFactorRuleData",
+    "getProcIndexRule",
+    "getProcFactor",
+  ],
   components: {
     ProcessCard,
     ProcessModal,

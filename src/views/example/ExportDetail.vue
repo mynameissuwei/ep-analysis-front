@@ -60,6 +60,7 @@
 export default {
   data() {
     return {
+      radio: "",
       data: [
         {
           id: 1,

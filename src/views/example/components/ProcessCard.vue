@@ -25,23 +25,23 @@
     <div class="bottom-container" v-if="showButton">
       <div>
         <div style="color: #999999">
-          <span>流效期望</span>
+          <span>{{ expectText }}</span>
           <el-tooltip placement="top" style="margin-left: 8px">
             <div slot="content">多行信息<br />第二行信息</div>
             <i class="el-icon-warning-outline"></i>
           </el-tooltip>
         </div>
-        <div style="margin-top: 5px">>50%</div>
+        <div style="margin-top: 5px">{{ expect }}</div>
       </div>
       <div>
         <div style="color: #999999">
-          <span>流效红线</span>
+          <span>{{ redLineText }}</span>
           <el-tooltip placement="top" style="margin-left: 8px">
             <div slot="content">多行信息<br />第二行信息</div>
             <i class="el-icon-warning-outline"></i>
           </el-tooltip>
         </div>
-        <div style="margin-top: 5px">>10%</div>
+        <div style="margin-top: 5px">{{ redLine }}</div>
       </div>
     </div>
   </el-card>
@@ -66,10 +66,25 @@ export default {
       type: String,
       default: "",
     },
-
+    expect: {
+      type: String,
+      default: "",
+    },
+    redLine: {
+      type: String,
+      default: "",
+    },
     showButton: {
       type: Boolean,
       default: true,
+    },
+    redLineText: {
+      type: String,
+      default: "",
+    },
+    expectText: {
+      type: String,
+      default: "",
     },
   },
 };
@@ -108,6 +123,7 @@ export default {
       }
     }
   }
+
   .bottom-container {
     display: flex;
     justify-content: space-between;

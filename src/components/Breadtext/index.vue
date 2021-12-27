@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="containerClass">
     <div class="rectangle"></div>
     <div class="rect-text" :style="style">
       {{ name ? name : text }}
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ["name", "style"],
+  props: ["name", "style", "containerClass"],
   data() {
     return {
       text: "",
