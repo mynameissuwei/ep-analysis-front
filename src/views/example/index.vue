@@ -95,7 +95,7 @@
                   v-for="item in procFactorData"
                   :key="item.procDefKey"
                   :label="item.procDefName"
-                  :value="item.procDefKey"
+                  :value="procDefKey"
                 />
               </el-select>
             </el-col>
@@ -130,22 +130,32 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="流程指数" name="first">
           <tab-container>
-            <template v-slot:left> <left-container /> </template>
+            <template v-slot:left>
+              <left-container :dateValue="dateValue" :procDefKey="procDefKey"></left-container>
+            </template>
             <template v-slot:right>
-              <right-container :procFactorDetail="procFactorDetail" />
+              <right-container :procFactorDetail="procFactorDetail"/>
             </template>
           </tab-container>
         </el-tab-pane>
         <el-tab-pane label="节点分析" name="second">
           <tab-container>
-            <template v-slot:left> <left-container /> </template>
-            <template v-slot:right> <node-detail /> </template>
+            <template v-slot:left>
+              <left-container/>
+            </template>
+            <template v-slot:right>
+              <node-detail/>
+            </template>
           </tab-container>
         </el-tab-pane>
         <el-tab-pane label="流程指数" name="third">
           <tab-container>
-            <template v-slot:left> <left-container /> </template>
-            <template v-slot:right> <export-detail /> </template>
+            <template v-slot:left>
+              <left-container/>
+            </template>
+            <template v-slot:right>
+              <export-detail/>
+            </template>
           </tab-container>
         </el-tab-pane>
       </el-tabs>
@@ -178,6 +188,7 @@ export default {
   },
   data() {
     return {
+      procDefKey: '',
       selectDepartmentData: [
         {
           orgCode: "123",
@@ -203,13 +214,14 @@ export default {
     this.getProcIndexRule();
   },
   methods: {
-    handleClick() {},
+    handleClick() {
+    },
     async getSelectTemplate() {
-      const { data } = await fetchSelectTemplate();
+      const {data} = await fetchSelectTemplate();
       this.selectTemplateData = data;
     },
     async getProcDef() {
-      const { data } = await fetchProc({
+      const {data} = await fetchProc({
         condition: {
           appKey: "foundation",
           tenantId: "1369559970221985794",
@@ -220,7 +232,7 @@ export default {
     },
     // 获取流效期望
     async getProcIndexRule() {
-      const { data } = await fetchProcIndexRule(
+      const {data} = await fetchProcIndexRule(
         JSON.stringify({
           tenantId: "1369559970221985794",
           procDefKey: "appConvertProc003",
@@ -230,7 +242,7 @@ export default {
     },
     // 获取流效样本
     async getProcFactor() {
-      const { data } = await fetchProcFactor({
+      const {data} = await fetchProcFactor({
         procDefKey: "appConvertProc003",
         tenantId: 1369559970221985794,
         appKey: "appConvertTest001",
@@ -251,6 +263,7 @@ export default {
   height: 32px;
   margin-bottom: 24px;
 }
+
 .tab-container {
   padding: 12px 24px 24px 24px;
   margin-top: 20px;
@@ -259,15 +272,18 @@ export default {
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   font-size: 14px;
   font-weight: 400;
+
   ::v-deep {
     .el-tabs__item {
       color: #666666;
     }
   }
 }
+
 .date-container {
   margin-left: 10px;
 }
+
 .button-container {
   width: 54px;
   height: 32px;
