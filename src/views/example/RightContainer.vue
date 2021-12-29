@@ -29,7 +29,7 @@
             </template>
           </process-card>
         </el-col>
-        <el-col :span="12">
+        <!-- <el-col :span="12">
           <process-card
             v-bind="{
               title: '线上率',
@@ -45,7 +45,7 @@
               </div>
             </template>
           </process-card>
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-row :gutter="20" class="center-row">
         <el-col :span="12">

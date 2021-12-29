@@ -99,7 +99,12 @@
       <el-tabs v-model="activeName" @tab-click="handleTabChange">
         <el-tab-pane label="流程指数" name="first">
           <tab-container>
-            <template v-slot:left> <left-container /> </template>
+            <template v-slot:left>
+              <left-container
+                :dateValue="dateValue"
+                :procDefKey="procDefKey"
+              ></left-container>
+            </template>
             <template v-slot:right>
               <right-container
                 :procFactorDetail="procFactorDetail"
@@ -124,8 +129,12 @@
         </el-tab-pane>
         <el-tab-pane label="流程指数" name="third">
           <tab-container>
-            <template v-slot:left> <left-container /> </template>
-            <template v-slot:right> <export-detail /> </template>
+            <template v-slot:left>
+              <left-container />
+            </template>
+            <template v-slot:right>
+              <export-detail />
+            </template>
           </tab-container>
         </el-tab-pane>
       </el-tabs>
@@ -162,6 +171,7 @@ export default {
   },
   data() {
     return {
+      procDefKey: "",
       selectDepartmentData: [
         {
           orgCode: "123",
@@ -368,6 +378,7 @@ export default {
   height: 32px;
   margin-bottom: 24px;
 }
+
 .tab-container {
   padding: 12px 24px 24px 24px;
   margin-top: 20px;
@@ -376,15 +387,18 @@ export default {
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   font-size: 14px;
   font-weight: 400;
+
   ::v-deep {
     .el-tabs__item {
       color: #666666;
     }
   }
 }
+
 .date-container {
   margin-left: 10px;
 }
+
 .button-container {
   width: 54px;
   height: 32px;
