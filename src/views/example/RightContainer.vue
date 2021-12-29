@@ -1,6 +1,6 @@
 <template>
   <div class="right-container">
-    <div v-if="true">
+    <div v-if="procFactorDetail">
       <div class="iconContainer">
         <div class="iconClass" @click="handleShow">
           <i class="el-icon-setting"></i>

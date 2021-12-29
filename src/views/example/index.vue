@@ -1,90 +1,99 @@
 <template>
   <div>
-    <div class="card-container" style="height: 136px">
-      <el-row :gutter="22" class="filter-container example-container">
-        <el-col :span="9">
-          <el-row :gutter="5">
-            <el-col :span="6">
-              <span>选择流程类型（租户）</span>
-            </el-col>
-            <el-col :span="18">
-              <el-select
-                v-model="listQuery.templateTypesValue"
-                placeholder="请选择"
-                class="my-el-select"
+    <el-form :model="listQuery" :rules="rules" ref="ruleForm">
+      <div class="card-container" style="height: 136px">
+        <el-row :gutter="22" class="filter-container example-container">
+          <el-col :span="9">
+            <el-row :gutter="5">
+              <el-col :span="6">
+                <span>选择流程类型（租户）</span>
+              </el-col>
+              <el-col :span="18">
+                <el-form-item prop="templateTypesValue">
+                  <el-select
+                    v-model="listQuery.templateTypesValue"
+                    placeholder="请选择"
+                    class="my-el-select"
+                  >
+                    <el-option
+                      v-for="(item, index) in selectTemplateData"
+                      :key="index"
+                      :label="`${item.appName} (${item.appKey})`"
+                      :value="item.appKey"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="9">
+            <el-row :gutter="5">
+              <el-col :span="3">
+                <span>选择流程</span>
+              </el-col>
+              <el-col :span="21">
+                <el-form-item prop="procDefValue">
+                  <el-select
+                    v-model="listQuery.procDefValue"
+                    clearable
+                    placeholder="请选择"
+                    class="my-el-select"
+                  >
+                    <el-option
+                      v-for="item in procFactorData"
+                      :key="item.procDefKey"
+                      :label="item.procDefName"
+                      :value="item.procDefKey"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <el-row :gutter="22" class="filter-container example-container">
+          <el-col :span="14">
+            <div>
+              <el-button class="button-container" @click="changeTime('day')"
+                >今日</el-button
               >
-                <el-option
-                  v-for="(item, index) in selectTemplateData"
-                  :key="index"
-                  :label="`${item.appName} (${item.appKey})`"
-                  :value="item.appKey"
-                />
-              </el-select>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="9">
-          <el-row :gutter="5">
-            <el-col :span="3">
-              <span>选择流程</span>
-            </el-col>
-            <el-col :span="21">
-              <el-select
-                v-model="listQuery.procDefValue"
-                clearable
-                placeholder="请选择"
-                class="my-el-select"
+              <el-button class="button-container" @click="changeTime('week')"
+                >本周</el-button
               >
-                <el-option
-                  v-for="item in procFactorData"
-                  :key="item.procDefKey"
-                  :label="item.procDefName"
-                  :value="item.procDefKey"
-                />
-              </el-select>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row :gutter="22" class="filter-container example-container">
-        <el-col :span="14">
-          <div>
-            <el-button class="button-container" @click="changeTime('day')"
-              >今日</el-button
-            >
-            <el-button class="button-container" @click="changeTime('week')"
-              >本周</el-button
-            >
-            <el-button class="button-container" @click="changeTime('month')"
-              >本月</el-button
-            >
-            <el-button class="button-container" @click="changeTime('year')"
-              >全年</el-button
-            >
-            <el-date-picker
-              class="date-container"
-              size="small"
-              v-model="dateValue"
-              type="daterange"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              @change="datePick"
-            >
-            </el-date-picker>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div style="float: right">
-            <el-button type="primary" size="small" @click="handleSearch"
-              >查询</el-button
-            >
-            <el-button size="small" @click="handleReset">重置</el-button>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+              <el-button class="button-container" @click="changeTime('month')"
+                >本月</el-button
+              >
+              <el-button class="button-container" @click="changeTime('year')"
+                >全年</el-button
+              >
+              <el-date-picker
+                class="date-container"
+                size="small"
+                v-model="dateValue"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div style="float: right">
+              <el-button
+                type="primary"
+                size="small"
+                @click="submitForm('ruleForm')"
+                >查询</el-button
+              >
+              <el-button size="small" @click="resetForm('ruleForm')"
+                >重置</el-button
+              >
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </el-form>
 
     <div class="tab-container" style="position: relative">
       <el-tabs v-model="activeName" @tab-click="handleTabChange">
@@ -104,7 +113,13 @@
         <el-tab-pane label="节点分析" name="second">
           <tab-container>
             <template v-slot:left> <left-container /> </template>
-            <template v-slot:right> <node-detail /> </template>
+            <template v-slot:right>
+              <node-detail
+                :nodeAnalysisData="nodeAnalysisData"
+                :nodeTimeData="nodeTimeData"
+                :nodeChartData="nodeChartData"
+              />
+            </template>
           </tab-container>
         </el-tab-pane>
         <el-tab-pane label="流程指数" name="third">
@@ -130,7 +145,11 @@ import {
   fetchSelectTemplate,
   fetchProcFactor,
   fetchProcIndexRule,
+  fetchNodeAnalysis,
+  fetchTimeConsuming,
+  fetchNodeChart,
 } from "@/api/example";
+import moment from "moment";
 
 export default {
   components: {
@@ -149,11 +168,19 @@ export default {
           orgName: "123",
         },
       ],
+      rules: {
+        templateTypesValue: [
+          { required: true, message: "请选择流程类型", trigger: "blur" },
+        ],
+        procDefValue: [
+          { required: true, message: "请选择流程", trigger: "blur" },
+        ],
+      },
       selectTemplateData: [],
       dateValue: [],
-      activeName: "first",
+      activeName: "second",
       procFactorData: [],
-      procFactorDetail: {},
+      procFactorDetail: null,
       procFactorRuleData: {
         tenantId: "1369559970221985794",
         procDefKey: "appConvertProc003",
@@ -182,6 +209,9 @@ export default {
           },
         },
       },
+      nodeAnalysisData: {},
+      nodeTimeData: {},
+      nodeChartData: {},
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       listQuery: {
         templateTypesValue: "",
@@ -194,12 +224,33 @@ export default {
   created() {
     this.getSelectTemplate();
     this.getProcDef();
-    this.getProcFactor();
-    this.getProcIndexRule();
+
+    // this.getProcess();
+    this.getNode();
   },
   methods: {
-    handleButtonClick(target) {
-      console.log(target, "target");
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.getProcIndexRule();
+          this.getProcFactor();
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.dateValue = [];
+      // this.listQuery = {
+      //   templateTypesValue: "",
+      //   procDefValue: "",
+      // };
+      // this.getProcIndexRule();
+      // this.getProcFactor();
+    },
+    //获取流程指数
+    getProcess() {
+      this.getProcFactor();
+      this.getProcIndexRule();
     },
     handleTabChange() {
       console.log("handleTabChange");
@@ -224,28 +275,6 @@ export default {
         const start = new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
         this.dateValue = [start, end];
-      }
-    },
-    handleSearch() {
-      this.getProcIndexRule();
-      this.getProcFactor();
-    },
-    handleReset() {
-      this.listQuery = {
-        templateTypesValue: "",
-        procDefValue: "",
-      };
-      this.dateValue = [];
-      this.getProcIndexRule();
-      this.getProcFactor();
-    },
-    datePick(value) {
-      if (value == null) {
-        this.listQuery.startTime = null;
-        this.listQuery.endTime = null;
-      } else {
-        this.listQuery.startTime = value[0];
-        this.listQuery.endTime = value[1];
       }
     },
     async getSelectTemplate() {
@@ -280,11 +309,53 @@ export default {
         procDefKey: this.listQuery.procDefValue,
         tenantId: this.$store.state.user.tenantId,
         appKey: this.listQuery.templateTypesValue,
-        startTime: this.listQuery.startTime,
-        endTime: this.listQuery.endTime,
+        startTime: moment(parseInt(this.dateValue[0].getTime())).format(
+          "YYYY-MM-DD"
+        ),
+        endTime: moment(parseInt(this.dateValue[1].getTime())).format(
+          "YYYY-MM-DD"
+        ),
       });
 
       this.procFactorDetail = data;
+    },
+    getNode() {
+      this.getNodeAnalysis();
+      this.getNodeTimeConsuming();
+      this.getNodeChart();
+    },
+    async getNodeChart() {
+      const { data } = await fetchNodeChart({
+        appKey: "ptsw",
+        tenantId: "1371750490517663745",
+        procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+        startDateTime: "2021-12-11 14:49:50",
+        endDateTime: "2021-12-14 14:49:50",
+      });
+      console.log(data, "datadataa");
+      this.nodeChartData = data;
+    },
+    async getNodeAnalysis() {
+      const { data } = await fetchNodeAnalysis({
+        appKey: "ptsw",
+        tenantId: "1369559970221985794",
+        procDefKey: "gangweixunjian",
+        startDateTime: "2021-12-11 14:49:50",
+        endDateTime: "2021-12-14 14:49:50",
+      });
+
+      this.nodeAnalysisData = data;
+    },
+    async getNodeTimeConsuming() {
+      const { data } = await fetchTimeConsuming({
+        appKey: "ptsw",
+        tenantId: "1369559970221985794",
+        procDefKey: "gangweixunjian",
+        startDateTime: "2021-12-11 14:49:50",
+        endDateTime: "2021-12-14 14:49:50",
+      });
+
+      this.nodeTimeData = data;
     },
   },
 };
@@ -354,6 +425,11 @@ export default {
     .el-input__suffix-inner {
       display: inline-block;
     }
+  }
+}
+::v-deep {
+  .el-form-item__content {
+    margin-left: 0px;
   }
 }
 </style>

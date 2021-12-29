@@ -52,3 +52,30 @@ export function addProcIndexRule(data) {
     data,
   });
 }
+
+// 获取节点审批效率分析
+export function fetchNodeAnalysis(params) {
+  return request({
+    url: "/nodeAnalysis/nodeApproveEfficiency",
+    method: "get",
+    params,
+  });
+}
+
+// 获取耗时偏好
+export function fetchTimeConsuming(params) {
+  return request({
+    url: "/nodeAnalysis/approveConsumingPreference",
+    method: "get",
+    params,
+  });
+}
+
+// 获取节点图表
+export function fetchNodeChart(params) {
+  return request({
+    url: "/nodeAnalysis/analysisProcMilestone",
+    method: "get",
+    params,
+  });
+}
