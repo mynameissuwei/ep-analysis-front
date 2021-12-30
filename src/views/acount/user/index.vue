@@ -22,6 +22,9 @@
           >
             重置
           </el-button>
+<!--          <form action="http://localhost:8080/report/preview">-->
+<!--            <input type="submit" value="submit">-->
+<!--          </form>-->
         </div>
       </el-col>
     </el-row>
