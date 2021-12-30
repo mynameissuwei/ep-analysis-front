@@ -7,7 +7,7 @@ import PD from "@/api/processMining";
 import {discoverProcess} from "@/api/process";
 
 export default {
-  name: "ProcessMining",
+  name: "ProcessMiningIframe",
   props: ["dateValue", "procDefKey"],
   mounted() {
     this.init()
@@ -24,7 +24,7 @@ export default {
     async go() {
       let data = {
         "startDate": this.getParam("startDate"),
-        "endDate": this.getParam("endTime"),
+        "endDate": this.getParam("endDate"),
         "procDefKey": this.getParam("procDefKey")
       }
       const result = await discoverProcess(data)
