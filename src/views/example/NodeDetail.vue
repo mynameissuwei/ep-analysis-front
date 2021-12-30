@@ -4,7 +4,7 @@
       <div>里程碑节点执行力分析</div>
 
       <div>
-        <div class="textClass">查看明细</div>
+        <div class="textClass" @click="handleShowDetail">查看明细</div>
         <div class="iconClass" @click="handleShow">
           <i class="el-icon-setting"></i>
         </div>
@@ -75,24 +75,24 @@
         <div>审批耗时区间分布</div>
       </div>
       <el-table :data="nodeTimeData.list">
-        <el-table-column prop="date" label="日期" width="150" fixed>
+        <el-table-column prop="taskName" label="节点名称" width="150" fixed>
         </el-table-column>
-        <el-table-column label="配送信息">
-          <el-table-column prop="name" label="姓名" width="120">
+        <el-table-column label="秒批（≤60s）">
+          <el-table-column prop="secondNum" label="次数" width="120">
           </el-table-column>
-          <el-table-column prop="province" label="省份" width="120">
-          </el-table-column>
-        </el-table-column>
-        <el-table-column label="地址">
-          <el-table-column prop="city" label="市区" width="120">
-          </el-table-column>
-          <el-table-column prop="address" label="地址" width="300">
+          <el-table-column prop="secondPercent" label="占比" width="120">
           </el-table-column>
         </el-table-column>
-        <el-table-column label="地址">
-          <el-table-column prop="city" label="市区" width="120">
+        <el-table-column label="跨天（≥1/人天）">
+          <el-table-column prop="dayNum" label="次数" width="120">
           </el-table-column>
-          <el-table-column prop="address" label="地址" width="300">
+          <el-table-column prop="dayPercent" label="占比" width="300">
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="常规">
+          <el-table-column prop="normalNum" label="次数" width="120">
+          </el-table-column>
+          <el-table-column prop="normalPercent" label="占比" width="300">
           </el-table-column>
         </el-table-column>
       </el-table>
@@ -166,12 +166,14 @@
 
     <dia-modal :visible="dialogVisible" :handleClose="handleClose" />
     <node-modal :visible="nodeVisible" :handleClose="closeNode" />
+    <detail-modal :visible="detailVisible" :handleClose="handleHiddleDetail" />
   </div>
 </template>
 
 <script>
 import DiaModal from "./components/DiaModal";
 import NodeModal from "./components/NodeModal";
+import DetailModal from "./components/DetailModal";
 import * as echarts from "echarts";
 import resize from "@/components/mixins/resize.js";
 
@@ -181,12 +183,14 @@ export default {
   components: {
     DiaModal,
     NodeModal,
+    DetailModal,
   },
   data() {
     return {
       input: "",
       dialogVisible: false,
       nodeVisible: false,
+      detailVisible: false,
       chart: null,
     };
   },
@@ -201,6 +205,12 @@ export default {
     this.chart = null;
   },
   methods: {
+    handleShowDetail() {
+      this.detailVisible = true;
+    },
+    handleHiddleDetail() {
+      this.detailVisible = false;
+    },
     handleChange() {
       console.log("handleChange");
     },
@@ -233,8 +243,7 @@ export default {
             "timeConsumingReal",
             "timeConsumingLine",
           ],
-          // source: nodeChartData.list,
-          source: [],
+          source: this.nodeChartData.list,
         },
         xAxis: { type: "category" },
         yAxis: {},
@@ -281,6 +290,8 @@ export default {
     margin-bottom: 16px;
     margin-top: 16px;
     margin-right: 16px;
+    cursor: pointer;
+    font-size: 12px;
   }
   .iconClass {
     cursor: pointer;

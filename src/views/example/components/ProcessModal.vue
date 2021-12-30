@@ -224,7 +224,11 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onSubmit" size="small"
+        <el-button
+          type="primary"
+          @click="onSubmit"
+          size="small"
+          :loading="buttonLoading"
           >保存</el-button
         >
         <el-button @click="handleClose" size="small">取消</el-button>
@@ -236,6 +240,7 @@
 <script>
 import BreadText from "@/components/Breadtext";
 import { addProcIndexRule } from "@/api/example";
+import { Message } from "element-ui";
 
 export default {
   components: { BreadText },
@@ -245,6 +250,7 @@ export default {
     "procFactorRuleData",
     "getProcIndexRule",
     "getProcFactor",
+    "listQuery",
   ],
   created() {
     this.init();
@@ -262,15 +268,32 @@ export default {
       }
     },
     onSubmit() {
-      addProcIndexRule(this.form).then(() => {
-        this.getProcIndexRule();
-        this.getProcFactor();
-        this.handleClose();
-        this.$message({
-          type: "success",
-          message: "保存成功!",
+      this.buttonLoading = true;
+      addProcIndexRule({
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
+        type: "TYPE_PROC_INDEX",
+        ...this.form,
+      })
+        .then(() => {
+          this.getProcIndexRule();
+          this.getProcFactor();
+          this.handleClose();
+          this.buttonLoading = false;
+          this.$message({
+            type: "success",
+            message: "保存成功!",
+          });
+        })
+        .catch((err) => {
+          console.log(err, "error");
+          this.buttonLoading = false;
+          Message({
+            message: "接口报错",
+            type: "error",
+            duration: 5 * 1000,
+          });
         });
-      });
     },
   },
 };
@@ -278,8 +301,14 @@ export default {
 
 <style lang="scss" scoped>
 .process-modal-container {
-  ::v-deep .el-form-item__label {
-    color: #999999;
+  ::v-deep {
+    .el-input-number__decrease,
+    .el-input-number__increase {
+      background: white;
+    }
+    .el-form-item__label {
+      color: #999999;
+    }
   }
 }
 .bread-container {
