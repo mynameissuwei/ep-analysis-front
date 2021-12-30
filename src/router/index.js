@@ -340,6 +340,19 @@ export const constantRoutes = [
     },
     hidden: true,
   },
+  {
+    path: "/process/graph",
+    name: "processGraph",
+    component: () => import("@/views/processMining/processMiningIframe"),
+    hidden: true,
+    props: true,
+    meta: {
+      title: "流程图",
+      noCache: true,
+      activeMenu: "/acount/permission",
+      id: "EFFICIENCY_ANALYSIS_TENANT_AUTHORITY_MANAGE",
+    },
+  },
 ];
 
 const createRouter = () =>
