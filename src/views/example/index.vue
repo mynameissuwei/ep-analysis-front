@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-form :model="listQuery" :rules="rules" ref="ruleForm">
-      <div class="card-container" style="height: 136px">
-        <el-row :gutter="22" class="filter-container example-container">
+      <div class="card-container" style="height: 156px">
+        <el-row :gutter="22" class="example-container">
           <el-col :span="9">
             <el-row :gutter="5">
               <el-col :span="6">
-                <span>选择流程类型（租户）</span>
+                <div class="title-container">选择流程类型（租户）</div>
               </el-col>
               <el-col :span="18">
                 <el-form-item prop="templateTypesValue">
@@ -29,7 +29,7 @@
           <el-col :span="9">
             <el-row :gutter="5">
               <el-col :span="3">
-                <span>选择流程</span>
+                <div class="title-container">选择流程</div>
               </el-col>
               <el-col :span="21">
                 <el-form-item prop="procDefValue">
@@ -51,35 +51,37 @@
             </el-row>
           </el-col>
         </el-row>
-        <el-row :gutter="22" class="filter-container example-container">
+        <el-row :gutter="22" class="example-container">
           <el-col :span="14">
             <div>
-              <el-button class="button-container" @click="changeTime('day')"
-                >今日</el-button
-              >
-              <el-button class="button-container" @click="changeTime('week')"
-                >本周</el-button
-              >
-              <el-button class="button-container" @click="changeTime('month')"
-                >本月</el-button
-              >
-              <el-button class="button-container" @click="changeTime('year')"
-                >全年</el-button
-              >
-              <el-date-picker
-                class="date-container"
-                size="small"
-                v-model="dateValue"
-                type="daterange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              >
-              </el-date-picker>
+              <el-form-item prop="dateValue">
+                <el-button class="button-container" @click="changeTime('day')"
+                  >今日</el-button
+                >
+                <el-button class="button-container" @click="changeTime('week')"
+                  >本周</el-button
+                >
+                <el-button class="button-container" @click="changeTime('month')"
+                  >本月</el-button
+                >
+                <el-button class="button-container" @click="changeTime('year')"
+                  >全年</el-button
+                >
+                <el-date-picker
+                  class="date-container"
+                  size="small"
+                  v-model="listQuery.dateValue"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                >
+                </el-date-picker>
+              </el-form-item>
             </div>
           </el-col>
           <el-col :span="4">
-            <div style="float: right">
+            <div style="float: right" class="button-group">
               <el-button
                 type="primary"
                 size="small"
@@ -101,7 +103,7 @@
           <tab-container>
             <template v-slot:left>
               <left-container
-                :dateValue="dateValue"
+                :dateValue="listQuery.dateValue"
                 :procDefKey="procDefKey"
               ></left-container>
             </template>
@@ -111,6 +113,7 @@
                 :procFactorRuleData="procFactorRuleData"
                 :getProcIndexRule="getProcIndexRule"
                 :getProcFactor="getProcFactor"
+                :listQuery="listQuery"
               />
             </template>
           </tab-container>
@@ -158,6 +161,8 @@ import {
   fetchTimeConsuming,
   fetchNodeChart,
 } from "@/api/example";
+import Driver from "driver.js"; // import driver.js
+import "driver.js/dist/driver.min.css"; // import driver.js css
 import moment from "moment";
 
 export default {
@@ -169,8 +174,25 @@ export default {
     NodeDetail,
     ExportDetail,
   },
+  mounted() {
+    this.driver = new Driver();
+    const steps = [
+      {
+        element: ".button-group",
+        popover: {
+          title: "提示",
+          description: "请填写相关参数,再点击查询",
+          position: "bottom",
+        },
+        padding: 0,
+      },
+    ];
+    this.driver.defineSteps(steps);
+    this.driver.start();
+  },
   data() {
     return {
+      driver: null,
       procDefKey: "",
       selectDepartmentData: [
         {
@@ -185,49 +207,61 @@ export default {
         procDefValue: [
           { required: true, message: "请选择流程", trigger: "blur" },
         ],
+        dateValue: [
+          {
+            required: true,
+            message: "请选择日期",
+            trigger: "change",
+          },
+        ],
       },
       selectTemplateData: [],
-      dateValue: [],
-      activeName: "second",
+      activeName: "first",
       procFactorData: [],
-      procFactorDetail: null,
+      procFactorDetail: {
+        partRadio: "0",
+        total: "25",
+        flowRadio: "0",
+        timeLimit: "0",
+        avgHolder: "0",
+        personLimit: "0",
+      },
       procFactorRuleData: {
-        tenantId: "1369559970221985794",
-        procDefKey: "appConvertProc003",
-        type: "TYPE_PROC_INDEX",
         rule: {
           flowEffic: {
-            expect: 12.89,
-            high: 68.18,
-            middle: 14.28,
-            low: 34.54,
-            redLine: 16.15,
+            expect: 0,
+            high: 0,
+            middle: 0,
+            low: 0,
+            redLine: 0,
           },
           timeEffic: {
-            expect: 26.57,
-            high: 74.81,
-            middle: 22.91,
-            low: 28.85,
-            redLine: 28.52,
+            expect: 0,
+            high: 0,
+            middle: 0,
+            low: 0,
+            redLine: 0,
           },
           personEffic: {
-            expect: 96.29,
-            high: 59.76,
-            middle: 58.97,
-            low: 8.27,
-            redLine: 34.98,
+            expect: 0,
+            high: 0,
+            middle: 0,
+            low: 0,
+            redLine: 0,
           },
         },
       },
       nodeAnalysisData: {},
       nodeTimeData: {},
-      nodeChartData: {},
+      nodeChartData: {
+        list: [],
+        conclusion: "",
+      },
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       listQuery: {
         templateTypesValue: "",
         procDefValue: "",
-        startTime: null,
-        endTime: null,
+        dateValue: "",
       },
     };
   },
@@ -249,13 +283,40 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.dateValue = [];
-      // this.listQuery = {
-      //   templateTypesValue: "",
-      //   procDefValue: "",
-      // };
-      // this.getProcIndexRule();
-      // this.getProcFactor();
+      this.listQuery.dateValue = "";
+      this.procFactorDetail = {
+        partRadio: "0",
+        total: "25",
+        flowRadio: "0",
+        timeLimit: "0",
+        avgHolder: "0",
+        personLimit: "0",
+      };
+      this.procFactorRuleData = {
+        rule: {
+          flowEffic: {
+            expect: 0,
+            high: 0,
+            middle: 0,
+            low: 0,
+            redLine: 0,
+          },
+          timeEffic: {
+            expect: 0,
+            high: 0,
+            middle: 0,
+            low: 0,
+            redLine: 0,
+          },
+          personEffic: {
+            expect: 0,
+            high: 0,
+            middle: 0,
+            low: 0,
+            redLine: 0,
+          },
+        },
+      };
     },
     //获取流程指数
     getProcess() {
@@ -269,22 +330,22 @@ export default {
       const end = new Date();
       if (time === "day") {
         const start = new Date();
-        this.dateValue = [start, start];
+        this.listQuery.dateValue = [start, start];
       }
       if (time === "week") {
         const start = new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-        this.dateValue = [start, end];
+        this.listQuery.dateValue = [start, end];
       }
       if (time == "month") {
         const start = new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-        this.dateValue = [start, end];
+        this.listQuery.dateValue = [start, end];
       }
       if (time === "year") {
         const start = new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-        this.dateValue = [start, end];
+        this.listQuery.dateValue = [start, end];
       }
     },
     async getSelectTemplate() {
@@ -310,8 +371,10 @@ export default {
           procDefKey: this.listQuery.procDefValue,
         })
       );
-
-      this.procFactorRuleData = data;
+      console.log(data, "datadatadata");
+      if (data) {
+        this.procFactorRuleData = data;
+      }
     },
     // 获取流效样本
     async getProcFactor() {
@@ -319,14 +382,14 @@ export default {
         procDefKey: this.listQuery.procDefValue,
         tenantId: this.$store.state.user.tenantId,
         appKey: this.listQuery.templateTypesValue,
-        startTime: moment(parseInt(this.dateValue[0].getTime())).format(
-          "YYYY-MM-DD"
-        ),
-        endTime: moment(parseInt(this.dateValue[1].getTime())).format(
+        startTime: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endTime: moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
           "YYYY-MM-DD"
         ),
       });
-
+      console.log(data, "datadata");
       this.procFactorDetail = data;
     },
     getNode() {
@@ -374,9 +437,13 @@ export default {
 <style lang="scss" scoped>
 .example-container {
   font-size: 14px;
-  line-height: 32px;
-  height: 32px;
-  margin-bottom: 24px;
+  // line-height: 32px;
+  // height: 32px;
+  // margin-bottom: 24px;
+}
+.title-container {
+  line-height: 36px;
+  height: 36px;
 }
 
 .tab-container {
@@ -417,6 +484,7 @@ export default {
 }
 
 .my-el-select {
+  width: 100%;
   ::v-deep {
     .el-input__inner {
       height: 32px;
