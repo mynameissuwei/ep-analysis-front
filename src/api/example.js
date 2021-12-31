@@ -79,3 +79,12 @@ export function fetchNodeChart(params) {
     params,
   });
 }
+
+// 获取明细查询
+export function fetchNodeChartDetail(params) {
+  return request({
+    url: "/nodeAnalysis/analysisProcMilestoneDetail",
+    method: "get",
+    params,
+  });
+}

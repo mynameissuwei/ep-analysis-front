@@ -4,7 +4,7 @@
       title="节点执行事件明细因子设置"
       :visible.sync="visible"
       :before-close="handleClose"
-      width="800px"
+      width="900px"
     >
       <span class="modal-title">秒批建议自动化值设置</span>
       <el-form
@@ -90,17 +90,29 @@ export default {
     font-weight: 500;
     color: #333333;
   }
-  ::v-deep .el-form-item__label {
-    color: #999999;
-  }
-  ::v-deep .el-input__inner {
-    border-radius: 0px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+  ::v-deep {
+    .el-input-number__decrease,
+    .el-input-number__increase {
+      background-color: white;
+    }
+    .el-form-item__label {
+      color: #999999;
+    }
+    .el-form-item__label {
+      color: #999999;
+    }
+    .el-input__inner {
+      border-radius: 0px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    input {
+      border-right: 0px;
+    }
   }
   .ant-input-number-group-addon {
     display: inline-block;
-    width: 20px;
+    width: 30px;
     height: 28px;
     position: relative;
     top: 2px;
@@ -109,6 +121,8 @@ export default {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     text-align: center;
+    background-color: #fafafa;
+    color: #000000d9;
   }
 }
 </style>

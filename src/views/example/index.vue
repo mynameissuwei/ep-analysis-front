@@ -100,7 +100,7 @@
     <div class="tab-container" style="position: relative">
       <el-tabs v-model="activeName" @tab-click="handleTabChange">
         <el-tab-pane label="流程指数" name="first">
-          <tab-container>
+          <tab-container v-if="'first' === activeName">
             <template v-slot:left>
               <left-container
                 :dateValue="listQuery.dateValue"
@@ -119,19 +119,20 @@
           </tab-container>
         </el-tab-pane>
         <el-tab-pane label="节点分析" name="second">
-          <tab-container>
+          <tab-container v-if="'second' === activeName">
             <template v-slot:left> <left-container /> </template>
             <template v-slot:right>
               <node-detail
                 :nodeAnalysisData="nodeAnalysisData"
                 :nodeTimeData="nodeTimeData"
                 :nodeChartData="nodeChartData"
+                :listQuery="listQuery"
               />
             </template>
           </tab-container>
         </el-tab-pane>
         <el-tab-pane label="流程指数" name="third">
-          <tab-container>
+          <tab-container v-if="'third' === activeName">
             <template v-slot:left>
               <left-container />
             </template>
@@ -164,6 +165,7 @@ import {
 import Driver from "driver.js"; // import driver.js
 import "driver.js/dist/driver.min.css"; // import driver.js css
 import moment from "moment";
+import Bus from "@/Bus.js";
 
 export default {
   components: {
@@ -268,9 +270,8 @@ export default {
   created() {
     this.getSelectTemplate();
     this.getProcDef();
-
     // this.getProcess();
-    this.getNode();
+    // this.getNode();
   },
   methods: {
     submitForm(formName) {
@@ -278,12 +279,25 @@ export default {
         if (valid) {
           this.getProcIndexRule();
           this.getProcFactor();
+          this.getNode();
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.listQuery.dateValue = "";
+      this.initProcess();
+      this.initNode();
+    },
+    initNode() {
+      this.nodeAnalysisData = {};
+      this.nodeTimeData = {};
+      this.nodeChartData = {
+        list: [],
+        conclusion: "",
+      };
+    },
+    initProcess() {
       this.procFactorDetail = {
         partRadio: "0",
         total: "25",
@@ -324,7 +338,7 @@ export default {
       this.getProcIndexRule();
     },
     handleTabChange() {
-      console.log("handleTabChange");
+      Bus.$emit("sendMsg", "handleTabChange");
     },
     changeTime(time) {
       const end = new Date();
@@ -371,7 +385,7 @@ export default {
           procDefKey: this.listQuery.procDefValue,
         })
       );
-      console.log(data, "datadatadata");
+
       if (data) {
         this.procFactorRuleData = data;
       }
@@ -389,7 +403,7 @@ export default {
           "YYYY-MM-DD"
         ),
       });
-      console.log(data, "datadata");
+
       this.procFactorDetail = data;
     },
     getNode() {
@@ -399,33 +413,44 @@ export default {
     },
     async getNodeChart() {
       const { data } = await fetchNodeChart({
-        appKey: "ptsw",
-        tenantId: "1371750490517663745",
-        procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
-        startDateTime: "2021-12-11 14:49:50",
-        endDateTime: "2021-12-14 14:49:50",
+        appKey: this.listQuery.templateTypesValue,
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
+        startDateTime: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endDateTime: moment(
+          parseInt(this.listQuery.dateValue[1].getTime())
+        ).format("YYYY-MM-DD"),
       });
-      console.log(data, "datadataa");
       this.nodeChartData = data;
     },
     async getNodeAnalysis() {
       const { data } = await fetchNodeAnalysis({
-        appKey: "ptsw",
-        tenantId: "1369559970221985794",
-        procDefKey: "gangweixunjian",
-        startDateTime: "2021-12-11 14:49:50",
-        endDateTime: "2021-12-14 14:49:50",
+        appKey: this.listQuery.templateTypesValue,
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
+        startDateTime: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endDateTime: moment(
+          parseInt(this.listQuery.dateValue[1].getTime())
+        ).format("YYYY-MM-DD"),
       });
 
       this.nodeAnalysisData = data;
     },
     async getNodeTimeConsuming() {
       const { data } = await fetchTimeConsuming({
-        appKey: "ptsw",
-        tenantId: "1369559970221985794",
-        procDefKey: "gangweixunjian",
-        startDateTime: "2021-12-11 14:49:50",
-        endDateTime: "2021-12-14 14:49:50",
+        appKey: this.listQuery.templateTypesValue,
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
+        startDateTime: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endDateTime: moment(
+          parseInt(this.listQuery.dateValue[1].getTime())
+        ).format("YYYY-MM-DD"),
       });
 
       this.nodeTimeData = data;

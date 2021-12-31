@@ -12,7 +12,9 @@
     </div>
 
     <div class="nodeDetailContainer">
-      <div id="histogram" style="width: 100%; height: 190px" />
+      <div style="width: 100%; height: 190px">
+        <div id="histogram" style="width: 100%; height: 190px" />
+      </div>
       <div class="conclusion">
         <div class="conclusion-title">分析结论：</div>
         <div>
@@ -166,7 +168,12 @@
 
     <dia-modal :visible="dialogVisible" :handleClose="handleClose" />
     <node-modal :visible="nodeVisible" :handleClose="closeNode" />
-    <detail-modal :visible="detailVisible" :handleClose="handleHiddleDetail" />
+    <detail-modal
+      :visible="detailVisible"
+      :handleClose="handleHiddleDetail"
+      :nodeChartDataDetail="nodeChartDataDetail"
+      :nodeChartData="nodeChartData"
+    />
   </div>
 </template>
 
@@ -175,11 +182,11 @@ import DiaModal from "./components/DiaModal";
 import NodeModal from "./components/NodeModal";
 import DetailModal from "./components/DetailModal";
 import * as echarts from "echarts";
-import resize from "@/components/mixins/resize.js";
+import Bus from "@/Bus.js";
+import { fetchNodeChartDetail } from "@/api/example";
 
 export default {
-  props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData"],
-  mixins: [resize],
+  props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery"],
   components: {
     DiaModal,
     NodeModal,
@@ -192,10 +199,21 @@ export default {
       nodeVisible: false,
       detailVisible: false,
       chart: null,
+      nodeChartDataDetail: {
+        milestoneRollBackTime: 0,
+      },
     };
   },
   mounted() {
-    this.initChart();
+    this.$nextTick(() => {
+      this.initChart();
+    });
+    Bus.$on("sendMsg", (data) => {
+      this.resize();
+    });
+    window.addEventListener("resize", () => {
+      this.resize();
+    });
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -203,10 +221,30 @@ export default {
     }
     this.chart.dispose();
     this.chart = null;
+    Bus.$off("sendMsg");
   },
+
   methods: {
+    resize() {
+      this.chart.resize();
+    },
+    async getNodeChartDetail() {
+      const { data } = await fetchNodeChartDetail({
+        appKey: this.listQuery.templateTypesValue,
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
+        startDateTime: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endDateTime: moment(
+          parseInt(this.listQuery.dateValue[1].getTime())
+        ).format("YYYY-MM-DD"),
+      });
+      this.nodeChartDataDetail = data;
+    },
     handleShowDetail() {
       this.detailVisible = true;
+      this.getNodeChartDetail();
     },
     handleHiddleDetail() {
       this.detailVisible = false;
@@ -227,7 +265,6 @@ export default {
       this.nodeVisible = false;
     },
     initChart() {
-      console.log(document.getElementById("histogram"), "node");
       this.chart = echarts.init(document.getElementById("histogram"));
       this.chart.setOption(this.getOption());
     },
@@ -238,10 +275,11 @@ export default {
         dataset: {
           dimensions: [
             "name",
-            "taskNumReal",
-            "taskNumLine",
-            "timeConsumingReal",
-            "timeConsumingLine",
+            this.this.nodeChartData.list.map((item) => item.taskName),
+            // "taskNumReal",
+            // "taskNumLine",
+            // "timeConsumingReal",
+            // "timeConsumingLine",
           ],
           source: this.nodeChartData.list,
         },
