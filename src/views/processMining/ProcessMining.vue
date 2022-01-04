@@ -19,8 +19,8 @@ export default {
     },
     async go() {
       let data = {
-        "startDate": "2021-12-01",
-        "endDate": "2021-12-17",
+        "startDate": "2021-12-17",
+        "endDate": "2022-12-17",
         "procDefKey": "TQM_NCR_BILL_FAT_001"
       }
       const result = await discoverProcess(data)
