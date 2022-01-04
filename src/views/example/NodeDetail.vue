@@ -166,7 +166,11 @@
       <el-divider></el-divider>
     </div>
 
-    <dia-modal :visible="dialogVisible" :handleClose="handleClose" />
+    <dia-modal
+      :visible="dialogVisible"
+      :handleClose="handleClose"
+      v-if="dialogVisible"
+    />
     <node-modal :visible="nodeVisible" :handleClose="closeNode" />
     <detail-modal
       :visible="detailVisible"
@@ -184,6 +188,7 @@ import DetailModal from "./components/DetailModal";
 import * as echarts from "echarts";
 import Bus from "@/Bus.js";
 import { fetchNodeChartDetail } from "@/api/example";
+import moment from "moment";
 
 export default {
   props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery"],
@@ -275,7 +280,7 @@ export default {
         dataset: {
           dimensions: [
             "name",
-            this.this.nodeChartData.list.map((item) => item.taskName),
+            this.nodeChartData.list.map((item) => item.taskName),
             // "taskNumReal",
             // "taskNumLine",
             // "timeConsumingReal",

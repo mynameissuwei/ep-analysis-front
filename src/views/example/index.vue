@@ -218,7 +218,7 @@ export default {
         ],
       },
       selectTemplateData: [],
-      activeName: "first",
+      activeName: "second",
       procFactorData: [],
       procFactorDetail: {
         partRadio: "0",

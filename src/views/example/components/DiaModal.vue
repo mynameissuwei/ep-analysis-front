@@ -9,10 +9,14 @@
       <add-node-modal
         :innerVisible="innerVisible"
         :handleCloseInner="handleCloseInner"
+        :processNodeData="processNodeData"
+        :addRow="addRow"
       />
       <add-mile-stone
         :visible="mileStoneVisible"
         :handleCloseInner="handleCloseMileStone"
+        :processNodeData="processNodeData"
+        :getMilestone="getMilestone"
       />
       <div class="container">
         <div class="left-container">
@@ -30,8 +34,13 @@
             >
           </div>
           <div class="left-container-content">
-            <el-table :data="tableData" :show-header="false">
-              <el-table-column prop="date" label="日期" width="180">
+            <el-table
+              ref="dragTable"
+              :data="mileStoneData"
+              :show-header="false"
+              row-key="id"
+            >
+              <el-table-column prop="name" label="日期" width="180">
               </el-table-column>
               <el-table-column label="操作" width="230">
                 <template slot-scope="{ row, $index }">
@@ -39,7 +48,11 @@
                   <i
                     class="el-icon-delete"
                     style="margin-left: 10px; cursor: pointer"
-                    @click="deleteMile"
+                    @click="deleteMile(row)"
+                  ></i>
+                  <i
+                    class="el-icon-rank"
+                    style="margin-left: 10px; cursor: pointer"
                   ></i>
                 </template>
               </el-table-column>
@@ -59,19 +72,22 @@
           </div>
           <div class="right-container-content">
             <el-input
-              v-model="input"
+              v-model="inputValue"
               placeholder="搜索渠道名称"
               prefix-icon="el-icon-search"
               style="margin: 13px 0px"
               size="small"
+              @input="querySearchAsync"
             ></el-input>
-            <el-table :data="tableData" max-height="220" border="true">
-              <el-table-column prop="date" label="日期" width="315">
+            <el-table :data="processNodeData" max-height="220" :border="true">
+              <el-table-column prop="taskDefName" label="节点名称" width="315">
               </el-table-column>
               <el-table-column label="操作" width="120">
                 <template slot-scope="scope">
                   <el-button
-                    @click.native.prevent="removeNode"
+                    @click.native.prevent="
+                      deleteRow(scope.$index, processNodeData)
+                    "
                     type="text"
                     size="small"
                   >
@@ -86,14 +102,13 @@
       <div class="bottom-container">
         <div class="mileMan">标准值设置</div>
         <el-form
-          :model="dengmiQueryForm"
-          ref="dengmiQueryForm"
+          :model="standardForm"
+          ref="standardForm"
           label-width="100px"
-          class="demo-ruleForm"
           size="mini"
         >
           <el-row style="margin-top: 15px" :gutter="44">
-            <el-col span="12">
+            <el-col :span="12">
               <el-form-item>
                 <label slot="label">里程碑</label>
                 <el-input
@@ -101,13 +116,12 @@
                   placeholder=""
                   size="small"
                   clearable
-                  @change=""
                 ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row style="margin-top: 15px" :gutter="44">
-            <el-col span="12">
+            <el-col :span="12">
               <el-form-item>
                 <label slot="label">标准节点数</label>
                 <el-input
@@ -115,11 +129,10 @@
                   placeholder=""
                   size="small"
                   clearable
-                  @change=""
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="12">
+            <el-col :span="12">
               <el-form-item>
                 <label slot="label">里程碑耗时</label>
                 <el-input
@@ -127,7 +140,6 @@
                   placeholder=""
                   size="small"
                   clearable
-                  @change=""
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -147,6 +159,8 @@
 <script>
 import AddNodeModal from "./AddNodeModal";
 import AddMileStone from "./AddMileStone";
+import { fetchProcessNode, fetchMilestone, deleteMile } from "@/api/example";
+import Sortable from "sortablejs";
 
 export default {
   props: ["visible", "handleClose"],
@@ -158,32 +172,19 @@ export default {
     return {
       dialogVisible: false,
       input: "",
+      inputValue: "",
       innerVisible: false,
       mileStoneVisible: false,
-      dengmiQueryForm: "",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
+      standardForm: {},
+      processNodeData: [],
+      mileStoneData: [],
+      nodeData: [],
     };
+  },
+  created() {
+    console.log("getProcessNode");
+    this.getProcessNode();
+    this.getMilestone();
   },
   methods: {
     handleCloseInner() {
@@ -193,17 +194,88 @@ export default {
       this.mileStoneVisible = false;
     },
     handleOpenInner() {
-      console.log(123, "123123");
       this.innerVisible = true;
     },
-    deleteMile() {
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
+    addRow(data) {
+      let result = this.processNodeData;
+      let array = data.map((item) => {
+        let result = this.processNodeData.find((d) => d.id === item);
+        return result;
+      });
+      this.processNodeData = result.concat(array);
+      console.log(this.processNodeData, "result");
+      this.innerVisible = false;
+    },
+    querySearchAsync(queryString) {
+      console.log(queryString, "queryString");
+      let nodeList = this.nodeData;
+
+      let results = queryString
+        ? nodeList.filter(this.createStateFilter(queryString))
+        : nodeList;
+
+      this.processNodeData = results;
+    },
+    createStateFilter(queryString) {
+      return (item) => {
+        if (item.taskDefName) {
+          return (
+            item.taskDefName.toLowerCase().indexOf(queryString.toLowerCase()) !=
+            -1
+          );
+        } else {
+          return false;
+        }
+      };
+    },
+    setSort() {
+      const el = this.$refs.dragTable.$el.querySelectorAll(
+        ".el-table__body-wrapper > table > tbody"
+      )[0];
+      this.sortable = Sortable.create(el, {
+        ghostClass: "sortable-ghost", // Class name for the drop placeholder,
+        setData: function (dataTransfer) {
+          // to avoid Firefox bug
+          // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+          dataTransfer.setData("Text", "");
+        },
+        onEnd: (evt) => {
+          const targetRow = this.mileStoneData.splice(evt.oldIndex, 1)[0];
+          this.mileStoneData.splice(evt.newIndex, 0, targetRow);
+        },
+      });
+    },
+    async getProcessNode() {
+      const { data } = await fetchProcessNode({
+        appKey: "data_asset",
+        procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+      });
+      this.processNodeData = data;
+    },
+    async getMilestone() {
+      const { data } = await fetchMilestone({
+        appKey: "data_asset",
+        procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+      });
+      console.log(data, "datadata");
+      this.mileStoneData = data;
+      this.$nextTick(() => {
+        this.setSort();
+      });
+    },
+    deleteMile(row) {
       this.$msgbox({
         title: "删除里程碑",
         message: "请先移除该里程碑中所有节点，再进行删除里程碑操作",
         showCancelButton: true,
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-      }).then(() => {
+      }).then(async () => {
+        await deleteMile([row.id]);
+        await this.getMilestone();
         this.$message({
           type: "success",
           message: "删除成功!",
