@@ -39,6 +39,9 @@ import { createMile } from "@/api/example";
 
 export default {
   props: ["visible", "handleCloseInner", "processNodeData", "getMilestone"],
+  created() {
+    this.init();
+  },
   data() {
     return {
       form: {
@@ -59,6 +62,12 @@ export default {
     };
   },
   methods: {
+    init() {
+      this.form = {
+        name: "",
+        tasks: "",
+      };
+    },
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {

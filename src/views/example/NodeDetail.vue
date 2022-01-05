@@ -115,55 +115,6 @@
           <i class="el-icon-setting"></i>
         </div>
       </div>
-
-      <el-row
-        type="flex"
-        justify="space-between"
-        class="row-container"
-        :gutter="44"
-      >
-        <el-col :span="12">
-          <el-row :gutter="4">
-            <el-col :span="6">
-              <span>选择占比类型</span>
-            </el-col>
-            <el-col :span="18">
-              <el-input
-                v-model="input"
-                placeholder="123"
-                size="small"
-                clearable
-                @change="handleChange"
-              ></el-input>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="12">
-          <el-row :gutter="4">
-            <el-col :span="6">
-              <span>选择占比类型</span>
-            </el-col>
-            <el-col :span="18">
-              <el-input
-                v-model="input"
-                placeholder="123"
-                size="small"
-                clearable
-                @change="handleChange"
-              ></el-input>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-
-      <div class="conclusion">
-        <div class="conclusion-title">分析结论：</div>
-        <div>
-          耗时上升节点出现4个。平均耗时中5个节点在上升；平均处理中1个节点在上升，平均等待中3个节点在上升；该流程审批效率环比降低5/人天。
-        </div>
-      </div>
-
-      <el-divider></el-divider>
     </div>
 
     <dia-modal
@@ -171,7 +122,12 @@
       :handleClose="handleClose"
       v-if="dialogVisible"
     />
-    <node-modal :visible="nodeVisible" :handleClose="closeNode" />
+    <node-modal
+      :visible="nodeVisible"
+      :handleClose="closeNode"
+      :listQuery="listQuery"
+      v-if="nodeVisible"
+    />
     <detail-modal
       :visible="detailVisible"
       :handleClose="handleHiddleDetail"

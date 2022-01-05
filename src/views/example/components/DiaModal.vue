@@ -39,6 +39,8 @@
               :data="mileStoneData"
               :show-header="false"
               row-key="id"
+              highlight-current-row
+              @current-change="handleCurrentChange"
             >
               <el-table-column prop="name" label="日期" width="180">
               </el-table-column>
@@ -79,14 +81,14 @@
               size="small"
               @input="querySearchAsync"
             ></el-input>
-            <el-table :data="processNodeData" max-height="220" :border="true">
+            <el-table :data="nodeTableData" max-height="220" :border="true">
               <el-table-column prop="taskDefName" label="节点名称" width="315">
               </el-table-column>
               <el-table-column label="操作" width="120">
                 <template slot-scope="scope">
                   <el-button
                     @click.native.prevent="
-                      deleteRow(scope.$index, processNodeData)
+                      deleteRow(scope.$index, nodeTableData)
                     "
                     type="text"
                     size="small"
@@ -110,23 +112,10 @@
           <el-row style="margin-top: 15px" :gutter="44">
             <el-col :span="12">
               <el-form-item>
-                <label slot="label">里程碑</label>
-                <el-input
-                  v-model="input"
-                  placeholder=""
-                  size="small"
-                  clearable
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row style="margin-top: 15px" :gutter="44">
-            <el-col :span="12">
-              <el-form-item>
                 <label slot="label">标准节点数</label>
                 <el-input
-                  v-model="input"
-                  placeholder=""
+                  v-model="standardForm.taskNumLine"
+                  placeholder="请输入文字"
                   size="small"
                   clearable
                 ></el-input>
@@ -136,8 +125,8 @@
               <el-form-item>
                 <label slot="label">里程碑耗时</label>
                 <el-input
-                  v-model="input"
-                  placeholder=""
+                  v-model="standardForm.timeConsumingLine"
+                  placeholder="请输入文字"
                   size="small"
                   clearable
                 ></el-input>
@@ -175,18 +164,42 @@ export default {
       inputValue: "",
       innerVisible: false,
       mileStoneVisible: false,
-      standardForm: {},
+      standardForm: {
+        taskNumLine: "",
+        timeConsumingLine: "",
+      },
       processNodeData: [],
       mileStoneData: [],
       nodeData: [],
+      nodeTableData: [],
+      currentRow: null,
     };
   },
   created() {
-    console.log("getProcessNode");
     this.getProcessNode();
     this.getMilestone();
   },
+
   methods: {
+    handleCurrentChange(item) {
+      console.log(item.tasks, "valval");
+      this.currentRow = item;
+      this.nodeTableData = item.tasks;
+      this.standardForm = {
+        taskNumLine: item.taskNumLine,
+        timeConsumingLine: item.timeConsumingLine,
+      };
+    },
+    setCurrent(row) {
+      console.log(row, "rowLength");
+      this.$refs.dragTable.setCurrentRow(row);
+      if (Object.keys(row).length) {
+        this.standardForm = {
+          taskNumLine: row.taskNumLine,
+          timeConsumingLine: row.timeConsumingLine,
+        };
+      }
+    },
     handleCloseInner() {
       this.innerVisible = false;
     },
@@ -200,17 +213,22 @@ export default {
       rows.splice(index, 1);
     },
     addRow(data) {
-      let result = this.processNodeData;
+      let result = this.nodeTableData;
       let array = data.map((item) => {
-        let result = this.processNodeData.find((d) => d.id === item);
+        let result = this.processNodeData.find((d) => d.taskDefKey === item);
         return result;
       });
-      this.processNodeData = result.concat(array);
-      console.log(this.processNodeData, "result");
+      console.log(
+        array,
+        data,
+        this.processNodeData,
+        result.concat(array),
+        "datata"
+      );
+      this.nodeTableData = result.concat(array);
       this.innerVisible = false;
     },
     querySearchAsync(queryString) {
-      console.log(queryString, "queryString");
       let nodeList = this.nodeData;
 
       let results = queryString
@@ -249,21 +267,68 @@ export default {
       });
     },
     async getProcessNode() {
-      const { data } = await fetchProcessNode({
-        appKey: "data_asset",
-        procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
-      });
-      this.processNodeData = data;
+      // const { data } = await fetchProcessNode({
+      //   appKey: "data_asset",
+      //   procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+      // });
+      // this.processNodeData = data;
+      this.processNodeData = [
+        {
+          taskDefName: "节点名称",
+          taskDefKey: "节点唯一标识",
+          milestoneId: 123,
+          milestoneName: "撰写文件",
+        },
+        {
+          taskDefName: "节点",
+          taskDefKey: "节点唯一",
+          milestoneId: null,
+          milestoneName: "撰写文件",
+        },
+        {
+          taskDefName: "节点",
+          taskDefKey: "节点",
+          milestoneId: 456,
+          milestoneName: "撰写文件",
+        },
+      ];
     },
     async getMilestone() {
       const { data } = await fetchMilestone({
         appKey: "data_asset",
         procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
       });
-      console.log(data, "datadata");
-      this.mileStoneData = data;
+      // this.mileStoneData = data;
+      this.mileStoneData = [
+        {
+          id: 1231,
+          name: "撰写文件",
+          taskNumLine: 10,
+          timeConsumingLine: 15,
+          tasks: [
+            {
+              taskDefKey: "asdfqwdeq",
+              taskDefName: "节点名称",
+            },
+          ],
+        },
+        {
+          id: 121,
+          name: "撰文件",
+          taskNumLine: 1,
+          timeConsumingLine: 1,
+          tasks: [
+            {
+              taskDefKey: "asdfwdeq",
+              taskDefName: "节名称",
+            },
+          ],
+        },
+      ];
+
       this.$nextTick(() => {
         this.setSort();
+        this.setCurrent(this.mileStoneData ? this.mileStoneData[0] : []);
       });
     },
     deleteMile(row) {
@@ -341,5 +406,8 @@ export default {
     color: #333333;
     line-height: 16px;
   }
+}
+::v-deep .el-table__empty-block {
+  width: 100% !important;
 }
 </style>

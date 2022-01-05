@@ -39,8 +39,9 @@
             <el-checkbox
               class="el-transfer-panel__item"
               v-for="item in data"
-              :label="item.taskDefName"
+              :label="item.taskDefKey"
               :key="item.taskDefKey"
+              :disabled="!item.milestoneId"
               >{{ item.taskDefName }}</el-checkbox
             >
           </el-checkbox-group>
@@ -93,6 +94,9 @@ export default {
       data: this.processNodeData,
       input: "",
     };
+  },
+  created() {
+    this.checkedValue = [];
   },
   methods: {
     handleCheckAllChange(val) {

@@ -7,49 +7,34 @@
       width="900px"
     >
       <span class="modal-title">秒批建议自动化值设置</span>
-      <el-form
-        :model="dengmiQueryForm"
-        ref="dengmiQueryForm"
-        label-width="100px"
-        class="demo-ruleForm"
-        size="mini"
-      >
+      <el-form :model="form" ref="form" label-width="100px" size="mini">
         <el-row style="margin-top: 29px">
-          <el-col span="8">
+          <el-col :span="8">
             <el-form-item>
               <label slot="label">强度建议 </label>
               <el-input-number
-                v-model="num"
+                v-model="form.strongRecommend"
                 controls-position="right"
-                @change="handleChange"
-                :min="1"
-                :max="10"
               ></el-input-number>
               <div class="ant-input-number-group-addon">$</div>
             </el-form-item>
           </el-col>
-          <el-col span="8">
+          <el-col :span="8">
             <el-form-item>
               <label slot="label">中度建议 </label>
               <el-input-number
-                v-model="num"
+                v-model="form.mediumRecommend"
                 controls-position="right"
-                @change="handleChange"
-                :min="1"
-                :max="10"
               ></el-input-number>
               <div class="ant-input-number-group-addon">$</div>
             </el-form-item>
           </el-col>
-          <el-col span="8">
+          <el-col :span="8">
             <el-form-item>
               <label slot="label">建议 </label>
               <el-input-number
-                v-model="num"
+                v-model="form.recommend"
                 controls-position="right"
-                @change="handleChange"
-                :min="1"
-                :max="10"
               ></el-input-number>
               <div class="ant-input-number-group-addon">$</div>
             </el-form-item>
@@ -57,7 +42,11 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false" size="small"
+        <el-button
+          type="primary"
+          :loading="buttonLoading"
+          @click="onSubmit"
+          size="small"
           >确 定</el-button
         >
         <el-button @click="handleClose" size="small">取 消</el-button>
@@ -67,17 +56,55 @@
 </template>
 
 <script>
+import { fetchEvent, createEvent } from "@/api/example";
+import { Message } from "element-ui";
+
 export default {
-  props: ["visible", "handleClose"],
+  props: ["visible", "handleClose", "listQuery"],
   data() {
     return {
-      num: 1,
-      dengmiQueryForm: "",
+      form: {
+        strongRecommend: 0,
+        mediumRecommend: 0,
+        recommend: 0,
+      },
+      buttonLoading: false,
     };
   },
+  created() {
+    this.getData();
+  },
   methods: {
-    handleChange(value) {
-      console.log(value);
+    async getData() {
+      const { data } = await fetchEvent({
+        appKey: this.listQuery.templateTypesValue,
+        procDefKey: this.listQuery.procDefValue,
+      });
+      this.form = data ? data : this.form;
+    },
+    onSubmit() {
+      this.buttonLoading = true;
+      createEvent({
+        ...this.form,
+        appKey: this.listQuery.templateTypesValue,
+        procDefKey: this.listQuery.procDefValue,
+      })
+        .then(() => {
+          this.buttonLoading = false;
+          this.handleClose();
+          this.$message({
+            type: "success",
+            message: "保存成功!",
+          });
+        })
+        .catch((err) => {
+          this.buttonLoading = false;
+          Message({
+            message: "接口报错",
+            type: "error",
+            duration: 5 * 1000,
+          });
+        });
     },
   },
 };

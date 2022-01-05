@@ -124,3 +124,21 @@ export function deleteMile(data) {
     data,
   });
 }
+
+//获取获取节点执行事件明细因子
+export function fetchEvent(params) {
+  return request({
+    url: "/task/execution/event/factor",
+    method: "get",
+    params,
+  });
+}
+
+//获取获取节点执行事件明细因子
+export function createEvent(data) {
+  return request({
+    url: "/task/execution/event/factor",
+    method: "post",
+    data,
+  });
+}
