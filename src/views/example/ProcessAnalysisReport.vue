@@ -13,23 +13,23 @@
       </div>
 
       <div class="page_header_text">
-        <p align="right">{{overview.reportName}}     导出时间：{{overview.exportTime}}    操作人：{{overview.operateName}}</p>
+        <p align="right">流程分析报告     导出时间：{{ exportTime }}    操作人：{{this.$store.state.user.nickName}}</p>
       </div>
     </div>
 
     <el-divider/>
 
     <div style="text-align: center">
-      <h1>{{overview.title}}</h1>
-      <h4>-{{overview.reportName}}</h4>
+      <h1>{{this.listQuery.processName}}</h1>
+      <h4>-流程分析报告</h4>
     </div>
 
     <div style="margin-left: 5px">
       <h3>数据样本来自于：</h3>
-      <p>选择租户：{{dataSourceDetail.tenantName}}</p>
-      <p>流程类型：{{dataSourceDetail.appName}}</p>
-      <p>流程名称：{{dataSourceDetail.processName}}</p>
-      <p>选择时间：{{dataSourceDetail.timeRange}}</p>
+      <p>选择租户：{{this.$store.state.user.tenantId}}</p>
+      <p>流程类型：{{this.listQuery.appName}}</p>
+      <p>流程名称：{{this.listQuery.processName}}</p>
+      <p>选择时间：{{this.listQuery.startTime}} ~ {{this.listQuery.endTime}}</p>
     </div>
 
 
@@ -64,51 +64,9 @@
 
         <div class="nodeDetailContainer">
           <div id="histogram" style="width: 100%; height: 190px" />
-          <div class="conclusion">
-            <div class="conclusion-title">分析结论：</div>
-            <div>
-              {{ nodeChartData.conclusion }}
-            </div>
-          </div>
           <el-divider/>
         </div>
       </div>
-
-      <!--里程碑所属节点回退明细-->
-<!--      <div v-if="showNodeRollbackDetail">-->
-<!--        <el-row-->
-<!--          :gutter="22"-->
-<!--          type="flex"-->
-<!--          justify="space-between"-->
-<!--          style="line-height: 32px"-->
-<!--        >-->
-<!--          <el-col :span="12">-->
-<!--            <el-row :gutter="5">-->
-<!--              <el-col :span="4">-->
-<!--                <span>里程碑</span>-->
-<!--              </el-col>-->
-<!--              <el-col :span="20">-->
-<!--                <el-select-->
-<!--                  v-model="value"-->
-<!--                  placeholder="请选择"-->
-<!--                  class="my-el-select"-->
-<!--                >-->
-<!--                  <el-option-->
-<!--                    v-for="item in options"-->
-<!--                    :key="item.value"-->
-<!--                    :label="item.label"-->
-<!--                    :value="item.value"-->
-<!--                  >-->
-<!--                  </el-option>-->
-<!--                </el-select>-->
-<!--              </el-col>-->
-<!--            </el-row>-->
-<!--          </el-col>-->
-<!--          <el-col :span="12">-->
-<!--            <div class="text-container">里程碑回退耗时 2/人天</div>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
-<!--      </div>-->
 
       <!--节点审批效率分析-->
       <div v-if="showNodeApprovalAnalysis">
@@ -150,12 +108,6 @@
           </el-table-column>
         </el-table>
 
-        <div class="conclusion">
-          <div class="conclusion-title">分析结论：</div>
-          <div>
-            {{ nodeAnalysisData.conclusion }}
-          </div>
-        </div>
       </div>
 
       <el-divider/>
@@ -189,12 +141,6 @@
             </el-table-column>
           </el-table>
 
-          <div class="conclusion">
-            <div class="conclusion-title">分析结论：</div>
-            <div>
-              {{ nodeTimeData.conclusion }}
-            </div>
-          </div>
           <el-divider></el-divider>
         </div>
       </div>
@@ -204,9 +150,36 @@
 
     <!--conclusion-->
     <div>
+      整体分析结论：
 
+      <!--流程指数结论-->
+      <div>
+        <h4>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          【{{this.listQuery.processName}}】本次分析参与数据量为{{this.procFactorDetail.total}}条，识别到以下指数：
+          流程线上化率 --；
+          流程流效率0.00%；
+          流程时效{{this.procFactorDetail.timeLimit}}/人天；
+          流程平均干系人{{this.procFactorDetail.avgHolder}}人；
+          流程人效{{this.procFactorDetail.personLimit}}/人天；
+        </h4>
+      </div>
+
+      <!--节点分析结论-->
+      <div>
+        <h4>
+          通过节点分析，
+          「里程碑节点执行力分析」{{this.nodeChartData.conclusion}}
+          「节点审批效率分析」{{this.nodeAnalysisData.conclusion}}
+          「审批耗时区间分布」{{this.nodeTimeData.conclusion}}
+        </h4>
+      </div>
+
+
+      <h2 style="color: red">
+        注意：以上分析结论可能因数据样本偏差，存在不准确性，请谨慎参考。
+      </h2>
     </div>
-
   </div>
 </template>
 
@@ -216,6 +189,7 @@ import ProcessMining from '@/views/processMining/ProcessMining'
 import LeftContainer from '@/views/example/LeftContainer'
 import * as echarts from 'echarts'
 import watermark from '@/utils/common'
+import moment from 'moment'
 import {
   fetchNodeAnalysis,
   fetchNodeChart,
@@ -228,25 +202,13 @@ export default {
   components: { LeftContainer, ProcessMining, RightContainer },
   data(){
     return{
+      exportTime: moment(parseInt(new Date().getTime())).format("YYYY-MM-DD HH:mm:ss"),
       chart: null,
       showNodeExecutionAnalysis: false,
       showNodeRollbackDetail: false,
       showProcessIndex: false,
       showNodeApprovalAnalysis: false,
       showApprovalTCIntervalDistribution: false,
-      overview: {
-        reportName: "流程分析报告",
-        exportTime: "2022/1/4 12:00:00",
-        operateName: "Rays",
-        title: "主席决策审批"
-      },
-      dataSourceDetail: {
-        orgName: "新奥新智业务效能",
-        tenantName: "新奥新智",
-        appName: "商务类",
-        processName: "主席决策审批",
-        timeRange: "2015-09-09 09:45:23～2025-09-09 09:45:23",
-      },
       procFactorDetail: {
         partRadio: "0",
         total: "25",
@@ -317,10 +279,7 @@ export default {
         dataset: {
           dimensions: [
             "name",
-            "taskNumReal",
-            "taskNumLine",
-            "timeConsumingReal",
-            "timeConsumingLine",
+            this.nodeChartData.list.map((item) => item.taskName),
           ],
           source: this.nodeChartData.list,
         },

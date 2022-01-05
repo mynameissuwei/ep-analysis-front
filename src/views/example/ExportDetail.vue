@@ -159,12 +159,14 @@ export default {
           procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
           startTime: "2010-10-01",
           endTime: "2020-10-01",
-          exportRanges: ["MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS", "MILESTONE_TASK_ROlLBACK_DETAIL",
+          exportRanges: ["PROCESS_INDEX", "MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS", "MILESTONE_TASK_ROlLBACK_DETAIL",
             "TASK_APPROVAL_EFFICIENCY_ANALYSIS", "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION", "TASK_EXECUTION_EVENT_DETAIL"
           ],
           exportFileType: "pdf",
-          watermark: true,
+          watermark: false,
           export: false,
+          processName: "主席决策审批",
+          appName: "商务类"
         },
       })
     },
