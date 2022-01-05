@@ -6,22 +6,22 @@
     :before-close="handleCloseInner"
     append-to-body
   >
-    <el-form ref="form" :model="form" label-width="100px">
-      <el-form-item label="里程碑名称">
+    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form-item label="里程碑名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入文字"></el-input>
       </el-form-item>
       <el-form-item label="节点名称">
         <el-select
-          v-model="form.name"
+          v-model="form.tasks"
           multiple
           placeholder="请选择"
           style="width: 100%"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in processNodeData"
+            :key="item.taskDefKey"
+            :label="item.taskDefName"
+            :value="item.taskDefKey"
           >
           </el-option>
         </el-select>
@@ -29,50 +29,66 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleCloseInner" size="small">取 消</el-button>
-      <el-button type="primary" @click="confirm" size="small">确 定</el-button>
+      <el-button type="primary" @click="onSubmit" size="small">确定</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
+import { createMile } from "@/api/example";
+
 export default {
-  props: ["visible", "handleCloseInner"],
+  props: ["visible", "handleCloseInner", "processNodeData", "getMilestone"],
+  created() {
+    this.init();
+  },
   data() {
     return {
       form: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        tasks: "",
       },
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      value1: [],
+      rules: {
+        name: [
+          { required: true, message: "请输入里程碑名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur",
+          },
+        ],
+      },
     };
+  },
+  methods: {
+    init() {
+      this.form = {
+        name: "",
+        tasks: "",
+      };
+    },
+    onSubmit() {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          createMile({
+            ...this.form,
+            tasks: this.processNodeData.filter((item) =>
+              this.form.tasks.includes(item.taskDefKey)
+            ),
+            appKey: "data_asset",
+            procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+          }).then(() => {
+            this.handleCloseInner();
+            this.getMilestone();
+            this.$message({
+              type: "success",
+              message: "创建成功!",
+            });
+          });
+        }
+      });
+    },
   },
 };
 </script>

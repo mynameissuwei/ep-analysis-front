@@ -24,10 +24,10 @@
                 class="my-el-select"
               >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="item in nodeChartData.list"
+                  :key="item.id"
+                  :label="item.taskName"
+                  :value="item.id"
                 >
                 </el-option>
               </el-select>
@@ -35,7 +35,11 @@
           </el-row>
         </el-col>
         <el-col :span="12">
-          <div class="text-container">里程碑回退耗时 2/人天</div>
+          <div class="text-container">
+            <span style="margin-right: 8px">里程碑回退耗时</span>
+            <span>{{ nodeChartDataDetail.milestoneRollBackTime }}</span>
+            <span>人天</span>
+          </div>
         </el-col>
       </el-row>
       <div class="without-container">
@@ -48,7 +52,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false" size="small"
+        <el-button type="primary" @click="handleClose" size="small"
           >确 定</el-button
         >
         <el-button @click="handleClose" size="small">取 消</el-button>
@@ -59,7 +63,7 @@
 
 <script>
 export default {
-  props: ["visible", "handleClose"],
+  props: ["visible", "handleClose", "nodeChartData", "nodeChartDataDetail"],
   data() {
     return {
       options: [
