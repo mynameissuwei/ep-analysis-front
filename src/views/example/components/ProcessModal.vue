@@ -304,7 +304,7 @@ export default {
   ::v-deep {
     .el-input-number__decrease,
     .el-input-number__increase {
-      background: white;
+      background-color: white;
     }
     .el-form-item__label {
       color: #999999;

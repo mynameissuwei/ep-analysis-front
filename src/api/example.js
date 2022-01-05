@@ -79,3 +79,66 @@ export function fetchNodeChart(params) {
     params,
   });
 }
+
+// 获取明细查询
+export function fetchNodeChartDetail(params) {
+  return request({
+    url: "/nodeAnalysis/analysisProcMilestoneDetail",
+    method: "get",
+    params,
+  });
+}
+
+//获取流程节点
+export function fetchProcessNode(params) {
+  return request({
+    url: "/milestone/task",
+    method: "get",
+    params,
+  });
+}
+
+//获取里程碑
+export function fetchMilestone(params) {
+  return request({
+    url: "/milestone",
+    method: "get",
+    params,
+  });
+}
+
+//创建里程碑
+export function createMile(data) {
+  return request({
+    url: "/milestone",
+    method: "post",
+    data,
+  });
+}
+
+//删除里程碑
+export function deleteMile(data) {
+  return request({
+    url: "/milestone",
+    method: "delete",
+    data,
+  });
+}
+
+//获取获取节点执行事件明细因子
+export function fetchEvent(params) {
+  return request({
+    url: "/task/execution/event/factor",
+    method: "get",
+    params,
+  });
+}
+
+//获取获取节点执行事件明细因子
+export function createEvent(data) {
+  return request({
+    url: "/task/execution/event/factor",
+    method: "post",
+    data,
+  });
+}

@@ -18,13 +18,14 @@
 
 <script>
 import splitPane from "vue-splitpane";
+import Bus from "@/Bus.js";
 
 export default {
   name: "SplitpaneDemo",
   components: { splitPane },
   methods: {
-    resize() {
-      console.log("resize");
+    resize(val) {
+      Bus.$emit("sendMsg", "这是要向外部发送的数据");
     },
   },
 };

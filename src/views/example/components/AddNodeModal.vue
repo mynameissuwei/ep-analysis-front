@@ -10,7 +10,11 @@
       <div class="container">
         <div class="left-container">
           <div class="left-container-title">
-            <span class="mileMan">主席决策流程共16个节点</span>
+            <span class="mileMan">
+              <span>主席决策流程共</span>
+              <span>{{ data.length }}</span>
+              <span>个节点</span>
+            </span>
           </div>
           <el-input
             v-model="input"
@@ -18,6 +22,7 @@
             prefix-icon="el-icon-search"
             style="margin: 13px 0px"
             size="small"
+            @input="handleInput"
           ></el-input>
           <el-checkbox
             :indeterminate="isIndeterminate"
@@ -27,32 +32,41 @@
           >
 
           <el-checkbox-group
-            v-model="checkedCities"
+            v-model="checkedValue"
             class="el-transfer-panel__list"
+            @change="handleCheckedValueChange"
           >
             <el-checkbox
               class="el-transfer-panel__item"
-              v-for="city in cities"
-              :label="city"
-              :key="city"
-              >{{ city }}</el-checkbox
+              v-for="item in data"
+              :label="item.taskDefKey"
+              :key="item.taskDefKey"
+              :disabled="!item.milestoneId"
+              >{{ item.taskDefName }}</el-checkbox
             >
           </el-checkbox-group>
         </div>
         <div class="right-container">
           <div class="right-container-title">
-            <span class="mileMan">已选: 5个节点</span>
-            <span class="actionStyle">清空</span>
+            <span class="mileMan">
+              <span>已选:</span>
+              <span>{{ checkedValue.length }}</span>
+              <span>个节点</span>
+            </span>
+            <span class="actionStyle" @click="handleDeleteAll">清空</span>
           </div>
           <div class="right-container-content">
             <div
-              v-for="item in checkedCities"
+              v-for="(item, index) in checkedValue"
               class="right-container-list-content"
             >
               <div class="right-container-list-item">
                 <span>{{ item }}</span>
                 <span class="actionStyle actionClose">
-                  <i class="el-icon-close"></i>
+                  <i
+                    class="el-icon-close"
+                    @click="handleDeleteCheckbox(index)"
+                  ></i>
                 </span>
               </div>
             </div>
@@ -61,7 +75,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseInner" size="small">取 消</el-button>
-        <el-button type="primary" @click="confirm" size="small"
+        <el-button type="primary" @click="addRow(checkedValue)" size="small"
           >确 定</el-button
         >
       </span>
@@ -70,27 +84,60 @@
 </template>
 
 <script>
-const cityOptions = ["上海", "北京", "广州", "深圳"];
-
 export default {
-  props: ["innerVisible", "handleCloseInner"],
+  props: ["innerVisible", "handleCloseInner", "processNodeData", "addRow"],
   data() {
     return {
-      checkedCities: ["上海", "北京"],
-      cities: cityOptions,
+      checkedValue: [],
       isIndeterminate: true,
       checkAll: false,
+      data: this.processNodeData,
       input: "",
     };
   },
+  created() {
+    this.checkedValue = [];
+  },
   methods: {
     handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
-      console.log(this.checkedCities, "checkedCities");
+      this.checkedValue = val ? this.data.map((item) => item.taskDefName) : [];
       this.isIndeterminate = false;
     },
-    confirm() {
-      console.log(this.checkedCities, "checkedCities");
+    handleDeleteCheckbox(index) {
+      let result = this.checkedValue;
+      result.splice(index, 1);
+      this.checkedValue = result;
+    },
+    handleCheckedValueChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.data.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.data.length;
+    },
+    handleDeleteAll() {
+      this.checkedValue = [];
+      this.checkAll = false;
+    },
+    handleInput(queryString) {
+      let nodeList = this.processNodeData;
+
+      let results = queryString
+        ? nodeList.filter(this.createStateFilter(queryString))
+        : nodeList;
+
+      this.data = results;
+    },
+    createStateFilter(queryString) {
+      return (item) => {
+        if (item.taskDefName) {
+          return (
+            item.taskDefName.toLowerCase().indexOf(queryString.toLowerCase()) !=
+            -1
+          );
+        } else {
+          return false;
+        }
+      };
     },
   },
 };

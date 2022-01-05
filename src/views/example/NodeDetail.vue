@@ -12,7 +12,9 @@
     </div>
 
     <div class="nodeDetailContainer">
-      <div id="histogram" style="width: 100%; height: 190px" />
+      <div style="width: 100%; height: 190px">
+        <div id="histogram" style="width: 100%; height: 190px" />
+      </div>
       <div class="conclusion">
         <div class="conclusion-title">分析结论：</div>
         <div>
@@ -113,60 +115,25 @@
           <i class="el-icon-setting"></i>
         </div>
       </div>
-
-      <el-row
-        type="flex"
-        justify="space-between"
-        class="row-container"
-        :gutter="44"
-      >
-        <el-col :span="12">
-          <el-row :gutter="4">
-            <el-col :span="6">
-              <span>选择占比类型</span>
-            </el-col>
-            <el-col :span="18">
-              <el-input
-                v-model="input"
-                placeholder="123"
-                size="small"
-                clearable
-                @change="handleChange"
-              ></el-input>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="12">
-          <el-row :gutter="4">
-            <el-col :span="6">
-              <span>选择占比类型</span>
-            </el-col>
-            <el-col :span="18">
-              <el-input
-                v-model="input"
-                placeholder="123"
-                size="small"
-                clearable
-                @change="handleChange"
-              ></el-input>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-
-      <div class="conclusion">
-        <div class="conclusion-title">分析结论：</div>
-        <div>
-          耗时上升节点出现4个。平均耗时中5个节点在上升；平均处理中1个节点在上升，平均等待中3个节点在上升；该流程审批效率环比降低5/人天。
-        </div>
-      </div>
-
-      <el-divider></el-divider>
     </div>
 
-    <dia-modal :visible="dialogVisible" :handleClose="handleClose" />
-    <node-modal :visible="nodeVisible" :handleClose="closeNode" />
-    <detail-modal :visible="detailVisible" :handleClose="handleHiddleDetail" />
+    <dia-modal
+      :visible="dialogVisible"
+      :handleClose="handleClose"
+      v-if="dialogVisible"
+    />
+    <node-modal
+      :visible="nodeVisible"
+      :handleClose="closeNode"
+      :listQuery="listQuery"
+      v-if="nodeVisible"
+    />
+    <detail-modal
+      :visible="detailVisible"
+      :handleClose="handleHiddleDetail"
+      :nodeChartDataDetail="nodeChartDataDetail"
+      :nodeChartData="nodeChartData"
+    />
   </div>
 </template>
 
@@ -175,11 +142,12 @@ import DiaModal from "./components/DiaModal";
 import NodeModal from "./components/NodeModal";
 import DetailModal from "./components/DetailModal";
 import * as echarts from "echarts";
-import resize from "@/components/mixins/resize.js";
+import Bus from "@/Bus.js";
+import { fetchNodeChartDetail } from "@/api/example";
+import moment from "moment";
 
 export default {
-  props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData"],
-  mixins: [resize],
+  props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery"],
   components: {
     DiaModal,
     NodeModal,
@@ -192,10 +160,21 @@ export default {
       nodeVisible: false,
       detailVisible: false,
       chart: null,
+      nodeChartDataDetail: {
+        milestoneRollBackTime: 0,
+      },
     };
   },
   mounted() {
-    this.initChart();
+    this.$nextTick(() => {
+      this.initChart();
+    });
+    Bus.$on("sendMsg", (data) => {
+      this.resize();
+    });
+    window.addEventListener("resize", () => {
+      this.resize();
+    });
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -203,10 +182,30 @@ export default {
     }
     this.chart.dispose();
     this.chart = null;
+    Bus.$off("sendMsg");
   },
+
   methods: {
+    resize() {
+      this.chart.resize();
+    },
+    async getNodeChartDetail() {
+      const { data } = await fetchNodeChartDetail({
+        appKey: this.listQuery.templateTypesValue,
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
+        startDateTime: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endDateTime: moment(
+          parseInt(this.listQuery.dateValue[1].getTime())
+        ).format("YYYY-MM-DD"),
+      });
+      this.nodeChartDataDetail = data;
+    },
     handleShowDetail() {
       this.detailVisible = true;
+      this.getNodeChartDetail();
     },
     handleHiddleDetail() {
       this.detailVisible = false;
@@ -227,7 +226,6 @@ export default {
       this.nodeVisible = false;
     },
     initChart() {
-      console.log(document.getElementById("histogram"), "node");
       this.chart = echarts.init(document.getElementById("histogram"));
       this.chart.setOption(this.getOption());
     },
@@ -238,10 +236,11 @@ export default {
         dataset: {
           dimensions: [
             "name",
-            "taskNumReal",
-            "taskNumLine",
-            "timeConsumingReal",
-            "timeConsumingLine",
+            this.nodeChartData.list.map((item) => item.taskName),
+            // "taskNumReal",
+            // "taskNumLine",
+            // "timeConsumingReal",
+            // "timeConsumingLine",
           ],
           source: this.nodeChartData.list,
         },
