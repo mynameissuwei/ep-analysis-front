@@ -152,6 +152,21 @@ export default {
   methods: {
     onSubmit() {
       console.log("submit!");
+      this.$router.push({
+        path: '/process/analysis/report',
+        query: {
+          appKey: "data_asset",
+          procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+          startTime: "2010-10-01",
+          endTime: "2020-10-01",
+          exportRanges: ["MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS", "MILESTONE_TASK_ROlLBACK_DETAIL",
+            "TASK_APPROVAL_EFFICIENCY_ANALYSIS", "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION", "TASK_EXECUTION_EVENT_DETAIL"
+          ],
+          exportFileType: "pdf",
+          watermark: true,
+          export: false,
+        },
+      })
     },
   },
 };
