@@ -26,7 +26,7 @@
                 <el-option
                   v-for="item in nodeChartData.list"
                   :key="item.id"
-                  :label="item.taskName"
+                  :label="item.name"
                   :value="item.id"
                 >
                 </el-option>

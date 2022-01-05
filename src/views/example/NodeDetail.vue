@@ -108,14 +108,14 @@
       <el-divider></el-divider>
     </div>
 
-    <div class="nodeDetailContainer">
+    <!-- <div class="nodeDetailContainer">
       <div class="iconContainer">
         <div>节点执行事件明细</div>
         <div class="iconClass" @click="showNode">
           <i class="el-icon-setting"></i>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <dia-modal
       :visible="dialogVisible"
@@ -187,7 +187,7 @@ export default {
 
   methods: {
     resize() {
-      this.chart.resize();
+      this.chart && this.chart.resize();
     },
     async getNodeChartDetail() {
       const { data } = await fetchNodeChartDetail({
@@ -231,16 +231,25 @@ export default {
     },
     getOption() {
       return {
-        legend: {},
+        legend: {
+          formatter: function (name) {
+            const legendData = {
+              taskNumReal: "里程碑实际节点数量",
+              taskNumLine: "里程碑标准节点数量",
+              timeConsumingReal: "里程碑实际耗时",
+              timeConsumingLine: "里程碑标准耗时",
+            };
+            return legendData[name];
+          },
+        },
         tooltip: {},
         dataset: {
           dimensions: [
             "name",
-            this.nodeChartData.list.map((item) => item.taskName),
-            // "taskNumReal",
-            // "taskNumLine",
-            // "timeConsumingReal",
-            // "timeConsumingLine",
+            "taskNumReal",
+            "taskNumLine",
+            "timeConsumingReal",
+            "timeConsumingLine",
           ],
           source: this.nodeChartData.list,
         },

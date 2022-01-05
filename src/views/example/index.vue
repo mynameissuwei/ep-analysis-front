@@ -6,7 +6,7 @@
           <el-col :span="9">
             <el-row :gutter="5">
               <el-col :span="6">
-                <div class="title-container">选择流程类型（租户）</div>
+                <div class="title-container">选择流程类型</div>
               </el-col>
               <el-col :span="18">
                 <el-form-item prop="templateTypesValue">
@@ -218,7 +218,7 @@ export default {
         ],
       },
       selectTemplateData: [],
-      activeName: "second",
+      activeName: "first",
       procFactorData: [],
       procFactorDetail: {
         partRadio: "0",
@@ -394,7 +394,7 @@ export default {
     async getProcFactor() {
       const { data } = await fetchProcFactor({
         procDefKey: this.listQuery.procDefValue,
-        tenantId: this.$store.state.user.tenantId,
+        // tenantId: this.$store.state.user.tenantId,
         appKey: this.listQuery.templateTypesValue,
         startTime: moment(
           parseInt(this.listQuery.dateValue[0].getTime())

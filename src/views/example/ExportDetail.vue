@@ -5,7 +5,7 @@
         <el-select
           v-model="sizeForm.name"
           placeholder="请选择"
-          style="width: 100%"
+          style="width: 320px"
         >
           <el-option
             v-for="item in options"
@@ -24,7 +24,10 @@
         </el-radio-group>
       </el-form-item>
 
-      <div class="waterMark">* 水印是操作人中文姓名+工号</div>
+      <div class="waterMark">
+        <span class="asteriskClass">*</span>
+        <span style="margin-left: 10px"> 水印是操作人中文姓名+工号 </span>
+      </div>
 
       <el-form-item label="导出范围">
         <el-radio-group v-model="radio">
@@ -161,6 +164,7 @@ export default {
 .export-detail {
   height: 100%;
   overflow: scroll;
+  margin-top: 20px;
 }
 .waterMark {
   font-size: 10px;
@@ -171,10 +175,18 @@ export default {
   margin-bottom: 20px;
 }
 .tree-container {
-  background: #e9ecf3;
+  background: #f8f9fa;
   margin-left: 130px;
   height: 330px;
   padding-top: 12px;
   padding-left: 12px;
+}
+.waterMark {
+  position: relative;
+}
+.asteriskClass {
+  color: red;
+  position: absolute;
+  top: 3px;
 }
 </style>
