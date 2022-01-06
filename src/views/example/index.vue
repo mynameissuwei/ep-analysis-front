@@ -11,6 +11,7 @@
               <el-col :span="18">
                 <el-form-item prop="templateTypesValue">
                   <el-select
+                    filterable
                     v-model="listQuery.templateTypesValue"
                     placeholder="请选择"
                     class="my-el-select"
@@ -34,6 +35,7 @@
               <el-col :span="21">
                 <el-form-item prop="procDefValue">
                   <el-select
+                    filterable
                     v-model="listQuery.procDefValue"
                     clearable
                     placeholder="请选择"
@@ -454,7 +456,7 @@ export default {
       });
 
       this.nodeTimeData = data;
-    },
+    }
   },
 };
 </script>

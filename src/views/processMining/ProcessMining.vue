@@ -24,8 +24,8 @@ export default {
         "procDefKey": "TQM_NCR_BILL_FAT_001"
       }
       const result = await discoverProcess(data)
-      if (result.data.length > 0) {
-        this.pd.loadLog(result.data, 3, false)
+      if (result.data && result.data.visualizedText) {
+        this.pd.loadLog(result.data.visualizedText, 3, false)
       }
     },
   }
