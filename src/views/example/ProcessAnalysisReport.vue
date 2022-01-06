@@ -141,7 +141,6 @@
             </el-table-column>
           </el-table>
 
-          <el-divider></el-divider>
         </div>
       </div>
     </div>
