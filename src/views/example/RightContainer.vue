@@ -66,7 +66,7 @@
               title: '流效率',
               content: `${procFactorDetail.flowRadio}%`,
               expect: `≥ ${procFactorRuleData.rule.flowEffic.expect}%`,
-              redLine: `≤ ${procFactorRuleData.rule.flowEffic.expect}%`,
+              redLine: `≤ ${procFactorRuleData.rule.flowEffic.redLine}%`,
               redLineText: '流效红线',
               expectText: '流效期望',
             }"
@@ -113,7 +113,7 @@
               title: '时效',
               content: `${procFactorDetail.timeLimit}`,
               expect: `≤ ${procFactorRuleData.rule.timeEffic.expect}人天`,
-              redLine: `≥ ${procFactorRuleData.rule.timeEffic.expect}人天`,
+              redLine: `≥ ${procFactorRuleData.rule.timeEffic.redLine}人天`,
               redLineText: '时效红线',
               expectText: '时效期望',
               unit: '人天',

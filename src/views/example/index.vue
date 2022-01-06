@@ -3,18 +3,19 @@
     <el-form :model="listQuery" :rules="rules" ref="ruleForm">
       <div class="card-container" style="height: 156px">
         <el-row :gutter="22" class="example-container">
-          <el-col :span="9">
+          <el-col :span="5">
             <el-row :gutter="5">
-              <el-col :span="6">
-                <div class="title-container">选择流程类型（租户）</div>
+              <el-col :span="8">
+                <div class="title-container">选择流程类型</div>
               </el-col>
-              <el-col :span="18">
+              <el-col :span="16">
                 <el-form-item prop="templateTypesValue">
                   <el-select
                     filterable
                     v-model="listQuery.templateTypesValue"
                     placeholder="请选择"
                     class="my-el-select"
+                    @change="handleSelectChange"
                   >
                     <el-option
                       v-for="(item, index) in selectTemplateData"
@@ -27,12 +28,12 @@
               </el-col>
             </el-row>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="5">
             <el-row :gutter="5">
-              <el-col :span="3">
+              <el-col :span="8">
                 <div class="title-container">选择流程</div>
               </el-col>
-              <el-col :span="21">
+              <el-col :span="16">
                 <el-form-item prop="procDefValue">
                   <el-select
                     filterable
@@ -52,8 +53,6 @@
               </el-col>
             </el-row>
           </el-col>
-        </el-row>
-        <el-row :gutter="22" class="example-container">
           <el-col :span="14">
             <div>
               <el-form-item prop="dateValue">
@@ -82,8 +81,10 @@
               </el-form-item>
             </div>
           </el-col>
+        </el-row>
+        <el-row :gutter="22" class="example-container">
           <el-col :span="4">
-            <div style="float: right" class="button-group">
+            <div class="button-group" style="margin-top: 10px">
               <el-button
                 type="primary"
                 size="small"
@@ -169,6 +170,9 @@ import "driver.js/dist/driver.min.css"; // import driver.js css
 import moment from "moment";
 import Bus from "@/Bus.js";
 
+const start = new Date();
+start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+
 export default {
   components: {
     FilterItem,
@@ -220,7 +224,7 @@ export default {
         ],
       },
       selectTemplateData: [],
-      activeName: "second",
+      activeName: "first",
       procFactorData: [],
       procFactorDetail: {
         partRadio: "0",
@@ -261,17 +265,16 @@ export default {
         list: [],
         conclusion: "",
       },
-      value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       listQuery: {
         templateTypesValue: "",
         procDefValue: "",
-        dateValue: "",
+        dateValue: [start, new Date()],
       },
     };
   },
   created() {
     this.getSelectTemplate();
-    this.getProcDef();
+    // this.getProcDef();
     // this.getProcess();
     // this.getNode();
   },
@@ -284,6 +287,10 @@ export default {
           this.getNode();
         }
       });
+    },
+    handleSelectChange() {
+      this.listQuery.procDefValue = "";
+      this.getProcDef();
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -396,7 +403,7 @@ export default {
     async getProcFactor() {
       const { data } = await fetchProcFactor({
         procDefKey: this.listQuery.procDefValue,
-        tenantId: this.$store.state.user.tenantId,
+        // tenantId: this.$store.state.user.tenantId,
         appKey: this.listQuery.templateTypesValue,
         startTime: moment(
           parseInt(this.listQuery.dateValue[0].getTime())

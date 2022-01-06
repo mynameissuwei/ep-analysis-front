@@ -5,7 +5,7 @@
         <el-select
           v-model="sizeForm.name"
           placeholder="请选择"
-          style="width: 100%"
+          style="width: 320px"
         >
           <el-option
             v-for="item in options"
@@ -24,7 +24,10 @@
         </el-radio-group>
       </el-form-item>
 
-      <div class="waterMark">* 水印是操作人中文姓名+工号</div>
+      <div class="waterMark">
+        <span class="asteriskClass">*</span>
+        <span style="margin-left: 10px"> 水印是操作人中文姓名+工号 </span>
+      </div>
 
       <el-form-item label="导出范围">
         <el-radio-group v-model="radio">
@@ -49,7 +52,7 @@
           <el-button type="primary" @click="onSubmit" size="small"
             >导出</el-button
           >
-          <el-button size="small">预览</el-button>
+          <el-button size="small" @click="onPreview">预览</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -58,8 +61,35 @@
 
 <script>
 export default {
+  props: {
+    appKey: {
+      type: String,
+      require: true,
+    },
+    procDefKey: {
+      type: String,
+      require: true,
+    },
+    startTime: {
+      type: Date,
+      require: true
+    },
+    endTime: {
+      type: Date,
+      require: true
+    },
+    appName: {
+      type: String,
+      require: true,
+    },
+    procDefName: {
+      type: String,
+      require: true
+    }
+  },
   data() {
     return {
+      watermark: false,
       radio: "",
       data: [
         {
@@ -152,24 +182,30 @@ export default {
   methods: {
     onSubmit() {
       console.log("submit!");
+      this.routerPush(true);
+    },
+    onPreview(){
+      this.routerPush(false);
+    },
+    routerPush(isExport){
       this.$router.push({
         path: '/process/analysis/report',
         query: {
-          appKey: "data_asset",
-          procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
-          startTime: "2010-10-01",
-          endTime: "2020-10-01",
+          appKey: this.appKey,
+          procDefKey: this.procDefKey,
+          startTime: this.startTime,
+          endTime: this.endTime,
           exportRanges: ["PROCESS_INDEX", "MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS", "MILESTONE_TASK_ROlLBACK_DETAIL",
             "TASK_APPROVAL_EFFICIENCY_ANALYSIS", "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION", "TASK_EXECUTION_EVENT_DETAIL"
-          ],
+          ],// 这个地方的数据根据选择添加 todo by suwei
           exportFileType: "pdf",
-          watermark: false,
-          export: false,
-          processName: "主席决策审批",
-          appName: "商务类"
+          watermark: this.watermark,
+          export: isExport,
+          processName: this.procDefName,
+          appName: this.appName
         },
       })
-    },
+    }
   },
 };
 </script>
@@ -178,6 +214,7 @@ export default {
 .export-detail {
   height: 100%;
   overflow: scroll;
+  margin-top: 20px;
 }
 .waterMark {
   font-size: 10px;
@@ -188,10 +225,18 @@ export default {
   margin-bottom: 20px;
 }
 .tree-container {
-  background: #e9ecf3;
+  background: #f8f9fa;
   margin-left: 130px;
   height: 330px;
   padding-top: 12px;
   padding-left: 12px;
+}
+.waterMark {
+  position: relative;
+}
+.asteriskClass {
+  color: red;
+  position: absolute;
+  top: 3px;
 }
 </style>
