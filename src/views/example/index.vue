@@ -14,6 +14,7 @@
                     v-model="listQuery.templateTypesValue"
                     placeholder="请选择"
                     class="my-el-select"
+                    @change="handleSelectChange"
                   >
                     <el-option
                       v-for="(item, index) in selectTemplateData"
@@ -271,7 +272,7 @@ export default {
   },
   created() {
     this.getSelectTemplate();
-    this.getProcDef();
+    // this.getProcDef();
     // this.getProcess();
     // this.getNode();
   },
@@ -284,6 +285,10 @@ export default {
           this.getNode();
         }
       });
+    },
+    handleSelectChange() {
+      this.listQuery.procDefValue = "";
+      this.getProcDef();
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
