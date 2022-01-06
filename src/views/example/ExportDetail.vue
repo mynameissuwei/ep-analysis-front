@@ -49,7 +49,7 @@
           <el-button type="primary" @click="onSubmit" size="small"
             >导出</el-button
           >
-          <el-button size="small">预览</el-button>
+          <el-button size="small" @click="onPreview">预览</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -58,8 +58,35 @@
 
 <script>
 export default {
+  props: {
+    appKey: {
+      type: String,
+      require: true,
+    },
+    procDefKey: {
+      type: String,
+      require: true,
+    },
+    startTime: {
+      type: Date,
+      require: true
+    },
+    endTime: {
+      type: Date,
+      require: true
+    },
+    appName: {
+      type: String,
+      require: true,
+    },
+    procDefName: {
+      type: String,
+      require: true
+    }
+  },
   data() {
     return {
+      watermark: false,
       radio: "",
       data: [
         {
@@ -152,24 +179,30 @@ export default {
   methods: {
     onSubmit() {
       console.log("submit!");
+      this.routerPush(true);
+    },
+    onPreview(){
+      this.routerPush(false);
+    },
+    routerPush(isExport){
       this.$router.push({
         path: '/process/analysis/report',
         query: {
-          appKey: "data_asset",
-          procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
-          startTime: "2010-10-01",
-          endTime: "2020-10-01",
+          appKey: this.appKey,
+          procDefKey: this.procDefKey,
+          startTime: this.startTime,
+          endTime: this.endTime,
           exportRanges: ["PROCESS_INDEX", "MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS", "MILESTONE_TASK_ROlLBACK_DETAIL",
             "TASK_APPROVAL_EFFICIENCY_ANALYSIS", "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION", "TASK_EXECUTION_EVENT_DETAIL"
-          ],
+          ],// 这个地方的数据根据选择添加 todo by suwei
           exportFileType: "pdf",
-          watermark: false,
-          export: false,
-          processName: "主席决策审批",
-          appName: "商务类"
+          watermark: this.watermark,
+          export: isExport,
+          processName: this.procDefName,
+          appName: this.appName
         },
       })
-    },
+    }
   },
 };
 </script>

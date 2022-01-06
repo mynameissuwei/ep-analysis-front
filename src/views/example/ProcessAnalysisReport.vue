@@ -20,7 +20,7 @@
     <el-divider/>
 
     <div style="text-align: center">
-      <h1>{{this.listQuery.processName}}</h1>
+      <h1>{{this.listQuery.procDefName}}</h1>
       <h4>-流程分析报告</h4>
     </div>
 
@@ -28,7 +28,7 @@
       <h3>数据样本来自于：</h3>
       <p>选择租户：{{this.$store.state.user.tenantId}}</p>
       <p>流程类型：{{this.listQuery.appName}}</p>
-      <p>流程名称：{{this.listQuery.processName}}</p>
+      <p>流程名称：{{this.listQuery.procDefName}}</p>
       <p>选择时间：{{this.listQuery.startTime}} ~ {{this.listQuery.endTime}}</p>
     </div>
 
@@ -155,7 +155,7 @@
       <div>
         <h4>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          【{{this.listQuery.processName}}】本次分析参与数据量为{{this.procFactorDetail.total}}条，识别到以下指数：
+          【{{this.listQuery.procDefName}}】本次分析参与数据量为{{this.procFactorDetail.total}}条，识别到以下指数：
           流程线上化率 --；
           流程流效率0.00%；
           流程时效{{this.procFactorDetail.timeLimit}}/人天；
