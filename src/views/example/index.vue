@@ -54,17 +54,17 @@
           <el-col :span="14">
             <div>
               <el-form-item prop="dateValue">
-                <el-button class="button-container" @click="changeTime('day')"
-                  >今日</el-button
-                >
-                <el-button class="button-container" @click="changeTime('week')"
-                  >本周</el-button
-                >
-                <el-button class="button-container" @click="changeTime('month')"
-                  >本月</el-button
-                >
-                <el-button class="button-container" @click="changeTime('year')"
-                  >全年</el-button
+                <el-button
+                  v-for="item in [
+                    { name: '今日', value: 'day' },
+                    { name: '本周', value: 'week' },
+                    { name: '本月', value: 'month' },
+                    { name: '全年', value: 'year' },
+                  ]"
+                  :key="item.value"
+                  class="button-container"
+                  @click="changeTime(item.value)"
+                  >{{ item.name }}</el-button
                 >
                 <el-date-picker
                   class="date-container"
@@ -99,48 +99,45 @@
     </el-form>
 
     <div class="tab-container" style="position: relative">
-      <el-tabs v-model="activeName" @tab-click="handleTabChange">
-        <el-tab-pane label="流程指数" name="first">
-          <tab-container v-if="'first' === activeName">
-            <template v-slot:left>
-              <left-container
-                :dateValue="listQuery.dateValue"
-                :procDefKey="procDefKey"
-              ></left-container>
-            </template>
-            <template v-slot:right>
-              <right-container
-                :procFactorDetail="procFactorDetail"
-                :procFactorRuleData="procFactorRuleData"
-                :getProcIndexRule="getProcIndexRule"
-                :getProcFactor="getProcFactor"
-                :listQuery="listQuery"
-              />
-            </template>
-          </tab-container>
-        </el-tab-pane>
-        <el-tab-pane label="节点分析" name="second">
-          <tab-container v-if="'second' === activeName">
-            <template v-slot:left> <left-container /> </template>
-            <template v-slot:right>
-              <node-detail
-                :nodeAnalysisData="nodeAnalysisData"
-                :nodeTimeData="nodeTimeData"
-                :nodeChartData="nodeChartData"
-                :listQuery="listQuery"
-              />
-            </template>
-          </tab-container>
-        </el-tab-pane>
-        <el-tab-pane label="流程指数" name="third">
-          <tab-container v-if="'third' === activeName">
-            <template v-slot:left>
-              <left-container />
-            </template>
-            <template v-slot:right>
-              <export-detail />
-            </template>
-          </tab-container>
+      <el-tabs v-model="activeName">
+        <el-tab-pane
+          v-for="item in [
+            { label: '流程指数', key: 'first' },
+            { label: '节点分析', key: 'second' },
+            { label: '流程指数', key: 'third' },
+          ]"
+          :key="item.key"
+          :label="item.label"
+          :name="item.key"
+        >
+          <keep-alive>
+            <tab-container v-if="activeName == item.key">
+              <template v-slot:left>
+                <left-container
+                  :dateValue="listQuery.dateValue"
+                  :procDefKey="procDefKey"
+                ></left-container>
+              </template>
+              <template v-slot:right>
+                <right-container
+                  v-if="activeName == 'first'"
+                  :procFactorDetail="procFactorDetail"
+                  :procFactorRuleData="procFactorRuleData"
+                  :getProcIndexRule="getProcIndexRule"
+                  :getProcFactor="getProcFactor"
+                  :listQuery="listQuery"
+                />
+                <node-detail
+                  v-if="activeName == 'second'"
+                  :nodeAnalysisData="nodeAnalysisData"
+                  :nodeTimeData="nodeTimeData"
+                  :nodeChartData="nodeChartData"
+                  :listQuery="listQuery"
+                />
+                <export-detail v-if="activeName == 'third'" />
+              </template>
+            </tab-container>
+          </keep-alive>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -200,6 +197,28 @@ export default {
     return {
       driver: null,
       procDefKey: "",
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+      ],
       selectDepartmentData: [
         {
           orgCode: "123",
