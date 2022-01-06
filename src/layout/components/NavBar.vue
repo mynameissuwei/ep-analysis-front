@@ -14,8 +14,10 @@
       <slot name="centerContent"></slot>
     </div>
     <el-popover placement="bottom">
+      <div class="logout-pop" style="cursor: pointer;margin-bottom: 5px" @click="selectTenant">切换租户</div>
       <div class="logout-pop" style="cursor: pointer" @click="logout">退出</div>
       <div class="right-content" slot="reference">
+        <div style="margin-right: 10px;">{{ this.$store.state.user.tenantName }}</div>
         <img
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
           class="user-avatar"
@@ -41,6 +43,9 @@ export default {
         window.location.protocol + "//" + window.location.host + "/#/dashboard"
       );
     },
+    selectTenant(){
+      this.authSdk.selectTenant();
+    }
   },
 };
 </script>
@@ -76,6 +81,13 @@ export default {
   position: relative;
 }
 .user-name {
+  margin: 0 5px 0 10px;
+  max-width: 72px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tenant-name {
   margin: 0 5px 0 10px;
   max-width: 72px;
   overflow: hidden;

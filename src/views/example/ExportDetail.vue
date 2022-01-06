@@ -154,8 +154,8 @@ export default {
             parseInt(this.listQuery.dateValue[1].getTime())
           ).format("YYYY-MM-DD"),
           export: isExport,
-          processName: "1234",
-          appName: "234234",
+          // processName: "1234",
+          // appName: "234234",
         },
       });
     },

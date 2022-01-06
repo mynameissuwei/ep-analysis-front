@@ -29,7 +29,7 @@
 
     <div style="margin-left: 5px">
       <h3>数据样本来自于：</h3>
-      <p>选择租户：{{ this.$store.state.user.tenantId }}</p>
+      <p>选择租户：{{ this.$store.state.user.tenantName }}</p>
       <p>流程类型：{{ this.listQuery.appName }}</p>
       <p>流程名称：{{ this.listQuery.procDefName }}</p>
       <p>
@@ -59,100 +59,14 @@
     <el-divider />
 
     <!--节点分析-->
-    <div class="nodeDetail">
-      <!--里程碑节点执行力分析-->
-      <div v-if="showNodeExecutionAnalysis">
-        <div class="iconContainer">
-          <div>里程碑节点执行力分析</div>
-        </div>
-
-        <div class="nodeDetailContainer">
-          <div id="histogram" style="width: 100%; height: 190px" />
-          <el-divider />
-        </div>
-      </div>
-
-      <!--节点审批效率分析-->
-      <div v-if="showNodeApprovalAnalysis">
-        <div class="iconContainer">
-          <div>节点审批效率分析</div>
-          <div>
-            <span>环比至</span>
-            <span> {{ nodeAnalysisData.chainDate }} </span>
-          </div>
-        </div>
-        <el-table :data="nodeAnalysisData.list">
-          <el-table-column prop="taskName" label="节点名称" width="150" fixed>
-          </el-table-column>
-          <el-table-column label="平均耗时(人天)">
-            <el-table-column prop="averagePassTime" label="耗时" width="120">
-            </el-table-column>
-            <el-table-column
-              prop="averagePassTimeChain"
-              label="环比"
-              width="120"
-            >
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="平均实际处理(人天)">
-            <el-table-column
-              prop="averageActualCostTime"
-              label="耗时"
-              width="120"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="averageActualCostTimeChain"
-              label="环比"
-              width="300"
-            >
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="平均等待(人天)">
-            <el-table-column prop="averageWaitTime" label="耗时" width="120">
-            </el-table-column>
-            <el-table-column
-              prop="averageWaitTimeChain"
-              label="环比"
-              width="300"
-            >
-            </el-table-column>
-          </el-table-column>
-        </el-table>
-      </div>
-
-      <el-divider />
-
-      <!--审批耗时区间分布-->
-      <div v-if="showApprovalTCIntervalDistribution">
-        <div class="nodeDetailContainer">
-          <div class="iconContainer">
-            <div>审批耗时区间分布</div>
-          </div>
-          <el-table :data="nodeTimeData.list">
-            <el-table-column prop="taskName" label="节点名称" width="150" fixed>
-            </el-table-column>
-            <el-table-column label="秒批（≤60s）">
-              <el-table-column prop="secondNum" label="次数" width="120">
-              </el-table-column>
-              <el-table-column prop="secondPercent" label="占比" width="120">
-              </el-table-column>
-            </el-table-column>
-            <el-table-column label="跨天（≥1/人天）">
-              <el-table-column prop="dayNum" label="次数" width="120">
-              </el-table-column>
-              <el-table-column prop="dayPercent" label="占比" width="300">
-              </el-table-column>
-            </el-table-column>
-            <el-table-column label="常规">
-              <el-table-column prop="normalNum" label="次数" width="120">
-              </el-table-column>
-              <el-table-column prop="normalPercent" label="占比" width="300">
-              </el-table-column>
-            </el-table-column>
-          </el-table>
-        </div>
-      </div>
+    <div style="margin-top: 10px; margin-bottom: 10px">
+      <span style="margin: 10px 10px 10px 10px">节点分析</span>
+      <node-detail
+        :nodeAnalysisData="nodeAnalysisData"
+        :nodeTimeData="nodeTimeData"
+        :nodeChartData="nodeChartData"
+        :listQuery="listQuery"
+      />
     </div>
 
     <el-divider />
@@ -209,9 +123,10 @@ import {
   fetchProcIndexRule,
   fetchTimeConsuming,
 } from "@/api/example";
+import NodeDetail from "@/views/example/NodeDetail";
 export default {
   name: "processAnalysisReport",
-  components: { LeftContainer, ProcessMining, RightContainer },
+  components: { NodeDetail, LeftContainer, ProcessMining, RightContainer },
   data() {
     return {
       exportTime: moment(parseInt(new Date().getTime())).format(
@@ -289,12 +204,25 @@ export default {
     },
     getOption() {
       return {
-        legend: {},
+        legend: {
+          formatter: function (name) {
+            const legendData = {
+              taskNumReal: "里程碑实际节点数量",
+              taskNumLine: "里程碑标准节点数量",
+              timeConsumingReal: "里程碑实际耗时",
+              timeConsumingLine: "里程碑标准耗时",
+            };
+            return legendData[name];
+          },
+        },
         tooltip: {},
         dataset: {
           dimensions: [
             "name",
-            this.nodeChartData.list.map((item) => item.taskName),
+            "taskNumReal",
+            "taskNumLine",
+            "timeConsumingReal",
+            "timeConsumingLine",
           ],
           source: this.nodeChartData.list,
         },
@@ -436,6 +364,24 @@ export default {
   height: calc(100vh - 420px);
 }
 
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid red;
+  margin-left: 10px;
+  display: inline-block;
+}
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid green;
+  margin-left: 10px;
+  display: inline-block;
+}
 .nodeDetail {
   padding-left: 20px;
   padding-right: 20px;
@@ -446,6 +392,10 @@ export default {
   overflow: scroll;
   .row-container {
     line-height: 40px;
+  }
+  .iconContainer-title {
+    font-size: 16px;
+    font-weight: 500;
   }
   .iconContainer {
     width: 100%;
