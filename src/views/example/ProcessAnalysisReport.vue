@@ -184,7 +184,6 @@
 
 <script>
 import RightContainer from '@/views/example/RightContainer'
-import ProcessMining from '@/views/processMining/ProcessMining'
 import LeftContainer from '@/views/example/LeftContainer'
 import * as echarts from 'echarts'
 import watermark from '@/utils/common'
@@ -198,7 +197,7 @@ import {
 } from '@/api/example'
 export default {
   name: 'processAnalysisReport',
-  components: { LeftContainer, ProcessMining, RightContainer },
+  components: { LeftContainer, RightContainer },
   data(){
     return{
       exportTime: moment(parseInt(new Date().getTime())).format("YYYY-MM-DD HH:mm:ss"),
