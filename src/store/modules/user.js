@@ -56,6 +56,9 @@ const mutations = {
   SET_OPERATION: (state, isOperation) => {
     state.isOperation = isOperation;
   },
+  SET_TENANTNAME: (state, tenantName) => {
+    state.tenantName = tenantName;
+  },
 };
 
 const actions = {
@@ -70,7 +73,7 @@ const actions = {
             reject("Verification failed, please Login again.");
           }
 
-          const { userId, username, nickName, hasTenant, tenantId, operation } =
+          const { userId, username, nickName, hasTenant, tenantId, operation, tenantName } =
             data;
           commit("SET_USERID", userId);
           commit("SET_USERNAME", username);
@@ -78,6 +81,7 @@ const actions = {
           commit("SET_HASTENANT", hasTenant);
           commit("SET_TENANTID", tenantId);
           commit("SET_OPERATION", operation);
+          commit("SET_TENANTNAME", tenantName);
           resolve(data);
         })
         .catch((error) => {

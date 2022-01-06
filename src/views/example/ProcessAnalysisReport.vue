@@ -26,7 +26,7 @@
 
     <div style="margin-left: 5px">
       <h3>数据样本来自于：</h3>
-      <p>选择租户：{{this.$store.state.user.tenantId}}</p>
+      <p>选择租户：{{this.$store.state.user.tenantName}}</p>
       <p>流程类型：{{this.listQuery.appName}}</p>
       <p>流程名称：{{this.listQuery.procDefName}}</p>
       <p>选择时间：{{this.listQuery.startTime}} ~ {{this.listQuery.endTime}}</p>
