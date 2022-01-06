@@ -201,7 +201,7 @@ export default {
           exportFileType: "pdf",
           watermark: this.watermark,
           export: isExport,
-          processName: this.procDefName,
+          procDefName: this.procDefName,
           appName: this.appName
         },
       })

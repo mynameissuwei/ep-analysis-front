@@ -59,7 +59,7 @@
       <!--里程碑节点执行力分析-->
       <div v-if="showNodeExecutionAnalysis">
         <div class="iconContainer">
-          <div>里程碑节点执行力分析</div>
+          <div class="iconContainer-title">里程碑节点执行力分析</div>
         </div>
 
         <div class="nodeDetailContainer">
@@ -71,7 +71,7 @@
       <!--节点审批效率分析-->
       <div v-if="showNodeApprovalAnalysis">
         <div class="iconContainer">
-          <div>节点审批效率分析</div>
+          <div class="iconContainer-title">节点审批效率分析</div>
           <div>
             <span>环比至</span>
             <span> {{ nodeAnalysisData.chainDate }} </span>
@@ -84,6 +84,20 @@
             <el-table-column prop="averagePassTime" label="耗时" width="120">
             </el-table-column>
             <el-table-column prop="averagePassTimeChain" label="环比" width="120">
+              <template slot-scope="{ row }">
+                <div>
+                  <span>{{ row.averagePassTimeChain }}</span>
+                  <div
+                    :class="
+                    row.averagePassTimeChain > 0
+                      ? 'triangle-up'
+                      : row.averagePassTimeChain < 0
+                      ? 'triangle-down'
+                      : ''
+                  "
+                  ></div>
+                </div>
+              </template>
             </el-table-column>
           </el-table-column>
           <el-table-column label="平均实际处理(人天)">
@@ -98,12 +112,40 @@
               label="环比"
               width="300"
             >
+              <template slot-scope="{ row }">
+                <div>
+                  <span>{{ row.averageActualCostTimeChain }}</span>
+                  <div
+                    :class="
+                    row.averagePassTimeChain > 0
+                      ? 'triangle-up'
+                      : row.averagePassTimeChain < 0
+                      ? 'triangle-down'
+                      : ''
+                  "
+                  ></div>
+                </div>
+              </template>
             </el-table-column>
           </el-table-column>
           <el-table-column label="平均等待(人天)">
             <el-table-column prop="averageWaitTime" label="耗时" width="120">
             </el-table-column>
             <el-table-column prop="averageWaitTimeChain" label="环比" width="300">
+              <template slot-scope="{ row }">
+                <div>
+                  <span>{{ row.averageWaitTimeChain }}</span>
+                  <div
+                    :class="
+                    row.averagePassTimeChain > 0
+                      ? 'triangle-up'
+                      : row.averagePassTimeChain < 0
+                      ? 'triangle-down'
+                      : ''
+                  "
+                  ></div>
+                </div>
+              </template>
             </el-table-column>
           </el-table-column>
         </el-table>
@@ -116,19 +158,25 @@
       <div v-if="showApprovalTCIntervalDistribution">
         <div class="nodeDetailContainer">
           <div class="iconContainer">
-            <div>审批耗时区间分布</div>
+            <div class="iconContainer-title">审批耗时区间分布</div>
           </div>
           <el-table :data="nodeTimeData.list">
             <el-table-column prop="taskName" label="节点名称" width="150" fixed>
             </el-table-column>
             <el-table-column label="秒批（≤60s）">
               <el-table-column prop="secondNum" label="次数" width="120">
+                <template slot-scope="{ row }">
+                  <span style="color: red">{{ row.secondNum }}</span>
+                </template>
               </el-table-column>
               <el-table-column prop="secondPercent" label="占比" width="120">
               </el-table-column>
             </el-table-column>
             <el-table-column label="跨天（≥1/人天）">
               <el-table-column prop="dayNum" label="次数" width="120">
+                <template slot-scope="{ row }">
+                  <span style="color: purple">{{ row.dayNum }}</span>
+                </template>
               </el-table-column>
               <el-table-column prop="dayPercent" label="占比" width="300">
               </el-table-column>
@@ -273,12 +321,25 @@ export default {
     },
     getOption() {
       return {
-        legend: {},
+        legend: {
+          formatter: function (name) {
+            const legendData = {
+              taskNumReal: "里程碑实际节点数量",
+              taskNumLine: "里程碑标准节点数量",
+              timeConsumingReal: "里程碑实际耗时",
+              timeConsumingLine: "里程碑标准耗时",
+            };
+            return legendData[name];
+          },
+        },
         tooltip: {},
         dataset: {
           dimensions: [
             "name",
-            this.nodeChartData.list.map((item) => item.taskName),
+            "taskNumReal",
+            "taskNumLine",
+            "timeConsumingReal",
+            "timeConsumingLine",
           ],
           source: this.nodeChartData.list,
         },
@@ -413,6 +474,24 @@ export default {
   height: calc(100vh - 420px);
 }
 
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid red;
+  margin-left: 10px;
+  display: inline-block;
+}
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid green;
+  margin-left: 10px;
+  display: inline-block;
+}
 .nodeDetail {
   padding-left: 20px;
   padding-right: 20px;
@@ -423,6 +502,10 @@ export default {
   overflow: scroll;
   .row-container {
     line-height: 40px;
+  }
+  .iconContainer-title {
+    font-size: 16px;
+    font-weight: 500;
   }
   .iconContainer {
     width: 100%;
