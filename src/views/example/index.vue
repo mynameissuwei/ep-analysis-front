@@ -134,7 +134,10 @@
                   :nodeChartData="nodeChartData"
                   :listQuery="listQuery"
                 />
-                <export-detail v-if="activeName == 'third'" />
+                <export-detail
+                  v-if="activeName == 'third'"
+                  :listQuery="listQuery"
+                />
               </template>
             </tab-container>
           </keep-alive>
@@ -197,28 +200,6 @@ export default {
     return {
       driver: null,
       procDefKey: "",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
       selectDepartmentData: [
         {
           orgCode: "123",
@@ -241,7 +222,7 @@ export default {
         ],
       },
       selectTemplateData: [],
-      activeName: "first",
+      activeName: "third",
       procFactorData: [],
       procFactorDetail: {
         partRadio: "0",

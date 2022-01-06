@@ -168,6 +168,7 @@
     <dia-modal
       :visible="dialogVisible"
       :handleClose="handleClose"
+      :listQuery="listQuery"
       v-if="dialogVisible"
     />
     <node-modal

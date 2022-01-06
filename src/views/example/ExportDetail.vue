@@ -1,26 +1,26 @@
 <template>
   <div class="export-detail">
-    <el-form ref="form" :model="sizeForm" label-width="120px" size="mini">
+    <el-form ref="form" :model="form" label-width="120px" size="mini">
       <el-form-item label="导出文件类型">
         <el-select
-          v-model="sizeForm.name"
+          v-model="form.appKey"
           placeholder="请选择"
           style="width: 320px"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in ['pdf']"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="是否水印">
-        <el-radio-group v-model="radio">
-          <el-radio :label="3">是</el-radio>
-          <el-radio :label="6">否</el-radio>
+        <el-radio-group v-model="form.watermark">
+          <el-radio :label="true">是</el-radio>
+          <el-radio :label="false">否</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -30,19 +30,18 @@
       </div>
 
       <el-form-item label="导出范围">
-        <el-radio-group v-model="radio">
-          <el-radio :label="3">全部</el-radio>
-          <el-radio :label="6">部分</el-radio>
+        <el-radio-group v-model="form.export" @change="handleRadioChange">
+          <el-radio :label="true">全部</el-radio>
+          <el-radio :label="false">部分</el-radio>
         </el-radio-group>
       </el-form-item>
 
       <el-tree
         class="tree-container"
         :data="data"
+        ref="tree"
         show-checkbox
         node-key="id"
-        :default-expanded-keys="[2, 3]"
-        :default-checked-keys="[5]"
         :props="defaultProps"
       >
       </el-tree>
@@ -60,23 +59,13 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   props: {
-    appKey: {
-      type: String,
+    listQuery: {
+      type: Object,
       require: true,
-    },
-    procDefKey: {
-      type: String,
-      require: true,
-    },
-    startTime: {
-      type: Date,
-      require: true
-    },
-    endTime: {
-      type: Date,
-      require: true
     },
     appName: {
       type: String,
@@ -84,8 +73,8 @@ export default {
     },
     procDefName: {
       type: String,
-      require: true
-    }
+      require: true,
+    },
   },
   data() {
     return {
@@ -93,50 +82,32 @@ export default {
       radio: "",
       data: [
         {
-          id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1",
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2",
-                },
-              ],
-            },
-          ],
+          id: "PROCESS_INDEX",
+          label: "流程指数",
         },
         {
-          id: 2,
-          label: "一级 2",
+          id: "NODE",
+          label: "节点统计",
           children: [
             {
-              id: 5,
-              label: "二级 2-1",
+              id: "MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS",
+              label: "节点执行力分析",
             },
             {
-              id: 6,
-              label: "二级 2-2",
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1",
+              id: "MILESTONE_TASK_ROlLBACK_DETAIL",
+              label: "里程碑所属节点回退明细",
             },
             {
-              id: 8,
-              label: "二级 3-2",
+              id: "TASK_APPROVAL_EFFICIENCY_ANALYSIS",
+              label: "节点审批效率分析",
+            },
+            {
+              id: "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION",
+              label: "审批耗时区间分布",
+            },
+            {
+              id: "TASK_EXECUTION_EVENT_DETAIL",
+              label: "节点执行时间分布",
             },
           ],
         },
@@ -145,38 +116,11 @@ export default {
         children: "children",
         label: "label",
       },
-      sizeForm: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+      form: {
+        appKey: "",
+        watermark: false,
+        export: false,
       },
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
     };
   },
   methods: {
@@ -184,28 +128,37 @@ export default {
       console.log("submit!");
       this.routerPush(true);
     },
-    onPreview(){
+    handleRadioChange(val) {
+      if (val) {
+        this.$refs.tree.setCheckedKeys(["PROCESS_INDEX", "NODE"]);
+      } else {
+        this.$refs.tree.setCheckedKeys([]);
+      }
+      console.log(val, "vakvavkav");
+    },
+    onPreview() {
       this.routerPush(false);
     },
-    routerPush(isExport){
+    routerPush(isExport) {
       this.$router.push({
-        path: '/process/analysis/report',
+        path: "/process/analysis/report",
         query: {
-          appKey: this.appKey,
-          procDefKey: this.procDefKey,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          exportRanges: ["PROCESS_INDEX", "MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS", "MILESTONE_TASK_ROlLBACK_DETAIL",
-            "TASK_APPROVAL_EFFICIENCY_ANALYSIS", "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION", "TASK_EXECUTION_EVENT_DETAIL"
-          ],// 这个地方的数据根据选择添加 todo by suwei
-          exportFileType: "pdf",
-          watermark: this.watermark,
+          ...this.form,
+          procDefKey: this.listQuery.procDefValue,
+          appKey: this.listQuery.templateTypesValue,
+          exportRanges: this.$refs.tree.getCheckedKeys(),
+          startTime: moment(
+            parseInt(this.listQuery.dateValue[0].getTime())
+          ).format("YYYY-MM-DD"),
+          endTime: moment(
+            parseInt(this.listQuery.dateValue[1].getTime())
+          ).format("YYYY-MM-DD"),
           export: isExport,
-          processName: this.procDefName,
-          appName: this.appName
+          processName: "1234",
+          appName: "234234",
         },
-      })
-    }
+      });
+    },
   },
 };
 </script>

@@ -116,6 +116,15 @@ export function createMile(data) {
   });
 }
 
+//编辑里程碑
+export function editMile(data) {
+  return request({
+    url: "/milestone",
+    method: "put",
+    data,
+  });
+}
+
 //删除里程碑
 export function deleteMile(data) {
   return request({
