@@ -2,7 +2,7 @@
   <div class="right-container">
     <div>
       <div class="iconContainer">
-        <div class="iconClass" @click="handleShow" v-if="showSettingButton">
+        <div class="iconClass" @click="handleShow" v-if="true">
           <i class="el-icon-setting"></i>
         </div>
       </div>
@@ -254,7 +254,7 @@ export default {
     "getProcIndexRule",
     "getProcFactor",
     "listQuery",
-    "showSettingButton"
+    "showSettingButton",
   ],
   components: {
     ProcessCard,
