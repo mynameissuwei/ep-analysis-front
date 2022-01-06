@@ -1,5 +1,5 @@
 <template>
-  <div id="process_graph" class="ap-pd-process-model"/>
+  <div id="process_graph_iframe" class="ap-pd-process-model"/>
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import PD from "@/api/processMining";
 import {discoverProcess} from "@/api/process";
 
 export default {
-  name: "ProcessMining",
+  name: "ProcessMiningIframe",
   props: ["dateValue", "procDefKey"],
   mounted() {
     this.init()
@@ -15,13 +15,17 @@ export default {
   },
   methods: {
     init() {
-      this.pd = new PD('process_graph')
+      this.pd = new PD('process_graph_iframe')
+    },
+    getParam(key){
+      let paramStr = window.location.href.split("?")[1];
+      return new URLSearchParams(paramStr).get(key);
     },
     async go() {
       let data = {
-        "startDate": "2021-12-17",
-        "endDate": "2022-12-17",
-        "procDefKey": "TQM_NCR_BILL_FAT_001"
+        "startDate": this.getParam("startDate"),
+        "endDate": this.getParam("endDate"),
+        "procDefKey": this.getParam("procDefKey")
       }
       const result = await discoverProcess(data)
       if (result.data.length > 0) {

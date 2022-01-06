@@ -340,6 +340,18 @@ export const constantRoutes = [
     },
     hidden: true,
   },
+  {
+    path: "/process/analysis/report",
+    component: () => import("@/views/example/ProcessAnalysisReport"),
+    hidden: true,
+    props: true,
+    meta: {
+      title: "流程分析导出",
+      noCache: true,
+      // activeMenu: "/acount/permission",
+      id: "EFFICIENCY_ANALYSIS_TENANT_PROCESS_GRAPH",
+    },
+  },
 ];
 
 const createRouter = () =>
