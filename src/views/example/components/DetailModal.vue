@@ -42,15 +42,20 @@
           </div>
         </el-col>
       </el-row>
-      <div class="without-container">
-        <div>
-          <img
-            class="pic-404__parent"
-            src="@/assets/withoutData.png"
-            alt="404"
-          />
-        </div>
-      </div>
+      <el-table
+        :data="nodeChartDataDetail.list"
+        style="width: 100%; margin-top: 20px"
+      >
+        <el-table-column prop="taskName" label="节点名称" width="180">
+        </el-table-column>
+        <el-table-column prop="normalOperation" label="应操作(次)" width="180">
+        </el-table-column>
+        <el-table-column prop="backOperation" label="回退操作(次)">
+          <template slot-scope="{ row }">
+            <span style="color: red">{{ row.backOperation }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="handleClose" size="small"
           >确 定</el-button
@@ -66,28 +71,6 @@ export default {
   props: ["visible", "handleClose", "nodeChartData", "nodeChartDataDetail"],
   data() {
     return {
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
       value: "",
     };
   },
