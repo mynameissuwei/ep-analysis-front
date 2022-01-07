@@ -42,7 +42,7 @@
 
     <!--  流程图  -->
     <div class="process-graph">
-      <left-container />
+      <div id="process_graph" class="ap-pd-process-model" />
     </div>
 
     <!-- 流程指数 -->
@@ -128,6 +128,8 @@ import {
   fetchTimeConsuming,
 } from "@/api/example";
 import NodeDetail from "@/views/example/NodeDetail";
+import PD from '@/api/processMining'
+import { discoverProcess } from '@/api/process'
 export default {
   name: "processAnalysisReport",
   components: { NodeDetail, LeftContainer, RightContainer },
@@ -192,6 +194,23 @@ export default {
     };
   },
   methods: {
+    initPD() {
+      this.pd = new PD("process_graph");
+    },
+    async DFG() {
+      let queryData = {
+        startDate: moment(
+          parseInt(this.listQuery.dateValue[0].getTime())
+        ).format("YYYY-MM-DD"),
+        endDate: moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
+          "YYYY-MM-DD"
+        ),
+        procDefKey: this.listQuery.procDefValue,
+        appKey: this.listQuery.templateTypesValue,
+      };
+      const result = await discoverProcess(queryData);
+      this.pd.loadLog(result.data.visualizedText, 3);
+    },
     initChart() {
       console.log(document.getElementById("histogram"), "node");
       this.chart = echarts.init(document.getElementById("histogram"));
@@ -332,6 +351,7 @@ export default {
     this.initChart();
     this.getNodeAnalysis();
     this.getNodeTimeConsuming();
+    this.initPD();
     console.log(
       ">>>>>>>>>>>>>queryParam is ",
       JSON.stringify(this.$route.query)
@@ -339,6 +359,7 @@ export default {
   },
   created() {
     this.handleNodeAnalysisShow();
+    this.DFG();
   },
   beforeDestroy() {
     if (!this.chart) {

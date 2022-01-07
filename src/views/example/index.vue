@@ -104,7 +104,7 @@
       <el-tabs v-model="activeName" @tab-click="handleTabChange">
         <el-tab-pane label="流程指数" name="first"> </el-tab-pane>
         <el-tab-pane label="节点分析" name="second"> </el-tab-pane>
-        <el-tab-pane label="流程指数" name="third"> </el-tab-pane>
+        <el-tab-pane label="导出报告" name="third"> </el-tab-pane>
         <tab-container>
           <template v-slot:left>
             <div id="process_graph" class="ap-pd-process-model" />
@@ -141,7 +141,7 @@
                 name="third"
                 v-if="'third' === activeName"
               >
-                <export-detail />
+                <export-detail :listQuery="listQuery"/>
               </el-tab-pane>
             </div>
           </template>
