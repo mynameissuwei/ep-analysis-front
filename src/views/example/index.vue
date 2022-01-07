@@ -11,6 +11,7 @@
               <el-col :span="16">
                 <el-form-item prop="templateTypesValue">
                   <el-select
+                    filterable
                     v-model="listQuery.templateTypesValue"
                     placeholder="请选择"
                     class="my-el-select"
@@ -35,6 +36,7 @@
               <el-col :span="16">
                 <el-form-item prop="procDefValue">
                   <el-select
+                    filterable
                     v-model="listQuery.procDefValue"
                     clearable
                     placeholder="请选择"
@@ -64,7 +66,8 @@
                   :key="item.value"
                   class="button-container"
                   @click="changeTime(item.value)"
-                  >{{ item.name }}</el-button
+                >{{ item.name }}
+                </el-button
                 >
                 <el-date-picker
                   class="date-container"
@@ -87,10 +90,12 @@
                 type="primary"
                 size="small"
                 @click="submitForm('ruleForm')"
-                >查询</el-button
+              >查询
+              </el-button
               >
               <el-button size="small" @click="resetForm('ruleForm')"
-                >重置</el-button
+              >重置
+              </el-button
               >
             </div>
           </el-col>
@@ -99,49 +104,40 @@
     </el-form>
 
     <div class="tab-container" style="position: relative">
-      <el-tabs v-model="activeName">
-        <el-tab-pane
-          v-for="item in [
-            { label: '流程指数', key: 'first' },
-            { label: '节点分析', key: 'second' },
-            { label: '流程指数', key: 'third' },
-          ]"
-          :key="item.key"
-          :label="item.label"
-          :name="item.key"
-        >
-          <keep-alive>
-            <tab-container v-if="activeName == item.key">
-              <template v-slot:left>
-                <left-container
-                  :dateValue="listQuery.dateValue"
-                  :procDefKey="procDefKey"
-                ></left-container>
-              </template>
-              <template v-slot:right>
-                <right-container
-                  v-if="activeName == 'first'"
-                  :procFactorDetail="procFactorDetail"
-                  :procFactorRuleData="procFactorRuleData"
-                  :getProcIndexRule="getProcIndexRule"
-                  :getProcFactor="getProcFactor"
-                  :listQuery="listQuery"
-                />
-                <node-detail
-                  v-if="activeName == 'second'"
-                  :nodeAnalysisData="nodeAnalysisData"
-                  :nodeTimeData="nodeTimeData"
-                  :nodeChartData="nodeChartData"
-                  :listQuery="listQuery"
-                />
-                <export-detail
-                  v-if="activeName == 'third'"
-                  :listQuery="listQuery"
-                />
-              </template>
-            </tab-container>
-          </keep-alive>
+      <el-tabs v-model="activeName" @tab-click="handleTabChange">
+        <el-tab-pane label="流程指数" name="first" >
         </el-tab-pane>
+        <el-tab-pane label="节点分析" name="second" >
+        </el-tab-pane>
+        <el-tab-pane label="流程指数" name="third" >
+        </el-tab-pane>
+        <tab-container>
+          <template v-slot:left>
+            <div id="process_graph" class="ap-pd-process-model"/>
+          </template>
+          <template v-slot:right>
+            <el-tab-pane style="display: block" name="first" v-if="'first' === activeName">
+              <right-container
+                :procFactorDetail="procFactorDetail"
+                :procFactorRuleData="procFactorRuleData"
+                :getProcIndexRule="getProcIndexRule"
+                :getProcFactor="getProcFactor"
+                :listQuery="listQuery"
+              />
+            </el-tab-pane>
+            <el-tab-pane style="display: block" name="second" v-if="'second' === activeName">
+              <node-detail
+                :nodeAnalysisData="nodeAnalysisData"
+                :nodeTimeData="nodeTimeData"
+                :nodeChartData="nodeChartData"
+                :listQuery="listQuery"
+              />
+            </el-tab-pane>
+            <el-tab-pane style="display: block" name="third" v-if="'third' === activeName">
+              <export-detail/>
+            </el-tab-pane>
+          </template>
+        </tab-container>
       </el-tabs>
     </div>
   </div>
@@ -167,6 +163,8 @@ import Driver from "driver.js"; // import driver.js
 import "driver.js/dist/driver.min.css"; // import driver.js css
 import moment from "moment";
 import Bus from "@/Bus.js";
+import {discoverProcess} from "@/api/process";
+import PD from "@/api/processMining";
 
 const start = new Date();
 start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
@@ -195,11 +193,34 @@ export default {
     ];
     this.driver.defineSteps(steps);
     this.driver.start();
+    this.initPD();
   },
   data() {
     return {
       driver: null,
       procDefKey: "",
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+      ],
       selectDepartmentData: [
         {
           orgCode: "123",
@@ -208,10 +229,10 @@ export default {
       ],
       rules: {
         templateTypesValue: [
-          { required: true, message: "请选择流程类型", trigger: "blur" },
+          {required: true, message: "请选择流程类型", trigger: "blur"},
         ],
         procDefValue: [
-          { required: true, message: "请选择流程", trigger: "blur" },
+          {required: true, message: "请选择流程", trigger: "blur"},
         ],
         dateValue: [
           {
@@ -277,12 +298,26 @@ export default {
     // this.getNode();
   },
   methods: {
+    initPD() {
+      this.pd = new PD('process_graph')
+    },
+    async DFG() {
+      let queryData = {
+        startDate: moment(parseInt(this.listQuery.dateValue[0].getTime())).format("YYYY-MM-DD"),
+        endDate: moment(parseInt(this.listQuery.dateValue[1].getTime())).format("YYYY-MM-DD"),
+        procDefKey: this.listQuery.procDefValue,
+        appKey: this.listQuery.templateTypesValue,
+      }
+      const result = await discoverProcess(queryData)
+      this.pd.loadLog(result.data.visualizedText, 3)
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.getProcIndexRule();
           this.getProcFactor();
           this.getNode();
+          this.DFG();
         }
       });
     },
@@ -370,11 +405,11 @@ export default {
       }
     },
     async getSelectTemplate() {
-      const { data } = await fetchSelectTemplate();
+      const {data} = await fetchSelectTemplate();
       this.selectTemplateData = data;
     },
     async getProcDef() {
-      const { data } = await fetchProc({
+      const {data} = await fetchProc({
         condition: {
           appKey: this.listQuery.templateTypesValue,
           tenantId: this.$store.state.user.tenantId,
@@ -386,7 +421,7 @@ export default {
     },
     // 获取流效期望
     async getProcIndexRule() {
-      const { data } = await fetchProcIndexRule(
+      const {data} = await fetchProcIndexRule(
         JSON.stringify({
           tenantId: this.$store.state.user.tenantId,
           procDefKey: this.listQuery.procDefValue,
@@ -399,7 +434,7 @@ export default {
     },
     // 获取流效样本
     async getProcFactor() {
-      const { data } = await fetchProcFactor({
+      const {data} = await fetchProcFactor({
         procDefKey: this.listQuery.procDefValue,
         // tenantId: this.$store.state.user.tenantId,
         appKey: this.listQuery.templateTypesValue,
@@ -419,7 +454,7 @@ export default {
       this.getNodeChart();
     },
     async getNodeChart() {
-      const { data } = await fetchNodeChart({
+      const {data} = await fetchNodeChart({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -433,7 +468,7 @@ export default {
       this.nodeChartData = data;
     },
     async getNodeAnalysis() {
-      const { data } = await fetchNodeAnalysis({
+      const {data} = await fetchNodeAnalysis({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -448,7 +483,7 @@ export default {
       this.nodeAnalysisData = data;
     },
     async getNodeTimeConsuming() {
-      const { data } = await fetchTimeConsuming({
+      const {data} = await fetchTimeConsuming({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -473,6 +508,7 @@ export default {
   // height: 32px;
   // margin-bottom: 24px;
 }
+
 .title-container {
   line-height: 36px;
   height: 36px;
@@ -517,6 +553,7 @@ export default {
 
 .my-el-select {
   width: 100%;
+
   ::v-deep {
     .el-input__inner {
       height: 32px;
@@ -541,9 +578,19 @@ export default {
     }
   }
 }
+
 ::v-deep {
   .el-form-item__content {
     margin-left: 0px;
   }
+}
+.ap-pd-process-model {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #666;
+  background: #F8F9FA;
+  box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+  border-color: rgba(0, 0, 0, .05);
 }
 </style>
