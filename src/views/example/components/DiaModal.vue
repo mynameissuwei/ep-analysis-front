@@ -136,10 +136,14 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleClose" size="small">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false" size="small"
+        <el-button
+          type="primary"
+          @click="onSubmit"
+          size="small"
+          :loading="buttonLoading"
           >确 定</el-button
         >
+        <el-button @click="handleClose" size="small">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -148,11 +152,17 @@
 <script>
 import AddNodeModal from "./AddNodeModal";
 import AddMileStone from "./AddMileStone";
-import { fetchProcessNode, fetchMilestone, deleteMile } from "@/api/example";
+import {
+  fetchProcessNode,
+  fetchMilestone,
+  deleteMile,
+  editMile,
+} from "@/api/example";
 import Sortable from "sortablejs";
+import { Message } from "element-ui";
 
 export default {
-  props: ["visible", "handleClose"],
+  props: ["visible", "handleClose", "listQuery"],
   components: {
     AddNodeModal,
     AddMileStone,
@@ -172,6 +182,7 @@ export default {
       mileStoneData: [],
       nodeData: [],
       nodeTableData: [],
+      oldNodeTableData: [],
       currentRow: null,
     };
   },
@@ -182,16 +193,15 @@ export default {
 
   methods: {
     handleCurrentChange(item) {
-      console.log(item.tasks, "valval");
       this.currentRow = item;
       this.nodeTableData = item.tasks;
+      this.oldNodeTableData = item.tasks.slice();
       this.standardForm = {
         taskNumLine: item.taskNumLine,
         timeConsumingLine: item.timeConsumingLine,
       };
     },
     setCurrent(row) {
-      console.log(row, "rowLength");
       this.$refs.dragTable.setCurrentRow(row);
       if (Object.keys(row).length) {
         this.standardForm = {
@@ -218,13 +228,6 @@ export default {
         let result = this.processNodeData.find((d) => d.taskDefKey === item);
         return result;
       });
-      console.log(
-        array,
-        data,
-        this.processNodeData,
-        result.concat(array),
-        "datata"
-      );
       this.nodeTableData = result.concat(array);
       this.innerVisible = false;
     },
@@ -267,65 +270,18 @@ export default {
       });
     },
     async getProcessNode() {
-      // const { data } = await fetchProcessNode({
-      //   appKey: "data_asset",
-      //   procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
-      // });
-      // this.processNodeData = data;
-      this.processNodeData = [
-        {
-          taskDefName: "节点名称",
-          taskDefKey: "节点唯一标识",
-          milestoneId: 123,
-          milestoneName: "撰写文件",
-        },
-        {
-          taskDefName: "节点",
-          taskDefKey: "节点唯一",
-          milestoneId: null,
-          milestoneName: "撰写文件",
-        },
-        {
-          taskDefName: "节点",
-          taskDefKey: "节点",
-          milestoneId: 456,
-          milestoneName: "撰写文件",
-        },
-      ];
+      const { data } = await fetchProcessNode({
+        appKey: this.listQuery.templateTypesValue,
+        procDefKey: this.listQuery.procDefValue,
+      });
+      this.processNodeData = data;
     },
     async getMilestone() {
       const { data } = await fetchMilestone({
-        appKey: "data_asset",
-        procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+        appKey: this.listQuery.templateTypesValue,
+        procDefKey: this.listQuery.procDefValue,
       });
-      // this.mileStoneData = data;
-      this.mileStoneData = [
-        {
-          id: 1231,
-          name: "撰写文件",
-          taskNumLine: 10,
-          timeConsumingLine: 15,
-          tasks: [
-            {
-              taskDefKey: "asdfqwdeq",
-              taskDefName: "节点名称",
-            },
-          ],
-        },
-        {
-          id: 121,
-          name: "撰文件",
-          taskNumLine: 1,
-          timeConsumingLine: 1,
-          tasks: [
-            {
-              taskDefKey: "asdfwdeq",
-              taskDefName: "节名称",
-            },
-          ],
-        },
-      ];
-
+      this.mileStoneData = data;
       this.$nextTick(() => {
         this.setSort();
         this.setCurrent(this.mileStoneData ? this.mileStoneData[0] : []);
@@ -361,6 +317,50 @@ export default {
           message: "删除成功!",
         });
       });
+    },
+    onSubmit() {
+      this.buttonLoading = true;
+
+      let addedTasks = [];
+      let removedTasks = [];
+      let oldNodeTableDef = this.oldNodeTableData.map(
+        (item) => item.taskDefKey
+      );
+      let nodeTableDef = this.nodeTableData.map((item) => item.taskDefKey);
+      nodeTableDef.forEach((item) => {
+        if (!oldNodeTableDef.includes(item)) {
+          addedTasks.push(item);
+        }
+      });
+      oldNodeTableDef.forEach((item) => {
+        if (!nodeTableDef.includes(item)) {
+          removedTasks.push(item);
+        }
+      });
+
+      editMile({
+        ...this.standardForm,
+        addedTasks,
+        removedTasks,
+        id: this.currentRow.id,
+        name: this.currentRow.name,
+      })
+        .then(() => {
+          this.buttonLoading = false;
+          this.handleClose();
+          this.$message({
+            type: "success",
+            message: "保存成功",
+          });
+        })
+        .catch((err) => {
+          this.buttonLoading = false;
+          Message({
+            message: "接口报错",
+            type: "error",
+            duration: 5 * 1000,
+          });
+        });
     },
   },
 };

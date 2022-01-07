@@ -38,7 +38,7 @@
           >
             <el-checkbox
               class="el-transfer-panel__item"
-              v-for="item in data"
+              v-for="item in processNodeData"
               :label="item.taskDefKey"
               :key="item.taskDefKey"
               :disabled="!item.milestoneId"

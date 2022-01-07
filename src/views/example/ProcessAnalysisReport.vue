@@ -2,7 +2,6 @@
   <div>
     <!--  页眉  -->
     <div class="page_header">
-
       <div class="page_header_logo">
         <div class="page_header_logo_img" style="margin-right: 5px">
           <img src="@/assets/logo.png" alt="LOGO" width="90" />
@@ -13,37 +12,42 @@
       </div>
 
       <div class="page_header_text">
-        <p align="right">流程分析报告     导出时间：{{ exportTime }}    操作人：{{this.$store.state.user.nickName}}</p>
+        <p align="right">
+          流程分析报告 导出时间：{{ exportTime }} 操作人：{{
+            this.$store.state.user.nickName
+          }}
+        </p>
       </div>
     </div>
 
-    <el-divider/>
+    <el-divider />
 
     <div style="text-align: center">
-      <h1>{{this.listQuery.procDefName}}</h1>
+      <h1>{{ this.listQuery.procDefName }}</h1>
       <h4>-流程分析报告</h4>
     </div>
 
     <div style="margin-left: 5px">
       <h3>数据样本来自于：</h3>
-      <p>选择租户：{{this.$store.state.user.tenantId}}</p>
-      <p>流程类型：{{this.listQuery.appName}}</p>
-      <p>流程名称：{{this.listQuery.procDefName}}</p>
-      <p>选择时间：{{this.listQuery.startTime}} ~ {{this.listQuery.endTime}}</p>
+      <p>选择租户：{{ this.$store.state.user.tenantName }}</p>
+      <p>流程类型：{{ this.listQuery.appName }}</p>
+      <p>流程名称：{{ this.listQuery.procDefName }}</p>
+      <p>
+        选择时间：{{ this.listQuery.startTime }} ~ {{ this.listQuery.endTime }}
+      </p>
     </div>
 
-
-    <span style="margin-top: 20px;margin-left: 5px">流程图</span>
-    <el-divider/>
+    <span style="margin-top: 20px; margin-left: 5px">流程图</span>
+    <el-divider />
 
     <!--  流程图  -->
     <div class="process-graph">
-      <left-container/>
+      <left-container />
     </div>
 
     <!-- 流程指数 -->
-    <div v-if="showProcessIndex" style="margin-top: 10px;margin-bottom: 10px">
-      <span style="margin:10px 10px 10px 10px">流程指数</span>
+    <div v-if="showProcessIndex" style="margin-top: 10px; margin-bottom: 10px">
+      <span style="margin: 10px 10px 10px 10px">流程指数</span>
       <right-container
         :procFactorDetail="procFactorDetail"
         :procFactorRuleData="procFactorRuleData"
@@ -51,101 +55,21 @@
       />
     </div>
 
-    <span style="margin-bottom: 10px;">节点分析</span>
-    <el-divider/>
+    <span style="margin-bottom: 10px">节点分析</span>
+    <el-divider />
 
     <!--节点分析-->
-    <div class="nodeDetail">
-      <!--里程碑节点执行力分析-->
-      <div v-if="showNodeExecutionAnalysis">
-        <div class="iconContainer">
-          <div>里程碑节点执行力分析</div>
-        </div>
-
-        <div class="nodeDetailContainer">
-          <div id="histogram" style="width: 100%; height: 190px" />
-          <el-divider/>
-        </div>
-      </div>
-
-      <!--节点审批效率分析-->
-      <div v-if="showNodeApprovalAnalysis">
-        <div class="iconContainer">
-          <div>节点审批效率分析</div>
-          <div>
-            <span>环比至</span>
-            <span> {{ nodeAnalysisData.chainDate }} </span>
-          </div>
-        </div>
-        <el-table :data="nodeAnalysisData.list">
-          <el-table-column prop="taskName" label="节点名称" width="150" fixed>
-          </el-table-column>
-          <el-table-column label="平均耗时(人天)">
-            <el-table-column prop="averagePassTime" label="耗时" width="120">
-            </el-table-column>
-            <el-table-column prop="averagePassTimeChain" label="环比" width="120">
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="平均实际处理(人天)">
-            <el-table-column
-              prop="averageActualCostTime"
-              label="耗时"
-              width="120"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="averageActualCostTimeChain"
-              label="环比"
-              width="300"
-            >
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="平均等待(人天)">
-            <el-table-column prop="averageWaitTime" label="耗时" width="120">
-            </el-table-column>
-            <el-table-column prop="averageWaitTimeChain" label="环比" width="300">
-            </el-table-column>
-          </el-table-column>
-        </el-table>
-
-      </div>
-
-      <el-divider/>
-
-      <!--审批耗时区间分布-->
-      <div v-if="showApprovalTCIntervalDistribution">
-        <div class="nodeDetailContainer">
-          <div class="iconContainer">
-            <div>审批耗时区间分布</div>
-          </div>
-          <el-table :data="nodeTimeData.list">
-            <el-table-column prop="taskName" label="节点名称" width="150" fixed>
-            </el-table-column>
-            <el-table-column label="秒批（≤60s）">
-              <el-table-column prop="secondNum" label="次数" width="120">
-              </el-table-column>
-              <el-table-column prop="secondPercent" label="占比" width="120">
-              </el-table-column>
-            </el-table-column>
-            <el-table-column label="跨天（≥1/人天）">
-              <el-table-column prop="dayNum" label="次数" width="120">
-              </el-table-column>
-              <el-table-column prop="dayPercent" label="占比" width="300">
-              </el-table-column>
-            </el-table-column>
-            <el-table-column label="常规">
-              <el-table-column prop="normalNum" label="次数" width="120">
-              </el-table-column>
-              <el-table-column prop="normalPercent" label="占比" width="300">
-              </el-table-column>
-            </el-table-column>
-          </el-table>
-
-        </div>
-      </div>
+    <div style="margin-top: 10px; margin-bottom: 10px">
+      <span style="margin: 10px 10px 10px 10px">节点分析</span>
+      <node-detail
+        :nodeAnalysisData="nodeAnalysisData"
+        :nodeTimeData="nodeTimeData"
+        :nodeChartData="nodeChartData"
+        :listQuery="listQuery"
+      />
     </div>
 
-    <el-divider/>
+    <el-divider />
 
     <!--conclusion-->
     <div>
@@ -154,26 +78,29 @@
       <!--流程指数结论-->
       <div>
         <h4>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          【{{this.listQuery.procDefName}}】本次分析参与数据量为{{this.procFactorDetail.total}}条，识别到以下指数：
-          流程线上化率 --；
-          流程流效率0.00%；
-          流程时效{{this.procFactorDetail.timeLimit}}/人天；
-          流程平均干系人{{this.procFactorDetail.avgHolder}}人；
-          流程人效{{this.procFactorDetail.personLimit}}/人天；
+          &nbsp;&nbsp;&nbsp;&nbsp; 【{{
+            this.listQuery.procDefName
+          }}】本次分析参与数据量为{{
+            this.procFactorDetail.total
+          }}条，识别到以下指数： 流程线上化率 --； 流程流效率0.00%； 流程时效{{
+            this.procFactorDetail.timeLimit
+          }}/人天； 流程平均干系人{{ this.procFactorDetail.avgHolder }}人；
+          流程人效{{ this.procFactorDetail.personLimit }}/人天；
         </h4>
       </div>
 
       <!--节点分析结论-->
       <div>
         <h4>
-          通过节点分析，
-          「里程碑节点执行力分析」{{this.nodeChartData.conclusion}}
-          「节点审批效率分析」{{this.nodeAnalysisData.conclusion}}
-          「审批耗时区间分布」{{this.nodeTimeData.conclusion}}
+          通过节点分析， 「里程碑节点执行力分析」{{
+            this.nodeChartData.conclusion
+          }}
+          「节点审批效率分析」{{
+            this.nodeAnalysisData.conclusion
+          }}
+          「审批耗时区间分布」{{ this.nodeTimeData.conclusion }}
         </h4>
       </div>
-
 
       <h2 style="color: red">
         注意：以上分析结论可能因数据样本偏差，存在不准确性，请谨慎参考。
@@ -193,14 +120,17 @@ import {
   fetchNodeChart,
   fetchProcFactor,
   fetchProcIndexRule,
-  fetchTimeConsuming
-} from '@/api/example'
+  fetchTimeConsuming,
+} from "@/api/example";
+import NodeDetail from "@/views/example/NodeDetail";
 export default {
-  name: 'processAnalysisReport',
-  components: { LeftContainer, RightContainer },
-  data(){
-    return{
-      exportTime: moment(parseInt(new Date().getTime())).format("YYYY-MM-DD HH:mm:ss"),
+  name: "processAnalysisReport",
+  components: { NodeDetail, LeftContainer, RightContainer },
+  data() {
+    return {
+      exportTime: moment(parseInt(new Date().getTime())).format(
+        "YYYY-MM-DD HH:mm:ss"
+      ),
       chart: null,
       showNodeExecutionAnalysis: false,
       showNodeRollbackDetail: false,
@@ -251,33 +181,47 @@ export default {
       },
       nodeTimeData: {
         list: [],
-        conclusion: ""
+        conclusion: "",
       },
-      listQuery: this.$route.query
-    }
+      listQuery: this.$route.query,
+    };
   },
   methods: {
     initChart() {
       console.log(document.getElementById("histogram"), "node");
       this.chart = echarts.init(document.getElementById("histogram"));
-      this.getNodeChart().then(resp => {
+      this.getNodeChart().then((resp) => {
         this.chart.setOption(this.getOption());
-        this.chart.on('finished', () => {
-          if(this.listQuery.export){
-            alert("页面加载完毕，准备导出")
+        console.log(this.listQuery, "listQuery");
+        this.chart.on("finished", () => {
+          if (this.listQuery.export) {
+            alert("页面加载完毕，准备导出");
             window.print();
           }
-        })
-      })
+        });
+      });
     },
     getOption() {
       return {
-        legend: {},
+        legend: {
+          formatter: function (name) {
+            const legendData = {
+              taskNumReal: "里程碑实际节点数量",
+              taskNumLine: "里程碑标准节点数量",
+              timeConsumingReal: "里程碑实际耗时",
+              timeConsumingLine: "里程碑标准耗时",
+            };
+            return legendData[name];
+          },
+        },
         tooltip: {},
         dataset: {
           dimensions: [
             "name",
-            this.nodeChartData.list.map((item) => item.taskName),
+            "taskNumReal",
+            "taskNumLine",
+            "timeConsumingReal",
+            "timeConsumingLine",
           ],
           source: this.nodeChartData.list,
         },
@@ -349,30 +293,32 @@ export default {
 
       this.nodeTimeData = data;
     },
-    handleNodeAnalysisShow(){
+    handleNodeAnalysisShow() {
       const ranges = this.listQuery.exportRanges;
-      console.log("ranges",ranges)
-      if(ranges.includes("PROCESS_INDEX")){
+      console.log("ranges", ranges);
+      if (ranges.includes("PROCESS_INDEX")) {
         this.showProcessIndex = true;
       }
-      if(ranges.includes("MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS")){
+      if (ranges.includes("MILESTONE_TASK_EXECUTIVE_FORCE_ANALYSIS")) {
         this.showNodeExecutionAnalysis = true;
       }
-      if(ranges.includes("MILESTONE_TASK_ROlLBACK_DETAIL")){
+      if (ranges.includes("MILESTONE_TASK_ROlLBACK_DETAIL")) {
         this.showNodeRollbackDetail = true;
       }
-      if(ranges.includes("TASK_APPROVAL_EFFICIENCY_ANALYSIS")){
+      if (ranges.includes("TASK_APPROVAL_EFFICIENCY_ANALYSIS")) {
         this.showNodeApprovalAnalysis = true;
       }
-      if(ranges.includes("APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION")) {
+      if (ranges.includes("APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION")) {
         this.showApprovalTCIntervalDistribution = true;
       }
     },
-    watermarkPage(){
-      if(this.listQuery.watermark){
-        watermark(this.$store.state.user.nickName+" "+this.$store.state.user.userId);
+    watermarkPage() {
+      if (this.listQuery.watermark) {
+        watermark(
+          this.$store.state.user.nickName + " " + this.$store.state.user.userId
+        );
       }
-    }
+    },
   },
   mounted() {
     this.watermarkPage();
@@ -381,7 +327,10 @@ export default {
     this.initChart();
     this.getNodeAnalysis();
     this.getNodeTimeConsuming();
-    console.log(">>>>>>>>>>>>>queryParam is ", JSON.stringify(this.$route.query))
+    console.log(
+      ">>>>>>>>>>>>>queryParam is ",
+      JSON.stringify(this.$route.query)
+    );
   },
   created() {
     this.handleNodeAnalysisShow();
@@ -393,12 +342,14 @@ export default {
     this.chart.dispose();
     this.chart = null;
   },
-
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.page_header_logo, .page_header_text, .page_header_logo_img, .page_header_logo_text {
+.page_header_logo,
+.page_header_text,
+.page_header_logo_img,
+.page_header_logo_text {
   display: inline-block;
 }
 
@@ -412,6 +363,24 @@ export default {
   height: calc(100vh - 420px);
 }
 
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid red;
+  margin-left: 10px;
+  display: inline-block;
+}
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid green;
+  margin-left: 10px;
+  display: inline-block;
+}
 .nodeDetail {
   padding-left: 20px;
   padding-right: 20px;
@@ -422,6 +391,10 @@ export default {
   overflow: scroll;
   .row-container {
     line-height: 40px;
+  }
+  .iconContainer-title {
+    font-size: 16px;
+    font-weight: 500;
   }
   .iconContainer {
     width: 100%;
@@ -459,17 +432,16 @@ export default {
     margin-top: 16px;
   }
   .conclusion {
-  .conclusion-title {
-    padding: 10px 0px 6px 0px;
-  }
-  width: 100%;
-  height: 78px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  margin-top: 12px;
-  margin-bottom: 20px;
-  padding: 9px 9px 9px 13px;
+    .conclusion-title {
+      padding: 10px 0px 6px 0px;
+    }
+    width: 100%;
+    height: 78px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    padding: 9px 9px 9px 13px;
   }
 }
-
 </style>
