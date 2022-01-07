@@ -110,12 +110,11 @@
 </template>
 
 <script>
-import RightContainer from "@/views/example/RightContainer";
-import ProcessMining from "@/views/processMining/ProcessMining";
-import LeftContainer from "@/views/example/LeftContainer";
-import * as echarts from "echarts";
-import watermark from "@/utils/common";
-import moment from "moment";
+import RightContainer from '@/views/example/RightContainer'
+import LeftContainer from '@/views/example/LeftContainer'
+import * as echarts from 'echarts'
+import watermark from '@/utils/common'
+import moment from 'moment'
 import {
   fetchNodeAnalysis,
   fetchNodeChart,
@@ -126,7 +125,7 @@ import {
 import NodeDetail from "@/views/example/NodeDetail";
 export default {
   name: "processAnalysisReport",
-  components: { NodeDetail, LeftContainer, ProcessMining, RightContainer },
+  components: { NodeDetail, LeftContainer, RightContainer },
   data() {
     return {
       exportTime: moment(parseInt(new Date().getTime())).format(

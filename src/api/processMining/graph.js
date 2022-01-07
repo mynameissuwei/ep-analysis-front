@@ -19,6 +19,7 @@ const LAYOUT_DAGRE_LR = 1
 const LAYOUT_DAGRE_TB = 2
 const LAYOUT_BREADTH_FIRST = 3
 const NAME_PROP = 'label'
+const MAX_AUTOFIT_ZOOM = 0.75
 
 const PDp = {}
 
@@ -298,14 +299,8 @@ PDp.reset = function () {
   }
 }
 
-PDp.loadLog = function (json, layoutType, retain) {
+PDp.loadLog = function (json, layoutType) {
   currentLayout = layoutType
-
-  // Need to set the current zoom/pan level again as the reset/zoom/pan actions
-  // will generate zoom and pan events and change them.
-  const zoom = currentZoomLevel
-  const pan = currentPanPosition
-
   isTraceMode = false
   this.reset()
   this.init()
@@ -315,15 +310,8 @@ PDp.loadLog = function (json, layoutType, retain) {
   sourceJSON = source
   cy.add(source)
   this.layout(layoutType)
+  this.fit(layoutType)
 
-  if (retain) {
-    cy.zoom(zoom)
-    cy.pan(pan)
-    currentZoomLevel = zoom
-    currentPanPosition = pan
-  } else {
-    this.fit(layoutType)
-  }
 }
 
 PDp.layout = function (layoutType) {
@@ -331,6 +319,16 @@ PDp.layout = function (layoutType) {
   const layouter = layouters[layoutType]
   if (layouter) {
     layouter(cy, true)
+  }
+}
+
+PDp.fit = function(layoutType) {
+  const cy = this._private.cy
+  cy.fit()
+  cy.center()
+  if (cy.zoom() > MAX_AUTOFIT_ZOOM) {
+    cy.zoom(MAX_AUTOFIT_ZOOM)
+    cy.center()
   }
 }
 

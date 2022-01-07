@@ -4,7 +4,7 @@
       split="vertical"
       v-on:resize="resize"
       :min-percent="33"
-      :default-percent="65"
+      :default-percent="40"
     >
       <template slot="paneL">
         <slot name="left"></slot>
