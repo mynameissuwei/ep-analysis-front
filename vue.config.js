@@ -19,15 +19,15 @@ module.exports = {
   devServer: {
     port: port,
     open: true,
-    https: false,
+    https: true,
     overlay: {
       warnings: false,
       errors: true,
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        // target: "https://efficiency-analysis-backend.dev.ennew.com",
-        target: "http://localhost:8080",
+        target: "https://efficiency-analysis-backend.dev.ennew.com",
+        // target: "http://localhost:8080",
         // target: "http://rdfa-gateway.dev.ennewi.cn/mining",
         changeOrigin: true,
         pathRewrite: {

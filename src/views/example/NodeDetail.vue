@@ -1,30 +1,32 @@
 <template>
   <div class="nodeDetail">
-    <div class="iconContainer">
-      <div class="iconContainer-title">里程碑节点执行力分析</div>
+    <div v-if="showNodeExecutionAnalysis">
+      <div class="iconContainer">
+        <div class="iconContainer-title">里程碑节点执行力分析</div>
 
-      <div>
-        <div class="textClass" @click="handleShowDetail">查看明细</div>
-        <div class="iconClass" @click="handleShow">
-          <i class="el-icon-setting"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="nodeDetailContainer">
-      <div style="width: 100%; height: 190px">
-        <div id="histogram" style="width: 100%; height: 190px" />
-      </div>
-      <div class="conclusion">
-        <div class="conclusion-title">分析结论：</div>
         <div>
-          {{ nodeChartData.conclusion }}
+          <div class="textClass" @click="handleShowDetail">查看明细</div>
+          <div class="iconClass" @click="handleShow">
+            <i class="el-icon-setting"></i>
+          </div>
         </div>
       </div>
-      <el-divider></el-divider>
+
+      <div class="nodeDetailContainer">
+        <div style="width: 100%; height: 190px">
+          <div id="histogram" style="width: 100%; height: 190px" />
+        </div>
+        <div class="conclusion" v-if="showConclusion">
+          <div class="conclusion-title">分析结论：</div>
+          <div>
+            {{ nodeChartData.conclusion }}
+          </div>
+        </div>
+        <el-divider></el-divider>
+      </div>
     </div>
 
-    <div class="nodeDetailContainer">
+    <div class="nodeDetailContainer" v-if="showNodeApprovalAnalysis">
       <div class="iconContainer">
         <div class="iconContainer-title">节点审批效率分析</div>
         <div>
@@ -105,7 +107,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="conclusion">
+      <div class="conclusion" v-if="showConclusion">
         <div class="conclusion-title">分析结论：</div>
         <div>
           {{ nodeAnalysisData.conclusion }}
@@ -114,7 +116,7 @@
       <el-divider></el-divider>
     </div>
 
-    <div class="nodeDetailContainer">
+    <div class="nodeDetailContainer" v-if="showApprovalTCIntervalDistribution">
       <div class="iconContainer">
         <div class="iconContainer-title">审批耗时区间分布</div>
       </div>
@@ -147,7 +149,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="conclusion">
+      <div class="conclusion" v-if="showConclusion">
         <div class="conclusion-title">分析结论：</div>
         <div>
           {{ nodeTimeData.conclusion }}
@@ -196,7 +198,46 @@ import { fetchNodeChartDetail } from "@/api/example";
 import moment from "moment";
 
 export default {
-  props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery"],
+  props:{
+    nodeAnalysisData: {
+      type: Object,
+      require: true
+    },
+    nodeTimeData: {
+      type: Object,
+      require: true
+    },
+    nodeChartData: {
+      type: Object,
+      require: true
+    },
+    listQuery: {
+      type: Object,
+      require: true
+    },
+    showNodeExecutionAnalysis: {
+      type: Boolean,
+      default: true,
+    },
+    showNodeRollbackDetail: {
+      type: Boolean,
+      default: true,
+    },
+    showNodeApprovalAnalysis: {
+      type: Boolean,
+      default: true,
+    },
+    showApprovalTCIntervalDistribution: {
+      type: Boolean,
+      default: true,
+    },
+    showConclusion: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  // props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery", "showNodeExecutionAnalysis",
+  //   "showNodeRollbackDetail", "showNodeApprovalAnalysis", "showApprovalTCIntervalDistribution"],
   components: {
     DiaModal,
     NodeModal,

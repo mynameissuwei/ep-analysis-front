@@ -66,6 +66,11 @@
         :nodeTimeData="nodeTimeData"
         :nodeChartData="nodeChartData"
         :listQuery="listQuery"
+        :showNodeExecutionAnalysis="showNodeExecutionAnalysis"
+        :showNodeRollbackDetail="showNodeRollbackDetail"
+        :showNodeApprovalAnalysis="showNodeApprovalAnalysis"
+        :showApprovalTCIntervalDistribution="showApprovalTCIntervalDistribution"
+        :showConclusion="false"
       />
     </div>
 
