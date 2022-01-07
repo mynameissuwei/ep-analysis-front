@@ -1,12 +1,26 @@
 <template>
   <div class="right-container">
     <div>
-      <div class="iconContainer">
-        <div class="iconClass" @click="handleShow" v-if="true">
-          <i class="el-icon-setting"></i>
-        </div>
-      </div>
-      <el-row :gutter="20">
+      <el-row :gutter="20" style="position: relative">
+        <el-col :span="12">
+          <el-alert
+            v-if="procFactorDetail.hasOldData"
+            title="本次因历史数据未采集系统操作时间，结论存在偏差"
+            type="info"
+            class="alert-container"
+          >
+          </el-alert>
+        </el-col>
+        <el-col :span="12">
+          <div class="iconContainer">
+            <div class="iconClass" @click="handleShow" v-if="true">
+              <i class="el-icon-setting"></i>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20" style="margin-top: 5px">
         <el-col :span="12">
           <process-card
             v-bind="{
@@ -311,6 +325,8 @@ export default {
     float: right;
     margin-bottom: 16px;
     margin-top: 16px;
+    position: absolute;
+    right: 10px;
   }
 }
 .right-without-container {
@@ -323,5 +339,8 @@ export default {
 .warnClass {
   position: relative;
   bottom: 10px;
+}
+.alert-container {
+  margin-top: 10px;
 }
 </style>

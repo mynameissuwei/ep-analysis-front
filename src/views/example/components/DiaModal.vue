@@ -43,10 +43,31 @@
               @current-change="handleCurrentChange"
             >
               <el-table-column prop="name" label="日期" width="180">
+                <template slot-scope="{ row }">
+                  <template v-if="row.edit">
+                    <el-input
+                      v-model="row.name"
+                      class="edit-input"
+                      size="small"
+                    />
+                  </template>
+                  <span v-else>{{ row.name }}</span>
+                </template>
               </el-table-column>
               <el-table-column label="操作" width="230">
                 <template slot-scope="{ row, $index }">
-                  <i class="el-icon-edit" style="cursor: pointer"></i>
+                  <i
+                    v-if="row.edit"
+                    class="el-icon-share"
+                    style="cursor: pointer"
+                    @click="confirmEdit(row)"
+                  ></i>
+                  <i
+                    v-else
+                    class="el-icon-edit"
+                    style="cursor: pointer"
+                    @click="row.edit = !row.edit"
+                  ></i>
                   <i
                     class="el-icon-delete"
                     style="margin-left: 10px; cursor: pointer"
@@ -62,45 +83,55 @@
           </div>
         </div>
         <div class="right-container">
-          <div class="right-container-title">
-            <span class="mileMan">撰写文件</span>
-            <span>
+          <div>
+            <div class="right-container-title">
+              <span class="mileMan">撰写文件</span>
               <span>
-                <el-button type="primary" @click="handleOpenInner" size="small"
-                  >添加节点</el-button
-                ></span
-              ></span
-            >
-          </div>
-          <div class="right-container-content">
-            <el-input
-              v-model="inputValue"
-              placeholder="搜索渠道名称"
-              prefix-icon="el-icon-search"
-              style="margin: 13px 0px"
-              size="small"
-              @input="querySearchAsync"
-            ></el-input>
-            <el-table :data="nodeTableData" max-height="220" :border="true">
-              <el-table-column prop="taskDefName" label="节点名称" width="315">
-              </el-table-column>
-              <el-table-column label="操作" width="120">
-                <template slot-scope="scope">
+                <span>
                   <el-button
-                    @click.native.prevent="
-                      deleteRow(scope.$index, nodeTableData)
-                    "
-                    type="text"
+                    type="primary"
+                    @click="handleOpenInner"
                     size="small"
-                  >
-                    移除
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+                    >添加节点</el-button
+                  ></span
+                ></span
+              >
+            </div>
+            <div class="right-container-content">
+              <el-input
+                v-model="inputValue"
+                placeholder="搜索渠道名称"
+                prefix-icon="el-icon-search"
+                style="margin: 13px 0px"
+                size="small"
+                @input="querySearchAsync"
+              ></el-input>
+              <el-table :data="nodeTableData" max-height="220" :border="true">
+                <el-table-column
+                  prop="taskDefName"
+                  label="节点名称"
+                  width="315"
+                >
+                </el-table-column>
+                <el-table-column label="操作" width="120">
+                  <template slot-scope="scope">
+                    <el-button
+                      @click.native.prevent="
+                        deleteRow(scope.$index, nodeTableData, searchTableData)
+                      "
+                      type="text"
+                      size="small"
+                    >
+                      移除
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="bottom-container">
         <div class="mileMan">标准值设置</div>
         <el-form
@@ -183,7 +214,9 @@ export default {
       nodeData: [],
       nodeTableData: [],
       oldNodeTableData: [],
+      searchTableData: [],
       currentRow: null,
+      buttonLoading: false,
     };
   },
   created() {
@@ -192,7 +225,12 @@ export default {
   },
 
   methods: {
-    handleCurrentChange(item) {
+    confirmEdit(row) {
+      row.edit = false;
+      this.currentRow = row;
+    },
+    handleCurrentChange(item, oldItem) {
+      oldItem.edit = false;
       this.currentRow = item;
       this.nodeTableData = item.tasks;
       this.oldNodeTableData = item.tasks.slice();
@@ -200,6 +238,11 @@ export default {
         taskNumLine: item.taskNumLine,
         timeConsumingLine: item.timeConsumingLine,
       };
+      // 回退名字
+      this.mileStoneData = this.mileStoneData.map((item) => ({
+        ...item,
+        name: item.originName,
+      }));
     },
     setCurrent(row) {
       this.$refs.dragTable.setCurrentRow(row);
@@ -219,26 +262,34 @@ export default {
     handleOpenInner() {
       this.innerVisible = true;
     },
-    deleteRow(index, rows) {
+    deleteRow(index, rows, searchRows) {
       rows.splice(index, 1);
+      searchRows.splice(index, 1);
     },
     addRow(data) {
       let result = this.nodeTableData;
-      let array = data.map((item) => {
-        let result = this.processNodeData.find((d) => d.taskDefKey === item);
-        return result;
-      });
+      let resultKeys = this.nodeTableData.map((item) => item.taskDefKey);
+      let array = data
+        .filter((d) => {
+          if (resultKeys.includes(d)) return false;
+          return true;
+        })
+        .map((item) => {
+          let result = this.processNodeData.find((d) => d.taskDefKey === item);
+          return result;
+        });
       this.nodeTableData = result.concat(array);
+      this.searchTableData = result.concat(array);
       this.innerVisible = false;
     },
     querySearchAsync(queryString) {
-      let nodeList = this.nodeData;
+      let nodeList = this.searchTableData;
 
       let results = queryString
         ? nodeList.filter(this.createStateFilter(queryString))
         : nodeList;
 
-      this.processNodeData = results;
+      this.nodeTableData = results;
     },
     createStateFilter(queryString) {
       return (item) => {
@@ -281,7 +332,12 @@ export default {
         appKey: this.listQuery.templateTypesValue,
         procDefKey: this.listQuery.procDefValue,
       });
-      this.mileStoneData = data;
+      let result = data.map((v) => {
+        this.$set(v, "edit", false);
+        v.originName = v.name;
+        return v;
+      });
+      this.mileStoneData = result;
       this.$nextTick(() => {
         this.setSort();
         this.setCurrent(this.mileStoneData ? this.mileStoneData[0] : []);
