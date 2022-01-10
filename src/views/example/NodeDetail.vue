@@ -4,7 +4,7 @@
       <div class="iconContainer">
         <div class="iconContainer-title">里程碑节点执行力分析</div>
 
-        <div>
+        <div v-if="showButton">
           <div class="textClass" @click="handleShowDetail">查看明细</div>
           <div class="iconClass" @click="handleShow">
             <i class="el-icon-setting"></i>
@@ -26,6 +26,65 @@
       </div>
     </div>
 
+    <div v-if="showNodeExecutionAnalysisDetail">
+      <div class="detail-modal">
+        <el-row
+          :gutter="22"
+          type="flex"
+          justify="space-between"
+          style="line-height: 32px"
+        >
+          <el-col :span="12">
+            <el-row :gutter="5">
+              <el-col :span="4">
+                <span>里程碑</span>
+              </el-col>
+              <el-col :span="20">
+                <el-select
+                  v-model="milestoneId"
+                  placeholder="请选择"
+                  class="my-el-select"
+                >
+                  <el-option
+                    v-for="item in nodeChartData.list"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="12">
+            <div class="text-container">
+              <span style="margin-right: 8px">里程碑回退耗时</span>
+              <span>{{ nodeChartDataDetail.milestoneRollBackTime }}</span>
+              <span>人天</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-table
+          :data="nodeChartDataDetail.list"
+          style="width: 100%; margin-top: 20px"
+        >
+          <el-table-column prop="taskName" label="节点名称" width="180">
+          </el-table-column>
+          <el-table-column
+            prop="normalOperation"
+            label="应操作(次)"
+            width="180"
+          >
+          </el-table-column>
+          <el-table-column prop="backOperation" label="回退操作(次)">
+            <template slot-scope="{ row }">
+              <span style="color: red">{{ row.backOperation }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+
     <div class="nodeDetailContainer" v-if="showNodeApprovalAnalysis">
       <div class="iconContainer">
         <div class="iconContainer-title">节点审批效率分析</div>
@@ -43,7 +102,7 @@
           <el-table-column prop="averagePassTimeChain" label="环比" width="120">
             <template slot-scope="{ row }">
               <div>
-                <span>{{ row.averagePassTimeChain }}</span>
+                <span>{{ row.averagePassTimeChain.toFixed(2) + "%" }}</span>
                 <div
                   :class="
                     row.averagePassTimeChain > 0
@@ -71,7 +130,9 @@
           >
             <template slot-scope="{ row }">
               <div>
-                <span>{{ row.averageActualCostTimeChain }}</span>
+                <span>{{
+                  row.averageActualCostTimeChain.toFixed(2) + "%"
+                }}</span>
                 <div
                   :class="
                     row.averagePassTimeChain > 0
@@ -91,7 +152,7 @@
           <el-table-column prop="averageWaitTimeChain" label="环比" width="300">
             <template slot-scope="{ row }">
               <div>
-                <span>{{ row.averageWaitTimeChain }}</span>
+                <span>{{ row.averageWaitTimeChain.toFixed(2) + "%" }}</span>
                 <div
                   :class="
                     row.averagePassTimeChain > 0
@@ -118,7 +179,7 @@
 
     <div class="nodeDetailContainer" v-if="showApprovalTCIntervalDistribution">
       <div class="iconContainer">
-        <div class="iconContainer-title">审批耗时区间分布</div>
+        <div class="iconContainer-title">审批耗时偏好分布</div>
       </div>
       <el-table :data="nodeTimeData.list">
         <el-table-column prop="taskName" label="节点名称" width="150" fixed>
@@ -130,6 +191,9 @@
             </template>
           </el-table-column>
           <el-table-column prop="secondPercent" label="占比" width="120">
+            <template slot-scope="{ row }">
+              <span>{{ row.secondPercent.toFixed(2) + "%" }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="跨天（≥1/人天）">
@@ -139,12 +203,18 @@
             </template>
           </el-table-column>
           <el-table-column prop="dayPercent" label="占比" width="300">
+            <template slot-scope="{ row }">
+              <span>{{ row.dayPercent.toFixed(2) + "%" }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="常规">
           <el-table-column prop="normalNum" label="次数" width="120">
           </el-table-column>
           <el-table-column prop="normalPercent" label="占比" width="300">
+            <template slot-scope="{ row }">
+              <span>{{ row.normalPercent.toFixed(2) + "%" }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
       </el-table>
@@ -184,6 +254,7 @@
       :handleClose="handleHiddleDetail"
       :nodeChartDataDetail="nodeChartDataDetail"
       :nodeChartData="nodeChartData"
+      :getNodeChartDetail="getNodeChartDetail"
     />
   </div>
 </template>
@@ -201,23 +272,27 @@ export default {
   props: {
     nodeAnalysisData: {
       type: Object,
-      require: true
+      require: true,
     },
     nodeTimeData: {
       type: Object,
-      require: true
+      require: true,
     },
     nodeChartData: {
       type: Object,
-      require: true
+      require: true,
     },
     listQuery: {
       type: Object,
-      require: true
+      require: true,
     },
     showNodeExecutionAnalysis: {
       type: Boolean,
       default: true,
+    },
+    showNodeExecutionAnalysisDetail: {
+      type: Boolean,
+      default: false,
     },
     showNodeRollbackDetail: {
       type: Boolean,
@@ -235,9 +310,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    showButton: {
+      type: Boolean,
+      default: true,
+    },
   },
-  // props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery", "showNodeExecutionAnalysis",
-  //   "showNodeRollbackDetail", "showNodeApprovalAnalysis", "showApprovalTCIntervalDistribution"],
   components: {
     DiaModal,
     NodeModal,
@@ -252,7 +329,9 @@ export default {
       chart: null,
       nodeChartDataDetail: {
         milestoneRollBackTime: 0,
+        list: [],
       },
+      milestoneId: null,
     };
   },
   mounted() {
@@ -274,12 +353,25 @@ export default {
     this.chart = null;
     Bus.$off("sendMsg");
   },
-
+  watch: {
+    nodeChartData(newValue, oldValue) {
+      if (!newValue.list.length) {
+        this.chart.setOption(
+          {
+            series: [],
+          },
+          true
+        );
+      } else {
+        this.chart.setOption(this.getOption(), true);
+      }
+    },
+  },
   methods: {
     resize() {
       this.chart && this.chart.resize();
     },
-    async getNodeChartDetail() {
+    async getNodeChartDetail(taskDefKey = "") {
       const {data} = await fetchNodeChartDetail({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
@@ -290,6 +382,7 @@ export default {
         endDateTime: moment(
           parseInt(this.listQuery.dateValue[1].getTime())
         ).format("YYYY-MM-DD"),
+        taskDefKey,
       });
       this.nodeChartDataDetail = data;
     },
@@ -299,9 +392,6 @@ export default {
     },
     handleHiddleDetail() {
       this.detailVisible = false;
-    },
-    handleChange() {
-      console.log("handleChange");
     },
     handleShow() {
       this.dialogVisible = true;
@@ -317,7 +407,7 @@ export default {
     },
     initChart() {
       this.chart = echarts.init(document.getElementById("histogram"));
-      this.chart.setOption(this.getOption());
+      this.chart.setOption(this.getOption(), true);
       let $chart = this.chart;
       let nodeChartData = this.nodeChartData;
       this.chart.getZr().on('click', function(params) {
@@ -414,8 +504,7 @@ export default {
   background: #ffffff;
   box-shadow: 1px 0px 1px 0px #eeeeee;
   border: 1px solid #e9ecf3;
-  overflow: scroll;
-
+  // overflow: scroll;
   .iconContainer-title {
     font-size: 16px;
     font-weight: 500;
@@ -476,5 +565,50 @@ export default {
     margin-bottom: 20px;
     padding: 9px 9px 9px 13px;
   }
+}
+
+.detail-modal {
+  .my-el-select {
+    width: 100%;
+    ::v-deep {
+      .el-input__inner {
+        height: 32px;
+      }
+
+      .el-input__prefix,
+      .el-input__suffix {
+        height: 32px;
+      }
+
+      .el-input__icon {
+        line-height: inherit;
+      }
+
+      .el-input__suffix-inner {
+        display: inline-block;
+      }
+    }
+  }
+  .text-container {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #0f55fa;
+    line-height: 22px;
+    height: 100%;
+    line-height: 32px;
+  }
+  .without-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  // ::v-deep {
+  //   .el-dialog__header {
+  //     border-bottom: 1px solid #e0e3e5;
+  //   }
+  // }
 }
 </style>

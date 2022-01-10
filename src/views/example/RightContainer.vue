@@ -1,5 +1,5 @@
 <template>
-  <div class="right-container">
+  <div class="right-container scroll-container">
     <div>
       <el-row :gutter="20" style="position: relative">
         <el-col :span="12">
@@ -12,7 +12,7 @@
           </el-alert>
         </el-col>
         <el-col :span="12">
-          <div class="iconContainer">
+          <div class="iconContainer" v-if="showSettingButton">
             <div class="iconClass" @click="handleShow" v-if="true">
               <i class="el-icon-setting"></i>
             </div>
@@ -246,6 +246,7 @@
     </div>
     <!-- 弹框 -->
     <process-modal
+      v-if="dialogVisible"
       :dialogVisible="dialogVisible"
       :handleClose="handleClose"
       :procFactorRuleData="procFactorRuleData"
@@ -262,14 +263,32 @@ import ProcessChart from "./components/ProcessChart";
 import ProcessModal from "./components/ProcessModal";
 
 export default {
-  props: [
-    "procFactorDetail",
-    "procFactorRuleData",
-    "getProcIndexRule",
-    "getProcFactor",
-    "listQuery",
-    "showSettingButton",
-  ],
+  props: {
+    procFactorDetail: {
+      type: Object,
+      require: true,
+    },
+    procFactorRuleData: {
+      type: Object,
+      require: true,
+    },
+    getProcIndexRule: {
+      type: Function,
+      require: true,
+    },
+    getProcFactor: {
+      type: Function,
+      require: true,
+    },
+    listQuery: {
+      type: Object,
+      require: true,
+    },
+    showSettingButton: {
+      type: Boolean,
+      default: true,
+    },
+  },
   components: {
     ProcessCard,
     ProcessModal,
@@ -307,7 +326,7 @@ export default {
   background: #ffffff;
   box-shadow: 1px 0px 1px 0px #eeeeee;
   border: 1px solid #e9ecf3;
-  overflow: scroll;
+  // overflow: scroll;
 }
 .iconContainer {
   width: 100%;

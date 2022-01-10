@@ -10,7 +10,7 @@
         <div class="bread-container">
           <bread-text
             name="流效率设置"
-            style="color: #333333; font-size: 16px; font-weight: 500"
+            :style="{ color: '#333333', fontSize: '16px', fontWeight: 500 }"
           />
           <div class="flex-container warntext-container">
             <img src="@/assets/yellowWarn.svg" class="warnClass" alt="" />
@@ -253,6 +253,7 @@ export default {
     "listQuery",
   ],
   created() {
+    console.log("initasdf");
     this.init();
   },
   data() {
@@ -287,7 +288,6 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err, "error");
           this.buttonLoading = false;
           Message({
             message: "接口报错",

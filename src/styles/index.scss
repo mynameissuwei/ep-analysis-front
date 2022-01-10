@@ -123,3 +123,11 @@ div:focus {
 .el-button--primary {
   background-color: #0f55fa;
 }
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-container {
+  -ms-overflow-style: none;
+}

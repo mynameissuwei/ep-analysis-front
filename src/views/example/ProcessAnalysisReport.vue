@@ -1,14 +1,18 @@
 <template>
-  <div>
+  <div class="process-report">
     <!--  页眉  -->
     <div class="page_header">
       <div class="page_header_logo">
-        <div class="page_header_logo_img" style="margin-right: 5px">
-          <img src="@/assets/logo.png" alt="LOGO" width="90" />
+        <div class="left-content">
+          <img src="@/assets/menuHover.png" alt="LOGO" />
+          <img src="@/assets/logo.png" alt="LOGO" style="margin-left: 5px" />
+          <el-divider direction="vertical" class="vertical-container"/>
+          <!-- <span class="logo">LOGO</span> -->
+          <div class="page_header_logo_text">
+            <h3 style="color: cornflowerblue">Process Mining</h3>
+          </div>
         </div>
-        <div class="page_header_logo_text">
-          <h3 style="color: cornflowerblue">Process Mining</h3>
-        </div>
+
       </div>
 
       <div class="page_header_text">
@@ -20,8 +24,6 @@
       </div>
     </div>
 
-    <el-divider />
-
     <div style="text-align: center">
       <h1>{{ this.listQuery.procDefName }}</h1>
       <h4>-流程分析报告</h4>
@@ -30,6 +32,7 @@
     <div style="margin-left: 5px">
       <h3>数据样本来自于：</h3>
       <p>选择租户：{{ this.$store.state.user.tenantName }}</p>
+
       <p>流程类型：{{ this.listQuery.appName }}</p>
       <p>流程名称：{{ this.listQuery.procDefName }}</p>
       <p>
@@ -42,7 +45,7 @@
 
     <!--  流程图  -->
     <div class="process-graph">
-      <div id="process_graph" class="ap-pd-process-model" />
+      <div id="process_graph" class="ap-pd-process-model"></div>
     </div>
 
     <!-- 流程指数 -->
@@ -67,10 +70,12 @@
         :nodeChartData="nodeChartData"
         :listQuery="listQuery"
         :showNodeExecutionAnalysis="showNodeExecutionAnalysis"
+        :showNodeExecutionAnalysisDetail="true"
         :showNodeRollbackDetail="showNodeRollbackDetail"
         :showNodeApprovalAnalysis="showNodeApprovalAnalysis"
         :showApprovalTCIntervalDistribution="showApprovalTCIntervalDistribution"
         :showConclusion="false"
+        :showButton="false"
       />
     </div>
 
@@ -111,6 +116,12 @@
         注意：以上分析结论可能因数据样本偏差，存在不准确性，请谨慎参考。
       </h2>
     </div>
+
+    <el-divider/>
+
+    <div style="text-align: center">
+      流程分析报告     导出时间：{{exportTime}}   操作人：{{this.$store.state.user.nickName}}
+    </div>
   </div>
 </template>
 
@@ -128,8 +139,8 @@ import {
   fetchTimeConsuming,
 } from "@/api/example";
 import NodeDetail from "@/views/example/NodeDetail";
-import PD from '@/api/processMining'
-import { discoverProcess } from '@/api/process'
+import PD from "@/api/processMining";
+import { discoverProcess } from '@/api/process';
 export default {
   name: "processAnalysisReport",
   components: { NodeDetail, LeftContainer, RightContainer },
@@ -199,14 +210,10 @@ export default {
     },
     async DFG() {
       let queryData = {
-        startDate: moment(
-          parseInt(this.listQuery.dateValue[0].getTime())
-        ).format("YYYY-MM-DD"),
-        endDate: moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
-          "YYYY-MM-DD"
-        ),
-        procDefKey: this.listQuery.procDefValue,
-        appKey: this.listQuery.templateTypesValue,
+        startDate: this.listQuery.startTime,
+        endDate: this.listQuery.endTime,
+        procDefKey: this.listQuery.procDefKey,
+        appKey: this.listQuery.appKey,
       };
       const result = await discoverProcess(queryData);
       this.pd.loadLog(result.data.visualizedText, 3);
@@ -218,11 +225,12 @@ export default {
         this.chart.setOption(this.getOption());
         console.log(this.listQuery, "listQuery");
         this.chart.on("finished", () => {
-          if (this.listQuery.export) {
-            alert("页面加载完毕，准备导出");
+          if (this.listQuery.export === 'true' || this.listQuery.export === true) {
             window.print();
+            this.chart.off("finished");
           }
         });
+
       });
     },
     getOption() {
@@ -355,7 +363,7 @@ export default {
       }
     },
     watermarkPage() {
-      if (this.listQuery.watermark) {
+      if (this.listQuery.watermark === 'true' || this.listQuery.watermark === true) {
         watermark(
           this.$store.state.user.nickName + " " + this.$store.state.user.userId
         );
@@ -370,6 +378,7 @@ export default {
     this.getNodeAnalysis();
     this.getNodeTimeConsuming();
     this.initPD();
+    this.DFG();
     console.log(
       ">>>>>>>>>>>>>queryParam is ",
       JSON.stringify(this.$route.query)
@@ -377,7 +386,6 @@ export default {
   },
   created() {
     this.handleNodeAnalysisShow();
-    this.DFG();
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -487,5 +495,46 @@ export default {
     margin-bottom: 20px;
     padding: 9px 9px 9px 13px;
   }
+}
+.ap-pd-process-model {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #666;
+  background: #f8f9fa;
+  box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.left-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page_header {
+  width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  background: #264480;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+.process-report{
+  width: 80%;
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+
 }
 </style>
