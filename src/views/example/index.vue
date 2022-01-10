@@ -111,7 +111,10 @@
             <div id="process_graph" class="ap-pd-process-model" />
           </template>
           <template v-slot:right>
-            <div style="overflow: scroll; height: 100%">
+            <div
+              style="overflow: scroll; height: 100%"
+              class="scroll-container"
+            >
               <el-tab-pane
                 style="display: block"
                 name="first"
@@ -319,9 +322,8 @@ export default {
       });
     },
     handleSelectChange(val) {
-      let appName = this.selectTemplateData.find(
-        (item) => item.appKey === val
-      ).appName;
+      let appName = this.selectTemplateData.find((item) => item.appKey === val)
+        .appName;
       this.appName = appName;
       this.listQuery.procDefValue = "";
       this.getProcDef();
