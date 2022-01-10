@@ -246,6 +246,7 @@
     </div>
     <!-- 弹框 -->
     <process-modal
+      v-if="dialogVisible"
       :dialogVisible="dialogVisible"
       :handleClose="handleClose"
       :procFactorRuleData="procFactorRuleData"
