@@ -1,5 +1,5 @@
 <template>
-  <div class="right-container">
+  <div class="right-container scroll-container">
     <div>
       <el-row :gutter="20" style="position: relative">
         <el-col :span="12">
@@ -266,27 +266,27 @@ export default {
   props: {
     procFactorDetail: {
       type: Object,
-      require:true
+      require: true,
     },
     procFactorRuleData: {
       type: Object,
-      require:true
+      require: true,
     },
     getProcIndexRule: {
       type: Function,
-      require:true
+      require: true,
     },
     getProcFactor: {
       type: Function,
-      require:true
+      require: true,
     },
     listQuery: {
       type: Object,
-      require:true
+      require: true,
     },
     showSettingButton: {
       type: Boolean,
-      default:true
+      default: true,
     },
   },
   components: {
@@ -326,7 +326,7 @@ export default {
   background: #ffffff;
   box-shadow: 1px 0px 1px 0px #eeeeee;
   border: 1px solid #e9ecf3;
-  overflow: scroll;
+  // overflow: scroll;
 }
 .iconContainer {
   width: 100%;

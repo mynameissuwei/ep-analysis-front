@@ -168,7 +168,7 @@ export default {
 <style lang="scss" scoped>
 .export-detail {
   height: 100%;
-  overflow: scroll;
+  // overflow: scroll;
   margin-top: 20px;
 }
 .waterMark {

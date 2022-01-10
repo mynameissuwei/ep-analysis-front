@@ -70,7 +70,11 @@
         >
           <el-table-column prop="taskName" label="节点名称" width="180">
           </el-table-column>
-          <el-table-column prop="normalOperation" label="应操作(次)" width="180">
+          <el-table-column
+            prop="normalOperation"
+            label="应操作(次)"
+            width="180"
+          >
           </el-table-column>
           <el-table-column prop="backOperation" label="回退操作(次)">
             <template slot-scope="{ row }">
@@ -302,7 +306,6 @@ export default {
       type: Boolean,
       default: true,
     },
-
   },
   components: {
     DiaModal,
@@ -452,7 +455,7 @@ export default {
   background: #ffffff;
   box-shadow: 1px 0px 1px 0px #eeeeee;
   border: 1px solid #e9ecf3;
-  overflow: scroll;
+  // overflow: scroll;
   .iconContainer-title {
     font-size: 16px;
     font-weight: 500;
@@ -509,7 +512,6 @@ export default {
   }
 }
 
-
 .detail-modal {
   .my-el-select {
     width: 100%;
@@ -554,5 +556,4 @@ export default {
   //   }
   // }
 }
-
 </style>
