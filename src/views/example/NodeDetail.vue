@@ -43,7 +43,7 @@
           <el-table-column prop="averagePassTimeChain" label="环比" width="120">
             <template slot-scope="{ row }">
               <div>
-                <span>{{ row.averagePassTimeChain }}</span>
+                <span>{{ row.averagePassTimeChain.toFixed(2) + "%" }}</span>
                 <div
                   :class="
                     row.averagePassTimeChain > 0
@@ -71,7 +71,9 @@
           >
             <template slot-scope="{ row }">
               <div>
-                <span>{{ row.averageActualCostTimeChain }}</span>
+                <span>{{
+                  row.averageActualCostTimeChain.toFixed(2) + "%"
+                }}</span>
                 <div
                   :class="
                     row.averagePassTimeChain > 0
@@ -91,7 +93,7 @@
           <el-table-column prop="averageWaitTimeChain" label="环比" width="300">
             <template slot-scope="{ row }">
               <div>
-                <span>{{ row.averageWaitTimeChain }}</span>
+                <span>{{ row.averageWaitTimeChain.toFixed(2) + "%" }}</span>
                 <div
                   :class="
                     row.averagePassTimeChain > 0
@@ -142,12 +144,18 @@
             </template>
           </el-table-column>
           <el-table-column prop="dayPercent" label="占比" width="300">
+            <template slot-scope="{ row }">
+              <span>{{ row.dayPercent.toFixed(2) + "%" }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="常规">
           <el-table-column prop="normalNum" label="次数" width="120">
           </el-table-column>
           <el-table-column prop="normalPercent" label="占比" width="300">
+            <template slot-scope="{ row }">
+              <span>{{ row.normalPercent.toFixed(2) + "%" }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
       </el-table>
