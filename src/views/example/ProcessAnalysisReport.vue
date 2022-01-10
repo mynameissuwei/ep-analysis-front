@@ -30,6 +30,7 @@
     <div style="margin-left: 5px">
       <h3>数据样本来自于：</h3>
       <p>选择租户：{{ this.$store.state.user.tenantName }}</p>
+
       <p>流程类型：{{ this.listQuery.appName }}</p>
       <p>流程名称：{{ this.listQuery.procDefName }}</p>
       <p>
@@ -42,7 +43,7 @@
 
     <!--  流程图  -->
     <div class="process-graph">
-      <div id="process_graph" class="ap-pd-process-model" />
+      <div id="process_graph" class="ap-pd-process-model"></div>
     </div>
 
     <!-- 流程指数 -->
@@ -128,8 +129,8 @@ import {
   fetchTimeConsuming,
 } from "@/api/example";
 import NodeDetail from "@/views/example/NodeDetail";
-import PD from '@/api/processMining'
-import { discoverProcess } from '@/api/process'
+import PD from "@/api/processMining";
+import { discoverProcess } from '@/api/process';
 export default {
   name: "processAnalysisReport",
   components: { NodeDetail, LeftContainer, RightContainer },
@@ -198,15 +199,12 @@ export default {
       this.pd = new PD("process_graph");
     },
     async DFG() {
+      alert("DFG")
       let queryData = {
-        startDate: moment(
-          parseInt(this.listQuery.dateValue[0].getTime())
-        ).format("YYYY-MM-DD"),
-        endDate: moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
-          "YYYY-MM-DD"
-        ),
-        procDefKey: this.listQuery.procDefValue,
-        appKey: this.listQuery.templateTypesValue,
+        startDate: this.listQuery.startTime,
+        endDate: this.listQuery.endTime,
+        procDefKey: this.listQuery.procDefKey,
+        appKey: this.listQuery.appKey,
       };
       const result = await discoverProcess(queryData);
       this.pd.loadLog(result.data.visualizedText, 3);
@@ -218,11 +216,12 @@ export default {
         this.chart.setOption(this.getOption());
         console.log(this.listQuery, "listQuery");
         this.chart.on("finished", () => {
-          if (this.listQuery.export) {
-            alert("页面加载完毕，准备导出");
+          if (this.listQuery.export === 'true' || this.listQuery.export === true) {
             window.print();
+            this.chart.off("finished");
           }
         });
+
       });
     },
     getOption() {
@@ -337,7 +336,7 @@ export default {
       }
     },
     watermarkPage() {
-      if (this.listQuery.watermark) {
+      if (this.listQuery.watermark === 'true' || this.listQuery.watermark === true) {
         watermark(
           this.$store.state.user.nickName + " " + this.$store.state.user.userId
         );
@@ -352,6 +351,7 @@ export default {
     this.getNodeAnalysis();
     this.getNodeTimeConsuming();
     this.initPD();
+    this.DFG();
     console.log(
       ">>>>>>>>>>>>>queryParam is ",
       JSON.stringify(this.$route.query)
@@ -359,7 +359,6 @@ export default {
   },
   created() {
     this.handleNodeAnalysisShow();
-    this.DFG();
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -469,5 +468,14 @@ export default {
     margin-bottom: 20px;
     padding: 9px 9px 9px 13px;
   }
+}
+.ap-pd-process-model {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #666;
+  background: #f8f9fa;
+  box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.05);
 }
 </style>
