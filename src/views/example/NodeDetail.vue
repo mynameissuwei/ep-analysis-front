@@ -179,7 +179,7 @@
 
     <div class="nodeDetailContainer" v-if="showApprovalTCIntervalDistribution">
       <div class="iconContainer">
-        <div class="iconContainer-title">审批耗时区间分布</div>
+        <div class="iconContainer-title">审批耗时偏好分布</div>
       </div>
       <el-table :data="nodeTimeData.list">
         <el-table-column prop="taskName" label="节点名称" width="150" fixed>
@@ -353,7 +353,20 @@ export default {
     this.chart = null;
     Bus.$off("sendMsg");
   },
-
+  watch: {
+    nodeChartData(newValue, oldValue) {
+      if (!newValue.list.length) {
+        this.chart.setOption(
+          {
+            series: [],
+          },
+          true
+        );
+      } else {
+        this.chart.setOption(this.getOption(), true);
+      }
+    },
+  },
   methods: {
     resize() {
       this.chart && this.chart.resize();
@@ -380,9 +393,6 @@ export default {
     handleHiddleDetail() {
       this.detailVisible = false;
     },
-    handleChange() {
-      console.log("handleChange");
-    },
     handleShow() {
       this.dialogVisible = true;
     },
@@ -397,7 +407,7 @@ export default {
     },
     initChart() {
       this.chart = echarts.init(document.getElementById("histogram"));
-      this.chart.setOption(this.getOption());
+      this.chart.setOption(this.getOption(), true);
     },
     getOption() {
       return {
