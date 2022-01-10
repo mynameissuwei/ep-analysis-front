@@ -41,6 +41,7 @@
                     clearable
                     placeholder="请选择"
                     class="my-el-select"
+                    @change="handleProcChange"
                   >
                     <el-option
                       v-for="item in procFactorData"
@@ -141,7 +142,11 @@
                 name="third"
                 v-if="'third' === activeName"
               >
-                <export-detail :listQuery="listQuery" />
+                <export-detail
+                  :listQuery="listQuery"
+                  :appName="appName"
+                  :processName="processName"
+                />
               </el-tab-pane>
             </div>
           </template>
@@ -233,7 +238,7 @@ export default {
       procFactorData: [],
       procFactorDetail: {
         partRadio: "0",
-        total: "25",
+        total: "0",
         flowRadio: "0",
         timeLimit: "0",
         avgHolder: "0",
@@ -266,6 +271,8 @@ export default {
       },
       nodeAnalysisData: {},
       nodeTimeData: {},
+      appName: "",
+      processName: "",
       nodeChartData: {
         list: [],
         conclusion: "",
@@ -311,9 +318,19 @@ export default {
         }
       });
     },
-    handleSelectChange() {
+    handleSelectChange(val) {
+      let appName = this.selectTemplateData.find(
+        (item) => item.appKey === val
+      ).appName;
+      this.appName = appName;
       this.listQuery.procDefValue = "";
       this.getProcDef();
+    },
+    handleProcChange(val) {
+      let procDefName = this.procFactorData.find(
+        (item) => item.procDefKey === val
+      ).procDefName;
+      this.processName = procDefName;
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

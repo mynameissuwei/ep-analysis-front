@@ -75,6 +75,14 @@ export default {
       type: String,
       require: true,
     },
+    appName: {
+      type: String,
+      require: true,
+    },
+    processName: {
+      type: String,
+      require: true,
+    },
   },
   data() {
     return {
@@ -125,7 +133,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!", this.listQuery);
       this.routerPush(true);
     },
     handleRadioChange(val) {
@@ -134,7 +141,6 @@ export default {
       } else {
         this.$refs.tree.setCheckedKeys([]);
       }
-      console.log(val, "vakvavkav");
     },
     onPreview() {
       this.routerPush(false);
@@ -154,8 +160,8 @@ export default {
             parseInt(this.listQuery.dateValue[1].getTime())
           ).format("YYYY-MM-DD"),
           export: isExport,
-          // processName: "1234",
-          // appName: "234234",
+          processName: this.processName,
+          appName: this.appName,
         },
       });
     },

@@ -22,6 +22,7 @@
                 v-model="value"
                 placeholder="请选择"
                 class="my-el-select"
+                @change="handleSelectChange"
               >
                 <el-option
                   v-for="item in nodeChartData.list"
@@ -68,15 +69,24 @@
 
 <script>
 export default {
-  props: ["visible", "handleClose", "nodeChartData", "nodeChartDataDetail"],
+  props: [
+    "visible",
+    "handleClose",
+    "nodeChartData",
+    "nodeChartDataDetail",
+    "getNodeChartDetail",
+  ],
   data() {
     return {
       value: "",
     };
   },
   methods: {
-    handleChange(value) {
-      console.log(value);
+    handleSelectChange(val) {
+      let taskDefKey = this.nodeChartData.list.find(
+        (item) => item.id === val
+      ).taskDefKeys;
+      this.getNodeChartDetail(taskDefKey);
     },
   },
 };
