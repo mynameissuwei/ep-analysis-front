@@ -24,9 +24,9 @@
       </div>
       <div class="logout-pop" style="cursor: pointer" @click="logout">退出</div>
       <div class="right-content" slot="reference">
-        <!-- <div style="margin-right: 10px">
+         <div style="margin-right: 10px">
           {{ this.$store.state.user.tenantName }}
-        </div> -->
+        </div>
         <!-- <img
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
           class="user-avatar"

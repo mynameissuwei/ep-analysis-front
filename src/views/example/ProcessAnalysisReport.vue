@@ -1,14 +1,18 @@
 <template>
-  <div>
+  <div class="process-report">
     <!--  页眉  -->
     <div class="page_header">
       <div class="page_header_logo">
-        <div class="page_header_logo_img" style="margin-right: 5px">
-          <img src="@/assets/logo.png" alt="LOGO" width="90" />
+        <div class="left-content">
+          <img src="@/assets/menuHover.png" alt="LOGO" />
+          <img src="@/assets/logo.png" alt="LOGO" style="margin-left: 5px" />
+          <el-divider direction="vertical" class="vertical-container"/>
+          <!-- <span class="logo">LOGO</span> -->
+          <div class="page_header_logo_text">
+            <h3 style="color: cornflowerblue">Process Mining</h3>
+          </div>
         </div>
-        <div class="page_header_logo_text">
-          <h3 style="color: cornflowerblue">Process Mining</h3>
-        </div>
+
       </div>
 
       <div class="page_header_text">
@@ -19,8 +23,6 @@
         </p>
       </div>
     </div>
-
-    <el-divider />
 
     <div style="text-align: center">
       <h1>{{ this.listQuery.procDefName }}</h1>
@@ -68,10 +70,12 @@
         :nodeChartData="nodeChartData"
         :listQuery="listQuery"
         :showNodeExecutionAnalysis="showNodeExecutionAnalysis"
+        :showNodeExecutionAnalysisDetail="true"
         :showNodeRollbackDetail="showNodeRollbackDetail"
         :showNodeApprovalAnalysis="showNodeApprovalAnalysis"
         :showApprovalTCIntervalDistribution="showApprovalTCIntervalDistribution"
         :showConclusion="false"
+        :showButton="false"
       />
     </div>
 
@@ -111,6 +115,12 @@
       <h2 style="color: red">
         注意：以上分析结论可能因数据样本偏差，存在不准确性，请谨慎参考。
       </h2>
+    </div>
+
+    <el-divider/>
+
+    <div style="text-align: center">
+      流程分析报告     导出时间：{{exportTime}}   操作人：{{this.$store.state.user.nickName}}
     </div>
   </div>
 </template>
@@ -199,7 +209,6 @@ export default {
       this.pd = new PD("process_graph");
     },
     async DFG() {
-      alert("DFG")
       let queryData = {
         startDate: this.listQuery.startTime,
         endDate: this.listQuery.endTime,
@@ -477,5 +486,37 @@ export default {
   background: #f8f9fa;
   box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.05);
+}
+
+.left-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page_header {
+  width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  background: #264480;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+.process-report{
+  width: 80%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+
 }
 </style>

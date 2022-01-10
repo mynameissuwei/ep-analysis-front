@@ -12,7 +12,7 @@
           </el-alert>
         </el-col>
         <el-col :span="12">
-          <div class="iconContainer">
+          <div class="iconContainer" v-if="showSettingButton">
             <div class="iconClass" @click="handleShow" v-if="true">
               <i class="el-icon-setting"></i>
             </div>
@@ -262,14 +262,32 @@ import ProcessChart from "./components/ProcessChart";
 import ProcessModal from "./components/ProcessModal";
 
 export default {
-  props: [
-    "procFactorDetail",
-    "procFactorRuleData",
-    "getProcIndexRule",
-    "getProcFactor",
-    "listQuery",
-    "showSettingButton",
-  ],
+  props: {
+    procFactorDetail: {
+      type: Object,
+      require:true
+    },
+    procFactorRuleData: {
+      type: Object,
+      require:true
+    },
+    getProcIndexRule: {
+      type: Function,
+      require:true
+    },
+    getProcFactor: {
+      type: Function,
+      require:true
+    },
+    listQuery: {
+      type: Object,
+      require:true
+    },
+    showSettingButton: {
+      type: Boolean,
+      default:true
+    },
+  },
   components: {
     ProcessCard,
     ProcessModal,
