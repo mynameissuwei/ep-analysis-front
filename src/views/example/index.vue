@@ -134,6 +134,7 @@
                   :nodeTimeData="nodeTimeData"
                   :nodeChartData="nodeChartData"
                   :listQuery="listQuery"
+                  @selectNodes="selectNodes"
                 />
               </el-tab-pane>
               <el-tab-pane
@@ -202,6 +203,10 @@ export default {
     this.driver.defineSteps(steps);
     this.driver.start();
     this.initPD();
+    let $this = this;
+    Bus.$on("selectNodes", (data) => {
+      $this.pd.selectNodes(data)
+    });
   },
   data() {
     return {
@@ -284,6 +289,9 @@ export default {
     // this.getNode();
   },
   methods: {
+    selectNodes(ids){
+      this.pd.selectNodes(ids);
+    },
     initPD() {
       this.pd = new PD("process_graph");
     },

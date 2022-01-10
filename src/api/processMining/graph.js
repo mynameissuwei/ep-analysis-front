@@ -322,7 +322,7 @@ PDp.layout = function (layoutType) {
   }
 }
 
-PDp.fit = function(layoutType) {
+PDp.fit = function (layoutType) {
   const cy = this._private.cy
   cy.fit()
   cy.center()
@@ -330,6 +330,18 @@ PDp.fit = function(layoutType) {
     cy.zoom(MAX_AUTOFIT_ZOOM)
     cy.center()
   }
+}
+let selectedNodeIds = []
+
+PDp.selectNodes = function (ids) {
+  const cy = this._private.cy
+  selectedNodeIds.forEach(function (id) {
+    cy.getElementById(id).unselect()
+  })
+  selectedNodeIds = ids;
+  ids.forEach(function (id) {
+    cy.getElementById(id).select()
+  })
 }
 
 export default PDp
