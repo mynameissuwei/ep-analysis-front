@@ -141,7 +141,7 @@
                 name="third"
                 v-if="'third' === activeName"
               >
-                <export-detail :listQuery="listQuery"/>
+                <export-detail :listQuery="listQuery" />
               </el-tab-pane>
             </div>
           </template>
@@ -186,23 +186,23 @@ export default {
     NodeDetail,
     ExportDetail,
   },
-  // mounted() {
-  //   this.driver = new Driver();
-  //   const steps = [
-  //     {
-  //       element: ".button-group",
-  //       popover: {
-  //         title: "提示",
-  //         description: "请填写相关参数,再点击查询",
-  //         position: "bottom",
-  //       },
-  //       padding: 0,
-  //     },
-  //   ];
-  //   this.driver.defineSteps(steps);
-  //   this.driver.start();
-  //   this.initPD();
-  // },
+  mounted() {
+    this.driver = new Driver();
+    const steps = [
+      {
+        element: ".button-group",
+        popover: {
+          title: "提示",
+          description: "请填写相关参数,再点击查询",
+          position: "bottom",
+        },
+        padding: 0,
+      },
+    ];
+    this.driver.defineSteps(steps);
+    this.driver.start();
+    this.initPD();
+  },
   data() {
     return {
       driver: null,
