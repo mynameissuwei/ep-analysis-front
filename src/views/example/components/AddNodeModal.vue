@@ -12,7 +12,7 @@
           <div class="left-container-title">
             <span class="mileMan">
               <span>主席决策流程共</span>
-              <span>{{ data.length }}</span>
+              <span>{{ processNodeData.length }}</span>
               <span>个节点</span>
             </span>
           </div>
@@ -22,7 +22,6 @@
             prefix-icon="el-icon-search"
             style="margin: 13px 0px"
             size="small"
-            @input="handleInput"
           ></el-input>
           <el-checkbox
             :indeterminate="isIndeterminate"
@@ -38,10 +37,10 @@
           >
             <el-checkbox
               class="el-transfer-panel__item"
-              v-for="item in processNodeData"
+              v-for="item in processNodeComputeData"
               :label="item.taskDefKey"
               :key="item.taskDefKey"
-              :disabled="!item.milestoneId"
+              :disabled="item.milestoneId != 0"
               >{{ item.taskDefName }}</el-checkbox
             >
           </el-checkbox-group>
@@ -57,11 +56,11 @@
           </div>
           <div class="right-container-content">
             <div
-              v-for="(item, index) in checkedValue"
+              v-for="(item, index) in checkedValueLabel"
               class="right-container-list-content"
             >
               <div class="right-container-list-item">
-                <span>{{ item }}</span>
+                <span>{{ item.taskDefName }}</span>
                 <span class="actionStyle actionClose">
                   <i
                     class="el-icon-close"
@@ -74,10 +73,10 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCloseInner" size="small">取 消</el-button>
         <el-button type="primary" @click="addRow(checkedValue)" size="small"
           >确 定</el-button
         >
+        <el-button @click="handleCloseInner" size="small">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -91,16 +90,36 @@ export default {
       checkedValue: [],
       isIndeterminate: true,
       checkAll: false,
-      data: this.processNodeData,
       input: "",
     };
   },
-  created() {
-    this.checkedValue = [];
+  computed: {
+    checkedValueLabel() {
+      let array = this.checkedValue.map((item) => {
+        let result = this.processNodeData.find((d) => d.taskDefKey === item);
+        return result;
+      });
+      return array;
+    },
+    processNodeComputeData() {
+      let nodeList = this.processNodeData;
+      let results = this.input
+        ? nodeList.filter(this.createStateFilter(this.input))
+        : nodeList;
+      return results;
+    },
   },
+  // created() {
+  //   this.checkedValue = [];
+  // },
   methods: {
     handleCheckAllChange(val) {
-      this.checkedValue = val ? this.data.map((item) => item.taskDefName) : [];
+      this.checkedValue = val
+        ? this.processNodeComputeData
+            .filter((item) => item.milestoneId == 0)
+            .map((item) => item.taskDefKey)
+        : [];
+
       this.isIndeterminate = false;
     },
     handleDeleteCheckbox(index) {
@@ -110,23 +129,23 @@ export default {
     },
     handleCheckedValueChange(value) {
       let checkedCount = value.length;
-      this.checkAll = checkedCount === this.data.length;
+      this.checkAll = checkedCount === this.processNodeData.length;
       this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.data.length;
+        checkedCount > 0 && checkedCount < this.processNodeData.length;
     },
     handleDeleteAll() {
       this.checkedValue = [];
       this.checkAll = false;
     },
-    handleInput(queryString) {
-      let nodeList = this.processNodeData;
+    // handleInput(queryString) {
+    //   let nodeList = this.processNodeData;
 
-      let results = queryString
-        ? nodeList.filter(this.createStateFilter(queryString))
-        : nodeList;
+    //   let results = queryString
+    //     ? nodeList.filter(this.createStateFilter(queryString))
+    //     : nodeList;
 
-      this.data = results;
-    },
+    //   this.processNodeComputeData = results;
+    // },
     createStateFilter(queryString) {
       return (item) => {
         if (item.taskDefName) {

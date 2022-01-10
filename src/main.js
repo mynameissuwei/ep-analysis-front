@@ -11,6 +11,7 @@ import "@/styles/index.scss"; // global css
 import App from "./App";
 import store from "./store";
 import router from "./router";
+import * as lodash from "lodash";
 
 console.log(router, "router");
 
@@ -20,6 +21,7 @@ import * as Echarts from "echarts";
 
 Vue.prototype.$echarts = Echarts;
 Vue.prototype.$bus = new Vue();
+Vue.prototype.$lodash = lodash;
 
 !(async function () {
   console.log(process.env, "env");

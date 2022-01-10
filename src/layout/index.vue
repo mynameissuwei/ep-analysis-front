@@ -25,8 +25,8 @@ export default {
     NavBar,
     Sidebar,
     AppMain,
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 };
 </script>
 
@@ -53,7 +53,7 @@ export default {
 .app-main-container {
   @include clearfix;
   position: relative;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 48px);
   width: 100%;
 }
 .right-container {
@@ -63,7 +63,7 @@ export default {
   transition: margin-left 0.28s;
   margin-left: $sideBarWidth;
   position: relative;
-  top: 59px;
+  top: 48px;
 }
 .bread-container {
   // margin-bottom: 14px;

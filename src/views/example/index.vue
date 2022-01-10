@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form :model="listQuery" :rules="rules" ref="ruleForm">
-      <div class="card-container" style="height: 156px">
+      <div class="card-container" style="height: 156px; margin-top: 0px">
         <el-row :gutter="22" class="example-container">
           <el-col :span="5">
             <el-row :gutter="5">
@@ -186,23 +186,23 @@ export default {
     NodeDetail,
     ExportDetail,
   },
-  mounted() {
-    this.driver = new Driver();
-    const steps = [
-      {
-        element: ".button-group",
-        popover: {
-          title: "提示",
-          description: "请填写相关参数,再点击查询",
-          position: "bottom",
-        },
-        padding: 0,
-      },
-    ];
-    this.driver.defineSteps(steps);
-    this.driver.start();
-    this.initPD();
-  },
+  // mounted() {
+  //   this.driver = new Driver();
+  //   const steps = [
+  //     {
+  //       element: ".button-group",
+  //       popover: {
+  //         title: "提示",
+  //         description: "请填写相关参数,再点击查询",
+  //         position: "bottom",
+  //       },
+  //       padding: 0,
+  //     },
+  //   ];
+  //   this.driver.defineSteps(steps);
+  //   this.driver.start();
+  //   this.initPD();
+  // },
   data() {
     return {
       driver: null,

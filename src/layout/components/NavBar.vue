@@ -1,8 +1,9 @@
 <template>
   <div class="common-header">
     <div class="left-content">
-      <img src="@/assets/logo.png" alt="LOGO" width="100" />
-      <el-divider direction="vertical"></el-divider>
+      <img src="@/assets/menuHover.png" alt="LOGO" />
+      <img src="@/assets/logo.png" alt="LOGO" style="margin-left: 10px" />
+      <el-divider direction="vertical" class="vertical-container"></el-divider>
       <!-- <span class="logo">LOGO</span> -->
       <div v-if="productName || companyName" class="page-title">
         <span v-if="productName">{{ productName }}</span>
@@ -14,16 +15,25 @@
       <slot name="centerContent"></slot>
     </div>
     <el-popover placement="bottom">
-      <div class="logout-pop" style="cursor: pointer;margin-bottom: 5px" @click="selectTenant">切换租户</div>
+      <div
+        class="logout-pop"
+        style="cursor: pointer; margin-bottom: 5px"
+        @click="selectTenant"
+      >
+        切换租户
+      </div>
       <div class="logout-pop" style="cursor: pointer" @click="logout">退出</div>
       <div class="right-content" slot="reference">
-        <div style="margin-right: 10px;">{{ this.$store.state.user.tenantName }}</div>
-        <img
+        <!-- <div style="margin-right: 10px">
+          {{ this.$store.state.user.tenantName }}
+        </div> -->
+        <!-- <img
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
           class="user-avatar"
-        />
+        /> -->
         <div class="user-name">{{ this.$store.state.user.nickName }}</div>
-        <i class="el-icon-caret-bottom" />
+        <!-- <i class="el-icon-caret-bottom" /> -->
+        <img src="@/assets/Overflow.png" alt="overflow" />
       </div>
     </el-popover>
   </div>
@@ -43,9 +53,9 @@ export default {
         window.location.protocol + "//" + window.location.host + "/#/dashboard"
       );
     },
-    selectTenant(){
+    selectTenant() {
       this.authSdk.selectTenant();
-    }
+    },
   },
 };
 </script>
@@ -53,7 +63,7 @@ export default {
 <style scoped>
 .common-header {
   width: 100%;
-  height: 60px;
+  height: 48px;
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
@@ -61,8 +71,8 @@ export default {
   box-sizing: border-box;
   font-size: 14px;
   font-weight: 400;
-  background-color: #ffffff;
-  color: #000000;
+  color: #ffffff;
+  background: #264480;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 }
 .left-content {
@@ -77,7 +87,6 @@ export default {
   cursor: pointer;
 }
 .page-title {
-  margin-left: 21px;
   position: relative;
 }
 .user-name {
@@ -99,5 +108,8 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 10px;
+}
+.vertical-container {
+  margin: 0px 16px;
 }
 </style>
