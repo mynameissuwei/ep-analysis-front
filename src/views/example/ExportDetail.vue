@@ -75,10 +75,6 @@ export default {
       type: String,
       require: true,
     },
-    appName: {
-      type: String,
-      require: true,
-    },
     processName: {
       type: String,
       require: true,
@@ -160,7 +156,7 @@ export default {
             parseInt(this.listQuery.dateValue[1].getTime())
           ).format("YYYY-MM-DD"),
           export: isExport,
-          processName: this.processName,
+          procDefName: this.processName,
           appName: this.appName,
         },
       });

@@ -511,8 +511,8 @@ export default {
 .process-report{
   width: 80%;
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 5px;
+  bottom: 5px;
   left: 0;
   right: 0;
   margin: auto;
