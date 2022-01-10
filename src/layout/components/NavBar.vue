@@ -1,9 +1,11 @@
 <template>
   <div class="common-header">
     <div class="left-content">
-      <img src="@/assets/menuHover.png" alt="LOGO" />
+      <!-- <img src="@/assets/logo.png" alt="LOGO" width="100" />
+      <el-divider direction="vertical"></el-divider> -->
       <img src="@/assets/logo.png" alt="LOGO" style="margin-left: 10px" />
       <el-divider direction="vertical" class="vertical-container"></el-divider>
+
       <!-- <span class="logo">LOGO</span> -->
       <div v-if="productName || companyName" class="page-title">
         <span v-if="productName">{{ productName }}</span>
@@ -24,7 +26,7 @@
       </div>
       <div class="logout-pop" style="cursor: pointer" @click="logout">退出</div>
       <div class="right-content" slot="reference">
-         <div style="margin-right: 10px">
+        <div style="margin-right: 10px">
           {{ this.$store.state.user.tenantName }}
         </div>
         <!-- <img
@@ -111,5 +113,6 @@ export default {
 }
 .vertical-container {
   margin: 0px 16px;
+  opacity: 0.24;
 }
 </style>
