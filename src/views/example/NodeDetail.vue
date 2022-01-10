@@ -130,6 +130,9 @@
             </template>
           </el-table-column>
           <el-table-column prop="secondPercent" label="占比" width="120">
+            <template slot-scope="{ row }">
+              <span>{{ row.secondPercent.toFixed(2) + "%" }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="跨天（≥1/人天）">
@@ -184,6 +187,7 @@
       :handleClose="handleHiddleDetail"
       :nodeChartDataDetail="nodeChartDataDetail"
       :nodeChartData="nodeChartData"
+      :getNodeChartDetail="getNodeChartDetail"
     />
   </div>
 </template>
@@ -198,22 +202,22 @@ import { fetchNodeChartDetail } from "@/api/example";
 import moment from "moment";
 
 export default {
-  props:{
+  props: {
     nodeAnalysisData: {
       type: Object,
-      require: true
+      require: true,
     },
     nodeTimeData: {
       type: Object,
-      require: true
+      require: true,
     },
     nodeChartData: {
       type: Object,
-      require: true
+      require: true,
     },
     listQuery: {
       type: Object,
-      require: true
+      require: true,
     },
     showNodeExecutionAnalysis: {
       type: Boolean,
@@ -236,8 +240,6 @@ export default {
       default: true,
     },
   },
-  // props: ["nodeAnalysisData", "nodeTimeData", "nodeChartData", "listQuery", "showNodeExecutionAnalysis",
-  //   "showNodeRollbackDetail", "showNodeApprovalAnalysis", "showApprovalTCIntervalDistribution"],
   components: {
     DiaModal,
     NodeModal,
@@ -252,6 +254,7 @@ export default {
       chart: null,
       nodeChartDataDetail: {
         milestoneRollBackTime: 0,
+        list: [],
       },
     };
   },
@@ -279,7 +282,7 @@ export default {
     resize() {
       this.chart && this.chart.resize();
     },
-    async getNodeChartDetail() {
+    async getNodeChartDetail(taskDefKey = "") {
       const { data } = await fetchNodeChartDetail({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
@@ -290,6 +293,7 @@ export default {
         endDateTime: moment(
           parseInt(this.listQuery.dateValue[1].getTime())
         ).format("YYYY-MM-DD"),
+        taskDefKey,
       });
       this.nodeChartDataDetail = data;
     },
