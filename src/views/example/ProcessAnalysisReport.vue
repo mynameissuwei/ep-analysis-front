@@ -234,19 +234,37 @@ export default {
       });
     },
     getOption() {
+      let formatter = function (name) {
+        const legendData = {
+          taskNumReal: "节点数",
+          taskNumLine: "标准节点数",
+          timeConsumingReal: "里程碑耗时",
+          timeConsumingLine: "里程碑标准耗时",
+        };
+        return legendData[name];
+      }
       return {
         legend: {
-          formatter: function (name) {
-            const legendData = {
-              taskNumReal: "里程碑实际节点数量",
-              taskNumLine: "里程碑标准节点数量",
-              timeConsumingReal: "里程碑实际耗时",
-              timeConsumingLine: "里程碑标准耗时",
-            };
-            return legendData[name];
-          },
+          formatter: formatter
         },
-        tooltip: {},
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+            label: {
+              show: true
+            }
+          },
+          formatter: function (params) {
+            let str = '';
+            params.forEach((item) => {
+              str +=
+                '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:'+item.color+'"></span>'
+                + formatter(item.seriesName) + " : " + item.data[item.seriesName] + "<br />";
+            });
+            return str;
+          }
+        },
         dataset: {
           dimensions: [
             "name",

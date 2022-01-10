@@ -14,7 +14,7 @@
 
       <div class="nodeDetailContainer">
         <div style="width: 100%; height: 190px">
-          <div id="histogram" style="width: 100%; height: 190px" />
+          <div id="histogram" style="width: 100%; height: 190px"/>
         </div>
         <div class="conclusion" v-if="showConclusion">
           <div class="conclusion-title">分析结论：</div>
@@ -265,7 +265,7 @@ import NodeModal from "./components/NodeModal";
 import DetailModal from "./components/DetailModal";
 import * as echarts from "echarts";
 import Bus from "@/Bus.js";
-import { fetchNodeChartDetail } from "@/api/example";
+import {fetchNodeChartDetail} from "@/api/example";
 import moment from "moment";
 
 export default {
@@ -372,7 +372,7 @@ export default {
       this.chart && this.chart.resize();
     },
     async getNodeChartDetail(taskDefKey = "") {
-      const { data } = await fetchNodeChartDetail({
+      const {data} = await fetchNodeChartDetail({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -408,21 +408,50 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById("histogram"));
       this.chart.setOption(this.getOption(), true);
+      let $chart = this.chart;
+      let nodeChartData = this.nodeChartData;
+      this.chart.getZr().on('click', function(params) {
+        let pointInPixel = [params.offsetX, params.offsetY]
+        if ($chart.containPixel('grid', pointInPixel)) {
+          let xIndex = $chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
+          console.log(nodeChartData.list[xIndex].taskDefKeys.split(","))
+          Bus.$emit("selectNodes", nodeChartData.list[xIndex].taskDefKeys.split(","));
+        }
+      });
     },
     getOption() {
+      let $emit = this.$emit
+      let formatter = function (name) {
+        const legendData = {
+          taskNumReal: "节点数",
+          taskNumLine: "标准节点数",
+          timeConsumingReal: "里程碑耗时",
+          timeConsumingLine: "里程碑标准耗时",
+        };
+        return legendData[name];
+      }
       return {
         legend: {
-          formatter: function (name) {
-            const legendData = {
-              taskNumReal: "里程碑实际节点数量",
-              taskNumLine: "里程碑标准节点数量",
-              timeConsumingReal: "里程碑实际耗时",
-              timeConsumingLine: "里程碑标准耗时",
-            };
-            return legendData[name];
-          },
+          formatter: formatter,
         },
-        tooltip: {},
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+            label: {
+              show: true
+            }
+          },
+          formatter: function (params) {
+            let str = '';
+            params.forEach((item) => {
+              str +=
+                '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:' + item.color + '"></span>'
+                + formatter(item.seriesName) + " : " + item.data[item.seriesName] + "<br />";
+            });
+            return str;
+          }
+        },
         dataset: {
           dimensions: [
             "name",
@@ -433,13 +462,13 @@ export default {
           ],
           source: this.nodeChartData.list,
         },
-        xAxis: { type: "category" },
+        xAxis: {type: "category"},
         yAxis: {},
         series: [
-          { type: "bar" },
-          { type: "bar" },
-          { type: "bar" },
-          { type: "bar" },
+          {type: "bar"},
+          {type: "bar"},
+          {type: "bar"},
+          {type: "bar"},
         ],
       };
     },
@@ -457,6 +486,7 @@ export default {
   margin-left: 10px;
   display: inline-block;
 }
+
 .triangle-down {
   width: 0;
   height: 0;
@@ -466,6 +496,7 @@ export default {
   margin-left: 10px;
   display: inline-block;
 }
+
 .nodeDetail {
   padding-left: 20px;
   padding-right: 20px;
@@ -478,9 +509,11 @@ export default {
     font-size: 16px;
     font-weight: 500;
   }
+
   .row-container {
     line-height: 40px;
   }
+
   .iconContainer {
     width: 100%;
     height: 54px;
@@ -488,6 +521,7 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+
   .textClass {
     width: 68px;
     height: 25px;
@@ -503,6 +537,7 @@ export default {
     cursor: pointer;
     font-size: 12px;
   }
+
   .iconClass {
     cursor: pointer;
     width: 24px;
@@ -516,10 +551,12 @@ export default {
     margin-bottom: 16px;
     margin-top: 16px;
   }
+
   .conclusion {
     .conclusion-title {
       padding: 10px 0px 6px 0px;
     }
+
     width: 100%;
     height: 78px;
     background: #f8f9fa;
