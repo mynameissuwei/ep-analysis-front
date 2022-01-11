@@ -48,9 +48,11 @@
       <div id="process_graph" class="ap-pd-process-model"></div>
     </div>
 
+    <span style="margin: 10px 10px 10px 10px">流程指数</span>
+    <el-divider/>
+
     <!-- 流程指数 -->
     <div v-if="showProcessIndex" style="margin-top: 10px; margin-bottom: 10px">
-      <span style="margin: 10px 10px 10px 10px">流程指数</span>
       <right-container
         :procFactorDetail="procFactorDetail"
         :procFactorRuleData="procFactorRuleData"
@@ -63,7 +65,6 @@
 
     <!--节点分析-->
     <div style="margin-top: 10px; margin-bottom: 10px">
-      <span style="margin: 10px 10px 10px 10px">节点分析</span>
       <node-detail
         :nodeAnalysisData="nodeAnalysisData"
         :nodeTimeData="nodeTimeData"
@@ -371,7 +372,6 @@ export default {
     },
   },
   mounted() {
-    this.watermarkPage();
     this.getProcFactor();
     this.getProcIndexRule();
     this.initChart();
@@ -379,6 +379,7 @@ export default {
     this.getNodeTimeConsuming();
     this.initPD();
     this.DFG();
+    this.watermarkPage();
     console.log(
       ">>>>>>>>>>>>>queryParam is ",
       JSON.stringify(this.$route.query)
