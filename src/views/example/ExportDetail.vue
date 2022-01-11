@@ -146,6 +146,7 @@ export default {
         path: "/process/analysis/report",
         query: {
           ...this.form,
+          ...this.listQuery,
           procDefKey: this.listQuery.procDefValue,
           appKey: this.listQuery.templateTypesValue,
           exportRanges: this.$refs.tree.getCheckedKeys(),
