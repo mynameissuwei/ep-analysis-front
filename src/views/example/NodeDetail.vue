@@ -44,6 +44,7 @@
                   v-model="milestoneId"
                   placeholder="请选择"
                   class="my-el-select"
+                  @change="handleSelectChange"
                 >
                   <el-option
                     v-for="item in nodeChartData.list"
@@ -371,19 +372,24 @@ export default {
     resize() {
       this.chart && this.chart.resize();
     },
+    handleSelectChange(val){
+      let taskDefKey = this.nodeChartData.list.find(
+        (item) => item.id === val
+      ).taskDefKeys;
+      this.getNodeChartDetail(taskDefKey);
+    },
     async getNodeChartDetail(taskDefKey = "") {
-      const {data} = await fetchNodeChartDetail({
+      let startDateTime = this.listQuery.startTime == undefined ? this.listQuery.dateValue[0] : this.listQuery.startTime;
+      let endDateTime = this.listQuery.endTime == undefined ? this.listQuery.dateValue[1] : this.listQuery.endTime;
+      let param = {
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
-        startDateTime: moment(
-          parseInt(this.listQuery.dateValue[0].getTime())
-        ).format("YYYY-MM-DD"),
-        endDateTime: moment(
-          parseInt(this.listQuery.dateValue[1].getTime())
-        ).format("YYYY-MM-DD"),
         taskDefKey,
-      });
+      };
+      param.startDateTime = startDateTime;
+      param.endDateTime = endDateTime;
+      const { data } = await fetchNodeChartDetail(param);
       this.nodeChartDataDetail = data;
     },
     handleShowDetail() {
