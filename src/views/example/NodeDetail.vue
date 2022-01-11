@@ -14,7 +14,7 @@
 
       <div class="nodeDetailContainer">
         <div style="width: 100%; height: 190px">
-          <div id="histogram" style="width: 100%; height: 190px"/>
+          <div id="histogram" style="width: 100%; height: 190px" />
         </div>
         <div class="conclusion" v-if="showConclusion">
           <div class="conclusion-title">分析结论：</div>
@@ -265,7 +265,7 @@ import NodeModal from "./components/NodeModal";
 import DetailModal from "./components/DetailModal";
 import * as echarts from "echarts";
 import Bus from "@/Bus.js";
-import {fetchNodeChartDetail} from "@/api/example";
+import { fetchNodeChartDetail } from "@/api/example";
 import moment from "moment";
 
 export default {
@@ -355,15 +355,25 @@ export default {
   },
   watch: {
     nodeChartData(newValue, oldValue) {
-      if (!newValue.list.length) {
+      console.log(newValue, "newValue");
+      if (newValue.list) {
+        if (!newValue.list.length) {
+          this.chart.setOption(
+            {
+              series: [],
+            },
+            true
+          );
+        } else {
+          this.chart.setOption(this.getOption(), true);
+        }
+      } else {
         this.chart.setOption(
           {
             series: [],
           },
           true
         );
-      } else {
-        this.chart.setOption(this.getOption(), true);
       }
     },
   },
@@ -372,7 +382,7 @@ export default {
       this.chart && this.chart.resize();
     },
     async getNodeChartDetail(taskDefKey = "") {
-      const {data} = await fetchNodeChartDetail({
+      const { data } = await fetchNodeChartDetail({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -410,17 +420,23 @@ export default {
       this.chart.setOption(this.getOption(), true);
       let $chart = this.chart;
       let nodeChartData = this.nodeChartData;
-      this.chart.getZr().on('click', function(params) {
-        let pointInPixel = [params.offsetX, params.offsetY]
-        if ($chart.containPixel('grid', pointInPixel)) {
-          let xIndex = $chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
-          console.log(nodeChartData.list[xIndex].taskDefKeys.split(","))
-          Bus.$emit("selectNodes", nodeChartData.list[xIndex].taskDefKeys.split(","));
+      this.chart.getZr().on("click", function (params) {
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if ($chart.containPixel("grid", pointInPixel)) {
+          let xIndex = $chart.convertFromPixel({ seriesIndex: 0 }, [
+            params.offsetX,
+            params.offsetY,
+          ])[0];
+          console.log(nodeChartData.list[xIndex].taskDefKeys.split(","));
+          Bus.$emit(
+            "selectNodes",
+            nodeChartData.list[xIndex].taskDefKeys.split(",")
+          );
         }
       });
     },
     getOption() {
-      let $emit = this.$emit
+      let $emit = this.$emit;
       let formatter = function (name) {
         const legendData = {
           taskNumReal: "节点数",
@@ -429,28 +445,33 @@ export default {
           timeConsumingLine: "里程碑标准耗时",
         };
         return legendData[name];
-      }
+      };
       return {
         legend: {
           formatter: formatter,
         },
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'shadow',
+            type: "shadow",
             label: {
-              show: true
-            }
+              show: true,
+            },
           },
           formatter: function (params) {
-            let str = '';
+            let str = "";
             params.forEach((item) => {
               str +=
-                '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:' + item.color + '"></span>'
-                + formatter(item.seriesName) + " : " + item.data[item.seriesName] + "<br />";
+                '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:' +
+                item.color +
+                '"></span>' +
+                formatter(item.seriesName) +
+                " : " +
+                item.data[item.seriesName] +
+                "<br />";
             });
             return str;
-          }
+          },
         },
         dataset: {
           dimensions: [
@@ -462,13 +483,13 @@ export default {
           ],
           source: this.nodeChartData.list,
         },
-        xAxis: {type: "category"},
+        xAxis: { type: "category" },
         yAxis: {},
         series: [
-          {type: "bar"},
-          {type: "bar"},
-          {type: "bar"},
-          {type: "bar"},
+          { type: "bar" },
+          { type: "bar" },
+          { type: "bar" },
+          { type: "bar" },
         ],
       };
     },
