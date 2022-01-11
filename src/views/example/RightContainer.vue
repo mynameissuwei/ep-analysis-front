@@ -2,16 +2,16 @@
   <div class="right-container scroll-container">
     <div>
       <el-row :gutter="20" style="position: relative">
-        <el-col :span="12">
+        <el-col :span="20">
           <el-alert
             v-if="procFactorDetail.hasOldData"
             title="本次因历史数据未采集系统操作时间，结论存在偏差"
-            type="info"
+            type="error"
             class="alert-container"
           >
           </el-alert>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="4">
           <div class="iconContainer" v-if="showSettingButton">
             <div class="iconClass" @click="handleShow" v-if="true">
               <i class="el-icon-setting"></i>
@@ -80,7 +80,7 @@
               title: '流效率',
               content: `${procFactorDetail.flowRadio}%`,
               expect: `≥ ${procFactorRuleData.rule.flowEffic.expect}%`,
-              redLine: `≤ ${procFactorRuleData.rule.flowEffic.redLine}%`,
+              redLine: `< ${procFactorRuleData.rule.flowEffic.redLine}%`,
               redLineText: '流效红线',
               expectText: '流效期望',
             }"
@@ -126,7 +126,7 @@
             v-bind="{
               title: '时效',
               content: `${procFactorDetail.timeLimit}`,
-              expect: `≤ ${procFactorRuleData.rule.timeEffic.expect}人天`,
+              expect: `< ${procFactorRuleData.rule.timeEffic.expect}人天`,
               redLine: `≥ ${procFactorRuleData.rule.timeEffic.redLine}人天`,
               redLineText: '时效红线',
               expectText: '时效期望',
@@ -194,7 +194,7 @@
             v-bind="{
               title: '人效',
               content: `${procFactorDetail.personLimit}`,
-              expect: `≤ ${procFactorRuleData.rule.personEffic.expect}人天`,
+              expect: `< ${procFactorRuleData.rule.personEffic.expect}人天`,
               redLine: `≥ ${procFactorRuleData.rule.personEffic.redLine}人天`,
               redLineText: '人效红线',
               expectText: '人效期望',

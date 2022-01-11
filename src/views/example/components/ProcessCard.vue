@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card" shadow="hover">
+  <el-card class="box-card" shadow="never">
     <div class="title">
       <span> {{ title }}</span>
       <el-tooltip placement="top" style="margin-left: 8px">

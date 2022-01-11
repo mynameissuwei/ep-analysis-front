@@ -329,7 +329,7 @@ export default {
       detailVisible: false,
       chart: null,
       nodeChartDataDetail: {
-        milestoneRollBackTime: 0,
+        milestoneRollBackTime: "--",
         list: [],
       },
       milestoneId: null,
@@ -601,7 +601,14 @@ export default {
   .conclusion {
     .conclusion-title {
       padding: 10px 0px 6px 0px;
+      color: #333333;
+      font-weight: 400;
+      font-size: 12px;
     }
+
+    font-weight: 500;
+    color: #333333;
+    font-size: 12px;
 
     width: 100%;
     height: 78px;

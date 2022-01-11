@@ -194,5 +194,6 @@ export default {
   color: red;
   position: absolute;
   top: 3px;
+  font-size: 20px;
 }
 </style>
