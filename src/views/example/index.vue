@@ -213,7 +213,7 @@ export default {
     this.initPD();
     let $this = this;
     Bus.$on("selectNodes", (data) => {
-      $this.pd.selectNodes(data)
+      $this.pd.selectNodes(data);
     });
   },
   data() {
@@ -242,7 +242,7 @@ export default {
         ],
       },
       selectTemplateData: [],
-      activeName: "first",
+      activeName: "second",
       procFactorData: [],
       procFactorDetail: {
         partRadio: "0",
@@ -299,7 +299,7 @@ export default {
     // this.getNode();
   },
   methods: {
-    selectNodes(ids){
+    selectNodes(ids) {
       this.pd.selectNodes(ids);
     },
     initPD() {
@@ -330,8 +330,9 @@ export default {
       });
     },
     handleSelectChange(val) {
-      let appName = this.selectTemplateData.find((item) => item.appKey === val)
-        .appName;
+      let appName = this.selectTemplateData.find(
+        (item) => item.appKey === val
+      ).appName;
       this.appName = appName;
       this.listQuery.procDefValue = "";
       this.getProcDef();

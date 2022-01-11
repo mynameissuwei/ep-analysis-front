@@ -356,12 +356,17 @@ export default {
   },
   watch: {
     nodeChartData(newValue, oldValue) {
-      console.log(newValue, "newValue");
+      console.log(newValue, oldValue, "oldValue");
       if (newValue.list) {
         if (!newValue.list.length) {
           this.chart.setOption(
             {
-              series: [],
+              dataset: {
+                dimensions: [],
+                source: [],
+              },
+              xAxis: { type: "category" },
+              yAxis: {},
             },
             true
           );
@@ -371,7 +376,12 @@ export default {
       } else {
         this.chart.setOption(
           {
-            series: [],
+            dataset: {
+              dimensions: [],
+              source: [],
+            },
+            xAxis: { type: "category" },
+            yAxis: {},
           },
           true
         );
@@ -439,7 +449,6 @@ export default {
             params.offsetX,
             params.offsetY,
           ])[0];
-          console.log(nodeChartData.list[xIndex].taskDefKeys.split(","));
           Bus.$emit(
             "selectNodes",
             nodeChartData.list[xIndex].taskDefKeys.split(",")
@@ -486,14 +495,18 @@ export default {
           },
         },
         dataset: {
-          dimensions: [
-            "name",
-            "taskNumReal",
-            "taskNumLine",
-            "timeConsumingReal",
-            "timeConsumingLine",
-          ],
-          source: this.nodeChartData.list,
+          dimensions: this.nodeChartData.list
+            ? this.nodeChartData.list.length
+              ? [
+                  "name",
+                  "taskNumReal",
+                  "taskNumLine",
+                  "timeConsumingReal",
+                  "timeConsumingLine",
+                ]
+              : []
+            : [],
+          source: this.nodeChartData.list ? this.nodeChartData.list : [],
         },
         xAxis: { type: "category" },
         yAxis: {},
