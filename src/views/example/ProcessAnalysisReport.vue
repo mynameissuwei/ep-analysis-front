@@ -582,9 +582,8 @@ export default {
   margin: auto;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 
-  width: 60%;
   background: #ffffff;
-  width: 70%;
+  width: 60%;
   background: #FFFFFF;
   border-radius: 5px;
   border: 1px solid #ced4da;

@@ -29,6 +29,7 @@
 
     <div v-if="showNodeExecutionAnalysisDetail">
       <div class="iconContainer-title">下钻明细</div>
+      <el-divider/>
       <div class="detail-modal">
         <el-row
           :gutter="22"
