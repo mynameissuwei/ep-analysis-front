@@ -440,24 +440,11 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById("histogram"));
       this.chart.setOption(this.getOption(), true);
-      let $chart = this.chart;
-      let nodeChartData = this.nodeChartData;
-      this.chart.getZr().on("click", function (params) {
-        let pointInPixel = [params.offsetX, params.offsetY];
-        if ($chart.containPixel("grid", pointInPixel)) {
-          let xIndex = $chart.convertFromPixel({ seriesIndex: 0 }, [
-            params.offsetX,
-            params.offsetY,
-          ])[0];
-          Bus.$emit(
-            "selectNodes",
-            nodeChartData.list[xIndex].taskDefKeys.split(",")
-          );
-        }
-      });
+      this.chart.getZr().on('mouseout', function () {
+        Bus.$emit("unSelectNodes");
+      })
     },
     getOption() {
-      let $emit = this.$emit;
       let formatter = function (name) {
         const legendData = {
           taskNumReal: "节点数",
@@ -491,6 +478,10 @@ export default {
                 item.data[item.seriesName] +
                 "<br />";
             });
+            Bus.$emit(
+              "selectNodes",
+              params[0].data.taskDefKeys.split(",")
+            );
             return str;
           },
         },

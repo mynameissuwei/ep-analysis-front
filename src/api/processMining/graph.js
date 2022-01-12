@@ -100,7 +100,7 @@ const options = {
   userZoomingEnabled: true, // 是否使用事件（如鼠标轮)
   wheelSensitivity: 0.1, // 滚轮灵敏度
   zoom: 0.75, // 图的初始缩放级别。
-  zoomingEnabled: true// 定义是否可缩放
+  zoomingEnabled: true, // 定义是否可缩放
 }
 
 const calcFontSize = (text) => {
@@ -177,18 +177,18 @@ const style = [
     selector: 'node:selected',
     style: {
       'border-width': '2px',
-      'overlay-color': '#f96100',
-      'overlay-padding': '18px',
+      'overlay-color': '#0D54FC',
+      'overlay-padding': '0px',
       'overlay-opacity': 0.2
     }
   },
   {
     selector: ':selected',
     style: {
-      'border-color': '#f96100',
-      'line-color': '#f96100',
+      'border-color': '#0D54FC',
+      'line-color': '#0D54FC',
       'line-style': 'solid',
-      'target-arrow-color': '#f96100'
+      'target-arrow-color': '#0D54FC'
     }
   }
 ]
@@ -341,6 +341,13 @@ PDp.selectNodes = function (ids) {
   selectedNodeIds = ids;
   ids.forEach(function (id) {
     cy.getElementById(id).select()
+  })
+}
+
+PDp.unSelectNodes = function () {
+  const cy = this._private.cy
+  selectedNodeIds.forEach(function (id) {
+    cy.getElementById(id).unselect()
   })
 }
 
