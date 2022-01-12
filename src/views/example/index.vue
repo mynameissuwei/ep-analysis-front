@@ -31,7 +31,9 @@
           <el-col :span="5">
             <el-row :gutter="5">
               <el-col :span="8">
-                <div class="title-container">选择流程</div>
+                <div class="title-container" style="margin-left: 25px">
+                  选择流程
+                </div>
               </el-col>
               <el-col :span="16">
                 <el-form-item prop="procDefValue">

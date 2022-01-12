@@ -131,3 +131,11 @@ div:focus {
 .scroll-container {
   -ms-overflow-style: none;
 }
+
+.el-tabs__active-bar {
+  background: #264480;
+}
+
+.splitter-pane-resizer {
+  background: none !important;
+}

@@ -142,6 +142,9 @@ export default {
     .container-content {
       font-weight: 500;
       color: #333333;
+      position: relative;
+      top: 10px;
+      // margin-top: 20px;
       .container-content-text {
         color: #999999;
         margin-right: 3px;
