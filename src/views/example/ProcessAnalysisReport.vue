@@ -101,7 +101,6 @@
             :nodeChartData="nodeChartData"
             :listQuery="listQuery"
             :showNodeExecutionAnalysis="showNodeExecutionAnalysis"
-            :showNodeExecutionAnalysisDetail="true"
             :showNodeRollbackDetail="showNodeRollbackDetail"
             :showNodeApprovalAnalysis="showNodeApprovalAnalysis"
             :showApprovalTCIntervalDistribution="showApprovalTCIntervalDistribution"
@@ -524,8 +523,7 @@ export default {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 }
 .process-report{
-  height: inherit;
-  position: absolute;
+  //position: absolute;
   top: 5px;
   bottom: 5px;
   left: 0;
@@ -533,7 +531,7 @@ export default {
   margin: auto;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 
-  width: 60%;
+  width: 70%;
   background: #FFFFFF;
   border-radius: 5px;
   border: 1px solid #CED4DA;

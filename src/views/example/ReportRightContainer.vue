@@ -1,7 +1,7 @@
 <template>
   <div class="right-container scroll-container">
     <div>
-      <el-row :gutter="24">
+      <el-row :gutter="24" style="margin-top: 10px">
         <el-col :span="6">
           <process-card
             v-bind="{
