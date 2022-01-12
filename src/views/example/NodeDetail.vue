@@ -401,19 +401,15 @@ export default {
     async getNodeChartDetail(taskDefKey = "") {
       let startDateTime =
         this.listQuery.startTime == undefined
-          ? moment(
-              parseInt(
-                this.listQuery.dateValue[0].getTime()
-              )
-            ).format("YYYY-MM-DD")
+          ? moment(parseInt(this.listQuery.dateValue[0].getTime())).format(
+              "YYYY-MM-DD"
+            )
           : this.listQuery.startTime;
       let endDateTime =
         this.listQuery.endTime == undefined
-          ? moment(
-              parseInt(
-                this.listQuery.dateValue[1].getTime()
-              )
-            ).format("YYYY-MM-DD")
+          ? moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
+              "YYYY-MM-DD"
+            )
           : this.listQuery.endTime;
       let param = {
         appKey: this.listQuery.templateTypesValue,
