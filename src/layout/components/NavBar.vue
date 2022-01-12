@@ -114,5 +114,8 @@ export default {
 .vertical-container {
   margin: 0px 16px;
   opacity: 0.24;
+  width: 1px;
+  height: 14px;
+  background: #FFFFFF;
 }
 </style>

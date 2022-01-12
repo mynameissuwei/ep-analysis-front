@@ -4,6 +4,7 @@
       <div class="iconContainer">
         <div class="iconContainer-title">里程碑节点执行力分析</div>
 
+        <div class="textClass" @click="handleShowDetailReport">查看明细</div>
         <div v-if="showButton">
           <div class="textClass" @click="handleShowDetail">查看明细</div>
           <div class="iconClass" @click="handleShow">
@@ -27,6 +28,8 @@
     </div>
 
     <div v-if="showNodeExecutionAnalysisDetail">
+      <div class="iconContainer-title">下钻明细</div>
+      <el-divider/>
       <div class="detail-modal">
         <el-row
           :gutter="22"
@@ -291,10 +294,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    showNodeExecutionAnalysisDetail: {
-      type: Boolean,
-      default: false,
-    },
     showNodeRollbackDetail: {
       type: Boolean,
       default: true,
@@ -333,6 +332,7 @@ export default {
         list: [],
       },
       milestoneId: null,
+      showNodeExecutionAnalysisDetail:false,
     };
   },
   mounted() {
@@ -401,11 +401,15 @@ export default {
     async getNodeChartDetail(taskDefKey = "") {
       let startDateTime =
         this.listQuery.startTime == undefined
-          ? this.listQuery.dateValue[0]
+          ? moment(parseInt(this.listQuery.dateValue[0].getTime())).format(
+              "YYYY-MM-DD"
+            )
           : this.listQuery.startTime;
       let endDateTime =
         this.listQuery.endTime == undefined
-          ? this.listQuery.dateValue[1]
+          ? moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
+              "YYYY-MM-DD"
+            )
           : this.listQuery.endTime;
       let param = {
         appKey: this.listQuery.templateTypesValue,
@@ -417,6 +421,10 @@ export default {
       param.endDateTime = endDateTime;
       const { data } = await fetchNodeChartDetail(param);
       this.nodeChartDataDetail = data;
+    },
+    handleShowDetailReport(){
+      this.showNodeExecutionAnalysisDetail = true;
+      this.getNodeChartDetail();
     },
     handleShowDetail() {
       this.detailVisible = true;
