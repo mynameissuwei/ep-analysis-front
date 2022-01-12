@@ -1,121 +1,124 @@
 <template>
   <div class="process-report">
-    <el-container>
-      <el-header style="margin-top: 10px">
-        <div class="page_header_logo">
-          <div class="left-content">
-            <img src="@/assets/ennew-logo.png" class="logo" alt="LOGO" style="margin-left: 5px" />
-            <el-divider direction="vertical" class="vertical-container" style="color: cornflowerblue"/>
-            <div class="page_header_logo_text">
-              <h3 style="color: cornflowerblue">流程分析报告</h3>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="page_header_text">
-          <p align="right" style="color: #333333;font-size: 14px;float: right">
-            流程分析报告 导出时间：{{ exportTime }} 操作人：{{
-              this.$store.state.user.nickName
-            }}
-          </p>
-        </div>
-      </el-header>
-      <el-main>
-        <!--title-->
-        <div style="text-align: center">
-          <h1>{{ this.listQuery.procDefName }}</h1>
-          <p style="font-size: 20px;color: #333333">流程分析报告</p>
-        </div>
-        <!--数据源详情-->
-        <div style="margin-left: 25px" class="data-source">
-          <span>数据样本来自</span>
-          <el-row :gutter="24" style="margin-top: 10px;margin-bottom: 10px">
-            <el-col :span="8">
-              <span class="data-source-key">选择租户</span>
-              <span class="data-source-value">{{ this.$store.state.user.tenantName }}</span>
-            </el-col>
-            <el-col :span="8">
-              <span class="data-source-key">流程类型</span>
-              <span class="data-source-value">{{ this.listQuery.appName }}</span>
-            </el-col>
-            <el-col :span="8">
-              <span class="data-source-key">流程名称</span>
-              <span class="data-source-value">{{ this.listQuery.procDefName }}</span>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col>
-              <span class="data-source-key">选择时间</span>
-              <span class="data-source-value">{{ this.listQuery.startTime }} ~ {{ this.listQuery.endTime }}</span>
-            </el-col>
-          </el-row>
-        </div>
-        <!--结论-->
-        <div class="conclusion">
-          <p class="conclusion-title">总分析结论</p>
-          <div style="font-size: 14px;margin-left: 24px;margin-right: 24px;line-height: 22px;">
-            <p style="text-indent: 2em">
-              【{{
-                this.listQuery.procDefName
-              }}】本次分析参与数据量为{{
-                this.procFactorDetail.total
-              }}条，识别到以下指数： 流程线上化率 --； 流程流效率0.00%； 流程时效{{
-                this.procFactorDetail.timeLimit
-              }}/人天； 流程平均干系人{{ this.procFactorDetail.avgHolder }}人；
-              流程人效{{ this.procFactorDetail.personLimit }}/人天；
-            </p>
-
-            <p style="text-indent: 2em">
-              通过节点分析， 「里程碑节点执行力分析」{{
-                this.nodeChartData.conclusion
-              }}
-              「节点审批效率分析」{{
-                this.nodeAnalysisData.conclusion
-              }}
-              「审批耗时区间分布」{{ this.nodeTimeData.conclusion }}。
-            </p>
-
-            <img src="@/assets/exclamation-mark.png" style="width: 25px;height: 25px"/>
-            <span style="color: #EA4646;">以下分析结论可能因数据样本偏差，存在不准确性，请谨慎参考。</span>
-
+    <!--  页眉  -->
+    <div class="page_header">
+      <div class="page_header_logo">
+        <div class="left-content">
+          <img src="@/assets/ennew-logo.png" class="logo" alt="LOGO" style="margin-left: 5px" />
+          <el-divider direction="vertical" class="vertical-container" />
+          <div class="page_header_logo_text">
+            <h3 style="color: cornflowerblue">流程分析报告</h3>
           </div>
         </div>
 
-        <!--流程指数-->
-        <span>流程指数</span>
-        <div v-if="showProcessIndex" style="margin-bottom: 10px;margin-top:10px">
-          <report-right-container
-            :procFactorDetail="procFactorDetail"
-            :procFactorRuleData="procFactorRuleData"
-            :showSettingButton="false"
-          />
-        </div>
+      </div>
 
-        <!--节点分析-->
-        <span>节点分析</span>
-        <div style="margin-top: 10px; margin-bottom: 10px">
-          <node-detail
-            :nodeAnalysisData="nodeAnalysisData"
-            :nodeTimeData="nodeTimeData"
-            :nodeChartData="nodeChartData"
-            :listQuery="listQuery"
-            :showNodeExecutionAnalysis="showNodeExecutionAnalysis"
-            :showNodeExecutionAnalysisDetail="true"
-            :showNodeRollbackDetail="showNodeRollbackDetail"
-            :showNodeApprovalAnalysis="showNodeApprovalAnalysis"
-            :showApprovalTCIntervalDistribution="showApprovalTCIntervalDistribution"
-            :showConclusion="false"
-            :showButton="false"
-          />
-        </div>
-      </el-main>
-      <el-footer>
-        <div style="text-align: center">
-          流程分析报告     导出时间：{{exportTime}}   操作人：{{this.$store.state.user.nickName}}
-        </div>
-      </el-footer>
-    </el-container>
+      <div class="page_header_text">
+        <p align="right" style="color: #333333">
+          流程分析报告 导出时间：{{ exportTime }} 操作人：{{
+            this.$store.state.user.nickName
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align: center">
+      <h1>{{ this.listQuery.procDefName }}</h1>
+      <p style="font-size: 20px;color: #333333">流程分析报告</p>
+    </div>
+
+    <div style="margin-left: 25px" class="data-source">
+      <span>数据样本来自</span>
+      <el-row :gutter="24" style="margin-top: 10px;margin-bottom: 10px">
+        <el-col :span="8">
+          <span class="data-source-key">选择租户</span>
+          <span class="data-source-value">{{ this.$store.state.user.tenantName }}</span>
+        </el-col>
+        <el-col :span="8">
+          <span class="data-source-key">流程类型</span>
+          <span class="data-source-value">{{ this.listQuery.appName }}</span>
+        </el-col>
+        <el-col :span="8">
+          <span class="data-source-key">流程名称</span>
+          <span class="data-source-value">{{ this.listQuery.procDefName }}</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <span class="data-source-key">选择时间</span>
+          <span class="data-source-value">{{ this.listQuery.startTime }} ~ {{ this.listQuery.endTime }}</span>
+        </el-col>
+      </el-row>
+    </div>
+
+    <div class="conclusion">
+      <p class="conclusion-title">总分析结论</p>
+      <br/>
+      <br/>
+      <div style="font-size: 14px;margin-left: 24px;margin-right: 24px;line-height: 22px;">
+        <p style="text-indent: 2em">
+          【{{
+            this.listQuery.procDefName
+          }}】本次分析参与数据量为{{
+            this.procFactorDetail.total
+          }}条，识别到以下指数： 流程线上化率 --； 流程流效率0.00%； 流程时效{{
+            this.procFactorDetail.timeLimit
+          }}/人天； 流程平均干系人{{ this.procFactorDetail.avgHolder }}人；
+          流程人效{{ this.procFactorDetail.personLimit }}/人天；
+        </p>
+
+        <p style="text-indent: 2em">
+          通过节点分析， 「里程碑节点执行力分析」{{
+            this.nodeChartData.conclusion
+          }}
+          「节点审批效率分析」{{
+            this.nodeAnalysisData.conclusion
+          }}
+          「审批耗时区间分布」{{ this.nodeTimeData.conclusion }}。
+        </p>
+
+        <img src="@/assets/exclamation-mark.png" style="width: 25px;height: 25px"/>
+        <span style="color: #EA4646;">以下分析结论可能因数据样本偏差，存在不准确性，请谨慎参考。</span>
+
+      </div>
+    </div>
+
+    <span>流程指数</span>
+
+    <!-- 流程指数 -->
+    <div v-if="showProcessIndex" style="margin-bottom: 10px;margin-top:10px">
+      <report-right-container
+        :procFactorDetail="procFactorDetail"
+        :procFactorRuleData="procFactorRuleData"
+        :showSettingButton="false"
+      />
+    </div>
+
+    <span style="margin-bottom: 10px">节点分析</span>
+    <el-divider />
+
+    <!--节点分析-->
+    <div style="margin-top: 10px; margin-bottom: 10px">
+      <node-detail
+        :nodeAnalysisData="nodeAnalysisData"
+        :nodeTimeData="nodeTimeData"
+        :nodeChartData="nodeChartData"
+        :listQuery="listQuery"
+        :showNodeExecutionAnalysis="showNodeExecutionAnalysis"
+        :showNodeExecutionAnalysisDetail="true"
+        :showNodeRollbackDetail="showNodeRollbackDetail"
+        :showNodeApprovalAnalysis="showNodeApprovalAnalysis"
+        :showApprovalTCIntervalDistribution="showApprovalTCIntervalDistribution"
+        :showConclusion="false"
+        :showButton="false"
+      />
+    </div>
+
+    <el-divider />
+
+    <div style="text-align: center">
+      流程分析报告     导出时间：{{exportTime}}   操作人：{{this.$store.state.user.nickName}}
+    </div>
   </div>
 </template>
 
@@ -199,9 +202,6 @@ export default {
       listQuery: this.$route.query,
     };
   },
-  // watch(){
-  //   maxHeight:
-  // },
   methods: {
     initPD() {
       this.pd = new PD("process_graph");
@@ -489,9 +489,9 @@ export default {
     height: 78px;
     background: #f8f9fa;
     border-radius: 4px;
-    margin-top: 8px;
+    margin-top: 12px;
     margin-bottom: 20px;
-    //padding: 9px 9px 9px 13px;
+    padding: 9px 9px 9px 13px;
   }
 }
 .ap-pd-process-model {
@@ -510,7 +510,7 @@ export default {
   align-items: center;
 }
 
-.el-header {
+.page_header {
   width: 100%;
   height: 48px;
   padding: 0 20px;
@@ -524,7 +524,7 @@ export default {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 }
 .process-report{
-  height: inherit;
+  //width: 80%;
   position: absolute;
   top: 5px;
   bottom: 5px;
@@ -533,10 +533,11 @@ export default {
   margin: auto;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 
-  width: 60%;
+  width: 908px;
   background: #FFFFFF;
   border-radius: 5px;
   border: 1px solid #CED4DA;
+
 
 }
 
@@ -563,26 +564,23 @@ export default {
 }
 
 .conclusion{
+  width: 860px;
   height: 280px;
   background: #F8F9FA;
   border-radius: 4px;
-  margin-top: 20px;
+  margin: 50px 24px 15px;
   .conclusion-title{
-    padding: 10px 0px 16px 0px;
     width: 96px;
     height: 16px;
     font-size: 16px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #333333;
+    position: absolute;
     line-height: 16px;
     margin-top: 24px;
     margin-left: 24px;
   }
-}
-
-.html{
-  height: 2500px;
 }
 
 </style>
