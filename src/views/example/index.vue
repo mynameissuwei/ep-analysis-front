@@ -140,7 +140,6 @@
                   :nodeTimeData="nodeTimeData"
                   :nodeChartData="nodeChartData"
                   :listQuery="listQuery"
-                  @selectNodes="selectNodes"
                 />
               </el-tab-pane>
               <el-tab-pane
@@ -216,6 +215,9 @@ export default {
     let $this = this;
     Bus.$on("selectNodes", (data) => {
       $this.pd.selectNodes(data);
+    });
+    Bus.$on("unSelectNodes", () => {
+      $this.pd.unSelectNodes();
     });
   },
   data() {
@@ -303,6 +305,9 @@ export default {
   methods: {
     selectNodes(ids) {
       this.pd.selectNodes(ids);
+    },
+    unSelectNodes(){
+      this.pd.unSelectNodes();
     },
     initPD() {
       this.pd = new PD("process_graph");
