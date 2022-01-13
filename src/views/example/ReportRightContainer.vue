@@ -5,57 +5,6 @@
         <el-col :span="6">
           <process-card
             v-bind="{
-              title: '参与流程样本',
-              content: `${procFactorDetail.partRadio}%`,
-              text: '总',
-              textData: `${procFactorDetail.total}条`,
-              showButton: false,
-            }"
-          >
-            <template v-slot:topTip>
-              <span>
-                <div>参与本次本次数据样本在总量中的占比</div>
-                <div>理论上数据样本量越大分析值偏差越小。</div>
-              </span>
-            </template>
-            <template v-slot:right>
-              <el-progress
-                type="circle"
-                :percentage="
-                  procFactorDetail.partRadio &&
-                  Number(procFactorDetail.partRadio)
-                "
-                :width="60"
-              ></el-progress>
-            </template>
-          </process-card>
-        </el-col>
-        <el-col :span="6">
-          <process-card
-            v-bind="{
-              title: '线上率',
-              content: '--',
-              text: '比率',
-              textData: '0.00%',
-              showButton: false,
-            }"
-          >
-            <template v-slot:topTip>
-              <span>
-                <div>参与流程样本中，线上化节点在总节点中的平均占比，</div>
-                <div>小图是可视化线上率进程水平以及差距。</div>
-              </span>
-            </template>
-            <template v-slot:right>
-              <div style="width: 60%">
-                <el-progress :percentage="0"></el-progress>
-              </div>
-            </template>
-          </process-card>
-        </el-col>
-        <el-col :span="6">
-          <process-card
-            v-bind="{
               title: '流效率',
               content: `${procFactorDetail.flowRadio}%`,
               expect: `≥ ${procFactorRuleData.rule.flowEffic.expect}%`,
@@ -143,9 +92,6 @@
             </template>
           </process-card>
         </el-col>
-      </el-row>
-
-      <el-row :gutter="24" class="center-row">
         <el-col :span="6">
           <process-card
             v-bind="{
@@ -209,6 +155,60 @@
                 alt=""
                 v-else
               />
+            </template>
+          </process-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="24" class="center-row">
+        <el-col :span="6">
+          <process-card
+            v-bind="{
+              title: '参与流程样本',
+              content: `${procFactorDetail.partRadio}%`,
+              text: '总',
+              textData: `${procFactorDetail.total}条`,
+              showButton: false,
+            }"
+          >
+            <template v-slot:topTip>
+              <span>
+                <div>参与本次本次数据样本在总量中的占比</div>
+                <div>理论上数据样本量越大分析值偏差越小。</div>
+              </span>
+            </template>
+            <template v-slot:right>
+              <el-progress
+                type="circle"
+                :percentage="
+                  procFactorDetail.partRadio &&
+                  Number(procFactorDetail.partRadio)
+                "
+                :width="60"
+              ></el-progress>
+            </template>
+          </process-card>
+        </el-col>
+        <el-col :span="6">
+          <process-card
+            v-bind="{
+              title: '线上率',
+              content: '--',
+              text: '比率',
+              textData: '0.00%',
+              showButton: false,
+            }"
+          >
+            <template v-slot:topTip>
+              <span>
+                <div>参与流程样本中，线上化节点在总节点中的平均占比，</div>
+                <div>小图是可视化线上率进程水平以及差距。</div>
+              </span>
+            </template>
+            <template v-slot:right>
+              <div style="width: 60%">
+                <el-progress :percentage="0"></el-progress>
+              </div>
             </template>
           </process-card>
         </el-col>

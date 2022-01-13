@@ -17,8 +17,8 @@
         </div>
         <span class="container-day">{{ unit }}</span>
         <div class="container-content">
-          <span class="container-content-text">{{ text }}</span>
-          <span>{{ textData }}</span>
+          <span class="container-content-text" style="font-size: 14px;">{{ text }}</span>
+          <span style="font-size: 14px">{{ textData }}</span>
         </div>
       </div>
 
