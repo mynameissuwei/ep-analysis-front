@@ -121,7 +121,7 @@ export default {
         label: "label",
       },
       form: {
-        appKey: "",
+        appKey: "pdf",
         watermark: false,
         export: false,
       },
@@ -195,5 +195,32 @@ export default {
   position: absolute;
   top: 3px;
   font-size: 20px;
+}
+::v-deep .el-checkbox {
+  .el-checkbox__label {
+    color: #0d54fc;
+  }
+
+  .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #0d54fc;
+    border-color: #0d54fc;
+  }
+
+  .el-checkbox__input.is-focus .el-checkbox__inner,
+  .el-checkbox__inner:hover {
+    border-color: #0d54fc;
+  }
+}
+
+::v-deep {
+  .el-radio__input.is-checked + .el-radio__label {
+    color: #0d54fc !important;
+  }
+  /* 选中后小圆点的颜色 */
+  .el-radio__input.is-checked .el-radio__inner {
+    background: #0d54fc !important;
+    border-color: #0d54fc !important;
+  }
 }
 </style>

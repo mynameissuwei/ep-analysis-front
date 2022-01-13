@@ -155,7 +155,7 @@ export default {
   .bottom-container {
     display: flex;
     justify-content: space-between;
-    height: 50px;
+    height: 55px;
     background: #f8f9fa;
     border-radius: 0px 0px 4px 4px;
     padding: 10px;

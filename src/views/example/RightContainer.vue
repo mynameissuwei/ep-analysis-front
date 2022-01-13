@@ -2,11 +2,13 @@
   <div class="right-container scroll-container">
     <div>
       <el-row :gutter="20" style="position: relative">
-        <el-col :span="20">
+        <el-col :span="18">
           <el-alert
             v-if="procFactorDetail.hasOldData"
             title="本次因历史数据未采集系统操作时间，结论存在偏差"
-            type="error"
+            type="info"
+            show-icon
+            :closable="false"
             class="alert-container"
           >
           </el-alert>
@@ -361,5 +363,6 @@ export default {
 }
 .alert-container {
   margin-top: 10px;
+  background: #e6f3fe;
 }
 </style>

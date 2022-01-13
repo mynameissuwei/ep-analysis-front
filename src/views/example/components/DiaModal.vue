@@ -56,7 +56,33 @@
               </el-table-column>
               <el-table-column label="操作" width="230">
                 <template slot-scope="{ row, $index }">
-                  <i
+                  <img
+                    src="@/assets/editIcon.svg"
+                    v-if="row.edit"
+                    style="cursor: pointer"
+                    @click="confirmEdit(row)"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    style="cursor: pointer"
+                    @click="row.edit = !row.edit"
+                    src="@/assets/editBlueIcon.svg"
+                    alt=""
+                  />
+                  <img
+                    style="margin-left: 10px; cursor: pointer"
+                    @click="row.edit = !row.edit"
+                    src="@/assets/deleteIcon.svg"
+                    alt=""
+                  />
+                  <img
+                    src="@/assets/dragIcon.svg"
+                    style="margin-left: 10px; cursor: pointer"
+                    alt=""
+                  />
+
+                  <!-- <i
                     v-if="row.edit"
                     class="el-icon-share"
                     style="cursor: pointer"
@@ -67,8 +93,8 @@
                     class="el-icon-edit"
                     style="cursor: pointer"
                     @click="row.edit = !row.edit"
-                  ></i>
-                  <i
+                  ></i> -->
+                  <!-- <i
                     class="el-icon-delete"
                     style="margin-left: 10px; cursor: pointer"
                     @click="deleteMile(row)"
@@ -76,7 +102,7 @@
                   <i
                     class="el-icon-rank"
                     style="margin-left: 10px; cursor: pointer"
-                  ></i>
+                  ></i> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -106,7 +132,12 @@
                 size="small"
                 @input="querySearchAsync"
               ></el-input>
-              <el-table :data="nodeTableData" max-height="220" :border="true">
+              <el-table
+                :data="nodeTableData"
+                max-height="220"
+                :border="true"
+                :header-cell-style="{ background: '#EEF4FC' }"
+              >
                 <el-table-column
                   prop="taskDefName"
                   label="节点名称"
@@ -461,9 +492,12 @@ export default {
     font-weight: 500;
     color: #333333;
     line-height: 16px;
+    font-size: 16px;
   }
 }
-::v-deep .el-table__empty-block {
-  width: 100% !important;
+::v-deep {
+  .el-table__empty-block {
+    width: 100% !important;
+  }
 }
 </style>

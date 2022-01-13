@@ -1,7 +1,7 @@
 <template>
   <div class="detail-modal">
     <el-dialog
-      title="查看明细"
+      title="回退明细"
       :visible.sync="visible"
       :before-close="handleClose"
       width="800px"

@@ -5,7 +5,7 @@
         <div class="iconContainer-title">里程碑节点执行力分析</div>
 
         <div v-if="showButton">
-          <div class="textClass" @click="handleShowDetail">查看明细</div>
+          <div class="textClass" @click="handleShowDetail">回退明细</div>
           <div class="iconClass" @click="handleShow">
             <i class="el-icon-setting"></i>
           </div>
@@ -13,8 +13,8 @@
       </div>
 
       <div class="nodeDetailContainer">
-        <div style="width: 100%; height: 190px">
-          <div id="histogram" style="width: 100%; height: 190px" />
+        <div style="width: 100%; height: 300px">
+          <div id="histogram" style="width: 100%; height: 300px" />
         </div>
         <div class="conclusion" v-if="showConclusion">
           <div class="conclusion-title">分析结论：</div>
@@ -89,7 +89,7 @@
     <div class="nodeDetailContainer" v-if="showNodeApprovalAnalysis">
       <div class="iconContainer">
         <div class="iconContainer-title">节点审批效率分析</div>
-        <div>
+        <div style="color: #666666">
           <span>环比至</span>
           <span> {{ nodeAnalysisData.chainDate }} </span>
         </div>
@@ -470,6 +470,8 @@ export default {
       return {
         legend: {
           formatter: formatter,
+          icon: "circle",
+          itemGap: 40,
         },
         tooltip: {
           trigger: "axis",
@@ -488,7 +490,9 @@ export default {
                 '"></span>' +
                 formatter(item.seriesName) +
                 " : " +
+                "<span style='text-align: right'>" +
                 item.data[item.seriesName] +
+                "</span>" +
                 "<br />";
             });
             return str;
