@@ -141,6 +141,7 @@
             "
             :showConclusion="false"
             :showButton="false"
+            :is-export="true"
           />
         </div>
       </el-main>
