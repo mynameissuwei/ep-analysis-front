@@ -4,7 +4,6 @@
       <div class="iconContainer">
         <div class="iconContainer-title">里程碑节点执行力分析</div>
 
-        <div class="textClass" @click="handleShowDetailReport">查看明细</div>
         <div v-if="showButton">
           <div class="textClass" @click="handleShowDetail">回退明细</div>
           <div class="iconClass" @click="handleShow">
@@ -28,8 +27,6 @@
     </div>
 
     <div v-if="showNodeExecutionAnalysisDetail">
-      <div class="iconContainer-title">下钻明细</div>
-      <el-divider/>
       <div class="detail-modal">
         <el-row
           :gutter="22"
@@ -98,12 +95,12 @@
         </div>
       </div>
       <el-table :data="nodeAnalysisData.list">
-        <el-table-column prop="taskName" label="节点名称" :width="isExport?'':150" fixed>
+        <el-table-column prop="taskName" label="节点名称" width="150" fixed>
         </el-table-column>
         <el-table-column label="平均耗时(人天)">
-          <el-table-column prop="averagePassTime" label="耗时" :width="isExport?'':120">
+          <el-table-column prop="averagePassTime" label="耗时" width="120">
           </el-table-column>
-          <el-table-column prop="averagePassTimeChain" label="环比" :width="isExport?'':120">
+          <el-table-column prop="averagePassTimeChain" label="环比" width="120">
             <template slot-scope="{ row }">
               <div>
                 <span>{{ row.averagePassTimeChain.toFixed(2) + "%" }}</span>
@@ -124,13 +121,13 @@
           <el-table-column
             prop="averageActualCostTime"
             label="耗时"
-            :width="isExport?'':120"
+            width="120"
           >
           </el-table-column>
           <el-table-column
             prop="averageActualCostTimeChain"
             label="环比"
-            :width="isExport?'':120"
+            width="300"
           >
             <template slot-scope="{ row }">
               <div>
@@ -151,9 +148,9 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="平均等待(人天)">
-          <el-table-column prop="averageWaitTime" label="耗时" :width="isExport?'':120">
+          <el-table-column prop="averageWaitTime" label="耗时" width="120">
           </el-table-column>
-          <el-table-column prop="averageWaitTimeChain" label="环比" :width="isExport?'':300">
+          <el-table-column prop="averageWaitTimeChain" label="环比" width="300">
             <template slot-scope="{ row }">
               <div>
                 <span>{{ row.averageWaitTimeChain.toFixed(2) + "%" }}</span>
@@ -186,36 +183,36 @@
         <div class="iconContainer-title">审批耗时偏好分布</div>
       </div>
       <el-table :data="nodeTimeData.list">
-        <el-table-column prop="taskName" label="节点名称" :width="isExport?'':150" fixed>
+        <el-table-column prop="taskName" label="节点名称" width="150" fixed>
         </el-table-column>
         <el-table-column label="秒批（≤60s）">
-          <el-table-column prop="secondNum" label="次数" :width="isExport?'':120">
+          <el-table-column prop="secondNum" label="次数" width="120">
             <template slot-scope="{ row }">
               <span style="color: red">{{ row.secondNum }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="secondPercent" label="占比" :width="isExport?'':120">
+          <el-table-column prop="secondPercent" label="占比" width="120">
             <template slot-scope="{ row }">
               <span>{{ row.secondPercent.toFixed(2) + "%" }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="跨天（≥1/人天）">
-          <el-table-column prop="dayNum" label="次数" :width="isExport?'':120">
+          <el-table-column prop="dayNum" label="次数" width="120">
             <template slot-scope="{ row }">
               <span style="color: purple">{{ row.dayNum }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="dayPercent" label="占比" :width="isExport?'':300">
+          <el-table-column prop="dayPercent" label="占比" width="300">
             <template slot-scope="{ row }">
               <span>{{ row.dayPercent.toFixed(2) + "%" }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="常规">
-          <el-table-column prop="normalNum" label="次数" :width="isExport?'':120">
+          <el-table-column prop="normalNum" label="次数" width="120">
           </el-table-column>
-          <el-table-column prop="normalPercent" label="占比" :width="isExport?'':300">
+          <el-table-column prop="normalPercent" label="占比" width="300">
             <template slot-scope="{ row }">
               <span>{{ row.normalPercent.toFixed(2) + "%" }}</span>
             </template>
@@ -274,10 +271,6 @@ import moment from "moment";
 
 export default {
   props: {
-    isExport:{
-      type: Boolean,
-      require: false
-    },
     nodeAnalysisData: {
       type: Object,
       require: true,
@@ -297,6 +290,10 @@ export default {
     showNodeExecutionAnalysis: {
       type: Boolean,
       default: true,
+    },
+    showNodeExecutionAnalysisDetail: {
+      type: Boolean,
+      default: false,
     },
     showNodeRollbackDetail: {
       type: Boolean,
@@ -336,7 +333,6 @@ export default {
         list: [],
       },
       milestoneId: null,
-      showNodeExecutionAnalysisDetail:false,
     };
   },
   mounted() {
@@ -405,15 +401,11 @@ export default {
     async getNodeChartDetail(taskDefKey = "") {
       let startDateTime =
         this.listQuery.startTime == undefined
-          ? moment(parseInt(this.listQuery.dateValue[0].getTime())).format(
-              "YYYY-MM-DD"
-            )
+          ? this.listQuery.dateValue[0]
           : this.listQuery.startTime;
       let endDateTime =
         this.listQuery.endTime == undefined
-          ? moment(parseInt(this.listQuery.dateValue[1].getTime())).format(
-              "YYYY-MM-DD"
-            )
+          ? this.listQuery.dateValue[1]
           : this.listQuery.endTime;
       let param = {
         appKey: this.listQuery.templateTypesValue,
@@ -425,10 +417,6 @@ export default {
       param.endDateTime = endDateTime;
       const { data } = await fetchNodeChartDetail(param);
       this.nodeChartDataDetail = data;
-    },
-    handleShowDetailReport(){
-      this.showNodeExecutionAnalysisDetail = true;
-      this.getNodeChartDetail();
     },
     handleShowDetail() {
       this.detailVisible = true;
@@ -452,11 +440,24 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById("histogram"));
       this.chart.setOption(this.getOption(), true);
-      this.chart.getZr().on('mouseout', function () {
-        Bus.$emit("unSelectNodes");
-      })
+      let $chart = this.chart;
+      let nodeChartData = this.nodeChartData;
+      this.chart.getZr().on("click", function (params) {
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if ($chart.containPixel("grid", pointInPixel)) {
+          let xIndex = $chart.convertFromPixel({ seriesIndex: 0 }, [
+            params.offsetX,
+            params.offsetY,
+          ])[0];
+          Bus.$emit(
+            "selectNodes",
+            nodeChartData.list[xIndex].taskDefKeys.split(",")
+          );
+        }
+      });
     },
     getOption() {
+      let $emit = this.$emit;
       let formatter = function (name) {
         const legendData = {
           taskNumReal: "节点数",
@@ -494,10 +495,6 @@ export default {
                 "</span>" +
                 "<br />";
             });
-            Bus.$emit(
-              "selectNodes",
-              params[0].data.taskDefKeys.split(",")
-            );
             return str;
           },
         },
