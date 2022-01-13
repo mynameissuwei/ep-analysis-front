@@ -113,11 +113,11 @@
         </div>
 
         <!--流程指数-->
-        <span>流程指数</span>
         <div
           v-if="showProcessIndex"
           style="margin-bottom: 10px; margin-top: 10px"
         >
+          <span>流程指数</span>
           <report-right-container
             :procFactorDetail="procFactorDetail"
             :procFactorRuleData="procFactorRuleData"
@@ -126,8 +126,8 @@
         </div>
 
         <!--节点分析-->
-        <span>节点分析</span>
-        <div style="margin-top: 10px; margin-bottom: 10px">
+        <div style="margin-top: 10px; margin-bottom: 10px" v-if="showNodeAnalysis">
+          <span>节点分析</span>
           <node-detail
             :nodeAnalysisData="nodeAnalysisData"
             :nodeTimeData="nodeTimeData"
@@ -240,9 +240,11 @@ export default {
       listQuery: this.$route.query,
     };
   },
-  // watch(){
-  //   maxHeight:
-  // },
+  computed:{
+    showNodeAnalysis(){
+      return this.showNodeExecutionAnalysis || this.showNodeApprovalAnalysis || this.showApprovalTCIntervalDistribution
+    }
+  },
   methods: {
     initPD() {
       this.pd = new PD("process_graph");
@@ -583,7 +585,7 @@ export default {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
 
   background: #ffffff;
-  width: 60%;
+  width: 65%;
   background: #FFFFFF;
   border-radius: 5px;
   border: 1px solid #ced4da;
