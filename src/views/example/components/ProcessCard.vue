@@ -17,7 +17,9 @@
         </div>
         <span class="container-day">{{ unit }}</span>
         <div class="container-content">
-          <span class="container-content-text" style="font-size: 14px;">{{ text }}</span>
+          <span class="container-content-text" style="font-size: 14px">{{
+            text
+          }}</span>
           <span style="font-size: 14px">{{ textData }}</span>
         </div>
       </div>
@@ -36,7 +38,9 @@
             <i class="el-icon-warning-outline icon-class"></i>
           </el-tooltip>
         </div>
-        <div style="margin-top: 5px; font-size: 12px">{{ expect }}</div>
+        <div style="margin-top: 5px; font-size: 12px">
+          {{ isInit ? "--" : expect }}
+        </div>
       </div>
       <el-divider direction="vertical"></el-divider>
       <div>
@@ -49,7 +53,9 @@
             <i class="el-icon-warning-outline icon-class"></i>
           </el-tooltip>
         </div>
-        <div style="margin-top: 5px; font-size: 12px">{{ redLine }}</div>
+        <div style="margin-top: 5px; font-size: 12px">
+          {{ isInit ? "--" : redLine }}
+        </div>
       </div>
     </div>
   </el-card>
@@ -101,6 +107,10 @@ export default {
     topTip: {
       type: String,
       default: "",
+    },
+    isInit: {
+      type: Boolean,
+      default: true,
     },
   },
 };

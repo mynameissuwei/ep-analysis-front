@@ -85,6 +85,7 @@
               redLine: `< ${procFactorRuleData.rule.flowEffic.redLine}%`,
               redLineText: '流效红线',
               expectText: '流效期望',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -102,24 +103,29 @@
               </span>
             </template>
             <template v-slot:right>
-              <img
-                src="@/assets/warn.svg"
-                class="warnClass"
-                alt=""
-                v-if="procFactorDetail.flowRadio <= 10"
-              />
-              <img
-                src="@/assets/greenWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else-if="procFactorDetail.flowRadio <= 30"
-              />
-              <img
-                src="@/assets/yellowWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else
-              />
+              <div v-if="isInit">
+                <img src="@/assets/initWarn.svg" class="warnClass" alt="" />
+              </div>
+              <div v-else>
+                <img
+                  src="@/assets/warn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-if="procFactorDetail.flowRadio <= 10"
+                />
+                <img
+                  src="@/assets/greenWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else-if="procFactorDetail.flowRadio <= 30"
+                />
+                <img
+                  src="@/assets/yellowWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else
+                />
+              </div>
             </template>
           </process-card>
         </el-col>
@@ -133,6 +139,7 @@
               redLineText: '时效红线',
               expectText: '时效期望',
               unit: '人天',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -145,24 +152,29 @@
               时效是指每条流程平均用时，时效=流程总耗时/流程总数量/8h。
             </template>
             <template v-slot:right>
-              <img
-                src="@/assets/warn.svg"
-                class="warnClass"
-                alt=""
-                v-if="procFactorDetail.timeLimit >= 20"
-              />
-              <img
-                src="@/assets/greenWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else-if="procFactorDetail.timeLimit >= 10"
-              />
-              <img
-                src="@/assets/yellowWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else
-              />
+              <div v-if="isInit">
+                <img src="@/assets/initWarn.svg" class="warnClass" alt="" />
+              </div>
+              <div v-else>
+                <img
+                  src="@/assets/warn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-if="procFactorDetail.timeLimit >= 20"
+                />
+                <img
+                  src="@/assets/greenWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else-if="procFactorDetail.timeLimit >= 10"
+                />
+                <img
+                  src="@/assets/yellowWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else
+                />
+              </div>
             </template>
           </process-card>
         </el-col>
@@ -178,6 +190,7 @@
               expect: '0人',
               redLine: '0人',
               unit: '人',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -201,6 +214,7 @@
               redLineText: '人效红线',
               expectText: '人效期望',
               unit: '人天',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -213,24 +227,29 @@
               人效即人的效率，单人在流程的平均用时，人效＝流程总耗/总干系人数/8h。
             </template>
             <template v-slot:right>
-              <img
-                src="@/assets/warn.svg"
-                class="warnClass"
-                alt=""
-                v-if="procFactorDetail.timeLimit >= 3"
-              />
-              <img
-                src="@/assets/greenWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else-if="procFactorDetail.timeLimit >= 2"
-              />
-              <img
-                src="@/assets/yellowWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else
-              />
+              <div v-if="isInit">
+                <img src="@/assets/initWarn.svg" class="warnClass" alt="" />
+              </div>
+              <div v-else>
+                <img
+                  src="@/assets/warn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-if="procFactorDetail.timeLimit >= 3"
+                />
+                <img
+                  src="@/assets/greenWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else-if="procFactorDetail.timeLimit >= 2"
+                />
+                <img
+                  src="@/assets/yellowWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else
+                />
+              </div>
             </template>
           </process-card>
         </el-col>
@@ -287,6 +306,10 @@ export default {
       require: true,
     },
     showSettingButton: {
+      type: Boolean,
+      default: true,
+    },
+    isInit: {
       type: Boolean,
       default: true,
     },

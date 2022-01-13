@@ -128,6 +128,7 @@
                   :getProcIndexRule="getProcIndexRule"
                   :getProcFactor="getProcFactor"
                   :listQuery="listQuery"
+                  :isInit="isInit"
                 />
               </el-tab-pane>
               <el-tab-pane
@@ -248,6 +249,7 @@ export default {
       selectTemplateData: [],
       activeName: "first",
       procFactorData: [],
+      isInit: true,
       procFactorDetail: {
         partRadio: "0",
         total: "0",
@@ -306,7 +308,7 @@ export default {
     selectNodes(ids) {
       this.pd.selectNodes(ids);
     },
-    unSelectNodes(){
+    unSelectNodes() {
       this.pd.unSelectNodes();
     },
     initPD() {
@@ -329,6 +331,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.isInit = false;
           this.getProcIndexRule();
           this.getProcFactor();
           this.getNode();
@@ -351,6 +354,7 @@ export default {
       this.processName = procDefName;
     },
     resetForm(formName) {
+      this.isInit = true;
       this.$refs[formName].resetFields();
       this.listQuery.dateValue = "";
       this.initProcess();
