@@ -413,8 +413,9 @@ export default {
         procDefKey: this.listQuery.procDefValue,
         taskDefKey,
       };
-      param.startDateTime = startDateTime;
-      param.endDateTime = endDateTime;
+
+      param.startDateTime = moment(startDateTime).format("YYYY-MM-DD");
+      param.endDateTime = moment(endDateTime).format("YYYY-MM-DD");
       const { data } = await fetchNodeChartDetail(param);
       this.nodeChartDataDetail = data;
     },
