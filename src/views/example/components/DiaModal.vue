@@ -17,6 +17,8 @@
         :handleCloseInner="handleCloseMileStone"
         :processNodeData="processNodeData"
         :getMilestone="getMilestone"
+        :appKey="this.listQuery.templateTypesValue"
+        :procDefKey="this.listQuery.procDefValue"
       />
       <div class="container">
         <div class="left-container">

@@ -38,7 +38,7 @@
 import { createMile } from "@/api/example";
 
 export default {
-  props: ["visible", "handleCloseInner", "processNodeData", "getMilestone"],
+  props: ["visible", "handleCloseInner", "processNodeData", "getMilestone", "appKey", "procDefKey"],
   created() {
     this.init();
   },
@@ -69,6 +69,8 @@ export default {
       };
     },
     onSubmit() {
+      console.log(this.appKey,"appKey")
+      console.log(this.procDefKey,"procDefKey")
       this.$refs["form"].validate((valid) => {
         if (valid) {
           createMile({
@@ -76,8 +78,8 @@ export default {
             tasks: this.processNodeData.filter((item) =>
               this.form.tasks.includes(item.taskDefKey)
             ),
-            appKey: "data_asset",
-            procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+            appKey: this.appKey,
+            procDefKey: this.procDefKey,
           }).then(() => {
             this.handleCloseInner();
             this.getMilestone();
