@@ -261,7 +261,9 @@ export default {
       this.currentRow = row;
     },
     handleCurrentChange(item, oldItem) {
-      oldItem.edit = false;
+      console.log(item, oldItem, "itemitem");
+      // this.$set(oldItem, "edit", false);
+      if (oldItem) oldItem.edit = false;
       this.currentRow = item;
       this.nodeTableData = item.tasks;
       this.oldNodeTableData = item.tasks.slice();
@@ -416,7 +418,8 @@ export default {
       let nodeTableDef = this.nodeTableData.map((item) => item.taskDefKey);
       nodeTableDef.forEach((item) => {
         if (!oldNodeTableDef.includes(item)) {
-          addedTasks.push(item);
+          let result = this.nodeTableData.find((d) => d.taskDefKey === item);
+          addedTasks.push(result);
         }
       });
       oldNodeTableDef.forEach((item) => {
