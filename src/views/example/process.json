@@ -1,0 +1,129 @@
+[
+  {
+    "data": {
+      "id": "1",
+      "shape": "roundrectangle",
+      "color": "white",
+      "textSize": "14px",
+      "borderWidth": "3px",
+      "label": "节点1",
+      "textColor": "black",
+      "width": "160px",
+      "height": "70px",
+      "borderColor": "#0D54FC",
+      "textWidth": "155px"
+    }
+  },
+  {
+    "data": {
+      "id": "2",
+      "shape": "roundrectangle",
+      "color": "white",
+      "textSize": "14px",
+      "borderWidth": "3px",
+      "label": "节点2",
+      "textColor": "black",
+      "width": "160px",
+      "height": "70px",
+      "borderColor": "#0D54FC",
+      "textWidth": "155px"
+    }
+  },
+  {
+    "data": {
+      "id": "etc",
+      "shape": "roundrectangle",
+      "color": "white",
+      "textSize": "14px",
+      "borderWidth": "3px",
+      "label": "...",
+      "textColor": "black",
+      "width": "160px",
+      "height": "70px",
+      "borderColor": "#0D54FC",
+      "textWidth": "155px"
+    }
+  },
+  {
+    "data": {
+      "id": "start",
+      "shape": "roundrectangle",
+      "color": "white",
+      "textSize": "14px",
+      "borderWidth": "3px",
+      "name": "开始",
+      "textColor": "black",
+      "width": "80px",
+      "height": "40px",
+      "borderColor": "#0D54FC",
+      "textWidth": "155px",
+      "label": "开始"
+    }
+  },
+  {
+    "data": {
+      "id": "end",
+      "shape": "roundrectangle",
+      "color": "white",
+      "textSize": "14px",
+      "borderWidth": "3px",
+      "name": "结束",
+      "textColor": "black",
+      "width": "80px",
+      "height": "40px",
+      "borderColor": "#0D54FC",
+      "textWidth": "155px",
+      "label": "结束"
+    }
+  },
+  {
+    "data": {
+      "strength": 20,
+      "color": "black",
+      "style": "solid",
+      "source": "start",
+      "target": "1",
+      "label": null,
+      "point-distances": "0",
+      "edge-style": "unbundled-bezier",
+      "point-weights": "0.5"
+    }
+  },
+  {
+    "data": {
+      "strength": 20,
+      "color": "black",
+      "style": "solid",
+      "source": "1",
+      "target": "2",
+      "point-distances": "0",
+      "edge-style": "unbundled-bezier",
+      "point-weights": "0.5"
+    }
+  },
+  {
+    "data": {
+      "strength": 20,
+      "color": "black",
+      "style": "solid",
+      "source": "2",
+      "target": "etc",
+      "point-distances": "0",
+      "edge-style": "unbundled-bezier",
+      "point-weights": "0.5"
+    }
+  },
+  {
+    "data": {
+      "strength": 20,
+      "color": "black",
+      "style": "solid",
+      "source": "etc",
+      "target": "end",
+      "label": null,
+      "point-distances": "0",
+      "edge-style": "unbundled-bezier",
+      "point-weights": "0.5"
+    }
+  }
+]

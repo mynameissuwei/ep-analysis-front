@@ -1,7 +1,6 @@
 import cytoscape from 'cytoscape/dist/cytoscape.esm'
 import popper from 'cytoscape-popper'
 import dagre from 'cytoscape-dagre'
-import tippy from 'tippy.js'
 import $ from 'jquery'
 
 const edgeBendEditing = require('cytoscape-edge-bend-editing')
@@ -250,47 +249,11 @@ PDp.init = function () {
     }
   })
 
-  cy.on('mouseover', 'node', function (event) {
-    const node = event.target
-    const name = node.data(NAME_PROP)
-    const id = node.data('id')
-    if (id) {
-      if (activityToAttributeMap) {
-        const attributes = activityToAttributeMap[id]
-        if (attributes && Object.keys(attributes).length) {
-          currentNodeTooltip = pd.makeTip(node, tablize(attributes, 'ap-pd-case-activity-attrs'))
-        } else {
-          currentNodeTooltip = pd.makeTip(node, name)
-        }
-      } else {
-        currentNodeTooltip = pd.makeTip(node, name)
-      }
-      currentNodeTooltip.show()
-    } else {
-      currentNodeTooltip = undefined
-    }
-  })
-
   cy.on('mouseout', 'node', function (event) {
     if (currentNodeTooltip) currentNodeTooltip.hide()
   })
 }
 
-PDp.makeTip = function (node, text) {
-  return tippy(node.popperRef(), {
-    content: function () {
-      const div = document.createElement('div')
-      div.innerText = text
-      return div
-    },
-    trigger: 'manual',
-    arrow: true,
-    placement: 'bottom',
-    hideOnClick: true,
-    multiple: false,
-    sticky: true
-  })
-}
 
 PDp.reset = function () {
   const cy = this._private.cy
