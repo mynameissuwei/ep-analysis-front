@@ -11,7 +11,7 @@
         <div class="left-container">
           <div class="left-container-title">
             <span class="mileMan">
-              <span>主席决策流程共</span>
+              <span style="margin-right: 10px">{{ currentRow.name }}</span>
               <span>{{ processNodeData.length }}</span>
               <span>个节点</span>
             </span>
@@ -92,7 +92,13 @@
 
 <script>
 export default {
-  props: ["innerVisible", "handleCloseInner", "processNodeData", "addRow"],
+  props: [
+    "innerVisible",
+    "handleCloseInner",
+    "processNodeData",
+    "addRow",
+    "currentRow",
+  ],
   data() {
     return {
       checkedValue: [],

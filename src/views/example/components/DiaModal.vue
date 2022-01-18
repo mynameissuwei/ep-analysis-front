@@ -11,6 +11,7 @@
         :handleCloseInner="handleCloseInner"
         :processNodeData="processNodeData"
         :addRow="addRow"
+        :currentRow="currentRow"
       />
       <add-mile-stone
         :visible="mileStoneVisible"
