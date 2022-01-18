@@ -349,7 +349,7 @@ export const constantRoutes = [
       title: "流程分析导出",
       noCache: true,
       // activeMenu: "/acount/permission",
-      id: "EFFICIENCY_ANALYSIS_TENANT_PROCESS_GRAPH",
+      id: "EFFICIENCY_ANALYSIS_TENANT_INSTANCE",
     },
   },
 ];
