@@ -69,7 +69,7 @@
                   :key="item.value"
                   class="button-container"
                   @click="changeTime(item.value)"
-                  >{{ item.name }}
+                >{{ item.name }}
                 </el-button>
                 <el-date-picker
                   class="date-container"
@@ -92,10 +92,10 @@
                 type="primary"
                 size="small"
                 @click="submitForm('ruleForm')"
-                >查询
+              >查询
               </el-button>
               <el-button size="small" @click="resetForm('ruleForm')"
-                >重置
+              >重置
               </el-button>
             </div>
           </el-col>
@@ -105,12 +105,28 @@
 
     <div class="tab-container" style="position: relative">
       <el-tabs v-model="activeName" @tab-click="handleTabChange">
-        <el-tab-pane label="流程指数" name="first"> </el-tab-pane>
-        <el-tab-pane label="节点分析" name="second"> </el-tab-pane>
-        <el-tab-pane label="导出报告" name="third"> </el-tab-pane>
+        <el-tab-pane label="流程指数" name="first"></el-tab-pane>
+        <el-tab-pane label="节点分析" name="second"></el-tab-pane>
+        <el-tab-pane label="导出报告" name="third"></el-tab-pane>
         <tab-container>
           <template v-slot:left>
-            <div id="process_graph" class="ap-pd-process-model" />
+            <el-popover placement="bottom-start" title="流程图辅助说明" width="400" trigger="hover">
+              <el-descriptions :column="1" :colon="false"	style="font-size: 12px">
+                <el-descriptions-item>
+                  <div style="vertical-align: center">
+                    <div class="roundedRectangle1"></div><span>线上节点</span>
+                    <div class="roundedRectangle2"></div><span>线下节点</span>
+                  </div>
+                </el-descriptions-item>
+                <el-descriptions-item label="干系人:">是节点涉及的操作人数，没有操作流程的人员不计入。</el-descriptions-item>
+                <el-descriptions-item label="平均耗时:">从前一节点到当前节点之前平均耗时。</el-descriptions-item>
+              </el-descriptions>
+              <i style="font-size: 20px;margin-left: 20px;margin-top: 20px" class="el-icon-question" slot="reference">
+                <span style="font-size: 14px;margin-left: 10px">元素说明</span>
+              </i>
+            </el-popover>
+            <div id="process_graph" class="ap-pd-process-model">
+            </div>
           </template>
           <template v-slot:right>
             <div
@@ -182,8 +198,9 @@ import Driver from "driver.js"; // import driver.js
 import "driver.js/dist/driver.min.css"; // import driver.js css
 import moment from "moment";
 import Bus from "@/Bus.js";
-import { discoverProcess } from "@/api/process";
+import {discoverProcess} from "@/api/process";
 import PD from "@/api/processMining";
+import processJson from "@/views/example/process.json";
 
 const start = new Date();
 start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
@@ -233,10 +250,10 @@ export default {
       ],
       rules: {
         templateTypesValue: [
-          { required: true, message: "请选择流程类型", trigger: "blur" },
+          {required: true, message: "请选择流程类型", trigger: "blur"},
         ],
         procDefValue: [
-          { required: true, message: "请选择流程", trigger: "blur" },
+          {required: true, message: "请选择流程", trigger: "blur"},
         ],
         dateValue: [
           {
@@ -313,6 +330,7 @@ export default {
     },
     initPD() {
       this.pd = new PD("process_graph");
+      this.pd.loadLog(JSON.stringify(processJson), 3);
     },
     async DFG() {
       let queryData = {
@@ -434,11 +452,11 @@ export default {
       }
     },
     async getSelectTemplate() {
-      const { data } = await fetchSelectTemplate();
+      const {data} = await fetchSelectTemplate();
       this.selectTemplateData = data;
     },
     async getProcDef() {
-      const { data } = await fetchProc({
+      const {data} = await fetchProc({
         condition: {
           appKey: this.listQuery.templateTypesValue,
           tenantId: this.$store.state.user.tenantId,
@@ -450,7 +468,7 @@ export default {
     },
     // 获取流效期望
     async getProcIndexRule() {
-      const { data } = await fetchProcIndexRule(
+      const {data} = await fetchProcIndexRule(
         JSON.stringify({
           tenantId: this.$store.state.user.tenantId,
           procDefKey: this.listQuery.procDefValue,
@@ -463,7 +481,7 @@ export default {
     },
     // 获取流效样本
     async getProcFactor() {
-      const { data } = await fetchProcFactor({
+      const {data} = await fetchProcFactor({
         procDefKey: this.listQuery.procDefValue,
         // tenantId: this.$store.state.user.tenantId,
         appKey: this.listQuery.templateTypesValue,
@@ -483,7 +501,7 @@ export default {
       this.getNodeChart();
     },
     async getNodeChart() {
-      const { data } = await fetchNodeChart({
+      const {data} = await fetchNodeChart({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -497,7 +515,7 @@ export default {
       this.nodeChartData = data;
     },
     async getNodeAnalysis() {
-      const { data } = await fetchNodeAnalysis({
+      const {data} = await fetchNodeAnalysis({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -512,7 +530,7 @@ export default {
       this.nodeAnalysisData = data;
     },
     async getNodeTimeConsuming() {
-      const { data } = await fetchTimeConsuming({
+      const {data} = await fetchTimeConsuming({
         appKey: this.listQuery.templateTypesValue,
         tenantId: this.$store.state.user.tenantId,
         procDefKey: this.listQuery.procDefValue,
@@ -613,6 +631,7 @@ export default {
     margin-left: 0px;
   }
 }
+
 .ap-pd-process-model {
   position: absolute;
   width: 100%;
@@ -621,5 +640,22 @@ export default {
   background: #f8f9fa;
   box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.05);
+}
+.roundedRectangle1{
+  width: 40px;
+  height: 20px;
+  border: 2px solid #E0E3E5;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 20px;
+}
+.roundedRectangle2{
+  width: 40px;
+  height: 20px;
+  border: 2px solid #0D54FC;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 50px;
+  margin-right: 20px;
 }
 </style>
