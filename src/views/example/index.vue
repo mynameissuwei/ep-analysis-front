@@ -198,20 +198,20 @@ export default {
     ExportDetail,
   },
   mounted() {
-    this.driver = new Driver();
-    const steps = [
-      {
-        element: ".button-group",
-        popover: {
-          title: "提示",
-          description: "请填写相关参数,再点击查询",
-          position: "bottom",
-        },
-        padding: 0,
-      },
-    ];
-    this.driver.defineSteps(steps);
-    this.driver.start();
+    // this.driver = new Driver();
+    // const steps = [
+    //   {
+    //     element: ".button-group",
+    //     popover: {
+    //       title: "提示",
+    //       description: "请填写相关参数,再点击查询",
+    //       position: "bottom",
+    //     },
+    //     padding: 0,
+    //   },
+    // ];
+    // this.driver.defineSteps(steps);
+    // this.driver.start();
     this.initPD();
     let $this = this;
     Bus.$on("selectNodes", (data) => {
@@ -371,7 +371,7 @@ export default {
     initProcess() {
       this.procFactorDetail = {
         partRadio: "0",
-        total: "25",
+        total: "0",
         flowRadio: "0",
         timeLimit: "0",
         avgHolder: "0",

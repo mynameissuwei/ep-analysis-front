@@ -22,8 +22,8 @@ router.beforeEach(async (to, from, next) => {
           routerInfo
         );
         console.log(accessedRoutes, "accessedRoutes");
-        // router.addRoutes(accessedRoutes);
-        router.addRoutes(constantRoutes);
+        router.addRoutes(accessedRoutes);
+        // router.addRoutes(constantRoutes);
         next({ ...to, replace: true });
       } catch (error) {
         next();

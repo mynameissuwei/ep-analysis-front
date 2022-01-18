@@ -38,7 +38,14 @@
 import { createMile } from "@/api/example";
 
 export default {
-  props: ["visible", "handleCloseInner", "processNodeData", "getMilestone", "appKey", "procDefKey"],
+  props: [
+    "visible",
+    "handleCloseInner",
+    "processNodeData",
+    "getMilestone",
+    "appKey",
+    "procDefKey",
+  ],
   created() {
     this.init();
   },
@@ -57,6 +64,11 @@ export default {
             message: "长度在 1 到 10 个字符",
             trigger: "blur",
           },
+          {
+            pattern: /^[\u4e00-\u9fa5]+$/,
+            message: "只能输入中文字符",
+            trigger: "blur",
+          },
         ],
       },
     };
@@ -69,8 +81,6 @@ export default {
       };
     },
     onSubmit() {
-      console.log(this.appKey,"appKey")
-      console.log(this.procDefKey,"procDefKey")
       this.$refs["form"].validate((valid) => {
         if (valid) {
           createMile({

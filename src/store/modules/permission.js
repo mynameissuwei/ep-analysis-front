@@ -58,7 +58,6 @@ const mutations = {
 
 const actions = {
   generateRoutes({ commit }, routerInfo) {
-    console.log(store.getters, "gettersgetters");
     const isOperation = store.getters.isOperation;
     // resetRouter();
     return new Promise((resolve) => {
@@ -89,6 +88,7 @@ const actions = {
       let result = filterRoute(constantRoutes, flatResult);
 
       accessedRoutes = result || [];
+
       // commit("SET_ROUTES", accessedRoutes);
       commit("SET_ROUTES", isOperation ? operateSidebar : tenantSidebar);
       // router.addRoutes(accessedRoutes);

@@ -1,7 +1,7 @@
 <template>
   <div class="diaModal">
     <el-dialog
-      title="里程碑及诶单执行力分析因子设置"
+      title="里程碑节点执行力分析因子设置"
       :visible.sync="visible"
       :before-close="handleClose"
       width="800px"
@@ -14,6 +14,7 @@
         :currentRow="currentRow"
       />
       <add-mile-stone
+        v-if="mileStoneVisible"
         :visible="mileStoneVisible"
         :handleCloseInner="handleCloseMileStone"
         :processNodeData="processNodeData"
@@ -43,6 +44,7 @@
               :show-header="false"
               row-key="id"
               highlight-current-row
+              max-height="300"
               @current-change="handleCurrentChange"
             >
               <el-table-column prop="name" label="日期" width="180">
@@ -75,7 +77,7 @@
                   />
                   <img
                     style="margin-left: 10px; cursor: pointer"
-                    @click="row.edit = !row.edit"
+                    @click="deleteMile(row)"
                     src="@/assets/deleteIcon.svg"
                     alt=""
                   />
