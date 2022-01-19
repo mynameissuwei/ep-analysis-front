@@ -485,69 +485,6 @@ export default {
   margin-left: 10px;
   display: inline-block;
 }
-.nodeDetail {
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 100%;
-  background: #ffffff;
-  box-shadow: 1px 0px 1px 0px #eeeeee;
-  border: 1px solid #e9ecf3;
-  overflow: scroll;
-  .row-container {
-    line-height: 40px;
-  }
-  .iconContainer-title {
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .iconContainer {
-    width: 100%;
-    height: 54px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .textClass {
-    width: 68px;
-    height: 25px;
-    line-height: 25px;
-    border-radius: 4px;
-    border: 1px solid #e0e3e5;
-    display: inline-block;
-    text-align: center;
-    align-items: center;
-    margin-bottom: 16px;
-    margin-top: 16px;
-    margin-right: 16px;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  .iconClass {
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    border: 1px solid #e0e3e5;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    float: right;
-    margin-bottom: 16px;
-    margin-top: 16px;
-  }
-  .conclusion {
-    .conclusion-title {
-      padding: 10px 0px 6px 0px;
-    }
-    width: 100%;
-    height: 78px;
-    background: #f8f9fa;
-    border-radius: 4px;
-    margin-top: 8px;
-    margin-bottom: 20px;
-    //padding: 9px 9px 9px 13px;
-  }
-}
 .ap-pd-process-model {
   position: absolute;
   width: 100%;
