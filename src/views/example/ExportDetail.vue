@@ -29,22 +29,25 @@
         <span style="margin-left: 10px"> 水印是操作人中文姓名+工号 </span>
       </div>
 
-      <el-form-item label="导出范围">
-        <el-radio-group v-model="form.export" @change="handleRadioChange">
+      <el-form-item label="导出范围" style="margin-bottom: 10px">
+        <!-- <el-radio-group v-model="form.export" @change="handleRadioChange">
           <el-radio :label="true">全部</el-radio>
           <el-radio :label="false">部分</el-radio>
-        </el-radio-group>
+        </el-radio-group> -->
+        <el-checkbox v-model="form.export" @change="checkedAll" /> 全选
       </el-form-item>
+      <div class="tree-container">
+        <!-- <el-checkbox v-model="form.export" @change="checkedAll" /> 全选 -->
 
-      <el-tree
-        class="tree-container"
-        :data="data"
-        ref="tree"
-        show-checkbox
-        node-key="id"
-        :props="defaultProps"
-      >
-      </el-tree>
+        <el-tree
+          :data="data"
+          ref="tree"
+          show-checkbox
+          node-key="id"
+          :props="defaultProps"
+        >
+        </el-tree>
+      </div>
 
       <el-form-item size="large">
         <div style="float: right; margin-top: 5px">
@@ -141,6 +144,13 @@ export default {
     onPreview() {
       this.routerPush(false);
     },
+    checkedAll() {
+      if (this.form.export) {
+        this.$refs.tree.setCheckedNodes(this.data);
+      } else {
+        this.$refs.tree.setCheckedKeys([]);
+      }
+    },
     routerPush(isExport) {
       let routeUrl = this.$router.resolve({
         path: "/process/analysis/report",
@@ -201,11 +211,11 @@ export default {
   margin-bottom: 20px;
 }
 .tree-container {
-  background: #f8f9fa;
-  margin-left: 130px;
+  // background: #f8f9fa;
+  margin-left: 112px;
   height: 330px;
-  padding-top: 12px;
-  padding-left: 12px;
+  // padding-top: 12px;
+  // padding-left: 12px;
 }
 .waterMark {
   position: relative;

@@ -220,6 +220,7 @@ import Bus from "@/Bus.js";
 import { discoverProcess } from "@/api/process";
 import PD from "@/api/processMining";
 import processJson from "@/views/example/process.json";
+import DateUtil from "./components/getTime";
 
 const start = new Date();
 start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
@@ -332,6 +333,7 @@ export default {
         procDefValue: "",
         dateValue: [start, new Date()],
       },
+      DateUtil: DateUtil,
     };
   },
   created() {
@@ -455,18 +457,24 @@ export default {
         this.listQuery.dateValue = [start, start];
       }
       if (time === "week") {
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+        // const start = new Date();
+        // start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+        const start = this.DateUtil.DateUtil.getStartDayOfWeek();
+        const end = this.DateUtil.DateUtil.getEndDayOfWeek();
         this.listQuery.dateValue = [start, end];
       }
       if (time == "month") {
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+        // const start = new Date();
+        // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+        const start = this.DateUtil.DateUtil.getStartDayOfMonth();
+        const end = this.DateUtil.DateUtil.getEndDayOfMonth();
         this.listQuery.dateValue = [start, end];
       }
       if (time === "year") {
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+        // const start = new Date();
+        // start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+        const start = this.DateUtil.DateUtil.getStartDayOfYear();
+        const end = this.DateUtil.DateUtil.getEndDayOfYear();
         this.listQuery.dateValue = [start, end];
       }
     },
