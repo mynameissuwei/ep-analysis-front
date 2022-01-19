@@ -122,7 +122,7 @@ export default {
       },
       form: {
         appKey: "pdf",
-        watermark: false,
+        watermark: true,
         export: false,
       },
     };
