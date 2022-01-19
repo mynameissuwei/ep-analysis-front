@@ -3,7 +3,7 @@
     <div v-if="showNodeExecutionAnalysis">
       <div class="iconContainer">
         <div class="iconContainer-title">里程碑节点执行力分析</div>
-        <div class="textClass" @click="handleShowDetailReport">回退明细</div>
+        <div class="textClass" v-if="isExport" @click="handleShowDetailReport">回退明细</div>
         <div v-if="showButton">
           <div class="textClass" @click="handleShowDetail">回退明细</div>
           <div class="iconClass" @click="handleShow">
