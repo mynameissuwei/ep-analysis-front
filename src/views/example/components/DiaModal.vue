@@ -123,6 +123,7 @@
                     type="primary"
                     @click="handleOpenInner"
                     size="small"
+                    :disabled="!this.currentRow"
                     >添加节点</el-button
                   ></span
                 ></span
@@ -172,14 +173,14 @@
         <div class="mileMan">标准值设置</div>
         <el-form
           :model="standardForm"
+          :rules="rules"
           ref="standardForm"
           label-width="100px"
           size="mini"
         >
           <el-row style="margin-top: 15px" :gutter="44">
             <el-col :span="12">
-              <el-form-item>
-                <label slot="label">标准节点数</label>
+              <el-form-item label="标准节点数" prop="taskNumLine">
                 <el-input
                   v-model="standardForm.taskNumLine"
                   placeholder="请输入文字"
@@ -189,7 +190,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item>
+              <el-form-item label="里程碑耗时" prop="timeConsumingLine">
                 <label slot="label">里程碑耗时</label>
                 <el-input
                   v-model="standardForm.timeConsumingLine"
@@ -208,6 +209,7 @@
           @click="onSubmit"
           size="small"
           :loading="buttonLoading"
+          :disabled="!this.currentRow"
           >确 定</el-button
         >
         <el-button @click="handleClose" size="small">取 消</el-button>
@@ -245,6 +247,22 @@ export default {
         taskNumLine: "",
         timeConsumingLine: "",
       },
+      rules: {
+        taskNumLine: [
+          {
+            pattern: /^\d{1,}$/,
+            message: "只能输入数字",
+            trigger: "blur",
+          },
+        ],
+        timeConsumingLine: [
+          {
+            pattern: /^\d{1,}$/,
+            message: "只能输入数字",
+            trigger: "blur",
+          },
+        ],
+      },
       processNodeData: [],
       mileStoneData: [],
       nodeData: [],
@@ -266,12 +284,12 @@ export default {
       this.currentRow = row;
     },
     handleCurrentChange(item, oldItem) {
-      console.log(item, oldItem, "itemitem");
       // this.$set(oldItem, "edit", false);
       if (oldItem) oldItem.edit = false;
       this.currentRow = item;
-      this.nodeTableData = item.tasks;
-      this.oldNodeTableData = item.tasks.slice();
+      console.log(item, "itemitme");
+      this.nodeTableData = item.tasks || [];
+      this.oldNodeTableData = item.tasks ? item.tasks.slice() : [];
       this.standardForm = {
         taskNumLine: item.taskNumLine,
         timeConsumingLine: item.timeConsumingLine,
@@ -306,6 +324,7 @@ export default {
     },
     addRow(data) {
       let result = this.nodeTableData;
+      console.log(this.nodeTableData, "nodeTableData");
       let resultKeys = this.nodeTableData.map((item) => item.taskDefKey);
       let array = data
         .filter((d) => {
@@ -413,49 +432,57 @@ export default {
       });
     },
     onSubmit() {
-      this.buttonLoading = true;
+      this.$refs["standardForm"].validate((valid) => {
+        if (valid) {
+          this.buttonLoading = true;
 
-      let addedTasks = [];
-      let removedTasks = [];
-      let oldNodeTableDef = this.oldNodeTableData.map(
-        (item) => item.taskDefKey
-      );
-      let nodeTableDef = this.nodeTableData.map((item) => item.taskDefKey);
-      nodeTableDef.forEach((item) => {
-        if (!oldNodeTableDef.includes(item)) {
-          let result = this.nodeTableData.find((d) => d.taskDefKey === item);
-          addedTasks.push(result);
+          let addedTasks = [];
+          let removedTasks = [];
+          let oldNodeTableDef = this.oldNodeTableData.map(
+            (item) => item.taskDefKey
+          );
+          let nodeTableDef = this.nodeTableData.map((item) => item.taskDefKey);
+          nodeTableDef.forEach((item) => {
+            if (!oldNodeTableDef.includes(item)) {
+              let result = this.nodeTableData.find(
+                (d) => d.taskDefKey === item
+              );
+              addedTasks.push(result);
+            }
+          });
+          oldNodeTableDef.forEach((item) => {
+            if (!nodeTableDef.includes(item)) {
+              removedTasks.push(item);
+            }
+          });
+
+          editMile({
+            ...this.standardForm,
+            addedTasks,
+            removedTasks,
+            id: this.currentRow.id,
+            name: this.currentRow.name,
+          })
+            .then(() => {
+              this.buttonLoading = false;
+              this.handleClose();
+              this.$message({
+                type: "success",
+                message: "保存成功",
+              });
+            })
+            .catch((err) => {
+              this.buttonLoading = false;
+              Message({
+                message: "接口报错",
+                type: "error",
+                duration: 5 * 1000,
+              });
+            });
+        } else {
+          return false;
         }
       });
-      oldNodeTableDef.forEach((item) => {
-        if (!nodeTableDef.includes(item)) {
-          removedTasks.push(item);
-        }
-      });
-
-      editMile({
-        ...this.standardForm,
-        addedTasks,
-        removedTasks,
-        id: this.currentRow.id,
-        name: this.currentRow.name,
-      })
-        .then(() => {
-          this.buttonLoading = false;
-          this.handleClose();
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-        })
-        .catch((err) => {
-          this.buttonLoading = false;
-          Message({
-            message: "接口报错",
-            type: "error",
-            duration: 5 * 1000,
-          });
-        });
     },
   },
 };
