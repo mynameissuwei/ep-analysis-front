@@ -159,9 +159,9 @@ export default {
           export: isExport,
           procDefName: this.processName,
           appName: this.appName,
-        }
-      })
-      window.open(routeUrl.href, '_blank')
+        },
+      });
+      window.open(routeUrl.href, "_blank");
       // this.$router.push({
       //   path: "/process/analysis/report",
       //   query: {

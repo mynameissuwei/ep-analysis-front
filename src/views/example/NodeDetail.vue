@@ -19,7 +19,7 @@
         <div class="conclusion" v-if="showConclusion">
           <div class="conclusion-title">分析结论：</div>
           <div>
-            {{ nodeChartData.conclusion }}
+            {{ nodeChartData.conclusion ? nodeChartData.conclusion : "- -" }}
           </div>
         </div>
         <el-divider></el-divider>
@@ -94,13 +94,26 @@
           <span> {{ nodeAnalysisData.chainDate }} </span>
         </div>
       </div>
-      <el-table :data="nodeAnalysisData.list">
-        <el-table-column prop="taskName" label="节点名称" :width="isExport?'':150" fixed>
+      <el-table :data="isInit ? nodeAnalysisInitData : nodeAnalysisData.list">
+        <el-table-column
+          prop="taskName"
+          label="节点名称"
+          :width="isExport ? '' : 150"
+          fixed
+        >
         </el-table-column>
         <el-table-column label="平均耗时(人天)">
-          <el-table-column prop="averagePassTime" label="耗时" :width="isExport?'':120">
+          <el-table-column
+            prop="averagePassTime"
+            label="耗时"
+            :width="isExport ? '' : 120"
+          >
           </el-table-column>
-          <el-table-column prop="averagePassTimeChain" label="环比" :width="isExport?'':120">
+          <el-table-column
+            prop="averagePassTimeChain"
+            label="环比"
+            :width="isExport ? '' : 120"
+          >
             <template slot-scope="{ row }">
               <div>
                 <span>{{ row.averagePassTimeChain.toFixed(2) + "%" }}</span>
@@ -121,13 +134,13 @@
           <el-table-column
             prop="averageActualCostTime"
             label="耗时"
-            :width="isExport?'':120"
+            :width="isExport ? '' : 120"
           >
           </el-table-column>
           <el-table-column
             prop="averageActualCostTimeChain"
             label="环比"
-            :width="isExport?'':300"
+            :width="isExport ? '' : 300"
           >
             <template slot-scope="{ row }">
               <div>
@@ -148,9 +161,17 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="平均等待(人天)">
-          <el-table-column prop="averageWaitTime" label="耗时" :width="isExport?'':120">
+          <el-table-column
+            prop="averageWaitTime"
+            label="耗时"
+            :width="isExport ? '' : 120"
+          >
           </el-table-column>
-          <el-table-column prop="averageWaitTimeChain" label="环比" :width="isExport?'':300">
+          <el-table-column
+            prop="averageWaitTimeChain"
+            label="环比"
+            :width="isExport ? '' : 300"
+          >
             <template slot-scope="{ row }">
               <div>
                 <span>{{ row.averageWaitTimeChain.toFixed(2) + "%" }}</span>
@@ -172,7 +193,9 @@
       <div class="conclusion" v-if="showConclusion">
         <div class="conclusion-title">分析结论：</div>
         <div>
-          {{ nodeAnalysisData.conclusion }}
+          {{
+            nodeAnalysisData.conclusion ? nodeAnalysisData.conclusion : "- -"
+          }}
         </div>
       </div>
       <el-divider></el-divider>
@@ -182,37 +205,66 @@
       <div class="iconContainer">
         <div class="iconContainer-title">审批耗时偏好分布</div>
       </div>
-      <el-table :data="nodeTimeData.list">
-        <el-table-column prop="taskName" label="节点名称" :width="isExport?'':150" fixed>
+      <el-table :data="isInit ? nodeTimeInitData : nodeTimeData.list">
+        <el-table-column
+          prop="taskName"
+          label="节点名称"
+          :width="isExport ? '' : 150"
+          fixed
+        >
         </el-table-column>
         <el-table-column label="秒批（≤60s）">
-          <el-table-column prop="secondNum" label="次数" :width="isExport?'':120">
+          <el-table-column
+            prop="secondNum"
+            label="次数"
+            :width="isExport ? '' : 120"
+          >
             <template slot-scope="{ row }">
               <span style="color: red">{{ row.secondNum }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="secondPercent" label="占比" :width="isExport?'':120">
+          <el-table-column
+            prop="secondPercent"
+            label="占比"
+            :width="isExport ? '' : 120"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.secondPercent.toFixed(2) + "%" }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="跨天（≥1/人天）">
-          <el-table-column prop="dayNum" label="次数" :width="isExport?'':120">
+          <el-table-column
+            prop="dayNum"
+            label="次数"
+            :width="isExport ? '' : 120"
+          >
             <template slot-scope="{ row }">
               <span style="color: purple">{{ row.dayNum }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="dayPercent" label="占比" :width="isExport?'':300">
+          <el-table-column
+            prop="dayPercent"
+            label="占比"
+            :width="isExport ? '' : 300"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.dayPercent.toFixed(2) + "%" }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="常规">
-          <el-table-column prop="normalNum" label="次数" :width="isExport?'':120">
+          <el-table-column
+            prop="normalNum"
+            label="次数"
+            :width="isExport ? '' : 120"
+          >
           </el-table-column>
-          <el-table-column prop="normalPercent" label="占比" :width="isExport?'':300">
+          <el-table-column
+            prop="normalPercent"
+            label="占比"
+            :width="isExport ? '' : 300"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.normalPercent.toFixed(2) + "%" }}</span>
             </template>
@@ -223,7 +275,7 @@
       <div class="conclusion" v-if="showConclusion">
         <div class="conclusion-title">分析结论：</div>
         <div>
-          {{ nodeTimeData.conclusion }}
+          {{ nodeTimeData.conclusion ? nodeTimeData.conclusion : "- -" }}
         </div>
       </div>
       <el-divider></el-divider>
@@ -268,6 +320,11 @@ import * as echarts from "echarts";
 import Bus from "@/Bus.js";
 import { fetchNodeChartDetail } from "@/api/example";
 import moment from "moment";
+import {
+  nodeAnalysisInitData,
+  nodeTimeInitData,
+  chartInitData,
+} from "./components/NodeDetailData";
 
 export default {
   props: {
@@ -317,8 +374,12 @@ export default {
     },
     isExport: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    isInit: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     DiaModal,
@@ -337,6 +398,9 @@ export default {
         list: [],
       },
       milestoneId: null,
+      nodeAnalysisInitData: nodeAnalysisInitData,
+      nodeTimeInitData: nodeTimeInitData,
+      chartInitData: chartInitData,
     };
   },
   mounted() {
@@ -421,6 +485,7 @@ export default {
       param.startDateTime = moment(startDateTime).format("YYYY-MM-DD");
       param.endDateTime = moment(endDateTime).format("YYYY-MM-DD");
       const { data } = await fetchNodeChartDetail(param);
+      console.log(data, "datadatadatas");
       this.nodeChartDataDetail = data;
     },
     handleShowDetail() {
@@ -507,18 +572,14 @@ export default {
           },
         },
         dataset: {
-          dimensions: this.nodeChartData.list
-            ? this.nodeChartData.list.length
-              ? [
-                  "name",
-                  "taskNumReal",
-                  "taskNumLine",
-                  "timeConsumingReal",
-                  "timeConsumingLine",
-                ]
-              : []
-            : [],
-          source: this.nodeChartData.list ? this.nodeChartData.list : [],
+          dimensions: [
+            "name",
+            "taskNumReal",
+            "taskNumLine",
+            "timeConsumingReal",
+            "timeConsumingLine",
+          ],
+          source: this.isInit ? this.chartInitData : this.nodeChartData.list,
         },
         xAxis: { type: "category" },
         yAxis: {},
