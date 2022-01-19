@@ -122,7 +122,7 @@ export default {
       },
       form: {
         appKey: "pdf",
-        watermark: false,
+        watermark: true,
         export: false,
       },
     };
@@ -159,9 +159,9 @@ export default {
           export: isExport,
           procDefName: this.processName,
           appName: this.appName,
-        }
-      })
-      window.open(routeUrl.href, '_blank')
+        },
+      });
+      window.open(routeUrl.href, "_blank");
       // this.$router.push({
       //   path: "/process/analysis/report",
       //   query: {
