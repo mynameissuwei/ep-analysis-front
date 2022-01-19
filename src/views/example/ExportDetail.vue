@@ -112,10 +112,10 @@ export default {
               id: "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION",
               label: "审批耗时区间分布",
             },
-            {
-              id: "TASK_EXECUTION_EVENT_DETAIL",
-              label: "节点执行时间分布",
-            },
+            // {
+            //   id: "TASK_EXECUTION_EVENT_DETAIL",
+            //   label: "节点执行时间分布",
+            // },
           ],
         },
       ],
