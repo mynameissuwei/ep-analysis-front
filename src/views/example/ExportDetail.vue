@@ -142,7 +142,7 @@ export default {
       this.routerPush(false);
     },
     routerPush(isExport) {
-      this.$router.push({
+      let routeUrl = this.$router.resolve({
         path: "/process/analysis/report",
         query: {
           ...this.form,
@@ -159,8 +159,28 @@ export default {
           export: isExport,
           procDefName: this.processName,
           appName: this.appName,
-        },
-      });
+        }
+      })
+      window.open(routeUrl.href, '_blank')
+      // this.$router.push({
+      //   path: "/process/analysis/report",
+      //   query: {
+      //     ...this.form,
+      //     ...this.listQuery,
+      //     procDefKey: this.listQuery.procDefValue,
+      //     appKey: this.listQuery.templateTypesValue,
+      //     exportRanges: this.$refs.tree.getCheckedKeys(),
+      //     startTime: moment(
+      //       parseInt(this.listQuery.dateValue[0].getTime())
+      //     ).format("YYYY-MM-DD"),
+      //     endTime: moment(
+      //       parseInt(this.listQuery.dateValue[1].getTime())
+      //     ).format("YYYY-MM-DD"),
+      //     export: isExport,
+      //     procDefName: this.processName,
+      //     appName: this.appName,
+      //   },
+      // });
     },
   },
 };

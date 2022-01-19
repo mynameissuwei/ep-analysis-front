@@ -3,7 +3,7 @@
     <div v-if="showNodeExecutionAnalysis">
       <div class="iconContainer">
         <div class="iconContainer-title">里程碑节点执行力分析</div>
-
+        <div class="textClass" @click="handleShowDetailReport">回退明细</div>
         <div v-if="showButton">
           <div class="textClass" @click="handleShowDetail">回退明细</div>
           <div class="iconClass" @click="handleShow">
@@ -95,12 +95,12 @@
         </div>
       </div>
       <el-table :data="nodeAnalysisData.list">
-        <el-table-column prop="taskName" label="节点名称" width="150" fixed>
+        <el-table-column prop="taskName" label="节点名称" :width="isExport?'':150" fixed>
         </el-table-column>
         <el-table-column label="平均耗时(人天)">
-          <el-table-column prop="averagePassTime" label="耗时" width="120">
+          <el-table-column prop="averagePassTime" label="耗时" :width="isExport?'':120">
           </el-table-column>
-          <el-table-column prop="averagePassTimeChain" label="环比" width="120">
+          <el-table-column prop="averagePassTimeChain" label="环比" :width="isExport?'':120">
             <template slot-scope="{ row }">
               <div>
                 <span>{{ row.averagePassTimeChain.toFixed(2) + "%" }}</span>
@@ -121,13 +121,13 @@
           <el-table-column
             prop="averageActualCostTime"
             label="耗时"
-            width="120"
+            :width="isExport?'':120"
           >
           </el-table-column>
           <el-table-column
             prop="averageActualCostTimeChain"
             label="环比"
-            width="300"
+            :width="isExport?'':300"
           >
             <template slot-scope="{ row }">
               <div>
@@ -148,9 +148,9 @@
           </el-table-column>
         </el-table-column>
         <el-table-column label="平均等待(人天)">
-          <el-table-column prop="averageWaitTime" label="耗时" width="120">
+          <el-table-column prop="averageWaitTime" label="耗时" :width="isExport?'':120">
           </el-table-column>
-          <el-table-column prop="averageWaitTimeChain" label="环比" width="300">
+          <el-table-column prop="averageWaitTimeChain" label="环比" :width="isExport?'':300">
             <template slot-scope="{ row }">
               <div>
                 <span>{{ row.averageWaitTimeChain.toFixed(2) + "%" }}</span>
@@ -183,36 +183,36 @@
         <div class="iconContainer-title">审批耗时偏好分布</div>
       </div>
       <el-table :data="nodeTimeData.list">
-        <el-table-column prop="taskName" label="节点名称" width="150" fixed>
+        <el-table-column prop="taskName" label="节点名称" :width="isExport?'':150" fixed>
         </el-table-column>
         <el-table-column label="秒批（≤60s）">
-          <el-table-column prop="secondNum" label="次数" width="120">
+          <el-table-column prop="secondNum" label="次数" :width="isExport?'':120">
             <template slot-scope="{ row }">
               <span style="color: red">{{ row.secondNum }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="secondPercent" label="占比" width="120">
+          <el-table-column prop="secondPercent" label="占比" :width="isExport?'':120">
             <template slot-scope="{ row }">
               <span>{{ row.secondPercent.toFixed(2) + "%" }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="跨天（≥1/人天）">
-          <el-table-column prop="dayNum" label="次数" width="120">
+          <el-table-column prop="dayNum" label="次数" :width="isExport?'':120">
             <template slot-scope="{ row }">
               <span style="color: purple">{{ row.dayNum }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="dayPercent" label="占比" width="300">
+          <el-table-column prop="dayPercent" label="占比" :width="isExport?'':300">
             <template slot-scope="{ row }">
               <span>{{ row.dayPercent.toFixed(2) + "%" }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="常规">
-          <el-table-column prop="normalNum" label="次数" width="120">
+          <el-table-column prop="normalNum" label="次数" :width="isExport?'':120">
           </el-table-column>
-          <el-table-column prop="normalPercent" label="占比" width="300">
+          <el-table-column prop="normalPercent" label="占比" :width="isExport?'':300">
             <template slot-scope="{ row }">
               <span>{{ row.normalPercent.toFixed(2) + "%" }}</span>
             </template>
@@ -315,6 +315,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isExport: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     DiaModal,
@@ -428,6 +432,9 @@ export default {
     },
     handleShow() {
       this.dialogVisible = true;
+    },
+    handleShowDetailReport() {
+      this.showNodeExecutionAnalysisDetail = true;
     },
     handleClose() {
       this.dialogVisible = false;
@@ -555,7 +562,6 @@ export default {
   background: #ffffff;
   box-shadow: 1px 0px 1px 0px #eeeeee;
   border: 1px solid #e9ecf3;
-  // overflow: scroll;
   .iconContainer-title {
     font-size: 16px;
     font-weight: 500;
