@@ -261,6 +261,7 @@ export default {
       this.pd.loadLog(result.data.visualizedText, 3);
     },
     initChart() {
+      if(!this.showNodeExecutionAnalysis) return;
       console.log(document.getElementById("histogram"), "node");
       this.chart = echarts.init(document.getElementById("histogram"));
       this.getNodeChart().then((resp) => {
