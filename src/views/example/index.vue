@@ -222,6 +222,7 @@ import { discoverProcess } from "@/api/process";
 import PD from "@/api/processMining";
 import processJson from "@/views/example/process.json";
 import DateUtil from "./components/getTime";
+import { chartInitData } from "./components/NodeDetailData";
 
 const start = new Date();
 start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
@@ -288,6 +289,7 @@ export default {
       activeName: "first",
       procFactorData: [],
       isInit: true,
+      chartInitData: chartInitData,
       procFactorDetail: {
         partRadio: "0",
         total: "0",
@@ -410,7 +412,7 @@ export default {
       this.nodeAnalysisData = {};
       this.nodeTimeData = {};
       this.nodeChartData = {
-        list: [],
+        list: chartInitData,
         conclusion: "",
       };
     },
