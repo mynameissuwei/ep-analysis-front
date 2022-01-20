@@ -328,12 +328,15 @@ export default {
         list: [],
         conclusion: "",
       },
+      DateUtil: DateUtil,
       listQuery: {
         templateTypesValue: "",
         procDefValue: "",
-        dateValue: [start, new Date()],
+        dateValue: [
+          DateUtil.DateUtil.getStartDayOfMonth(),
+          DateUtil.DateUtil.getEndDayOfMonth(),
+        ],
       },
-      DateUtil: DateUtil,
     };
   },
   created() {
@@ -395,7 +398,10 @@ export default {
     resetForm(formName) {
       this.isInit = true;
       this.$refs[formName].resetFields();
-      this.listQuery.dateValue = "";
+      this.listQuery.dateValue = [
+        DateUtil.DateUtil.getStartDayOfMonth(),
+        DateUtil.DateUtil.getEndDayOfMonth(),
+      ];
       this.initProcess();
       this.initNode();
     },

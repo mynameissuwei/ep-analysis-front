@@ -132,6 +132,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      console.log(this.$refs.tree.getCheckedKeys().length, "checkKeys");
       this.routerPush(true);
     },
     handleRadioChange(val) {

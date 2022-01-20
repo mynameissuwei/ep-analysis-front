@@ -473,11 +473,6 @@ export default {
             })
             .catch((err) => {
               this.buttonLoading = false;
-              Message({
-                message: "接口报错",
-                type: "error",
-                duration: 5 * 1000,
-              });
             });
         } else {
           return false;
