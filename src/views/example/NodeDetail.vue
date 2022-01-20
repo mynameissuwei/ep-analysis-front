@@ -3,7 +3,9 @@
     <div v-if="showNodeExecutionAnalysis">
       <div class="iconContainer">
         <div class="iconContainer-title">里程碑节点执行力分析</div>
-        <div class="textClass" v-if="isExport" @click="handleShowDetailReport">回退明细</div>
+        <div class="textClass" v-if="isExport" @click="handleShowDetailReport">
+          回退明细
+        </div>
         <div v-if="showButton">
           <div class="textClass" @click="handleShowDetail">回退明细</div>
           <div class="iconClass" @click="handleShow">
@@ -571,6 +573,20 @@ export default {
             return str;
           },
         },
+        yAxis: [
+          {
+            type: "value",
+            name: "节点数量",
+            max: 10,
+            min: 0,
+          },
+          {
+            type: "value",
+            name: "耗时人天",
+            min: 0,
+            max: 100,
+          },
+        ],
         dataset: {
           dimensions: [
             "name",
@@ -582,7 +598,6 @@ export default {
           source: this.isInit ? this.chartInitData : this.nodeChartData.list,
         },
         xAxis: { type: "category" },
-        yAxis: {},
         series: [
           { type: "bar" },
           { type: "bar" },

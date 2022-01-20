@@ -249,6 +249,7 @@ export default {
       },
       rules: {
         taskNumLine: [
+          { required: true, message: "请输入标准节点数", trigger: "blur" },
           {
             pattern: /^\d{1,}$/,
             message: "只能输入数字",
@@ -256,9 +257,10 @@ export default {
           },
         ],
         timeConsumingLine: [
+          { required: true, message: "请输入里程碑耗时", trigger: "blur" },
           {
-            pattern: /^\d{1,}$/,
-            message: "只能输入数字",
+            pattern: /^(?!0+$)(?!0*\.0*$)\d{1,8}(\.\d{1,2})?$/,
+            message: "只能支持小数点后两位和纯数字",
             trigger: "blur",
           },
         ],
@@ -458,6 +460,7 @@ export default {
 
           editMile({
             ...this.standardForm,
+            timeConsumingLine: Number(this.standardForm.timeConsumingLine),
             addedTasks,
             removedTasks,
             id: this.currentRow.id,

@@ -51,10 +51,16 @@
 
       <el-form-item size="large">
         <div style="float: right; margin-top: 5px">
-          <el-button type="primary" @click="onSubmit" size="small"
+          <el-button
+            type="primary"
+            @click="onSubmit"
+            size="small"
+            :disabled="isInit"
             >导出</el-button
           >
-          <el-button size="small" @click="onPreview">预览</el-button>
+          <el-button size="small" @click="onPreview" :disabled="isInit"
+            >预览</el-button
+          >
         </div>
       </el-form-item>
     </el-form>
@@ -81,6 +87,10 @@ export default {
     processName: {
       type: String,
       require: true,
+    },
+    isInit: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

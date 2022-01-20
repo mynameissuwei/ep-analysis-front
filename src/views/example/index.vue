@@ -187,6 +187,7 @@
                   :listQuery="listQuery"
                   :appName="appName"
                   :processName="processName"
+                  :isInit="isInit"
                 />
               </el-tab-pane>
             </div>
