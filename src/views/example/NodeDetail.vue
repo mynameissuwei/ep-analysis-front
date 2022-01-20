@@ -599,10 +599,10 @@ export default {
         },
         xAxis: { type: "category" },
         series: [
-          { type: "bar" },
-          { type: "bar" },
-          { type: "bar" },
-          { type: "bar" },
+          { type: "bar", barCategoryGap: "30%" },
+          { type: "bar", barCategoryGap: "30%" },
+          { type: "bar", barCategoryGap: "30%" },
+          { type: "bar", barCategoryGap: "30%" },
         ],
       };
     },

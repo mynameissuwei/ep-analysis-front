@@ -259,8 +259,8 @@ export default {
         timeConsumingLine: [
           { required: true, message: "请输入里程碑耗时", trigger: "blur" },
           {
-            pattern: /^(?!0+$)(?!0*\.0*$)\d{1,8}(\.\d{1,2})?$/,
-            message: "只能支持小数点后两位和纯数字",
+            pattern: /^\d{1,}$/,
+            message: "只能输入数字",
             trigger: "blur",
           },
         ],
