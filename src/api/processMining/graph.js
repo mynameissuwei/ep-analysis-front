@@ -224,6 +224,7 @@ PDp.init = function () {
     style,
     elements
   }))
+
   // 标准化的右键单击或两指 tap
   cy.on('cxttap', 'edge', function (source) {
     if (!isTraceMode) {
@@ -252,6 +253,7 @@ PDp.init = function () {
   cy.on('mouseout', 'node', function (event) {
     if (currentNodeTooltip) currentNodeTooltip.hide()
   })
+
 }
 
 
@@ -312,6 +314,16 @@ PDp.unSelectNodes = function () {
   selectedNodeIds.forEach(function (id) {
     cy.getElementById(id).unselect()
   })
+}
+
+PDp.lock = function () {
+  const cy = this._private.cy
+  cy.elements('node').lock();
+}
+PDp.unlock = function () {
+  const cy = this._private.cy
+  cy.elements('node').unlock();
+
 }
 
 export default PDp
