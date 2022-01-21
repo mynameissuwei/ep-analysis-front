@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <div class="fixed-header">
-      <nav-bar productName="效能分析决策管理平台" />
+      <nav-bar productName="效能分析" />
     </div>
     <div class="app-main-container">
       <sidebar class="sidebar-container" />

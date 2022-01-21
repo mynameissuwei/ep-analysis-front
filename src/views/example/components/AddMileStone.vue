@@ -38,7 +38,14 @@
 import { createMile } from "@/api/example";
 
 export default {
-  props: ["visible", "handleCloseInner", "processNodeData", "getMilestone"],
+  props: [
+    "visible",
+    "handleCloseInner",
+    "processNodeData",
+    "getMilestone",
+    "appKey",
+    "procDefKey",
+  ],
   created() {
     this.init();
   },
@@ -55,6 +62,11 @@ export default {
             min: 1,
             max: 10,
             message: "长度在 1 到 10 个字符",
+            trigger: "blur",
+          },
+          {
+            pattern: /^[\u4e00-\u9fa5]+$/,
+            message: "只能输入中文字符",
             trigger: "blur",
           },
         ],
@@ -76,8 +88,8 @@ export default {
             tasks: this.processNodeData.filter((item) =>
               this.form.tasks.includes(item.taskDefKey)
             ),
-            appKey: "data_asset",
-            procDefKey: "DMD_REPAIR_NEW_WORKFLOW",
+            appKey: this.appKey,
+            procDefKey: this.procDefKey,
           }).then(() => {
             this.handleCloseInner();
             this.getMilestone();

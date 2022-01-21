@@ -50,7 +50,7 @@ export const tenantSidebar = [
         path: "example",
         component: () => import("@/views/example"),
         name: "Example",
-        meta: { title: "实例分析", id: "EFFICIENCY_ANALYSIS_TENANT_CATEGORY" },
+        meta: { title: "实例分析", id: "EFFICIENCY_ANALYSIS_TENANT_INSTANCE" },
       },
       {
         path: "category",

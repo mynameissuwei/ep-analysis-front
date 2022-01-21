@@ -76,7 +76,7 @@ export const constantRoutes = [
         path: "example",
         component: () => import("@/views/example"),
         name: "Example",
-        meta: { title: "实例分析", id: "EFFICIENCY_ANALYSIS_TENANT_CATEGORY" },
+        meta: { title: "实例分析", id: "EFFICIENCY_ANALYSIS_TENANT_INSTANCE" },
       },
       {
         path: "category",
@@ -349,7 +349,7 @@ export const constantRoutes = [
       title: "流程分析导出",
       noCache: true,
       // activeMenu: "/acount/permission",
-      id: "EFFICIENCY_ANALYSIS_TENANT_PROCESS_GRAPH",
+      id: "EFFICIENCY_ANALYSIS_TENANT_INSTANCE",
     },
   },
 ];

@@ -1,7 +1,7 @@
 <template>
   <div class="diaModal">
     <el-dialog
-      title="里程碑及诶单执行力分析因子设置"
+      title="里程碑节点执行力分析因子设置"
       :visible.sync="visible"
       :before-close="handleClose"
       width="800px"
@@ -11,12 +11,16 @@
         :handleCloseInner="handleCloseInner"
         :processNodeData="processNodeData"
         :addRow="addRow"
+        :currentRow="currentRow"
       />
       <add-mile-stone
+        v-if="mileStoneVisible"
         :visible="mileStoneVisible"
         :handleCloseInner="handleCloseMileStone"
         :processNodeData="processNodeData"
         :getMilestone="getMilestone"
+        :appKey="this.listQuery.templateTypesValue"
+        :procDefKey="this.listQuery.procDefValue"
       />
       <div class="container">
         <div class="left-container">
@@ -40,6 +44,7 @@
               :show-header="false"
               row-key="id"
               highlight-current-row
+              max-height="300"
               @current-change="handleCurrentChange"
             >
               <el-table-column prop="name" label="日期" width="180">
@@ -56,7 +61,33 @@
               </el-table-column>
               <el-table-column label="操作" width="230">
                 <template slot-scope="{ row, $index }">
-                  <i
+                  <img
+                    src="@/assets/editIcon.svg"
+                    v-if="row.edit"
+                    style="cursor: pointer"
+                    @click="confirmEdit(row)"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    style="cursor: pointer"
+                    @click="row.edit = !row.edit"
+                    src="@/assets/editBlueIcon.svg"
+                    alt=""
+                  />
+                  <img
+                    style="margin-left: 10px; cursor: pointer"
+                    @click="deleteMile(row)"
+                    src="@/assets/deleteIcon.svg"
+                    alt=""
+                  />
+                  <img
+                    src="@/assets/dragIcon.svg"
+                    style="margin-left: 10px; cursor: pointer"
+                    alt=""
+                  />
+
+                  <!-- <i
                     v-if="row.edit"
                     class="el-icon-share"
                     style="cursor: pointer"
@@ -67,8 +98,8 @@
                     class="el-icon-edit"
                     style="cursor: pointer"
                     @click="row.edit = !row.edit"
-                  ></i>
-                  <i
+                  ></i> -->
+                  <!-- <i
                     class="el-icon-delete"
                     style="margin-left: 10px; cursor: pointer"
                     @click="deleteMile(row)"
@@ -76,7 +107,7 @@
                   <i
                     class="el-icon-rank"
                     style="margin-left: 10px; cursor: pointer"
-                  ></i>
+                  ></i> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -92,6 +123,7 @@
                     type="primary"
                     @click="handleOpenInner"
                     size="small"
+                    :disabled="!this.currentRow"
                     >添加节点</el-button
                   ></span
                 ></span
@@ -106,7 +138,12 @@
                 size="small"
                 @input="querySearchAsync"
               ></el-input>
-              <el-table :data="nodeTableData" max-height="220" :border="true">
+              <el-table
+                :data="nodeTableData"
+                max-height="220"
+                :border="true"
+                :header-cell-style="{ background: '#EEF4FC' }"
+              >
                 <el-table-column
                   prop="taskDefName"
                   label="节点名称"
@@ -136,14 +173,14 @@
         <div class="mileMan">标准值设置</div>
         <el-form
           :model="standardForm"
+          :rules="rules"
           ref="standardForm"
           label-width="100px"
           size="mini"
         >
           <el-row style="margin-top: 15px" :gutter="44">
             <el-col :span="12">
-              <el-form-item>
-                <label slot="label">标准节点数</label>
+              <el-form-item label="标准节点数" prop="taskNumLine">
                 <el-input
                   v-model="standardForm.taskNumLine"
                   placeholder="请输入文字"
@@ -153,7 +190,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item>
+              <el-form-item label="里程碑耗时" prop="timeConsumingLine">
                 <label slot="label">里程碑耗时</label>
                 <el-input
                   v-model="standardForm.timeConsumingLine"
@@ -172,6 +209,7 @@
           @click="onSubmit"
           size="small"
           :loading="buttonLoading"
+          :disabled="!this.currentRow"
           >确 定</el-button
         >
         <el-button @click="handleClose" size="small">取 消</el-button>
@@ -209,13 +247,31 @@ export default {
         taskNumLine: "",
         timeConsumingLine: "",
       },
+      rules: {
+        taskNumLine: [
+          { required: true, message: "请输入标准节点数", trigger: "blur" },
+          {
+            pattern: /^\d{1,}$/,
+            message: "只能输入数字",
+            trigger: "blur",
+          },
+        ],
+        timeConsumingLine: [
+          { required: true, message: "请输入里程碑耗时", trigger: "blur" },
+          {
+            pattern: /^\d{1,}$/,
+            message: "只能输入数字",
+            trigger: "blur",
+          },
+        ],
+      },
       processNodeData: [],
       mileStoneData: [],
       nodeData: [],
       nodeTableData: [],
       oldNodeTableData: [],
       searchTableData: [],
-      currentRow: null,
+      currentRow: {},
       buttonLoading: false,
     };
   },
@@ -230,10 +286,12 @@ export default {
       this.currentRow = row;
     },
     handleCurrentChange(item, oldItem) {
-      oldItem.edit = false;
+      // this.$set(oldItem, "edit", false);
+      if (oldItem) oldItem.edit = false;
       this.currentRow = item;
-      this.nodeTableData = item.tasks;
-      this.oldNodeTableData = item.tasks.slice();
+      this.nodeTableData = item.tasks || [];
+      this.searchTableData = item.tasks || [];
+      this.oldNodeTableData = item.tasks ? item.tasks.slice() : [];
       this.standardForm = {
         taskNumLine: item.taskNumLine,
         timeConsumingLine: item.timeConsumingLine,
@@ -284,11 +342,9 @@ export default {
     },
     querySearchAsync(queryString) {
       let nodeList = this.searchTableData;
-
       let results = queryString
         ? nodeList.filter(this.createStateFilter(queryString))
         : nodeList;
-
       this.nodeTableData = results;
     },
     createStateFilter(queryString) {
@@ -375,48 +431,53 @@ export default {
       });
     },
     onSubmit() {
-      this.buttonLoading = true;
+      this.$refs["standardForm"].validate((valid) => {
+        if (valid) {
+          this.buttonLoading = true;
 
-      let addedTasks = [];
-      let removedTasks = [];
-      let oldNodeTableDef = this.oldNodeTableData.map(
-        (item) => item.taskDefKey
-      );
-      let nodeTableDef = this.nodeTableData.map((item) => item.taskDefKey);
-      nodeTableDef.forEach((item) => {
-        if (!oldNodeTableDef.includes(item)) {
-          addedTasks.push(item);
+          let addedTasks = [];
+          let removedTasks = [];
+          let oldNodeTableDef = this.oldNodeTableData.map(
+            (item) => item.taskDefKey
+          );
+          let nodeTableDef = this.nodeTableData.map((item) => item.taskDefKey);
+          nodeTableDef.forEach((item) => {
+            if (!oldNodeTableDef.includes(item)) {
+              let result = this.nodeTableData.find(
+                (d) => d.taskDefKey === item
+              );
+              addedTasks.push(result);
+            }
+          });
+          oldNodeTableDef.forEach((item) => {
+            if (!nodeTableDef.includes(item)) {
+              removedTasks.push(item);
+            }
+          });
+
+          editMile({
+            ...this.standardForm,
+            timeConsumingLine: Number(this.standardForm.timeConsumingLine),
+            addedTasks,
+            removedTasks,
+            id: this.currentRow.id,
+            name: this.currentRow.name,
+          })
+            .then(() => {
+              this.buttonLoading = false;
+              this.handleClose();
+              this.$message({
+                type: "success",
+                message: "保存成功",
+              });
+            })
+            .catch((err) => {
+              this.buttonLoading = false;
+            });
+        } else {
+          return false;
         }
       });
-      oldNodeTableDef.forEach((item) => {
-        if (!nodeTableDef.includes(item)) {
-          removedTasks.push(item);
-        }
-      });
-
-      editMile({
-        ...this.standardForm,
-        addedTasks,
-        removedTasks,
-        id: this.currentRow.id,
-        name: this.currentRow.name,
-      })
-        .then(() => {
-          this.buttonLoading = false;
-          this.handleClose();
-          this.$message({
-            type: "success",
-            message: "保存成功",
-          });
-        })
-        .catch((err) => {
-          this.buttonLoading = false;
-          Message({
-            message: "接口报错",
-            type: "error",
-            duration: 5 * 1000,
-          });
-        });
     },
   },
 };
@@ -461,9 +522,12 @@ export default {
     font-weight: 500;
     color: #333333;
     line-height: 16px;
+    font-size: 16px;
   }
 }
-::v-deep .el-table__empty-block {
-  width: 100% !important;
+::v-deep {
+  .el-table__empty-block {
+    width: 100% !important;
+  }
 }
 </style>

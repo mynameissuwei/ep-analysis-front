@@ -11,7 +11,7 @@
         <div class="left-container">
           <div class="left-container-title">
             <span class="mileMan">
-              <span>主席决策流程共</span>
+              <span style="margin-right: 10px">{{ currentRow.name }}</span>
               <span>{{ processNodeData.length }}</span>
               <span>个节点</span>
             </span>
@@ -48,11 +48,16 @@
         <div class="right-container">
           <div class="right-container-title">
             <span class="mileMan">
-              <span>已选:</span>
+              <span>已选</span>
+              <span style="margin-right: 6px">:</span>
               <span>{{ checkedValue.length }}</span>
               <span>个节点</span>
             </span>
-            <span class="actionStyle" @click="handleDeleteAll">清空</span>
+            <span
+              @click="handleDeleteAll"
+              style="margin-right: 0px; cursor: pointer; color: #0d54fc"
+              >清空</span
+            >
           </div>
           <div class="right-container-content">
             <div
@@ -61,7 +66,10 @@
             >
               <div class="right-container-list-item">
                 <span>{{ item.taskDefName }}</span>
-                <span class="actionStyle actionClose">
+                <span
+                  class="actionClose"
+                  style="margin-right: 10px; cursor: pointer"
+                >
                   <i
                     class="el-icon-close"
                     @click="handleDeleteCheckbox(index)"
@@ -84,7 +92,13 @@
 
 <script>
 export default {
-  props: ["innerVisible", "handleCloseInner", "processNodeData", "addRow"],
+  props: [
+    "innerVisible",
+    "handleCloseInner",
+    "processNodeData",
+    "addRow",
+    "currentRow",
+  ],
   data() {
     return {
       checkedValue: [],
@@ -224,6 +238,20 @@ export default {
   }
 }
 
-// ::v-deep {
-// }
+::v-deep .el-checkbox {
+  .el-checkbox__label {
+    color: #0d54fc;
+  }
+
+  .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #0d54fc;
+    border-color: #0d54fc;
+  }
+
+  .el-checkbox__input.is-focus .el-checkbox__inner,
+  .el-checkbox__inner:hover {
+    border-color: #0d54fc;
+  }
+}
 </style>

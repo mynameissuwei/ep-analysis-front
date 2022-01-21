@@ -29,29 +29,38 @@
         <span style="margin-left: 10px"> 水印是操作人中文姓名+工号 </span>
       </div>
 
-      <el-form-item label="导出范围">
-        <el-radio-group v-model="form.export" @change="handleRadioChange">
+      <el-form-item label="导出范围" style="margin-bottom: 10px">
+        <!-- <el-radio-group v-model="form.export" @change="handleRadioChange">
           <el-radio :label="true">全部</el-radio>
           <el-radio :label="false">部分</el-radio>
-        </el-radio-group>
+        </el-radio-group> -->
+        <el-checkbox v-model="form.export" @change="checkedAll" /> 全选
       </el-form-item>
+      <div class="tree-container">
+        <!-- <el-checkbox v-model="form.export" @change="checkedAll" /> 全选 -->
 
-      <el-tree
-        class="tree-container"
-        :data="data"
-        ref="tree"
-        show-checkbox
-        node-key="id"
-        :props="defaultProps"
-      >
-      </el-tree>
+        <el-tree
+          :data="data"
+          ref="tree"
+          show-checkbox
+          node-key="id"
+          :props="defaultProps"
+        >
+        </el-tree>
+      </div>
 
       <el-form-item size="large">
         <div style="float: right; margin-top: 5px">
-          <el-button type="primary" @click="onSubmit" size="small"
+          <el-button
+            type="primary"
+            @click="onSubmit"
+            size="small"
+            :disabled="isInit"
             >导出</el-button
           >
-          <el-button size="small" @click="onPreview">预览</el-button>
+          <el-button size="small" @click="onPreview" :disabled="isInit"
+            >预览</el-button
+          >
         </div>
       </el-form-item>
     </el-form>
@@ -78,6 +87,10 @@ export default {
     processName: {
       type: String,
       require: true,
+    },
+    isInit: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -109,10 +122,10 @@ export default {
               id: "APPROVAL_TIME_CONSUMING_INTERVAL_DISTRIBUTION",
               label: "审批耗时区间分布",
             },
-            {
-              id: "TASK_EXECUTION_EVENT_DETAIL",
-              label: "节点执行时间分布",
-            },
+            // {
+            //   id: "TASK_EXECUTION_EVENT_DETAIL",
+            //   label: "节点执行时间分布",
+            // },
           ],
         },
       ],
@@ -121,14 +134,15 @@ export default {
         label: "label",
       },
       form: {
-        appKey: "",
-        watermark: false,
+        appKey: "pdf",
+        watermark: true,
         export: false,
       },
     };
   },
   methods: {
     onSubmit() {
+      console.log(this.$refs.tree.getCheckedKeys().length, "checkKeys");
       this.routerPush(true);
     },
     handleRadioChange(val) {
@@ -141,8 +155,15 @@ export default {
     onPreview() {
       this.routerPush(false);
     },
+    checkedAll() {
+      if (this.form.export) {
+        this.$refs.tree.setCheckedNodes(this.data);
+      } else {
+        this.$refs.tree.setCheckedKeys([]);
+      }
+    },
     routerPush(isExport) {
-      this.$router.push({
+      let routeUrl = this.$router.resolve({
         path: "/process/analysis/report",
         query: {
           ...this.form,
@@ -161,6 +182,26 @@ export default {
           appName: this.appName,
         },
       });
+      window.open(routeUrl.href, "_blank");
+      // this.$router.push({
+      //   path: "/process/analysis/report",
+      //   query: {
+      //     ...this.form,
+      //     ...this.listQuery,
+      //     procDefKey: this.listQuery.procDefValue,
+      //     appKey: this.listQuery.templateTypesValue,
+      //     exportRanges: this.$refs.tree.getCheckedKeys(),
+      //     startTime: moment(
+      //       parseInt(this.listQuery.dateValue[0].getTime())
+      //     ).format("YYYY-MM-DD"),
+      //     endTime: moment(
+      //       parseInt(this.listQuery.dateValue[1].getTime())
+      //     ).format("YYYY-MM-DD"),
+      //     export: isExport,
+      //     procDefName: this.processName,
+      //     appName: this.appName,
+      //   },
+      // });
     },
   },
 };
@@ -181,11 +222,11 @@ export default {
   margin-bottom: 20px;
 }
 .tree-container {
-  background: #f8f9fa;
-  margin-left: 130px;
+  // background: #f8f9fa;
+  margin-left: 112px;
   height: 330px;
-  padding-top: 12px;
-  padding-left: 12px;
+  // padding-top: 12px;
+  // padding-left: 12px;
 }
 .waterMark {
   position: relative;
@@ -195,5 +236,32 @@ export default {
   position: absolute;
   top: 3px;
   font-size: 20px;
+}
+::v-deep .el-checkbox {
+  .el-checkbox__label {
+    color: #0d54fc;
+  }
+
+  .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #0d54fc;
+    border-color: #0d54fc;
+  }
+
+  .el-checkbox__input.is-focus .el-checkbox__inner,
+  .el-checkbox__inner:hover {
+    border-color: #0d54fc;
+  }
+}
+
+::v-deep {
+  .el-radio__input.is-checked + .el-radio__label {
+    color: #0d54fc !important;
+  }
+  /* 选中后小圆点的颜色 */
+  .el-radio__input.is-checked .el-radio__inner {
+    background: #0d54fc !important;
+    border-color: #0d54fc !important;
+  }
 }
 </style>
