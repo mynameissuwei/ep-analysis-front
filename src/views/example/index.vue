@@ -358,6 +358,7 @@ export default {
     initPD() {
       this.pd = new PD("process_graph");
       this.pd.loadLog(JSON.stringify(processJson), 3);
+      this.pd.lock();
     },
     async DFG() {
       let queryData = {
@@ -372,6 +373,7 @@ export default {
       };
       const result = await discoverProcess(queryData);
       this.pd.loadLog(result.data.visualizedText, 3);
+      this.pd.lock();
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
