@@ -35,7 +35,7 @@
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.redLine"
-                @change="handleInputChange"
+                @change="(val) => handleRedLineInputChange(val, 'flowEffic')"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -49,6 +49,7 @@
               <el-input-number
                 v-model="form.rule.flowEffic.high"
                 :max="form.rule.flowEffic.redLine"
+                @change="(val) => handleHighInputChange(val, 'flowEffic')"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -59,7 +60,8 @@
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.middle"
-                :max="form.rule.flowEffic.redLine"
+                :max="form.rule.flowEffic.high"
+                @change="(val) => handleMediumInputChange(val, 'flowEffic')"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -72,7 +74,7 @@
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.low"
-                :max="form.rule.flowEffic.redLine"
+                :max="form.rule.flowEffic.middle"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -106,6 +108,7 @@
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.redLine"
+                @change="(val) => handleRedLineInputChange(val, 'timeEffic')"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -118,6 +121,8 @@
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.high"
+                @change="(val) => handleHighInputChange(val, 'timeEffic')"
+                :max="form.rule.timeEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -128,6 +133,8 @@
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.middle"
+                @change="(val) => handleMediumInputChange(val, 'timeEffic')"
+                :max="form.rule.timeEffic.high"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -140,6 +147,7 @@
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.low"
+                :max="form.rule.timeEffic.middle"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -173,6 +181,7 @@
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.redLine"
+                @change="(val) => handleRedLineInputChange(val, 'personEffic')"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -185,6 +194,8 @@
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.high"
+                @change="(val) => handleHighInputChange(val, 'personEffic')"
+                :max="form.rule.personEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -195,6 +206,8 @@
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.middle"
+                @change="(val) => handleMediumInputChange(val, 'personEffic')"
+                :max="form.rule.personEffic.high"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -206,7 +219,8 @@
                 >低预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
-                v-model="form.rule.timeEffic.low"
+                v-model="form.rule.personEffic.low"
+                :max="form.rule.personEffic.middle"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -258,10 +272,24 @@ export default {
         this.form = this.procFactorRuleData;
       }
     },
-    handleInputChange(val) {
-      this.form.rule.flowEffic.high = 0;
-      this.form.rule.flowEffic.middle = 0;
-      this.form.rule.flowEffic.low = 0;
+    handleRedLineInputChange(val, type) {
+      console.log(val, "valval");
+      if (this.form.rule[type].high > val) {
+        this.form.rule[type].high = val;
+        this.form.rule[type].middle = val;
+        this.form.rule[type].low = val;
+      }
+    },
+    handleHighInputChange(val, type) {
+      if (this.form.rule[type].middle > val) {
+        this.form.rule[type].middle = val;
+        this.form.rule[type].low = val;
+      }
+    },
+    handleMediumInputChange(val, type) {
+      if (this.form.rule[type].low > val) {
+        this.form.rule[type].low = val;
+      }
     },
     onSubmit() {
       this.buttonLoading = true;

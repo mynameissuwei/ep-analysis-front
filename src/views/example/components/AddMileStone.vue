@@ -64,11 +64,11 @@ export default {
             message: "长度在 1 到 10 个字符",
             trigger: "blur",
           },
-          {
-            pattern: /^[\u4e00-\u9fa5]+$/,
-            message: "只能输入中文字符",
-            trigger: "blur",
-          },
+          // {
+          //   pattern: /^[\u4e00-\u9fa5]+$/,
+          //   message: "只能输入中文字符",
+          //   trigger: "blur",
+          // },
         ],
       },
     };
