@@ -137,7 +137,7 @@
                 >
               </el-descriptions>
               <i
-                style="font-size: 20px; margin-left: 20px; margin-top: 20px"
+                style="font-size: 20px; margin-left: 20px; margin-top: 20px;color: #999999"
                 class="el-icon-question"
                 slot="reference"
               >
