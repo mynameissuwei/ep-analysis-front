@@ -134,8 +134,8 @@
             v-bind="{
               title: '时效',
               content: `${procFactorDetail.timeLimit}`,
-              expect: `< ${procFactorRuleData.rule.timeEffic.expect}人天`,
-              redLine: `≥ ${procFactorRuleData.rule.timeEffic.redLine}人天`,
+              expect: `≤ ${procFactorRuleData.rule.timeEffic.expect}人天`,
+              redLine: `> ${procFactorRuleData.rule.timeEffic.redLine}人天`,
               redLineText: '时效红线',
               expectText: '时效期望',
               unit: '人天',
@@ -209,8 +209,8 @@
             v-bind="{
               title: '人效',
               content: `${procFactorDetail.personLimit}`,
-              expect: `< ${procFactorRuleData.rule.personEffic.expect}人天`,
-              redLine: `≥ ${procFactorRuleData.rule.personEffic.redLine}人天`,
+              expect: `≤ ${procFactorRuleData.rule.personEffic.expect}人天`,
+              redLine: `> ${procFactorRuleData.rule.personEffic.redLine}人天`,
               redLineText: '人效红线',
               expectText: '人效期望',
               unit: '人天',

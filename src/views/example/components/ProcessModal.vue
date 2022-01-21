@@ -25,18 +25,17 @@
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.expect"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >流效红线 <span style="color: #333333">≤</span>
+                >流效红线 <span style="color: #333333"><</span>
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.redLine"
-                controls-position="right"
+                @change="handleInputChange"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -45,22 +44,22 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >高预警 <span style="color: #333333">≤</span>
+                >高预警 <span style="color: #333333"><</span>
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.high"
-                controls-position="right"
+                :max="form.rule.flowEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >中预警 <span style="color: #333333">≤</span>
+                >中预警 <span style="color: #333333"><</span>
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.middle"
-                controls-position="right"
+                :max="form.rule.flowEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -69,11 +68,11 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >低预警 <span style="color: #333333">≤</span>
+                >低预警 <span style="color: #333333"><</span>
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.low"
-                controls-position="right"
+                :max="form.rule.flowEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -93,22 +92,20 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >流效期望 <span style="color: #333333">≥</span>
+                >时效期望 <span style="color: #333333">≤</span>
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.expect"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >流效红线 <span style="color: #333333">≤</span>
+                >时效红线 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.redLine"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -117,22 +114,20 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >高预警 <span style="color: #333333">≤</span>
+                >高预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.high"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >中预警 <span style="color: #333333">≤</span>
+                >中预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.middle"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -141,11 +136,10 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >低预警 <span style="color: #333333">≤</span>
+                >低预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.low"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -165,22 +159,20 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >流效期望 <span style="color: #333333">≥</span>
+                >人效期望 <span style="color: #333333">≤</span>
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.expect"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >流效红线 <span style="color: #333333">≤</span>
+                >人效红线 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.redLine"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -189,22 +181,20 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >高预警 <span style="color: #333333">≤</span>
+                >高预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.high"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >中预警 <span style="color: #333333">≤</span>
+                >中预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.personEffic.middle"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -213,11 +203,10 @@
           <el-col :span="12">
             <el-form-item>
               <label slot="label"
-                >低预警 <span style="color: #333333">≤</span>
+                >低预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
                 v-model="form.rule.timeEffic.low"
-                controls-position="right"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -268,6 +257,11 @@ export default {
       if (this.procFactorRuleData) {
         this.form = this.procFactorRuleData;
       }
+    },
+    handleInputChange(val) {
+      this.form.rule.flowEffic.high = 0;
+      this.form.rule.flowEffic.middle = 0;
+      this.form.rule.flowEffic.low = 0;
     },
     onSubmit() {
       this.buttonLoading = true;
@@ -323,5 +317,6 @@ export default {
 }
 .warntext-container {
   margin-bottom: 20px;
+  margin-right: 70px;
 }
 </style>

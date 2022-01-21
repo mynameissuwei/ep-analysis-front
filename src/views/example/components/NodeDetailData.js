@@ -1,6 +1,6 @@
 const nodeAnalysisInitData = [
   {
-    taskName: "抢单人",
+    taskName: "产业公司内部决策提交",
     averagePassTime: 0,
     averagePassTimeChain: 0,
     averageActualCostTime: 0,
@@ -9,7 +9,7 @@ const nodeAnalysisInitData = [
     averageWaitTimeChain: 0,
   },
   {
-    taskName: "接单人",
+    taskName: "机要室审核",
     averagePassTime: 0,
     averagePassTimeChain: 0,
     averageActualCostTime: 0,
@@ -23,7 +23,7 @@ const nodeTimeInitData = [
   {
     tenantId: "1369559970221985794",
     taskDefKey: "qiangdan",
-    taskName: "抢单人",
+    taskName: "费用报销单审核",
     normalNum: 0,
     totalNum: 0,
     normalPercent: 0,
@@ -35,7 +35,7 @@ const nodeTimeInitData = [
   {
     tenantId: "1369559970221985794",
     taskDefKey: "jiedan",
-    taskName: "接单人",
+    taskName: "业务负责人审批",
     normalNum: 0,
     totalNum: 0,
     normalPercent: 0,

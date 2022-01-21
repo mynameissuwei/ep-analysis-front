@@ -271,7 +271,7 @@ export default {
       nodeTableData: [],
       oldNodeTableData: [],
       searchTableData: [],
-      currentRow: null,
+      currentRow: {},
       buttonLoading: false,
     };
   },
@@ -289,8 +289,8 @@ export default {
       // this.$set(oldItem, "edit", false);
       if (oldItem) oldItem.edit = false;
       this.currentRow = item;
-      console.log(item, "itemitme");
       this.nodeTableData = item.tasks || [];
+      this.searchTableData = item.tasks || [];
       this.oldNodeTableData = item.tasks ? item.tasks.slice() : [];
       this.standardForm = {
         taskNumLine: item.taskNumLine,
@@ -326,7 +326,6 @@ export default {
     },
     addRow(data) {
       let result = this.nodeTableData;
-      console.log(this.nodeTableData, "nodeTableData");
       let resultKeys = this.nodeTableData.map((item) => item.taskDefKey);
       let array = data
         .filter((d) => {
@@ -343,11 +342,9 @@ export default {
     },
     querySearchAsync(queryString) {
       let nodeList = this.searchTableData;
-
       let results = queryString
         ? nodeList.filter(this.createStateFilter(queryString))
         : nodeList;
-
       this.nodeTableData = results;
     },
     createStateFilter(queryString) {
