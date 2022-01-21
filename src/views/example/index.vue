@@ -119,7 +119,7 @@
                 <el-descriptions-item label="干系人:">是节点涉及的操作人数，没有操作流程的人员不计入。</el-descriptions-item>
                 <el-descriptions-item label="平均耗时:">从前一节点到当前节点之前平均耗时。</el-descriptions-item>
               </el-descriptions>
-              <i style="font-size: 20px;margin-left: 20px;margin-top: 20px" class="el-icon-question" slot="reference">
+              <i style="font-size: 20px;margin-left: 20px;margin-top: 20px;color: #999999" class="el-icon-question" slot="reference">
                 <span style="font-size: 14px;margin-left: 10px">元素说明</span>
               </i>
             </el-popover>
