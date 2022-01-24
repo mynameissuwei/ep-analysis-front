@@ -17,7 +17,7 @@
               <div>该流程期望的流效率是大于等于多少，依业务自行定义。</div>
             </template>
             <template v-slot:rightTip>
-              <div>该流程流效红线是小于等于多少，依业务自行定义。</div>
+              <div>该流程流效红线是小于多少，依业务自行定义。</div>
             </template>
             <template v-slot:topTip>
               <span>
@@ -62,10 +62,10 @@
             }"
           >
             <template v-slot:leftTip>
-              <div>该流程期望的流效率是大于等于多少，依业务自行定义。</div>
+              <div>该流程期望的流效率是小于等于多少，依业务自行定义。</div>
             </template>
             <template v-slot:rightTip>
-              <div>该流程流效红线是小于等于多少，依业务自行定义。</div>
+              <div>该流程流效红线是大于多少，依业务自行定义。</div>
             </template>
             <template v-slot:topTip>
               时效是指每条流程平均用时，时效=流程总耗时/流程总数量/8h。
