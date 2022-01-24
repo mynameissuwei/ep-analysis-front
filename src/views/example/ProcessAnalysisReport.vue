@@ -122,6 +122,7 @@
             :procFactorDetail="procFactorDetail"
             :procFactorRuleData="procFactorRuleData"
             :showSettingButton="false"
+            :is-init="false"
           />
         </div>
 
@@ -142,6 +143,7 @@
             :showConclusion="false"
             :showButton="false"
             :is-export="true"
+            :is-init="false"
           />
         </div>
       </el-main>

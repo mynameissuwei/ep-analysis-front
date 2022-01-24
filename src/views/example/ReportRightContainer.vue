@@ -1,16 +1,17 @@
 <template>
   <div class="right-container scroll-container">
     <div>
-      <el-row :gutter="24" style="margin-top: 10px">
+      <el-row :gutter="24" style="position: relative;margin-top: 20px;">
         <el-col :span="6">
           <process-card
             v-bind="{
               title: '流效率',
               content: `${procFactorDetail.flowRadio}%`,
               expect: `≥ ${procFactorRuleData.rule.flowEffic.expect}%`,
-              redLine: `≤ ${procFactorRuleData.rule.flowEffic.redLine}%`,
+              redLine: `< ${procFactorRuleData.rule.flowEffic.redLine}%`,
               redLineText: '流效红线',
               expectText: '流效期望',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -28,24 +29,29 @@
               </span>
             </template>
             <template v-slot:right>
-              <img
-                src="@/assets/warn.svg"
-                class="warnClass"
-                alt=""
-                v-if="procFactorDetail.flowRadio <= 10"
-              />
-              <img
-                src="@/assets/greenWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else-if="procFactorDetail.flowRadio <= 30"
-              />
-              <img
-                src="@/assets/yellowWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else
-              />
+              <div v-if="isInit">
+                <img src="@/assets/initWarn.svg" class="warnClass" alt="" />
+              </div>
+              <div v-else>
+                <img
+                  src="@/assets/warn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-if="procFactorDetail.flowRadio <= 10"
+                />
+                <img
+                  src="@/assets/greenWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else-if="procFactorDetail.flowRadio <= 30"
+                />
+                <img
+                  src="@/assets/yellowWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else
+                />
+              </div>
             </template>
           </process-card>
         </el-col>
@@ -55,10 +61,11 @@
               title: '时效',
               content: `${procFactorDetail.timeLimit}`,
               expect: `≤ ${procFactorRuleData.rule.timeEffic.expect}人天`,
-              redLine: `≥ ${procFactorRuleData.rule.timeEffic.redLine}人天`,
+              redLine: `> ${procFactorRuleData.rule.timeEffic.redLine}人天`,
               redLineText: '时效红线',
               expectText: '时效期望',
               unit: '人天',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -71,24 +78,29 @@
               时效是指每条流程平均用时，时效=流程总耗时/流程总数量/8h。
             </template>
             <template v-slot:right>
-              <img
-                src="@/assets/warn.svg"
-                class="warnClass"
-                alt=""
-                v-if="procFactorDetail.timeLimit >= 20"
-              />
-              <img
-                src="@/assets/greenWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else-if="procFactorDetail.timeLimit >= 10"
-              />
-              <img
-                src="@/assets/yellowWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else
-              />
+              <div v-if="isInit">
+                <img src="@/assets/initWarn.svg" class="warnClass" alt="" />
+              </div>
+              <div v-else>
+                <img
+                  src="@/assets/warn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-if="procFactorDetail.timeLimit >= 20"
+                />
+                <img
+                  src="@/assets/greenWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else-if="procFactorDetail.timeLimit >= 10"
+                />
+                <img
+                  src="@/assets/yellowWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else
+                />
+              </div>
             </template>
           </process-card>
         </el-col>
@@ -102,6 +114,7 @@
               expect: '0人',
               redLine: '0人',
               unit: '人',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -121,10 +134,11 @@
               title: '人效',
               content: `${procFactorDetail.personLimit}`,
               expect: `≤ ${procFactorRuleData.rule.personEffic.expect}人天`,
-              redLine: `≥ ${procFactorRuleData.rule.personEffic.redLine}人天`,
+              redLine: `> ${procFactorRuleData.rule.personEffic.redLine}人天`,
               redLineText: '人效红线',
               expectText: '人效期望',
               unit: '人天',
+              isInit: isInit,
             }"
           >
             <template v-slot:leftTip>
@@ -137,29 +151,34 @@
               人效即人的效率，单人在流程的平均用时，人效＝流程总耗/总干系人数/8h。
             </template>
             <template v-slot:right>
-              <img
-                src="@/assets/warn.svg"
-                class="warnClass"
-                alt=""
-                v-if="procFactorDetail.timeLimit >= 3"
-              />
-              <img
-                src="@/assets/greenWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else-if="procFactorDetail.timeLimit >= 2"
-              />
-              <img
-                src="@/assets/yellowWarn.svg"
-                class="warnClass"
-                alt=""
-                v-else
-              />
+              <div v-if="isInit">
+                <img src="@/assets/initWarn.svg" class="warnClass" alt="" />
+              </div>
+              <div v-else>
+                <img
+                  src="@/assets/warn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-if="procFactorDetail.timeLimit >= 3"
+                />
+                <img
+                  src="@/assets/greenWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else-if="procFactorDetail.timeLimit >= 2"
+                />
+                <img
+                  src="@/assets/yellowWarn.svg"
+                  class="warnClass"
+                  alt=""
+                  v-else
+                />
+              </div>
             </template>
           </process-card>
         </el-col>
-      </el-row>
 
+      </el-row>
       <el-row :gutter="24" class="center-row">
         <el-col :span="6">
           <process-card
@@ -213,6 +232,16 @@
           </process-card>
         </el-col>
       </el-row>
+      <!-- <el-row :gutter="20" class="bottomRow">
+        <el-col :span="12">
+          <process-chart
+            v-bind="{
+              title: '节点价值分布',
+            }"
+          >
+          </process-chart>
+        </el-col>
+      </el-row> -->
     </div>
     <!-- 弹框 -->
     <process-modal
@@ -258,6 +287,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isInit: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     ProcessCard,
@@ -296,7 +329,6 @@ export default {
   background: #ffffff;
   box-shadow: 1px 0px 1px 0px #eeeeee;
   border: 1px solid #e9ecf3;
-  margin-top: 10px;
   // overflow: scroll;
 }
 .iconContainer {
@@ -332,5 +364,6 @@ export default {
 }
 .alert-container {
   margin-top: 10px;
+  background: #e6f3fe;
 }
 </style>
