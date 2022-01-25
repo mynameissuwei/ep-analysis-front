@@ -291,7 +291,7 @@ export default {
       if (oldItem) oldItem.edit = false;
       this.currentRow = item;
       this.nodeTableData = item.tasks || [];
-      this.searchTableData = item.tasks || [];
+      this.searchTableData = item.tasks ? item.tasks.slice() : [];
       this.oldNodeTableData = item.tasks ? item.tasks.slice() : [];
       this.standardForm = {
         taskNumLine: item.taskNumLine,
@@ -382,7 +382,7 @@ export default {
         appKey: this.listQuery.templateTypesValue,
         procDefKey: this.listQuery.procDefValue,
       });
-      console.log(data, "datadata");
+
       this.processNodeData = data;
     },
     async getMilestone() {

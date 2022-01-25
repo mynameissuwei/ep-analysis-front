@@ -168,6 +168,7 @@
                   :getProcFactor="getProcFactor"
                   :listQuery="listQuery"
                   :isInit="isInit"
+                  :driver="driver"
                 />
               </el-tab-pane>
               <el-tab-pane
@@ -181,6 +182,7 @@
                   :nodeChartData="nodeChartData"
                   :listQuery="listQuery"
                   :isInit="isInit"
+                  :driver="driver"
                 />
               </el-tab-pane>
               <el-tab-pane
@@ -280,7 +282,6 @@ export default {
       selectTemplateData: [],
       activeName: "first",
       procFactorData: [],
-      isInit: true,
       chartInitData: chartInitData,
       procFactorDetail: {
         partRadio: "0",
@@ -324,6 +325,7 @@ export default {
         conclusion: "",
       },
       DateUtil: DateUtil,
+      isInit: true,
       listQuery: {
         templateTypesValue: "",
         procDefValue: "",
@@ -364,7 +366,10 @@ export default {
         appKey: this.listQuery.templateTypesValue,
       };
       const result = await discoverProcess(queryData);
-      let visualizedText = result.data.visualizedText == '[]' ? JSON.stringify(processJson) : result.data.visualizedText;
+      let visualizedText =
+        result.data.visualizedText == "[]"
+          ? JSON.stringify(processJson)
+          : result.data.visualizedText;
       this.pd.loadLog(visualizedText, 3);
       this.pd.lock();
     },
@@ -386,13 +391,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.isInit = false;
           this.getProcIndexRule();
           this.getProcFactor();
           this.getNode();
           this.DFG();
           this.$nextTick(() => {
-            this.initStep();
+            console.log(this.isInit, "initinit");
+            this.isInit && this.initStep();
+            this.isInit = false;
           });
         }
       });

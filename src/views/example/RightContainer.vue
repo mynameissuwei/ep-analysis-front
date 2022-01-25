@@ -313,6 +313,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    driver: {
+      type: Object,
+      default: {},
+    },
   },
   components: {
     ProcessCard,
@@ -327,6 +331,7 @@ export default {
   methods: {
     handleShow() {
       this.dialogVisible = true;
+      this.driver.reset();
     },
     handleClose() {
       this.dialogVisible = false;

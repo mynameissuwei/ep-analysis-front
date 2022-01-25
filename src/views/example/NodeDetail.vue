@@ -382,6 +382,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    driver: {
+      type: Object,
+      default: {},
+    },
   },
   components: {
     DiaModal,
@@ -499,6 +503,7 @@ export default {
     },
     handleShow() {
       this.dialogVisible = true;
+      this.driver.reset();
     },
     handleShowDetailReport() {
       this.showNodeExecutionAnalysisDetail = true;
