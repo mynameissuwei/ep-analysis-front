@@ -410,6 +410,7 @@ export default {
       ];
       this.initProcess();
       this.initNode();
+      this.initPD();
     },
     initNode() {
       this.nodeAnalysisData = {};
