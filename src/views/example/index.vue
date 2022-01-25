@@ -372,7 +372,8 @@ export default {
         appKey: this.listQuery.templateTypesValue,
       };
       const result = await discoverProcess(queryData);
-      this.pd.loadLog(result.data.visualizedText, 3);
+      let visualizedText = result.data.visualizedText == '[]' ? JSON.stringify(processJson) : result.data.visualizedText;
+      this.pd.loadLog(visualizedText, 3);
       this.pd.lock();
     },
     submitForm(formName) {
