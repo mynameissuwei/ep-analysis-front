@@ -356,7 +356,6 @@ export default {
 .iconContainer {
   width: 100%;
   height: 54px;
-
   .iconClass {
     cursor: pointer;
     width: 24px;
@@ -366,11 +365,10 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    float: right;
-    margin-bottom: 16px;
-    margin-top: 16px;
     position: absolute;
     right: 10px;
+    margin-bottom: 16px;
+    margin-top: 16px;
   }
 }
 .right-without-container {

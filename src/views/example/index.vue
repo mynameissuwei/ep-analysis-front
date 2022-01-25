@@ -91,7 +91,7 @@
               <el-button
                 type="primary"
                 size="small"
-                @click="submitForm('ruleForm')"
+                @click.prevent.stop="submitForm('ruleForm')"
                 >查询
               </el-button>
               <el-button size="small" @click="resetForm('ruleForm')"
@@ -137,7 +137,12 @@
                 >
               </el-descriptions>
               <i
-                style="font-size: 20px; margin-left: 20px; margin-top: 20px;color: #999999"
+                style="
+                  font-size: 20px;
+                  margin-left: 20px;
+                  margin-top: 20px;
+                  color: #999999;
+                "
                 class="el-icon-question"
                 slot="reference"
               >
@@ -237,20 +242,7 @@ export default {
     ExportDetail,
   },
   mounted() {
-    // this.driver = new Driver();
-    // const steps = [
-    //   {
-    //     element: ".button-group",
-    //     popover: {
-    //       title: "提示",
-    //       description: "请填写相关参数,再点击查询",
-    //       position: "bottom",
-    //     },
-    //     padding: 0,
-    //   },
-    // ];
-    // this.driver.defineSteps(steps);
-    // this.driver.start();
+    this.driver = new Driver();
     this.initPD();
     let $this = this;
     Bus.$on("selectNodes", (data) => {
@@ -375,6 +367,21 @@ export default {
       this.pd.loadLog(result.data.visualizedText, 3);
       this.pd.lock();
     },
+    initStep() {
+      const steps = [
+        {
+          element: ".iconClass",
+          popover: {
+            title: "提示",
+            description: "请填写因子设置",
+            position: "left",
+            offset: 20,
+          },
+        },
+      ];
+      this.driver.defineSteps(steps);
+      this.driver.start();
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -383,6 +390,9 @@ export default {
           this.getProcFactor();
           this.getNode();
           this.DFG();
+          this.$nextTick(() => {
+            this.initStep();
+          });
         }
       });
     },

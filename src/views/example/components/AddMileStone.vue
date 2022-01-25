@@ -22,6 +22,7 @@
             :key="item.taskDefKey"
             :label="item.taskDefName"
             :value="item.taskDefKey"
+            :disabled="item.milestoneId != 0"
           >
           </el-option>
         </el-select>

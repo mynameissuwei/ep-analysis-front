@@ -13,6 +13,7 @@
         :addRow="addRow"
         :currentRow="currentRow"
       />
+
       <add-mile-stone
         v-if="mileStoneVisible"
         :visible="mileStoneVisible"
@@ -381,6 +382,7 @@ export default {
         appKey: this.listQuery.templateTypesValue,
         procDefKey: this.listQuery.procDefValue,
       });
+      console.log(data, "datadata");
       this.processNodeData = data;
     },
     async getMilestone() {
