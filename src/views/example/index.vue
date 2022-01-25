@@ -373,7 +373,6 @@ export default {
       };
       const result = await discoverProcess(queryData);
       let visualizedText = result.data.visualizedText == '[]' ? JSON.stringify(processJson) : result.data.visualizedText;
-      console.log(visualizedText)
       this.pd.loadLog(visualizedText, 3);
       this.pd.lock();
     },
