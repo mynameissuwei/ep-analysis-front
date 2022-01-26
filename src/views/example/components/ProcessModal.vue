@@ -6,6 +6,21 @@
       width="640px"
       :before-close="handleClose"
     >
+      <div class="alert-container">
+        <div class="alert-item">
+          1.高预警是红灯,中预警黄灯,低预警是绿灯,初始化默认是灰色灯
+        </div>
+        <div class="alert-item">
+          2.流效率设置规则:
+          流效期望≥流效红线≥低预警>中预警>高预警,流效率期望一般设置≥10%的数字
+        </div>
+        <div class="alert-item">
+          3.时效设置规则: 时效红线≥高预警>中预警>低预警>时效期望
+        </div>
+        <div class="alert-item">
+          4.人效设置规则: 人效红线≥高预警>中预警>低预警>人效期望
+        </div>
+      </div>
       <el-form :model="form" ref="form" label-width="100px" size="mini">
         <div class="bread-container">
           <bread-text
@@ -25,6 +40,8 @@
               </label>
               <el-input-number
                 v-model="form.rule.flowEffic.expect"
+                :step="0.5"
+                :min="0.1"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -34,6 +51,8 @@
                 >流效红线 <span style="color: #333333"><</span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.flowEffic.redLine"
                 @change="(val) => handleRedLineInputChange(val, 'flowEffic')"
               ></el-input-number>
@@ -47,8 +66,9 @@
                 >高预警 <span style="color: #333333"><</span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.flowEffic.high"
-                :max="form.rule.flowEffic.redLine"
                 @change="(val) => handleHighInputChange(val, 'flowEffic')"
               ></el-input-number>
             </el-form-item>
@@ -59,8 +79,9 @@
                 >中预警 <span style="color: #333333"><</span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.flowEffic.middle"
-                :max="form.rule.flowEffic.high"
                 @change="(val) => handleMediumInputChange(val, 'flowEffic')"
               ></el-input-number>
             </el-form-item>
@@ -73,8 +94,9 @@
                 >低预警 <span style="color: #333333"><</span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.flowEffic.low"
-                :max="form.rule.flowEffic.middle"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -97,6 +119,8 @@
                 >时效期望 <span style="color: #333333">≤</span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.timeEffic.expect"
               ></el-input-number>
             </el-form-item>
@@ -107,6 +131,8 @@
                 >时效红线 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.timeEffic.redLine"
                 @change="(val) => handleRedLineInputChange(val, 'timeEffic')"
               ></el-input-number>
@@ -120,9 +146,10 @@
                 >高预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.timeEffic.high"
                 @change="(val) => handleHighInputChange(val, 'timeEffic')"
-                :max="form.rule.timeEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -132,9 +159,10 @@
                 >中预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
                 v-model="form.rule.timeEffic.middle"
                 @change="(val) => handleMediumInputChange(val, 'timeEffic')"
-                :max="form.rule.timeEffic.high"
+                :min="0.1"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -146,8 +174,9 @@
                 >低预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
                 v-model="form.rule.timeEffic.low"
-                :max="form.rule.timeEffic.middle"
+                :min="0.1"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -170,6 +199,8 @@
                 >人效期望 <span style="color: #333333">≤</span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.personEffic.expect"
               ></el-input-number>
             </el-form-item>
@@ -180,6 +211,8 @@
                 >人效红线 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.personEffic.redLine"
                 @change="(val) => handleRedLineInputChange(val, 'personEffic')"
               ></el-input-number>
@@ -193,9 +226,10 @@
                 >高预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.personEffic.high"
                 @change="(val) => handleHighInputChange(val, 'personEffic')"
-                :max="form.rule.personEffic.redLine"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -205,9 +239,10 @@
                 >中预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.personEffic.middle"
                 @change="(val) => handleMediumInputChange(val, 'personEffic')"
-                :max="form.rule.personEffic.high"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -219,8 +254,9 @@
                 >低预警 <span style="color: #333333">></span>
               </label>
               <el-input-number
+                :step="0.5"
+                :min="0.1"
                 v-model="form.rule.personEffic.low"
-                :max="form.rule.personEffic.middle"
               ></el-input-number>
             </el-form-item>
           </el-col>
@@ -256,7 +292,6 @@ export default {
     "listQuery",
   ],
   created() {
-    console.log("initasdf");
     this.init();
   },
   data() {
@@ -273,23 +308,48 @@ export default {
       }
     },
     handleRedLineInputChange(val, type) {
-      console.log(val, "valval");
-      if (this.form.rule[type].high > val) {
-        this.form.rule[type].high = val;
-        this.form.rule[type].middle = val;
-        this.form.rule[type].low = val;
-      }
+      console.log(val, type, "typetype");
+      // if (type === "timeEffic" || type === "personEffic") {
+      //   if (this.form.rule[type].high > val) {
+      //     this.form.rule[type].high = val;
+      //     console.log(val - 0.5, "0505");
+      //     this.form.rule[type].middle = val - 0.5;
+      //     this.form.rule[type].low = val - 1;
+      //     this.form.rule[type].expect = val - 1.5;
+      //   }
+      // } else {
+      //   if (this.form.rule[type].high > val) {
+      //     this.form.rule[type].high = val;
+      //     this.form.rule[type].middle = val;
+      //     this.form.rule[type].low = val;
+      //   }
+      // }
     },
     handleHighInputChange(val, type) {
-      if (this.form.rule[type].middle > val) {
-        this.form.rule[type].middle = val;
-        this.form.rule[type].low = val;
-      }
+      // if (type === "timeEffect" || type === "personEffic") {
+      //   if (this.form.rule[type].middle > val) {
+      //     this.form.rule[type].middle = val - 0.5;
+      //     this.form.rule[type].low = val - 1;
+      //     this.form.rule[type].expect = val - 1.5;
+      //   }
+      // } else {
+      //   if (this.form.rule[type].middle > val) {
+      //     this.form.rule[type].middle = val;
+      //     this.form.rule[type].low = val;
+      //   }
+      // }
     },
     handleMediumInputChange(val, type) {
-      if (this.form.rule[type].low > val) {
-        this.form.rule[type].low = val;
-      }
+      // if (type === "timeEffect" || type === "personEffect") {
+      //   if (this.form.rule[type].low > val) {
+      //     this.form.rule[type].low = val - 0.5;
+      //     this.form.rule[type].expect = val - 1;
+      //   }
+      // } else {
+      //   if (this.form.rule[type].low > val) {
+      //     this.form.rule[type].low = val;
+      //   }
+      // }
     },
     onSubmit() {
       this.buttonLoading = true;
@@ -346,5 +406,15 @@ export default {
 .warntext-container {
   margin-bottom: 20px;
   margin-right: 70px;
+}
+.alert-container {
+  background-color: #f4f4f5;
+  color: #909399;
+  padding: 10px;
+  margin-bottom: 20px;
+  .alert-item {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
 </style>

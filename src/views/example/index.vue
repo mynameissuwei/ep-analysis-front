@@ -295,25 +295,25 @@ export default {
       procFactorRuleData: {
         rule: {
           flowEffic: {
-            expect: 0,
-            high: 0,
-            middle: 0,
-            low: 0,
-            redLine: 0,
+            expect: 3,
+            high: 1,
+            middle: 2,
+            low: 3,
+            redLine: 3,
           },
           timeEffic: {
-            expect: 0,
-            high: 0,
-            middle: 0,
-            low: 0,
-            redLine: 0,
+            expect: 1,
+            high: 3,
+            middle: 2,
+            low: 1,
+            redLine: 3,
           },
           personEffic: {
-            expect: 0,
-            high: 0,
-            middle: 0,
-            low: 0,
-            redLine: 0,
+            expect: 1,
+            high: 3,
+            middle: 2,
+            low: 1,
+            redLine: 3,
           },
         },
       },
@@ -411,6 +411,8 @@ export default {
       ).appName;
       this.appName = appName;
       this.listQuery.procDefValue = "";
+      this.isInit = true;
+      this.isExportDetail = true;
       this.getProcDef();
     },
     handleProcChange(val) {
