@@ -55,10 +55,10 @@
             type="primary"
             @click="onSubmit"
             size="small"
-            :disabled="isInit"
+            :disabled="isExportDetail"
             >导出</el-button
           >
-          <el-button size="small" @click="onPreview" :disabled="isInit"
+          <el-button size="small" @click="onPreview" :disabled="isExportDetail"
             >预览</el-button
           >
         </div>
@@ -89,6 +89,10 @@ export default {
       require: true,
     },
     isInit: {
+      type: Boolean,
+      default: false,
+    },
+    isExportDetail: {
       type: Boolean,
       default: false,
     },

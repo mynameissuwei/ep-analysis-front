@@ -1,7 +1,7 @@
 <template>
   <div class="right-container scroll-container">
     <div>
-      <el-row :gutter="20" style="position: relative">
+      <el-row :gutter="20" class="row-static">
         <el-col :span="18">
           <el-alert
             v-if="procFactorDetail.hasOldData"
@@ -282,6 +282,7 @@
 import ProcessCard from "./components/ProcessCard";
 import ProcessChart from "./components/ProcessChart";
 import ProcessModal from "./components/ProcessModal";
+import Sticky from "@/components/Sticky";
 
 export default {
   props: {
@@ -322,6 +323,7 @@ export default {
     ProcessCard,
     ProcessModal,
     ProcessChart,
+    Sticky,
   },
   data() {
     return {
@@ -371,7 +373,8 @@ export default {
     justify-content: center;
     align-items: center;
     position: absolute;
-    right: 10px;
+    z-index: 100;
+    right: 20px;
     margin-bottom: 16px;
     margin-top: 16px;
   }
@@ -390,5 +393,12 @@ export default {
 .alert-container {
   margin-top: 10px;
   background: #e6f3fe;
+  position: absolute;
+  z-index: 100;
+  width: 94%;
+}
+.row-static {
+  position: static;
+  z-index: 100;
 }
 </style>

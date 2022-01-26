@@ -195,6 +195,7 @@
                   :appName="appName"
                   :processName="processName"
                   :isInit="isInit"
+                  :isExportDetail="isExportDetail"
                 />
               </el-tab-pane>
             </div>
@@ -326,6 +327,7 @@ export default {
       },
       DateUtil: DateUtil,
       isInit: true,
+      isExportDetail: true,
       listQuery: {
         templateTypesValue: "",
         procDefValue: "",
@@ -391,12 +393,12 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.isExportDetail = false;
           this.getProcIndexRule();
           this.getProcFactor();
           this.getNode();
           this.DFG();
           this.$nextTick(() => {
-            console.log(this.isInit, "initinit");
             this.isInit && this.initStep();
             this.isInit = false;
           });
@@ -419,6 +421,7 @@ export default {
     },
     resetForm(formName) {
       this.isInit = true;
+      this.isExportDetail = true;
       this.$refs[formName].resetFields();
       this.listQuery.dateValue = [
         DateUtil.DateUtil.getStartDayOfMonth(),
