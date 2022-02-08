@@ -43,6 +43,7 @@
                 :step="0.5"
                 :min="0.1"
               ></el-input-number>
+              <span class="unit">%</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -56,6 +57,7 @@
                 v-model="form.rule.flowEffic.redLine"
                 @change="(val) => handleRedLineInputChange(val, 'flowEffic')"
               ></el-input-number>
+              <span class="unit">%</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -71,6 +73,7 @@
                 v-model="form.rule.flowEffic.high"
                 @change="(val) => handleHighInputChange(val, 'flowEffic')"
               ></el-input-number>
+              <span class="unit">%</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -84,6 +87,7 @@
                 v-model="form.rule.flowEffic.middle"
                 @change="(val) => handleMediumInputChange(val, 'flowEffic')"
               ></el-input-number>
+              <span class="unit">%</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -98,6 +102,7 @@
                 :min="0.1"
                 v-model="form.rule.flowEffic.low"
               ></el-input-number>
+              <span class="unit">%</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -123,6 +128,7 @@
                 :min="0.1"
                 v-model="form.rule.timeEffic.expect"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -136,6 +142,7 @@
                 v-model="form.rule.timeEffic.redLine"
                 @change="(val) => handleRedLineInputChange(val, 'timeEffic')"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -151,6 +158,7 @@
                 v-model="form.rule.timeEffic.high"
                 @change="(val) => handleHighInputChange(val, 'timeEffic')"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -164,6 +172,7 @@
                 @change="(val) => handleMediumInputChange(val, 'timeEffic')"
                 :min="0.1"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -178,6 +187,7 @@
                 v-model="form.rule.timeEffic.low"
                 :min="0.1"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -203,6 +213,7 @@
                 :min="0.1"
                 v-model="form.rule.personEffic.expect"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -216,6 +227,7 @@
                 v-model="form.rule.personEffic.redLine"
                 @change="(val) => handleRedLineInputChange(val, 'personEffic')"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -231,6 +243,7 @@
                 v-model="form.rule.personEffic.high"
                 @change="(val) => handleHighInputChange(val, 'personEffic')"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -244,6 +257,7 @@
                 v-model="form.rule.personEffic.middle"
                 @change="(val) => handleMediumInputChange(val, 'personEffic')"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -258,6 +272,7 @@
                 :min="0.1"
                 v-model="form.rule.personEffic.low"
               ></el-input-number>
+              <span class="unit">人天</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -378,6 +393,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.unit {
+  margin-left: 10px;
+}
 .process-modal-container {
   ::v-deep {
     .el-input-number__decrease,
