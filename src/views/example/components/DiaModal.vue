@@ -187,7 +187,9 @@
                   placeholder="请输入文字"
                   size="small"
                   clearable
+                  class="inlineInput"
                 ></el-input>
+                <span>个</span>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -198,7 +200,9 @@
                   placeholder="请输入文字"
                   size="small"
                   clearable
+                  class="inlineInput"
                 ></el-input>
+                <span>人天</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -531,5 +535,10 @@ export default {
   .el-table__empty-block {
     width: 100% !important;
   }
+}
+.inlineInput {
+  display: inline-block;
+  width: 80%;
+  margin-right: 10px;
 }
 </style>
