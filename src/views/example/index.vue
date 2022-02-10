@@ -399,12 +399,10 @@ export default {
           this.getProcFactor();
           this.getNode();
           this.DFG();
-          // this.$nextTick(() => {
-          //   // this.isInit && this.initStep();
-          //   // this.isInit = false;
-          //   console.log(this.hasProcFactorRuleData, "hasProcFactorRuleData");
-          //   this.hasProcFactorRuleData && this.initStep();
-          // });
+          this.$nextTick(() => {
+            // this.isInit && this.initStep();
+            this.isInit = false;
+          });
         }
       });
     },
@@ -541,17 +539,12 @@ export default {
       );
       console.log(data, "procFactorRuleData");
       if (data) {
-        console.log("hasData");
         this.procFactorRuleData = data;
         this.hasProcFactorRuleData = false;
       } else {
-        console.log("noData");
         this.hasProcFactorRuleData = true;
       }
       this.$nextTick(() => {
-        // this.isInit && this.initStep();
-        // this.isInit = false;
-        console.log(this.hasProcFactorRuleData, "hasProcFactorRuleData");
         this.hasProcFactorRuleData && this.initStep();
       });
     },
