@@ -327,6 +327,7 @@ export default {
       },
       DateUtil: DateUtil,
       isInit: true,
+      hasProcFactorRuleData: true,
       isExportDetail: true,
       listQuery: {
         templateTypesValue: "",
@@ -398,10 +399,12 @@ export default {
           this.getProcFactor();
           this.getNode();
           this.DFG();
-          this.$nextTick(() => {
-            this.isInit && this.initStep();
-            this.isInit = false;
-          });
+          // this.$nextTick(() => {
+          //   // this.isInit && this.initStep();
+          //   // this.isInit = false;
+          //   console.log(this.hasProcFactorRuleData, "hasProcFactorRuleData");
+          //   this.hasProcFactorRuleData && this.initStep();
+          // });
         }
       });
     },
@@ -423,6 +426,7 @@ export default {
     },
     resetForm(formName) {
       this.isInit = true;
+      this.hasProcFactorRuleData = false;
       this.isExportDetail = true;
       this.$refs[formName].resetFields();
       this.listQuery.dateValue = [
@@ -535,10 +539,21 @@ export default {
           procDefKey: this.listQuery.procDefValue,
         })
       );
-
+      console.log(data, "procFactorRuleData");
       if (data) {
+        console.log("hasData");
         this.procFactorRuleData = data;
+        this.hasProcFactorRuleData = false;
+      } else {
+        console.log("noData");
+        this.hasProcFactorRuleData = true;
       }
+      this.$nextTick(() => {
+        // this.isInit && this.initStep();
+        // this.isInit = false;
+        console.log(this.hasProcFactorRuleData, "hasProcFactorRuleData");
+        this.hasProcFactorRuleData && this.initStep();
+      });
     },
     // 获取流效样本
     async getProcFactor() {

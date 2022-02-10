@@ -671,7 +671,7 @@ export default {
     align-items: center;
     margin-bottom: 16px;
     margin-top: 16px;
-    margin-right: 16px;
+    margin-right: 20px;
     cursor: pointer;
     font-size: 12px;
   }
@@ -685,6 +685,8 @@ export default {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    right: 50px;
     float: right;
     margin-bottom: 16px;
     margin-top: 16px;
@@ -750,6 +752,7 @@ export default {
     align-items: center;
     height: 100%;
   }
+
   // ::v-deep {
   //   .el-dialog__header {
   //     border-bottom: 1px solid #e0e3e5;
