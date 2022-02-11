@@ -274,6 +274,7 @@
       :getProcIndexRule="getProcIndexRule"
       :getProcFactor="getProcFactor"
       :listQuery="listQuery"
+      :driver="driver"
     />
   </div>
 </template>

@@ -305,6 +305,7 @@ export default {
     "getProcIndexRule",
     "getProcFactor",
     "listQuery",
+    "driver",
   ],
   created() {
     this.init();
@@ -317,17 +318,15 @@ export default {
   },
   methods: {
     init() {
-      console.log(this.procFactorRuleData, "procFactorRuleData");
       if (this.procFactorRuleData) {
         this.form = this.procFactorRuleData;
       }
     },
     handleRedLineInputChange(val, type) {
-      console.log(val, type, "typetype");
       // if (type === "timeEffic" || type === "personEffic") {
       //   if (this.form.rule[type].high > val) {
       //     this.form.rule[type].high = val;
-      //     console.log(val - 0.5, "0505");
+      //
       //     this.form.rule[type].middle = val - 0.5;
       //     this.form.rule[type].low = val - 1;
       //     this.form.rule[type].expect = val - 1.5;
@@ -379,6 +378,8 @@ export default {
           this.getProcFactor();
           this.handleClose();
           this.buttonLoading = false;
+
+          this.driver.reset();
           this.$message({
             type: "success",
             message: "保存成功!",
