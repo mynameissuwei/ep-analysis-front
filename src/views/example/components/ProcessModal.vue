@@ -306,6 +306,7 @@ export default {
     "getProcFactor",
     "listQuery",
     "driver",
+    "procDefValue",
   ],
   created() {
     this.init();
@@ -316,6 +317,7 @@ export default {
       buttonLoading: false,
     };
   },
+
   methods: {
     init() {
       if (this.procFactorRuleData) {
@@ -367,11 +369,12 @@ export default {
     },
     onSubmit() {
       this.buttonLoading = true;
+
       addProcIndexRule({
-        tenantId: this.$store.state.user.tenantId,
-        procDefKey: this.listQuery.procDefValue,
         type: "TYPE_PROC_INDEX",
         ...this.form,
+        tenantId: this.$store.state.user.tenantId,
+        procDefKey: this.listQuery.procDefValue,
       })
         .then(async () => {
           await this.getProcIndexRule();

@@ -537,7 +537,7 @@ export default {
           procDefKey: this.listQuery.procDefValue,
         })
       );
-      console.log(data, "procFactorRuleData");
+
       if (data) {
         this.procFactorRuleData = data;
         this.hasProcFactorRuleData = false;
@@ -545,8 +545,6 @@ export default {
         this.hasProcFactorRuleData = true;
       }
       this.$nextTick(() => {
-        console.log(this.hasProcFactorRuleData, "hasData");
-
         this.hasProcFactorRuleData && this.initStep();
       });
     },

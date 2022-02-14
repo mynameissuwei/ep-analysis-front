@@ -273,7 +273,8 @@
       :procFactorRuleData="procFactorRuleData"
       :getProcIndexRule="getProcIndexRule"
       :getProcFactor="getProcFactor"
-      :listQuery="listQuery"
+      :listQuery="listQueryInfo"
+      :procDefValue="listQueryInfo.procDefValue"
       :driver="driver"
     />
   </div>
@@ -326,9 +327,19 @@ export default {
     ProcessChart,
     Sticky,
   },
+  watch: {
+    listQuery: {
+      handler(newValue, oldValue) {
+        console.log(newValue, oldValue, "oldValue");
+        this.listQueryInfo = newValue;
+      },
+      deep: true,
+    },
+  },
   data() {
     return {
       dialogVisible: false,
+      listQueryInfo: {},
     };
   },
   methods: {
