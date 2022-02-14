@@ -544,8 +544,9 @@ export default {
       } else {
         this.hasProcFactorRuleData = true;
       }
-      console.log(this.hasProcFactorRuleData, "hasData");
       this.$nextTick(() => {
+        console.log(this.hasProcFactorRuleData, "hasData");
+
         this.hasProcFactorRuleData && this.initStep();
       });
     },

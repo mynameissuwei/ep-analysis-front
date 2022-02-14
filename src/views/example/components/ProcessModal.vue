@@ -373,16 +373,17 @@ export default {
         type: "TYPE_PROC_INDEX",
         ...this.form,
       })
-        .then(() => {
-          this.getProcIndexRule();
-          this.getProcFactor();
-          this.handleClose();
+        .then(async () => {
+          await this.getProcIndexRule();
+          await this.getProcFactor();
+          await this.handleClose();
           this.buttonLoading = false;
-
-          this.driver.reset();
           this.$message({
             type: "success",
             message: "保存成功!",
+          });
+          this.$nextTick(() => {
+            this.driver.reset();
           });
         })
         .catch((err) => {
