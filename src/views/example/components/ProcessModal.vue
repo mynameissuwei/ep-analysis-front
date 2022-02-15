@@ -320,7 +320,6 @@ export default {
 
   methods: {
     init() {
-      console.log(this.procFactorRuleData, "procFactorRuleData");
       if (this.procFactorRuleData) {
         this.form = this.procFactorRuleData;
       }

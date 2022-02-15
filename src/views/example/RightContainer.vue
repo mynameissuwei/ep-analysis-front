@@ -339,7 +339,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      listQueryInfo: {},
+      listQueryInfo: this.listQuery,
     };
   },
   methods: {
