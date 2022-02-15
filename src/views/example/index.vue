@@ -443,6 +443,33 @@ export default {
         conclusion: "",
       };
     },
+    initRuleData() {
+      this.procFactorRuleData = {
+        rule: {
+          flowEffic: {
+            expect: 3,
+            high: 1,
+            middle: 2,
+            low: 3,
+            redLine: 3,
+          },
+          timeEffic: {
+            expect: 1,
+            high: 3,
+            middle: 2,
+            low: 1,
+            redLine: 3,
+          },
+          personEffic: {
+            expect: 1,
+            high: 3,
+            middle: 2,
+            low: 1,
+            redLine: 3,
+          },
+        },
+      };
+    },
     initProcess() {
       this.procFactorDetail = {
         partRadio: "0",
@@ -452,31 +479,7 @@ export default {
         avgHolder: "0",
         personLimit: "0",
       };
-      this.procFactorRuleData = {
-        rule: {
-          flowEffic: {
-            expect: 0,
-            high: 0,
-            middle: 0,
-            low: 0,
-            redLine: 0,
-          },
-          timeEffic: {
-            expect: 0,
-            high: 0,
-            middle: 0,
-            low: 0,
-            redLine: 0,
-          },
-          personEffic: {
-            expect: 0,
-            high: 0,
-            middle: 0,
-            low: 0,
-            redLine: 0,
-          },
-        },
-      };
+      this.initRuleData();
     },
     //获取流程指数
     getProcess() {
@@ -543,6 +546,7 @@ export default {
         this.hasProcFactorRuleData = false;
       } else {
         this.hasProcFactorRuleData = true;
+        this.initRuleData();
       }
       this.$nextTick(() => {
         this.hasProcFactorRuleData && this.initStep();
